@@ -7,6 +7,7 @@ gem 'haml'
 gem 'nokogiri'
 gem 'spatial_adapter'
 gem 'aegis', :require => 'aegis'
+gem 'capistrano-ext'
 gem 'capistrano'
 gem "rails", "~> 3.0.3"
 gem "arel"
