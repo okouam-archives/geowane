@@ -2,9 +2,9 @@ require 'nokogiri'
 require 'will_paginate'
 
 class Location < ActiveRecord::Base
+  include Audited
   acts_as_indexed :fields => [:searchable_name]
   acts_as_commentable
-  include Audited
   acts_as_audited
   accepts_nested_attributes_for :comments
   validates_presence_of :longitude, :latitude, :name
