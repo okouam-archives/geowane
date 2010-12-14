@@ -1,5 +1,6 @@
 source 'http://rubygems.org'
 
+gem 'hoptoad_notifier'
 gem 'pg'
 gem 'formtastic', :git => 'git://github.com/justinfrench/formtastic.git'
 gem 'haml'
