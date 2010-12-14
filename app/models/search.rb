@@ -62,7 +62,7 @@ class Search
           joins("JOIN model_changes ON audits.id = model_changes.audit_id AND model_changes.new_value = 'AUDITED'")
     end
 
-    query = query.where("name ilike ? ", "%#{params[:searchable_name_like]}%") unless params[:searchable_name_like].blank?
+    query = query.where("locations.name ilike ? ", "%#{params[:searchable_name_like]}%") unless params[:searchable_name_like].blank?
 
     unless params[:confirmed_by].blank?
       query = query.
