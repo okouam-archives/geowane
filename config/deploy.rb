@@ -1,10 +1,10 @@
 set :application, "geocms"
 set :repository,  "git@github.com:okouam/geocms.git"
 set :scm, :git
-set :branch, :v4
+set :branch, :master
 set :stages, ["uat", "production"]
 require 'capistrano/ext/multistage'
-set :default_stage, "test"
+set :default_stage, "uat"
 set :deploy_via, :remote_cache
 set :user, "okouam"
 set :ssh_options, { :forward_agent => true }
