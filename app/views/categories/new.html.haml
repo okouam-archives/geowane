@@ -1,0 +1,8 @@
+%div.block
+  %div.block_head
+    %h2
+      New Category
+    %ul
+      %li.nobg= link_to "Back", categories_path
+  %div.block_content
+    = render :partial => "form"

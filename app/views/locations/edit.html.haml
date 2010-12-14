@@ -1,0 +1,76 @@
+= content_for :title, "GeoCMS - Edit Location"
+= render :partial => "scripts"
+
+.block
+  .block_head
+    %h2 Edit Location #{@location.id}
+    %ul
+      %li.nobg
+        = link_to "Back", locations_path
+      %li.nobg
+        = link_to "Previous POI", previous_location_path(@location)
+      %li.nobg
+        = link_to "Next POI", next_location_path(@location)
+  = render :partial => 'form', :locals => {:location => @location, :form_data => @form_data}
+
+:javascript
+  $(document).ready(function() {
+
+    var observer = {
+      onDragComplete: function(feature, lonlat) {
+        $("#location_latitude").val(lonlat.lat);
+        $("#location_longitude").val(lonlat.lon);
+      },
+      onZoomChanged: function(extent) {}
+    };
+
+    var map = new SingleFeatureMap("map", observer);
+
+    var showCurrentLocation = function(func) {
+      $.ajax({
+        type: "GET",
+        dataType : 'script',
+        url: "/locations/#{@location.id}",
+        success: function(msg) {
+          poi = eval("(" + msg + ")");
+          poi.icon = "/shape_square_purple.png";
+          map.removeLayer("default");
+          if (func) {
+            map.displayDraggableFeatures([poi], "default", func);
+          } else {
+            map.displayDraggableFeatures([poi], "default");
+          }
+
+        }
+      });
+    };
+
+    var showLandmarks = function() {
+      $.ajax({
+        type: "GET",
+        dataType: "json",
+        data: {
+          "bounds[]": map.map.getExtent().toArray(),
+        },
+        url: "/locations/#{@location.id}/surrounding_landmarks",
+        success: function(points) {
+          map.displayFeaturesWithPopups(points, "landmarks");
+        }
+      });
+    };
+
+    showCurrentLocation(function() {map.zoomToFeatures("default");});
+
+
+    $("#location-tabs").tabs();
+
+    $("input[name='show_landmarks']").change(function(){
+      if ($("input[name='show_landmarks']:checked").val() == '0') {
+        map.removeLayer("landmarks");
+      }
+      else {
+        showLandmarks();
+      }
+    });
+
+  });

@@ -1,0 +1,101 @@
+@import url(admin/style.css);
+@import url(admin/jquery.wysiwyg.css);
+@import url(admin/facebox.css);
+@import url(admin/visualize.css);
+@import url(admin/date_input.css);
+@import url(admin/formtastic.css);
+
+.olControlScaleLineTop {
+  border: 1px solid white;
+  clear: both;
+  float: right;
+  text-align: center;
+  border-top: medium none; }
+
+.olControlScaleLineBottom {
+  border: 1px solid white;
+  clear: both;
+  float: right;
+  text-align: center;
+  border-bottom: medium none;
+  margin-top: -1px; }
+
+.olControlScaleLine {
+  bottom: 25px;
+  float: right;
+  font-size: xx-small;
+  right: 10px; }
+
+.olPopup {
+  padding: 7px;
+  border: 1px solid #434343 !important;
+  text-align: center !important;
+  color: #434343 !important; }
+
+.index table {width: 635px; float: left; margin-left: 30px; }
+.index td.view, .index th.view {width: 22px}
+.index td.count, .index th.count {width: 90px; text-align: center}
+.index table td.edit, .index table td.delete, .index table td.history {width: 22px; }
+.index .block_head .back {padding-right: 10px}
+.index table td, .index table th {font-size: 11px}
+.index .total_POI {width: 60px; text-align: center}
+.index .field_checked {width: 95px; text-align: center}
+.index .audited, .index .invalid, .index .pending {width: 50px; text-align: center}
+.index .categorized {width: 80px; text-align: center; font-style: italic}
+
+.block_sub {height: 30px; background-color: #777; padding-left: 30px; color: white; line-height: 30px; width: 952px; left: -10px; position: relative}
+.block_sub a {color: white}
+.block_sub a:hover {color: orange}
+
+.locations.edit .block_sub a {margin-right: 5px}
+.locations.edit .block_sub .change_status {margin-right: 25px}
+.locations.edit fieldset {border-width: 0}
+.locations.edit fieldset ol {padding-left: 0}
+
+#search-parameters {
+    padding: 20px;
+    display: block;
+    margin-bottom: 10px; }
+
+#search-parameters input {
+    padding: 5px;
+    width: 195px; }
+
+#search-parameters input .button {
+    width: auto; }
+
+#search-parameters select {
+    padding: 5px;
+    width: 206px; }
+
+.edit .mceIframeContainer {padding: 0 !important;}
+
+.info-message {background-color: #b7e2b7; border: 1px solid green; float: left; width: 622px;
+  margin-left: 30px; padding: 5px; color: green; margin-bottom: 10px
+}
+
+
+.change_status #location_status {padding: 1px; width: 200px; font-size: 10px}
+.block_content {width: 920px}
+.block .block_content ol {padding-bottom: 0}
+
+.styled_select {
+    -moz-border-radius:3px 3px 3px 3px;
+    background:none repeat scroll 0 0 #FEFEFE;
+    border:1px solid #BBBBBB;
+    color:#333333;
+    font-family:"Lucida Grande",Verdana,sans-serif;
+    font-size:14px;
+    outline:medium none;
+    padding:7px;
+    vertical-align:middle;
+    width:410px;
+}
+
+.block table.layout tr td, .block table.layout tr th {
+    border-bottom-width: 0;
+    line-height:normal;
+    padding:10px;
+    text-align:left;
+    background-color: white ! important
+}

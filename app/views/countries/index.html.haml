@@ -1,0 +1,46 @@
+.block
+  .block_head
+    %h2
+      Countries
+    %ul
+      %li.nobg= link_to "Back", :back
+  .block_content
+    %table{:cellspacing => "0", :cellpadding => "0", :style => "width: 100%; margin-left: 0px"}
+      %thead
+        %tr
+          %th Country
+          %th.total_POI Total POI
+          %th.pending Pending
+          %th.invalid Invalid
+          %th.audited Audited
+          %th.field_checked Field Checked
+          %th.categorized Categorized
+          - if @can_edit
+            %th
+      %tbody
+        - @countries.each do |country|
+          %tr
+            %td= link_to(country.name, "/locations?s[country_id_eq]=#{country.id}")
+            = render :partial => "/areas/list_stats", :locals => {:area => country}
+            - if @can_edit
+              %td.view= link_to("Edit", edit_country_path(country))
+        %tr
+          %td
+          %td.total_POI
+            %b= @countries.inject(0) {|total, city| total + city.locations_count.to_i }
+          %td.pending
+            %b= @countries.inject(0) {|total, city| total + city.pending_locations.to_i }
+          %td.invalid
+            %b= @countries.inject(0) {|total, city| total + city.invalid_locations.to_i }
+          %td.audited
+            %b= @countries.inject(0) {|total, city| total + city.audited_locations.to_i }
+          %td.field_checked
+            %b= @countries.inject(0) {|total, city| total + city.field_checked_locations.to_i }
+          %td.categorized
+            %b
+              %i= @countries.inject(0) {|total, city| total + city.categorized_locations.to_i }
+          - if @can_edit
+            %td
+    %br
+
+

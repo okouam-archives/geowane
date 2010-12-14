@@ -1,0 +1,31 @@
+.block
+  .block_head
+    %h2 Counters
+    %ul
+      %li.nobg.back= link_to "Back", :back
+  .block_content
+    %table{:cellspacing => "0", :cellpadding => "0", :style => "width: 100%; margin-left: 0px"}
+      %thead
+        %tr
+          %th Collector
+          %th Total POI
+          %th New
+          %th Audited
+          %th Invalid
+          %th Corrected
+          %th Field Checked
+          %th
+            %i Categorized
+      %tbody
+        - @counters.each do |counter|
+          %tr
+            %td= link_to(counter.user.login, "/locations?s[added_by]=#{counter.user.id}")
+            %td= number_with_delimiter(counter.total_locations)
+            %td= number_with_delimiter(counter.new_locations)
+            %td= "#{number_with_delimiter(counter.audited_locations)} (#{number_to_percentage((counter.audited_locations.to_f / counter.total_locations.to_f) * 100, :precision => 2)})"
+            %td= number_with_delimiter(counter.invalid_locations)
+            %td= number_with_delimiter(counter.corrected_locations)
+            %td= "#{number_with_delimiter(counter.field_checked_locations)} (#{number_to_percentage((counter.field_checked_locations.to_f / counter.total_locations.to_f) * 100, :precision => 2)})"
+            %td= "#{number_with_delimiter(counter.categorized_locations)} (#{number_to_percentage((counter.categorized_locations.to_f / counter.total_locations.to_f) * 100, :precision => 2)})"
+
+    %br

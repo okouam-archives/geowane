@@ -1,0 +1,1 @@
+Feature: Delete a group of locations

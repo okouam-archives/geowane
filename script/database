@@ -1,0 +1,27 @@
+#!/bin/bash
+
+
+### Constants
+
+REMOTE_SERVER="soshini.codeifier.com"
+DATABASE="gowane_development"
+REMOTE_USER="okouam"
+REMOTE_TMP_DIRECTORY="/home/okouam/Projects/gowane/tmp"
+REMOTE=$REMOTE_USER@$REMOTE_SERVER
+
+### Functions
+
+### Main
+
+if [ $# -lt 1 ]; then
+  echo "FATAL: The name of the database table been exported needs to be provided"
+  exit -1
+else
+  echo "INFO: Exporting the Gowane database table $1"
+  output="../tmp/$1.sql"
+fi
+
+pg_dump $DATABASE -c -F p --inserts -t $1 -f $output
+echo "INFO: The table $1 has been exported to $output"
+scp $output $REMOTE:$REMOTE_TMP_DIRECTORY
+ssh $REMOTE "psql -d gowane_development -f /home/okouam/Projects/gowane/tmp/$1.sql"

@@ -1,0 +1,118 @@
+= content_for :title, "Gowane CMS - Locations"
+
+.locations.index
+  .block
+    .block_head
+      %h2
+        Locations
+      %ul
+        %li.nobg
+          = link_to "Change Criteria", change_criteria_locations_path
+        - unless @locations.empty?
+          - if @locations.any? {|l| current_user.may_update_location?(l)}
+            %li.nobg.mass_update
+              = link_to "Update", "#"
+          - if @locations.any? {|l| current_user.may_destroy_location?(l)}
+            %li.nobg.mass_delete
+              = link_to "Delete", "#"
+          %li.nobg.export
+            = link_to "Export", "#"
+        %li.nobg
+          = link_to "New Location", new_location_path
+    .block_sub
+      %b{:style=>"margin-right: 20px"}
+        SEARCH CRITERIA
+      %code
+        = show_search_criteria
+    .block_content
+      - if flash[:msg]
+        .flash_msg= flash[:msg]
+      = semantic_form_for :shapefile, :url => new_shapefile_path do
+        %table.main{:cellspacing => "0", :cellpadding => "0", :style => "width: 100%; margin-left: 0px"}
+          %tbody
+            %tr
+              %th
+                %input{:type=>"checkbox"}
+              %th Name
+              %th City
+              %th{:style=>"width: 120px"}
+                Category
+              - unless current_user.has_role?("collector")
+                %th{:style=>"width: 80px"}
+                  Added By
+              %th{:style=>"width: 80px"}
+                Date Added
+              %th{:style=>"width: 95px"}
+                Last Changed
+              %th{:style=>"width: 95px"}
+                Status
+
+            - @locations.each do |location|
+              %tr
+                %td.selector
+                  %input{:type=>"checkbox", :name=>"shapefile[locations][]", :value => "#{location.id}"}
+                %td
+                  - if location.name.length > 40
+                    = image_tag("warning-icon.png", :style=>"position: relative; top: 3px; margin-right: 3px")
+                  = link_to location.name, edit_location_path(location)
+
+                %td= location.city_name
+                %td= location.category_name || ""
+                - unless current_user.has_role?("collector")
+                  %td= location.username
+                %td= location.created_at.strftime("%d-%m-%Y")
+                %td= location.updated_at.strftime("%d-%m-%Y")
+                %td= location.status
+      %br
+        %div
+          = select_tag "pages", options_for_select([ "10", "20", "50", "100", "1000", "5000"], @per_page), :style => "width: 70px; padding: 2px; margin-top: -3px"
+          = will_paginate @locations, :params => @params, :class => "paggination right"
+      %div.clear
+      %span{:style=>"float: right; margin-bottom: 20px"}
+        = page_entries_info @locations
+
+  :css
+    .flash_msg {padding:5px 5px 5px 10px}
+
+  :javascript
+    $(document).ready(function() {
+
+      $($.date_input.initialize);
+
+      $("#pages").change(function() {
+        window.location = $.param.querystring(window.location.href, {per_page: $(this).val()});
+      });
+
+      $("th input[type=checkbox]").click(function() {
+        var master = $(this);
+        var isChecked = master.attr("checked");
+        $("td input[type=checkbox]").attr("checked", isChecked);
+      });
+
+      var mass_change = function(action) {
+        if ($("td.selector input:checked").length < 1) {
+          alert("Please select one or more locations for " + action);
+          return false;
+        }
+        $("form.shapefile").attr("action", "/locations/mass_" + action);
+        $("form.shapefile").submit();
+        return false;
+      }
+
+      $("li.mass_update a").click(function() {
+        return mass_change('update')
+      });
+
+      $("li.mass_delete a").click(function() {
+        return mass_change('delete')
+      });
+
+      $("li.mass_audit a").click(function() {
+        return mass_change('audit')
+      });
+
+      $("li.export a").click(function() {
+        $("form.shapefile").submit();
+        return false;
+      });
+    });

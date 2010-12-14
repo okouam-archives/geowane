@@ -1,0 +1,8 @@
+#history-tab
+  - object.audits.each do |audit|
+    %p
+      %b
+        Changes on #{audit.created_at} by #{audit.user.login}
+    %ul
+      - audit.model_changes.each do |model_change|
+        %li= "Changed #{model_change.datum} from #{model_change.old_value} to #{model_change.new_value}"

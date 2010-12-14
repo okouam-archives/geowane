@@ -1,0 +1,9 @@
+//= require <application/views/dashboard>
+//= require <application/views/dashboard/index_panel>
+//= require <application/views/dashboard/localization_panel>
+//= require <application/views/dashboard/route_panel>
+//= require <application/views/map>
+//= require <application/views/map/settings>
+//= require <application/views/map/private>
+//= require <application/views/map/public>
+//= require <application/views/canvas>

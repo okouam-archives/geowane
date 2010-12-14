@@ -1,0 +1,38 @@
+.features.summary
+  .block
+    .block_head
+      %h2 Geospatial Database
+      %ul
+        %li.nobg= link_to "Back", :back
+    .block_content
+      %h3 Database Statistics
+      %ul
+        %li
+          Number of Points of Interest:
+          = number_with_delimiter(@location_count)
+        %li
+          Number of communes:
+          = number_with_delimiter(@commune_count)
+        %li
+          Number of regions:
+          = number_with_delimiter(@region_count)
+        %li
+          Number of cities:
+          = number_with_delimiter(@city_count)
+      %h3 Workflow Statistics
+      %ul
+        %li
+          Number of New Points of Interest:
+          = number_with_delimiter(@new_locations)
+        %li
+          Number of Audited Points of Interest:
+          = number_with_delimiter(@audited_locations)
+        %li
+          Number of Invalid Points of Interest::
+          = number_with_delimiter(@invalid_locations)
+        %li
+          Number of Corrected Points of Interest:
+          = number_with_delimiter(@corrected_locations)
+        %li
+          Number of Field Checked Points of Interest:
+          = number_with_delimiter(@field_checked_locations)

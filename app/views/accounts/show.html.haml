@@ -1,0 +1,24 @@
+%div.block
+  %div.block_head
+    %h2
+      Your Details
+    %ul
+      %li.nobg= link_to "Edit", edit_account_path
+  %div.block_content
+    %ul
+      %li
+        %b Username:
+        = object.login
+      %li
+        %b Email:
+        = object.email
+      %li
+        %b Skype Alias:
+        = object.skype_alias
+      %li
+        %b Home Country:
+        = object.home_country
+      %li
+        %b Mobile Number:
+        = object.mobile_number
+

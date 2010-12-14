@@ -1,0 +1,10 @@
+%div.block
+  %div.block_head
+    %h2
+      Edit Commune
+    %ul
+      %li.nobg= link_to "Back", collection_path
+  %div.block_content
+    = semantic_form_for object, :html => { :enctype => "multipart/form-data"} do |form|
+      = form.input :name,  :required => true, :input_html => { :class => "text" }
+      = form.commit_button :button_html => { :class => "submit long" }

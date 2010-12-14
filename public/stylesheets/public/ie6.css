@@ -1,0 +1,7 @@
+#billboards {padding-top: 40px}
+h1 {line-height: 24px}
+#canvas ul.features li {margin-left: -40px; height: 14px; overflow: hidden; margin-bottom: 0; clear: both}
+#canvas ul.features li a {text-decoration: none; height: 6px}
+.bottom-panel {position: relative; top: 5px; left: -10px}
+.bottom-panel h2 {margin-top: 15px}
+.bottom-panel li {margin-left: -40px}

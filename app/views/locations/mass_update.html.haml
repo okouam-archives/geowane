@@ -1,0 +1,48 @@
+.block
+  .block_head
+    %h2 Update Locations
+  .block_content
+    %table.layout
+      %tr
+        %td Choose a category for all the locations:
+        %td= select_tag "category_switcher", options_for_select(@categories), :class => "styled_select"
+      %tr
+        %td Choose a status for all the locations:
+        %td= select_tag "status_switcher", options_for_select(Location.workflow_states), :class => "styled_select"
+    = form_for "locations", :url => do_mass_update_locations_path do |form|
+      %table.list.updates
+        %tr
+          %th
+            %b Name
+          %th
+            %b Category
+          %th
+            %b Status
+        - @locations.each_with_index do |location, i|
+          %tr
+            %td= form.text_field "[#{i}][name]", :value => location.name
+            %td.category= select_tag "locations[#{i}][category_id]", options_for_select(@categories, location.try(:category).try(:id) || "")
+            %td.status
+              =select_tag "locations[#{i}][status]", options_for_select(workflow_actions(current_user, location), location.status)
+              =form.hidden_field "[#{i}][id]", :value => location.id
+      %div.update_button_wrapper
+        = submit_tag "Update All"
+
+:css
+  input {padding: 5px}
+  .list.updates {width: 100%}
+  .change {margin-right: 105px; margin-left: 15px}
+  .change select {float: right}
+  td.category select {width: 300px}
+  td.status select {width: 180px}
+  .update_button_wrapper {margin-bottom: 30px; text-align: right}
+
+:javascript
+  $(document).ready(function() {
+    $("#category_switcher").change(function() {
+      $("td.category select").val($(this).val());
+    });
+    $("#status_switcher").change(function() {
+      $("td.status select").val($(this).val());
+    });
+  });

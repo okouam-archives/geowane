@@ -1,0 +1,11 @@
+%div.block
+  %div.block_head
+    %h2
+      New Shapefile
+    %ul
+      %li.nobg= link_to "Back", countries_path
+  %div.block_content
+    = semantic_form_for @shapefile, :html => { :enctype => "multipart/form-data"} do |form|
+      = form.input :filename, :input_html => { :class => "text" }
+      = form.input :locations, :as => :hidden, :input_html => { :value => @shapefile.locations }
+      = form.commit_button :button_html => { :class => "submit long" }

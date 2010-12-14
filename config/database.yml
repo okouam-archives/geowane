@@ -1,0 +1,36 @@
+development:
+  adapter: postgresql
+  database: cms_development
+  host: localhost
+  pool: 5
+  username: o1
+  password: com99123
+  timeout: 5000
+  encoding: utf8
+  template: postgis
+
+test: &test
+  adapter: postgresql
+  database: cms_test
+  pool: 5
+  timeout: 5000
+  username: o1
+  password: com99123
+  encoding: utf8
+  host: localhost
+  template: postgis
+  encoding: utf8
+
+production:
+  template: postgis
+  host: localhost
+  adapter: postgresql
+  database: cms_production
+  pool: 5
+  username: o1
+  password: com99123
+  timeout: 5000
+  encoding: utf8
+
+cucumber:
+  <<: *test

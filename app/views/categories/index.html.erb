@@ -1,0 +1,61 @@
+<div class="block">
+
+  <div class="block_head">
+    <h2>Categories</h2>
+    <ul>
+            <li class="nobg back"><a href="#"><%= link_to switch_language(@language), categories_path(:language => switch_language(@language)) %></a></li>
+    <li class="nobg back"><a href="#"><%= link_to "New Category", new_category_path %></a></li>
+      <li class="nobg back"><a href="#"><%= link_to "Back", :back %></a></li>
+    </ul>
+  </div>
+  <div class="block_content">
+
+      <table width="100%" cellspacing="0" style="width: 100%; margin-left: 0px" cellpadding="0">
+        <tbody>
+          <tr>
+          <th>Name</th>
+           <th>Icon</th>
+          <th class="total_POI">Total POI</th>
+          <th class="pending">Pending</th>
+          <th class="invalid">Invalid</th>
+          <th class="audited">Audited</th>
+          <th class="field_checked">Field Checked</th>
+
+          <% if current_user.may_update_category? @categories.first %>
+          <td>&nbsp;</td>
+          <% end %>
+          <% if current_user.may_destroy_category? @categories.first %>
+          <td>&nbsp;</td>
+          <% end %>
+        </tr>
+        <% @categories.each do |category|  %>
+          <tr>
+            <%= render :partial => @language, :locals => {:category => category} %>
+                        <td >
+              <% if category.icon %>
+              <%= image_tag "/images/" + category.icon %>
+              <% end %>
+            </td>
+            <td class="count"><%= category.locations_count %></td>
+            <td><%= category.pending_locations %></td>
+            <td><%= category.invalid_locations %></td>
+            <td><%= category.audited_locations %></td>
+             <td><%= category.field_checked_locations %></td>
+
+            <% if current_user.may_update_category? @categories.first %>
+                <td class="edit" style="width: 20px"><%= link_to "Edit", edit_category_path(category) %></td>
+            <% end %>
+            <% if current_user.may_destroy_category? @categories.first %>
+                <td class="delete" style="width: 20px"><%= link_to "Delete", category, :confirm => 'Are you sure?', :method => :delete %></td>
+            <% end %>
+          </tr>
+        <% end %>
+
+        </tbody></table>
+      <br/>
+
+      <%= will_paginate @categories, :class => "paggination right" %>
+
+  </div>
+
+</div>

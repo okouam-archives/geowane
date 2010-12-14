@@ -1,0 +1,1 @@
+Feature: Update a group of locations

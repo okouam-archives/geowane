@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title><%=h yield(:title) %></title>
+    <%= csrf_meta_tag %>
+    <%= stylesheet_link_tag 'admin' %>
+    <% stylesheet_link_tag 'shared'%>
+  <!--[if lt IE 8]><style type="text/css" media="all">@import url("/stylesheets/admin/ie.css");</style><![endif]-->
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
+   <!-- <script type="text/javascript" src="/client/resources/tiny_mce/tiny_mce.js"></script>   -->
+  <script type="text/javascript" src="/client/resources/admin/facebox.js"></script>
+	<script type="text/javascript" src="/client/resources/admin/jquery.img.preload.js"></script>
+	<script type="text/javascript" src="/client/resources/admin/jquery.filestyle.mini.js"></script>
+	<script type="text/javascript" src="/client/resources/admin/jquery.wysiwyg.js"></script>
+	<script type="text/javascript" src="/client/resources/admin/jquery.date_input.pack.js"></script>
+	<script type="text/javascript" src="/client/resources/admin/excanvas.js"></script>
+	<script type="text/javascript" src="/client/resources/admin/jquery.visualize.js"></script>
+	<script type="text/javascript" src="/client/resources/admin/jquery.select_skin.js"></script>
+	<script type="text/javascript" src="/client/resources/admin/jquery.pngfix.js"></script>
+  <script type="text/javascript" src="http://github.com/rails/jquery-ujs/raw/master/src/rails.js"></script>
+	<script type="text/javascript" src="/client/resources/admin/custom.js"></script>
+  <script type="text/javascript" src="http://github.com/cowboy/jquery-bbq/raw/master/jquery.ba-bbq.min.js"></script>
+</head>
+<body class="<%="#{controller.controller_name} #{controller.action_name}"%>">
+	<div id="hld">
+		<div class="wrapper">
+			<div id="header">
+
+				<h1><%= link_to "Gowane", dashboard_path %></h1>
+
+				<ul id="nav">
+					<li><%= link_to "Geospatial Database", dashboard_path %>
+                 <ul>
+                   <li><%= link_to "List Locations", locations_path(:s => :reset)%></li>
+                   <li><%= link_to "List Categories", categories_path(:page => 1) %></li>
+                   <li><%= link_to "List Communes", communes_path %></li>
+                   <li><%= link_to "List Regions", regions_path %></li>
+                   <li><%= link_to "List Cities", cities_path %></li>
+                   <li><%= link_to "List Countries", countries_path %></li>
+                 </ul>
+
+					</li>
+              <li><a href="#">File Management</a>
+                 <ul>
+                    <li><%= link_to "Import GPX", new_import_path %></li>
+                   <% unless current_user.has_role?("collector") %>
+                   <li><%= link_to "Shapefile Exports", shapefiles_path %></li>
+                     <% end %>
+                 </ul>
+               </li>
+
+					<li><a href="#">Administration</a>
+                 <ul>
+                    <li><%= link_to "Your Account", account_path %></li>
+                    <% if current_user.has_role?("administrator") %>
+                   <li><%= link_to "List Users", users_path %></li>
+                     <% end %>
+                   <li><%= link_to "Counters", counters_path %></li>
+                 </ul>
+               </li>
+
+				</ul>
+
+				<p class="user">Hello, <a href="#"><%= @current_user.login %></a> | <%= link_to "Logout", user_sessions_path, :method => :delete, :confirm => "Are you sure you want to logout?" %></p>
+
+			</div>
+
+        <%= yield %>
+
+     
+			<div id="footer">
+
+				<p class="left"><a href="http://www.0-one.net">Gowane @ 0-One</a></p>
+				<p class="right">Powered by <a href="#">Codeifier Labs</a></p>
+
+			</div>
+
+
+		</div>
+
+	</div>
+
+</body>
+
+<%= render :partial => "shared/uservoice_admin" %>
+
+</html>

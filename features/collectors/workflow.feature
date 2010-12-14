@@ -1,0 +1,1 @@
+Feature: Manage the POI workflow

@@ -1,0 +1,36 @@
+#feature-tab
+  %div{:style=>"margin-top: 7px; width: 450px; float: right"}
+    %div{:align=>"center", :style =>"font-style: italic; font-size: 10px"}Drag the blue square to update the coordinates
+    #map{:style=>"background-color: #6699cc; border: 1px solid #666666; margin-top: 7px; width: 450px; height: 330px"}
+    #actions{:style=>"margin-top: 15px"}
+      Show surrounding landmarks:
+      <input type="radio" name="show_landmarks" value="1"/> Yes
+      <input type="radio" name="show_landmarks" checked value="0" /> No
+  %div{:style=>"width: 400px; float: left"}
+    = form.input :name, :input_html => {:class => "text"}
+    = form.input :category, :required => false, :label_method => :french, :input_html => { :class => "text" }, :collection => form_data["categories"]
+    - if object.persisted?
+      - if current_user.may_change_status_of_location? object, nil
+        = form.input :status, :collection => workflow_actions(current_user, object), :include_blank => false, :include_blank => false
+      %label
+        Commune
+      %p(style="font-size: 14px")
+        = object.try(:commune).try(:name) || "Unknown"
+      %label
+        City
+      %p(style="font-size: 14px")
+        = object.try(:city).try(:name) || "Unknown"
+      %label
+        Region
+      %p(style="font-size: 14px")
+        = object.try(:region).try(:name) || "Unknown"
+      %label
+        Country
+      %p(style="font-size: 14px")
+        = object.try(:country).try(:name) || "Unknown"
+      - unless object.displayable_comments.empty?
+        %label
+          Comments
+    - object.displayable_comments.each do |comment|
+      %h4= "#{comment.user.login} | #{comment.created_at.strftime("%e %B %Y")} @ #{comment.created_at.strftime("%H:%M %p")}"
+      %p= comment.comment

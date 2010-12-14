@@ -1,0 +1,1 @@
+Feature: View workflow statistics

@@ -1,0 +1,10 @@
+%div.block
+  %div.block_head
+    %h2
+      Select Category Icon
+    %ul
+      %li.nobg= link_to "Back", edit_category_path(object)
+  %div.block_content
+    - @icons.each do |image|
+      %a{:href=>save_icon_category_url + "?filename=" + image}
+        =image_tag image, :style=>"border-width: 0"

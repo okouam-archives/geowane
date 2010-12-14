@@ -1,0 +1,6 @@
+#comments-tab
+  = form.inputs :for => :comments do |c|
+    - if c.object == object.comments.last
+      = c.input :user_id, :as => :hidden, :value => current_user.id
+      = c.input :comment, :input_html => {:class => "text"}
+

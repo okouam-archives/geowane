@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Gowane CMS :: Login</title>
+  <%= stylesheet_link_tag 'admin/style.css' %>
+  <%= stylesheet_link_tag 'admin/jquery.wysiwyg.css' %>
+  <%= stylesheet_link_tag 'admin/facebox.css' %>
+  <%= stylesheet_link_tag 'admin/visualize.css' %>
+  <%= stylesheet_link_tag 'admin/date_input.css' %>
+  <!--[if lt IE 8]><style type="text/css" media="all">@import url("stylesheets/admin/ie.css");</style><![endif]-->
+	<script type="text/javascript" src="/client/resources/admin/jquery.js"></script>
+	<script type="text/javascript" src="/client/resources/admin/jquery.img.preload.js"></script>
+	<script type="text/javascript" src="/client/resources/admin/jquery.filestyle.mini.js"></script>
+	<script type="text/javascript" src="/client/resources/admin/jquery.wysiwyg.js"></script>
+	<script type="text/javascript" src="/client/resources/admin/jquery.date_input.pack.js"></script>
+	<script type="text/javascript" src="/client/resources/facebox.js"></script>
+	<script type="text/javascript" src="/client/resources/admin/excanvas.js"></script>
+	<script type="text/javascript" src="/client/resources/admin/jquery.visualize.js"></script>
+	<script type="text/javascript" src="/client/resources/admin/jquery.select_skin.js"></script>
+	<script type="text/javascript" src="/client/resources/admin/jquery.pngfix.js"></script>
+	<script type="text/javascript" src="/client/resources/admin/custom.js"></script>
+</head>
+<body>
+<div id="hld">
+  <div class="wrapper">		
+    <div class="block small center login">
+      <div class="block_head">
+        <h2>Login</h2>
+        <ul>
+          <li><a href="#">back to the site</a></li>
+        </ul>
+      </div>
+      <div class="block_content">
+        <div class="message info"><p>Welcome to the Gowane CMS.</p></div>
+
+        <%= form_for @user_session do |f| %>
+            <% if f.object.errors.any? %>
+                <ul>
+                <% f.object.errors.full_messages.each do |msg| %>
+
+       <li class="error_message"><%= msg %></li>
+     <% end %>
+     </ul>
+            <% end %>
+
+      <%= f.label :login  %><br />
+      <%= f.text_field :login, :class => "text" %><br />
+      <br />
+      <%= f.label :password %><br />
+      <%= f.password_field :password, :class => "text" %><br />
+      <br />
+      <%= f.submit "Login", :class => "submit" %>
+      <%= f.check_box :remember_me, :class => "checkbox" %> <%= f.label :remember_me %>
+           <br />
+    <% end %>
+        <br/>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

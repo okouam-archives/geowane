@@ -1,0 +1,23 @@
+.block
+  .block_head
+    %h2
+      Shapefiles
+    %ul
+      %li.nobg= link_to "Back", :back
+  .block_content
+    %table{:cellspacing => "0", :cellpadding => "0", :style => "width: 100%; margin-left: 0px"}
+      %thead
+        %tr
+          %th Name
+          %th.count Locations
+          %th
+          %th
+      %tbody
+        - @shapefiles.each do |shapefile|
+          %tr
+            %td= shapefile.filename
+            %td.count= shapefile.count_locations
+            %td.view= link_to("Download", download_shapefile_url(shapefile))
+            %td.delete
+              = link_to "Delete", shapefile, :confirm => 'Are you sure?', :method => :delete
+    %br

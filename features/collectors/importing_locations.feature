@@ -1,0 +1,1 @@
+Feature: Import locations from GPX files

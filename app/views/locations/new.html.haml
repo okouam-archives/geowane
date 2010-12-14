@@ -1,0 +1,30 @@
+= content_for :title, "Gowane CMS - Create Feature"
+= render :partial => "scripts"
+
+.block
+  .block_head
+    %h2 Create Feature
+    %ul
+      %li.nobg
+        = link_to "Back", locations_path
+  .block_content
+    = render :partial => 'form', :locals => {:location => @location, :form_data => @form_data}
+
+:javascript
+  $(document).ready(function() {
+    $("#location-tabs").tabs();
+    var observer = {
+      onDragComplete: function(feature, lonlat) {
+        $("#location_latitude").val(lonlat.lat);
+        $("#location_longitude").val(lonlat.lon);
+      }
+    };
+    var map = new SingleFeatureMap("map", observer);
+    var lonLat = map.getCenter();
+    var location = {icon: "../shape_square_purple.png", feature: "POINT", longitude: lonLat.lon, latitude: lonLat.lat};
+    map.removeLayer("default");
+    map.displayDraggableFeatures([location], "default");
+    $("#location_latitude").val(lonLat.lat);
+    $("#location_longitude").val(lonLat.lon);
+  });
+  
