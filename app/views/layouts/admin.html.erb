@@ -8,7 +8,6 @@
     <% stylesheet_link_tag 'shared'%>
   <!--[if lt IE 8]><style type="text/css" media="all">@import url("/stylesheets/admin/ie.css");</style><![endif]-->
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
-   <!-- <script type="text/javascript" src="/client/resources/tiny_mce/tiny_mce.js"></script>   -->
   <script type="text/javascript" src="/client/resources/admin/facebox.js"></script>
 	<script type="text/javascript" src="/client/resources/admin/jquery.img.preload.js"></script>
 	<script type="text/javascript" src="/client/resources/admin/jquery.filestyle.mini.js"></script>
@@ -18,9 +17,9 @@
 	<script type="text/javascript" src="/client/resources/admin/jquery.visualize.js"></script>
 	<script type="text/javascript" src="/client/resources/admin/jquery.select_skin.js"></script>
 	<script type="text/javascript" src="/client/resources/admin/jquery.pngfix.js"></script>
-  <script type="text/javascript" src="http://github.com/rails/jquery-ujs/raw/master/src/rails.js"></script>
+  <script type="text/javascript" src="/client/resources/rails.js"></script>
 	<script type="text/javascript" src="/client/resources/admin/custom.js"></script>
-  <script type="text/javascript" src="http://github.com/cowboy/jquery-bbq/raw/master/jquery.ba-bbq.min.js"></script>
+  <script type="text/javascript" src="/client/resources/jquery.ba-bbq.min.js"></script>
 </head>
 <body class="<%="#{controller.controller_name} #{controller.action_name}"%>">
 	<div id="hld">
@@ -82,7 +81,5 @@
 	</div>
 
 </body>
-
-<%= render :partial => "shared/uservoice_admin" %>
 
 </html>
