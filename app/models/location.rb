@@ -16,8 +16,6 @@ class Location < ActiveRecord::Base
     {:conditions => ["feature && SetSrid('BOX3D(? ?, ? ?)'::box3d, 4326) and category_id = #{category_id}", top, left, right, bottom]}
   }
 
-
-
   scope :surrounding_landmarks, lambda {|location_id, top, left, right, bottom, limit|
     {:conditions => ["categories.icon is not null AND feature && SetSrid('BOX3D(? ?, ? ?)'::box3d, 4326) AND locations.id != ?", top, left, right, bottom, location_id],
      :joins => "join categories on categories.id = locations.category_id", :limit => limit,
@@ -53,7 +51,7 @@ class Location < ActiveRecord::Base
   end
 
   def json_object
-    { :label => Geolocator.new.create_unique_name(self),
+    { :label => name,
       :id => id,
       :name => name,
       :longitude => longitude,
@@ -76,27 +74,16 @@ class Location < ActiveRecord::Base
     update_dynamic_attributes
   end
 
-  def name=(name)
-    self[:name] = name
-    self.searchable_name = create_searchable_name
-  end
-
   private
 
   def update_dynamic_attributes
     if self.longitude && self.latitude
       self.feature = GeoRuby::SimpleFeatures::Point.from_x_y(self.longitude, self.latitude, 4326)
-      self.searchable_name = create_searchable_name
     end
   end
 
   def after_initialize_callback
     self.status = 'NEW' unless self.status
-  end
-
-  def create_searchable_name
-    geolocator = Geolocator.new
-    self.searchable_name = geolocator.normalize(geolocator.create_unique_name(self))
   end
 
 end
