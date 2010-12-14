@@ -74,8 +74,9 @@ module Audited
       audit = self.audits.create :action => 'destroy'
       audited_attributes.each do |key, value|
         old_value = value
-        if key == "category_id"
-          old_value = Category.find(value).bilingual_name
+        begin
+          old_value = Category.find(value).bilingual_name if key == "category_id"
+        rescue
         end
         audit.model_changes.create(:datum => key, :old_value => old_value, :new_value => '')
       end
