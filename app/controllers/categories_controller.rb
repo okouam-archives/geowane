@@ -10,7 +10,8 @@ class CategoriesController < ApplicationController
     sql = %{
       SELECT categories.id, categories.french, categories.english, icon,
         count(*) as locations_count,
-        sum(CASE WHEN status = 'PENDING' THEN 1 ELSE 0 END) as pending_locations,
+        sum(CASE WHEN status = 'NEW' THEN 1 ELSE 0 END) as new_locations,
+        sum(CASE WHEN status = 'CORRECTED' THEN 1 ELSE 0 END) as corrected_locations,
         sum(CASE WHEN status = 'INVALID' THEN 1 ELSE 0 END) as invalid_locations,
         sum(CASE WHEN status = 'AUDITED' THEN 1 ELSE 0 END) as audited_locations,
         sum(CASE WHEN status = 'FIELD CHECKED' THEN 1 ELSE 0 END) as field_checked_locations

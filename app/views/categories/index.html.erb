@@ -16,8 +16,9 @@
           <th>Name</th>
            <th>Icon</th>
           <th class="total_POI">Total POI</th>
-          <th class="pending">Pending</th>
-          <th class="invalid">Invalid</th>
+          <th class="pending">New</th>
+          <th class="pending">Corrected</th>
+            <th class="invalid">Invalid</th>
           <th class="audited">Audited</th>
           <th class="field_checked">Field Checked</th>
 
@@ -37,7 +38,8 @@
               <% end %>
             </td>
             <td class="count"><%= category.locations_count %></td>
-            <td><%= category.pending_locations %></td>
+            <td><%= category.new_locations %></td>
+            <td><%= category.corrected_locations %></td>
             <td><%= category.invalid_locations %></td>
             <td><%= category.audited_locations %></td>
              <td><%= category.field_checked_locations %></td>
