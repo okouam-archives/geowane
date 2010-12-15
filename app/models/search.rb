@@ -22,8 +22,6 @@ class Search
         joins("LEFT JOIN users ON users.id = locations.user_id").
         joins("LEFT JOIN cities ON ST_Within(locations.feature, cities.feature)")
 
-    query = query.where("locations.user_id = ?", user.id) if user && user.has_role?("collector")
-
     return query if params.nil?
 
     query = query.where("status = ?", params[:status]) unless params[:status].blank?

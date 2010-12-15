@@ -1,5 +1,6 @@
 source 'http://rubygems.org'
 
+gem 'gherkin'
 gem 'hoptoad_notifier'
 gem 'pg'
 gem 'formtastic', :git => 'git://github.com/justinfrench/formtastic.git'
@@ -9,7 +10,7 @@ gem 'spatial_adapter'
 gem 'aegis', :require => 'aegis'
 gem 'capistrano-ext'
 gem 'capistrano'
-gem "rails", "~> 3.0.3"
+gem "rails"
 gem "arel"
 gem 'authlogic', :git => 'git://github.com/odorcicd/authlogic.git', :branch => 'rails3'
 gem "will_paginate", "~> 3.0.pre2"
@@ -24,7 +25,6 @@ gem "columnize"
 gem "wirble"
 gem "hirb"
 gem 'dynamic_form', :git => "git://codaset.com/joelmoss/dynamic-form.git"
-gem "acts_as_indexed"
 gem 'sqlite3-ruby', '1.2.5', :require => 'sqlite3'
 gem 'diff-lcs'
 

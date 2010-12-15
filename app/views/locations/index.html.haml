@@ -37,9 +37,8 @@
               %th City
               %th{:style=>"width: 120px"}
                 Category
-              - unless current_user.has_role?("collector")
-                %th{:style=>"width: 80px"}
-                  Added By
+              %th{:style=>"width: 80px"}
+                Added By
               %th{:style=>"width: 80px"}
                 Date Added
               %th{:style=>"width: 95px"}
@@ -58,8 +57,7 @@
 
                 %td= location.city_name
                 %td= location.category_name || ""
-                - unless current_user.has_role?("collector")
-                  %td= location.username
+                %td= location.username
                 %td= location.created_at.strftime("%d-%m-%Y")
                 %td= location.updated_at.strftime("%d-%m-%Y")
                 %td= location.status

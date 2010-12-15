@@ -53,7 +53,6 @@ GEM
       activesupport (= 3.0.3)
     activesupport (3.0.3)
     acts_as_commentable (3.0.1)
-    acts_as_indexed (0.6.6)
     aegis (2.5.3)
     arel (2.0.4)
     builder (2.1.2)
@@ -63,6 +62,8 @@ GEM
       net-sftp (>= 2.0.0)
       net-ssh (>= 2.0.14)
       net-ssh-gateway (>= 1.0.0)
+    capistrano-ext (1.2.1)
+      capistrano (>= 1.0.0)
     capybara (0.4.0)
       celerity (>= 0.7.9)
       culerity (>= 0.2.4)
@@ -200,11 +201,11 @@ PLATFORMS
 
 DEPENDENCIES
   acts_as_commentable
-  acts_as_indexed
   aegis
   arel
   authlogic!
   capistrano
+  capistrano-ext
   capybara
   columnize
   cucumber-rails
@@ -214,6 +215,7 @@ DEPENDENCIES
   factory_girl_rails
   faker
   formtastic!
+  gherkin
   haml
   hirb
   hoptoad_notifier
@@ -223,7 +225,7 @@ DEPENDENCIES
   paperclip
   pg
   rack
-  rails (~> 3.0.3)
+  rails
   rake
   rcov
   rspec-rails (~> 2.1.0)

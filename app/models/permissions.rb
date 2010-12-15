@@ -34,10 +34,11 @@ class Permissions < Aegis::Permissions
       allow :auditor do |new_status|
         if new_status
           ((object.status == 'NEW' && ["AUDITED", "INVALID"].include?(new_status)) ||
+            (object.status == 'INVALID' && ["AUDITED"].include?(new_status)) ||
             (object.status == 'CORRECTED' && ["AUDITED", "INVALID"].include?(new_status)) ||
             (object.status == 'AUDITED' && ["FIELD CHECKED", "INVALID"].include?(new_status))) || new_status == object.status
         else
-          object.status != "INVALID"
+          true
         end
       end
 
