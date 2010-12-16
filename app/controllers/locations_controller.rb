@@ -13,7 +13,7 @@ class LocationsController < ApplicationController
       @per_page ||= session[:current_search][:per_page]
       search_query = session[:current_search][:query]
     else
-      search_query = Search.create(params[:s], current_user).to_sql
+      search_query = Search.create(params[:s])
     end
     @per_page ||= 10
     @locations =  Location.find_by_sql(search_query).paginate(:page => page, :per_page => @per_page)
@@ -30,9 +30,10 @@ class LocationsController < ApplicationController
   end
 
   def next
-    current_search = session[:current_search][:query]
-    if current_search
-      next_location = Search.find_next(current_search, params[:id])
+    current_search = session[:current_search]
+    query = current_search ? current_search[:query] : nil
+    if query
+      next_location = Search.find_next(query, params[:id])
       redirect_to edit_location_path(next_location)
     else
       redirect_to locations_path

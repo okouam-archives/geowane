@@ -87,14 +87,6 @@ describe Location do
       location.json_object[:country].should be_nil
     end
 
-    it "assigns a location a unique name" do
-      location = Factory(:valid_location)
-      geolocator = double(Geolocator)
-      Geolocator.should_receive(:new).and_return(geolocator)
-      geolocator.should_receive(:create_unique_name).with(location)
-      location.json_object
-    end
-
     it "uses all optional attributes when available" do
       Factory(:valid_region, :name => "Centre", :feature => Geometry::square(:center => [0,0], :side => 10))
       Factory(:valid_city, :name => "Bouaké", :feature => Geometry::square(:center => [0,0], :side => 10))
@@ -136,18 +128,6 @@ describe Location do
       location.feature.should_not be_nil
       location.feature.x.should == 1
       location.feature.y.should == 2
-    end
-
-  end
-
-  describe "when updating the location's name" do
-
-    it "creates a searchable name" do
-      Factory(:valid_region, :name => "Centre", :feature => Geometry::square(:center => [0,0], :side => 10))
-      Factory(:valid_city, :name => "Bouaké", :feature => Geometry::square(:center => [0,0], :side => 10))
-      Factory(:valid_commune, :name => "Plateau", :feature => Geometry::square(:center => [0,0], :side => 10))
-      location = Factory(:valid_location, :name => "0-One", :longitude => 0, :latitude => 0)
-      location.searchable_name.should eql("0-one, plateau, bouake, centre")
     end
 
   end

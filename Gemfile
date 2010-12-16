@@ -19,6 +19,7 @@ gem 'acts_as_commentable'
 gem 'mongrel'
 gem 'rake'
 gem 'rack'
+gem "resource_controller", :git => "git://github.com/BDQ/resource_controller.git"
 gem 'paperclip'
 gem "ruby-debug"
 gem "columnize"

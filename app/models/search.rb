@@ -14,7 +14,7 @@ class Search
     locations[new_index]
   end
 
-  def self.create(params, user)
+  def self.create(params)
 
     query = Location.select("locations.id, locations.name, category_id, categories.french as category_name, locations.created_at, locations.user_id, users.login as username, status, locations.updated_at, cities.name as city_name").
         order("locations.name ASC").
@@ -22,7 +22,7 @@ class Search
         joins("LEFT JOIN users ON users.id = locations.user_id").
         joins("LEFT JOIN cities ON ST_Within(locations.feature, cities.feature)")
 
-    return query if params.nil?
+    return query.to_sql if params.nil?
 
     query = query.where("status = ?", params[:status]) unless params[:status].blank?
 
@@ -50,9 +50,9 @@ class Search
       query = query.joins("join regions on ST_Within(locations.feature, regions.feature)").where("regions.id = ?", params[:region_id_eq])
     end
 
-    query = query.where("created_at > ?", params[:added_on_after]) unless params[:added_on_after].blank?
+    query = query.where("locations.created_at > ?", params[:added_on_after]) unless params[:added_on_after].blank?
 
-    query = query.where("created_at < ?", params[:added_on_before]) unless params[:added_on_before].blank?
+    query = query.where("locations.created_at < ?", params[:added_on_before]) unless params[:added_on_before].blank?
 
     unless params[:audited_by].blank?
       query = query.
@@ -68,7 +68,7 @@ class Search
           joins("JOIN model_changes ON audits.id = model_changes.audit_id AND model_changes.new_value = 'FIELD CHECKED'")
     end
 
-    query
+    query.to_sql
 
   end
 
