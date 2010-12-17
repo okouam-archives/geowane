@@ -27,7 +27,7 @@
     .block_content
       - if flash[:msg]
         .flash_msg= flash[:msg]
-      = semantic_form_for :shapefile, :url => new_shapefile_path do
+      = semantic_form_for :export, :url => new_export_path do
         %table.main{:cellspacing => "0", :cellpadding => "0", :style => "width: 100%; margin-left: 0px"}
           %tbody
             %tr
@@ -49,7 +49,7 @@
             - @locations.each do |location|
               %tr
                 %td.selector
-                  %input{:type=>"checkbox", :name=>"shapefile[locations][]", :value => "#{location.id}"}
+                  %input{:type=>"checkbox", :name=>"export[locations][]", :value => "#{location.id}"}
                 %td
                   - if location.name.length > 40
                     = image_tag("warning-icon.png", :style=>"position: relative; top: 3px; margin-right: 3px")
@@ -92,8 +92,8 @@
           alert("Please select one or more locations for " + action);
           return false;
         }
-        $("form.shapefile").attr("action", "/locations/mass_" + action);
-        $("form.shapefile").submit();
+        $("form.export").attr("action", "/locations/mass_" + action);
+        $("form.export").submit();
         return false;
       }
 
@@ -110,7 +110,8 @@
       });
 
       $("li.export a").click(function() {
-        $("form.shapefile").submit();
+        $("form.export").attr("action", "/exports/selection");
+        $("form.export").submit();
         return false;
       });
     });

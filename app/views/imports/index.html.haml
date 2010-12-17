@@ -1,0 +1,29 @@
+.block
+  .block_head
+    %h2
+      Imports
+    %ul
+      %li.nobg.back= link_to "New Import", new_import_url
+  .block_content
+    - if collection && collection.count > 0
+      %table{:cellspacing => "0", :cellpadding => "0", :style => "width: 100%; margin-left: 0px"}
+        %thead
+          %tr
+            %th Input File
+            %th Input Format
+            %th Locations Imported
+            %th User
+            %th Date Imported
+        %tbody
+          - collection.each do |conversion|
+            %tr
+              %td= link_to conversion.input.original_filename, conversion.input.url
+              %td= conversion.input_format
+              %td= conversion.locations_count
+              %td= conversion.user.login
+              %td= conversion.created_at
+    - else
+      %p
+        %br
+        No imports are currently available
+    %br

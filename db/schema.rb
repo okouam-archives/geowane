@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101128161450) do
+ActiveRecord::Schema.define(:version => 20101217130403) do
 
   create_table "audits", :force => true do |t|
     t.datetime "created_at"
@@ -48,7 +48,7 @@ ActiveRecord::Schema.define(:version => 20101128161450) do
 
   create_table "cities", :force => true do |t|
     t.string   "name"
-    t.geometry "feature", :limit => nil, :srid => 4326
+    t.geometry "feature", :limit => nil
   end
 
   add_index "cities", ["feature"], :name => "idx_cities_feature", :spatial => true
@@ -69,10 +69,26 @@ ActiveRecord::Schema.define(:version => 20101128161450) do
 
   create_table "communes", :force => true do |t|
     t.string   "name"
-    t.geometry "feature", :limit => nil, :srid => 4326
+    t.geometry "feature", :limit => nil
   end
 
-  add_index "communes", ["feature"], :name => "idx_communes_feature", :spatial => true
+  create_table "conversions", :force => true do |t|
+    t.string   "input_file_name"
+    t.string   "input_content_type"
+    t.string   "string"
+    t.integer  "input_file_size"
+    t.integer  "integer"
+    t.string   "input_format"
+    t.datetime "input_updated_at"
+    t.datetime "datetime"
+    t.string   "output_file_name"
+    t.string   "output_content_type"
+    t.integer  "output_file_size"
+    t.string   "output_format"
+    t.datetime "output_updated_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "countries", :force => true do |t|
     t.string   "name"
@@ -89,6 +105,33 @@ ActiveRecord::Schema.define(:version => 20101128161450) do
     t.datetime "updated_at"
   end
 
+  create_table "exports", :force => true do |t|
+    t.integer  "locations_count"
+    t.integer  "user_id"
+    t.string   "output_file_name"
+    t.string   "output_content_type"
+    t.string   "string"
+    t.integer  "output_file_size"
+    t.integer  "integer"
+    t.string   "output_format"
+    t.datetime "output_updated_at"
+    t.datetime "datetime"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "imports", :force => true do |t|
+    t.integer  "locations_count",    :default => 0
+    t.string   "input_file_name"
+    t.string   "input_content_type"
+    t.integer  "input_file_size"
+    t.datetime "input_updated_at"
+    t.string   "import_format"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "locations", :force => true do |t|
     t.integer  "category_id"
     t.string   "name"
@@ -97,16 +140,20 @@ ActiveRecord::Schema.define(:version => 20101128161450) do
     t.string   "searchable_name"
     t.string   "email"
     t.string   "telephone"
-    t.string   "status"
-    t.integer  "user_id"
     t.string   "fax"
     t.string   "website"
     t.string   "postal_address"
     t.string   "opening_hours"
     t.integer  "user_rating"
     t.geometry "feature",         :limit => nil, :srid => 4326
+    t.string   "status"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "long_name"
   end
 
+  add_index "locations", ["category_id"], :name => "index_features_on_category_id"
   add_index "locations", ["feature"], :name => "idx_locations_feature", :spatial => true
   add_index "locations", ["name"], :name => "idx_features_name"
 
@@ -119,10 +166,19 @@ ActiveRecord::Schema.define(:version => 20101128161450) do
 
   create_table "regions", :force => true do |t|
     t.string   "name"
-    t.geometry "feature", :limit => nil, :srid => 4326
+    t.geometry "feature", :limit => nil
   end
 
   add_index "regions", ["feature"], :name => "idx_regions_feature", :spatial => true
+
+  create_table "roles", :force => true do |t|
+    t.string "title"
+  end
+
+  create_table "roles_users", :id => false, :force => true do |t|
+    t.integer "user_id"
+    t.integer "role_id"
+  end
 
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :null => false

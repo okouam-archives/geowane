@@ -34,8 +34,14 @@ GeoCms::Application.routes.draw do
     end
   end               
 
-  resource :account
-  resources :users, :communes, :cities, :regions, :imports, :countries, :counters
+  resource :account, :map
+  resources :users, :communes, :cities, :regions, :imports, :countries, :counters, :exports, :conversions
+
+  resources :exports do
+    collection do
+      post :selection
+    end
+  end
 
   resources :shapefiles do
     member do

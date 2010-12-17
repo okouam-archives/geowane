@@ -1,57 +1,61 @@
 var SimpleMap = Class.extend({
 
-  // constructor
+  init: function(options) {
+    var defaults = {
+        element: "map",
+        iconPath: "/images/",
+        urls: [
+        "http://geoserver1.gowane.com/tilecache.py?",
+        "http://geoserver2.gowane.com/tilecache.py?",
+        "http://geoserver3.gowane.com/tilecache.py?"
+        ],
+        resolutions: [
+          0.0125,
+          0.00625,
+          0.003125,
+          0.0015625,
+          0.00078125,
+          0.000390625,
+          0.0001953125,
+          0.00009765625,
+          0.000048828125,
+          0.0000244140625,
+          0.00001220703125,
+          0.00000610351563
+        ],
+        mapName: "Roads",
+        mapOptions: {
+          buffer: 0,
+          maxExtent: new OpenLayers.Bounds(-13, 2, -1, 15),
+          restrictedExtent: new OpenLayers.Bounds(-9, 4, -2, 11)
+        },
+        tileSize: 256,
+        format: 'aggpng24',
+        imageType: 'png',
+        isTransparent: 'true',
+        tilecacheLayer: "kubudum",
+        roadStyle: {
+          fill: true,
+          stroke: true,
+          fillColor: "#2356d9",
+          strokeOpacity: 0.7,
+          pointRadius: 4,
+          strokeColor: "#2356d9",
+          strokeWidth: 5
+        }
+    };
 
-  init: function(mapElement, observer, options) {
-    this.ICON_PATH =  "/images/";
-    this.URLS = [
-      "http://geoserver1.gowane.com/tilecache.py?",
-      "http://geoserver2.gowane.com/tilecache.py?",
-      "http://geoserver3.gowane.com/tilecache.py?"
-    ];
-    this.RESOLUTIONS = [
-      0.0125,
-      0.00625,
-      0.003125,
-      0.0015625,
-      0.00078125,
-      0.000390625,
-      0.0001953125,
-      0.00009765625,
-      0.000048828125,
-      0.0000244140625,
-      0.00001220703125,
-      0.00000610351563
-    ];
-    this.MAP_OPTIONS = {
-      buffer: 0,
-      maxExtent: new OpenLayers.Bounds(-13, 2, -1, 15),
-      restrictedExtent: new OpenLayers.Bounds(-9, 4, -2, 11)
-    };
-    this.FORMAT = 'aggpng24';
-    this.IMAGE_TYPE = 'png';
-    this.IS_TRANSPARENT = 'true',
-    this.MAPSERVER_LAYERS = "land-basemap,water-basemap,road-labels,water-linestring,land-polygon,building-polygon,"
-            + "manmade-polygon,sport-polygon,roads-far,roads-close,railways,cities,borders";
-    this.TILECACHE_LAYER = "kubudum";
-    this.ROAD_STYLE = {
-      fill: true,
-      stroke: true,
-      fillColor: "#2356d9",
-      strokeOpacity: 0.7,
-      pointRadius: 4,
-      strokeColor: "#2356d9",
-      strokeWidth: 5
-    };
-    this.observer = observer;
+    this.opts = $.extend({}, defaults, options);
+
     if (options) {
-      if (options.minZoomLevel) this.RESOLUTIONS = this.RESOLUTIONS.splice(options.minZoomLevel - 1);
+      if (options.minZoomLevel) this.opts.resolutions = this.opts.resolutions.splice(options.minZoomLevel - 1);
     }
+
     OpenLayers.ImgPath = "/images/OpenLayers/";
     OpenLayers.IMAGE_RELOAD_ATTEMPTS = 3;
 
-    this.map = new OpenLayers.Map(mapElement, this.MAP_OPTIONS);
-    this.createBaseLayer("Roads");
+    this.map = new OpenLayers.Map(this.opts.element, this.opts.mapOptions);
+    this.createBaseLayer(this.opts.mapName);
     this.setupControls();
     this.map.events.on({ "zoomend": this.raiseZoomChanged, scope: this });
     this.showFullExtent();
@@ -72,7 +76,7 @@ var SimpleMap = Class.extend({
   insertRouteFeature: function(road, replacePrevious, onComplete) {
     if (replacePrevious) this.map.getLayer("default").destroyFeatures();
     var newFeatureGeometry = OpenLayers.Geometry.fromWKT(road.geometry);
-    var newFeature = new OpenLayers.Feature.Vector(newFeatureGeometry, road, this.ROAD_STYLE);
+    var newFeature = new OpenLayers.Feature.Vector(newFeatureGeometry, road, this.opts.roadStyle);
     this.features.addFeatures([newFeature], {silent: false});
     if (onComplete) onComplete();
   },
@@ -189,23 +193,23 @@ var SimpleMap = Class.extend({
 
   createBaseLayer: function(name) {
     var layerOptions = {
-      resolutions: this.RESOLUTIONS,
+      resolutions: this.opts.resolutions,
       isBaseLayer: true,
       buffer: 0
-    }
+    };
     var renderOptions = this.setRenderingOptions();
-    this.map.addLayer(new OpenLayers.Layer.WMS(name, this.URLS, renderOptions, layerOptions));
+    this.map.addLayer(new OpenLayers.Layer.WMS(name, this.opts.urls, renderOptions, layerOptions));
   },
 
   setRenderingOptions: function() {
     var options = {
-      map_imagetype: this.IMAGE_TYPE,
-      format: this.FORMAT,
-      transparent: this.IS_TRANSPARENT,
-      tileSize: this.TILE_SIZE,
+      map_imagetype: this.opts.imageType,
+      format: this.opts.format,
+      transparent: this.opts.isTransparent,
+      tileSize: this.opts.tileSize,
       buffer: 0
     };
-    options.layers = this.TILECACHE_LAYER;
+    options.layers = this.opts.tilecacheLayer;
     return options;
   },
 
@@ -218,7 +222,7 @@ var SimpleMap = Class.extend({
 
   onDragFeatureComplete: function(feature, pixel) {
     document.body.style.cursor = 'auto';
-    if (this.observer.onDragComplete) this.observer.onDragComplete(feature, this.map.getLonLatFromPixel(pixel));
+    if (this.opts.observer.onDragComplete) this.opts.observer.onDragComplete(feature, this.map.getLonLatFromPixel(pixel));
   },
 
   setupControls: function() {
@@ -228,16 +232,17 @@ var SimpleMap = Class.extend({
   },
 
   createFeature: function(location) {
+    var newFeatureGeometry = null;
     if (location.feature.startsWith("POINT")) {
-      var newFeatureGeometry = new OpenLayers.Geometry.Point(location.longitude, location.latitude);
-      var graphic = this.ICON_PATH + location.icon;
+      newFeatureGeometry = new OpenLayers.Geometry.Point(location.longitude, location.latitude);
+      var graphic = this.opts.iconPath + location.icon;
       var pointRadius = 12;
       if (location.size) pointRadius = location.size;
       var rendering = { externalGraphic: graphic, pointRadius: pointRadius, graphicYOffset: -pointRadius};
       return new OpenLayers.Feature.Vector(newFeatureGeometry, location, rendering);
     } else {
-      var newFeatureGeometry = OpenLayers.Geometry.fromWKT(location.feature);
-      return new OpenLayers.Feature.Vector(newFeatureGeometry, location, MapFeaturesController.ROAD_STYLE);
+      newFeatureGeometry = OpenLayers.Geometry.fromWKT(location.feature);
+      return new OpenLayers.Feature.Vector(newFeatureGeometry, location, this.opts.roadStyle);
     }
   }
 

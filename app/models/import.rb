@@ -1,38 +1,53 @@
-class Import
-  include ActiveModel::Validations
-  include ActiveModel::Conversion
-  extend ActiveModel::Naming
+require 'enumerated_attribute'
 
-  attr_accessor :content, :user_id, :country_id, :region_id
+class Import < ActiveRecord::Base
+  has_attached_file :input
+  belongs_to :user
+  validates_presence_of :input_format, :input, :user
+  enum_attr :input_format, %w(^GPX SHP)
 
-  def initialize(attributes = {})
-    if attributes
-      attributes.each_pair do |name, value|
-        send("#{name}=", value)
+  def execute
+
+    block = Proc.new do |input_format, input, user|
+      importer = "Importers::#{input_format}".constantize
+      importer ? importer.new.execute(input, user) : -1
+    end
+
+    self.locations_count = block.call(self.input_format, self.input, self.user)
+
+  end
+
+  module Importers
+
+    class GPX
+
+      def execute(file, user)
+        locations_count = 0
+        doc = Nokogiri::XML(file)
+        doc.css("wpt").each do |node|
+          longitude = node.attr("lon")
+          latitude = node.attr("lat")
+          name = node.css("name")[0].inner_text
+          next if name.blank?
+          location = Location.new(:longitude => longitude, :name => name, :latitude => latitude, :long_name => name)
+          location.feature = Point.from_x_y(longitude, latitude, 4326)
+          location.user = self.user
+          location.save!
+          locations_count += 1
+        end
+        locations_count
       end
-    end
-  end
 
-  def persisted?
-    false
-  end
-
-  def load
-    doc = Nokogiri::XML(self.content)
-    counter = 0
-    user = User.find(self.user_id)
-    doc.css("wpt").each do |node|
-      longitude = node.attr("lon")
-      latitude = node.attr("lat")
-      name = node.css("name")[0].inner_text
-      next if name.blank?
-      location = Location.new(:longitude => longitude, :name => name, :latitude => latitude)
-      location.feature = Point.from_x_y(longitude, latitude, 4326)
-      location.user = user
-      location.save!
-      counter = counter + 1
     end
-    counter
+
+    class SHP
+
+      def execute(file, user)
+        raise 'Not implemented yet'
+      end
+      
+    end
+    
   end
 
 end

@@ -23,11 +23,13 @@ gem "resource_controller", :git => "git://github.com/BDQ/resource_controller.git
 gem 'paperclip'
 gem "ruby-debug"
 gem "columnize"
+gem "enumerated_attribute"
 gem "wirble"
 gem "hirb"
 gem 'dynamic_form', :git => "git://codaset.com/joelmoss/dynamic-form.git"
 gem 'sqlite3-ruby', '1.2.5', :require => 'sqlite3'
 gem 'diff-lcs'
+gem 'irwi'
 
 group :test do
   gem "faker"

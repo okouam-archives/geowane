@@ -1,0 +1,27 @@
+.block
+  .block_head
+    %h2
+      Exports
+    %ul
+      %li.nobg.back= link_to "New Export", new_export_url
+  .block_content
+    - if collection && collection.count > 0
+      %table{:cellspacing => "0", :cellpadding => "0", :style => "width: 100%; margin-left: 0px"}
+        %thead
+          %tr
+            %th Export File
+            %th Export Format
+            %th User
+            %th Date Exported
+        %tbody
+          - collection.each do |export|
+            %tr
+              %td= link_to export.output.original_filename, export.output.url
+              %td= export.output_format
+              %td= export.user
+              %td= export.created_at
+    - else
+      %p
+        %br
+        No exports are currently available
+    %br

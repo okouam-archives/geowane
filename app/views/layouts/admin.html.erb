@@ -7,7 +7,7 @@
     <%= stylesheet_link_tag 'admin' %>
     <% stylesheet_link_tag 'shared'%>
   <!--[if lt IE 8]><style type="text/css" media="all">@import url("/stylesheets/admin/ie.css");</style><![endif]-->
-	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
+	<script type="text/javascript" src="/client/resources/jquery-1.4.4.min.js"></script>
   <script type="text/javascript" src="/client/resources/admin/facebox.js"></script>
 	<script type="text/javascript" src="/client/resources/admin/jquery.img.preload.js"></script>
 	<script type="text/javascript" src="/client/resources/admin/jquery.filestyle.mini.js"></script>
@@ -37,6 +37,7 @@
                    <li><%= link_to "List Regions", regions_path %></li>
                    <li><%= link_to "List Cities", cities_path %></li>
                    <li><%= link_to "List Countries", countries_path %></li>
+                   <li><%= link_to "View Entire Map", map_path %></li>
                  </ul>
 
 					</li>
@@ -44,6 +45,9 @@
                  <ul>
                     <li><%= link_to "Import GPX", new_import_path %></li>
                    <% unless current_user.has_role?("collector") %>
+                    <li><%= link_to "Import Locations", imports_path %></li>
+                    <li><%= link_to "Export Locations", exports_path %></li>
+                    <li><%= link_to "Convert File Format", conversions_path %></li>
                    <li><%= link_to "Shapefile Exports", shapefiles_path %></li>
                      <% end %>
                  </ul>

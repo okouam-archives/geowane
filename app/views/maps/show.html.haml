@@ -1,0 +1,16 @@
+= content_for :title, "GeoCMS - Show Entire Map"
+= render :partial => "shared/mapping_scripts"
+
+.block
+  .block_head
+    %h2 0-One Digital Map
+  .block_content
+    #map
+
+:css
+  #map {width: 100%; height: 500px; border: 1px solid #ccc; margin-bottom: 20px; margin-top: 10px}
+
+:javascript
+  $(document).ready(function() {
+   var map = new SingleFeatureMap({element: "map"});
+  });

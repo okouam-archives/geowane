@@ -5,6 +5,8 @@
     %h2 Import GPX
   .block_content
     = semantic_form_for @import, :html => { :enctype => "multipart/form-data"} do |f|
-      = f.input :content, :as => :file, :label => "GPX File"
-      = f.input :user_id, :as => :select, :label => "Collector", :collection => @all_users
+      = f.input :input, :as => :file, :label => "Data File"
+      = f.input :user_id, :as => :select, :label => "Author", :collection => @all_users
+      = f.input :input_format, :collection => object.enums(:input_format).select_options.map {|option| [option[0].upcase, option[1].upcase]}
+      = f.input :destination, :collection => ["Storage + Database", "Storage"]
       = f.commit_button :button_html => { :class => "submit long" }, :label => "Process File"

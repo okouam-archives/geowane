@@ -1,5 +1,5 @@
 = content_for :title, "GeoCMS - Edit Location"
-= render :partial => "scripts"
+= render :partial => "shared/mapping_scripts"
 
 .block
   .block_head
@@ -24,7 +24,7 @@
       onZoomChanged: function(extent) {}
     };
 
-    var map = new SingleFeatureMap("map", observer);
+    var map = new SingleFeatureMap({element: "map", observer: observer});
 
     var showCurrentLocation = function(func) {
       $.ajax({
@@ -40,7 +40,6 @@
           } else {
             map.displayDraggableFeatures([poi], "default");
           }
-
         }
       });
     };

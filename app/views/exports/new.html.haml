@@ -1,0 +1,14 @@
+= content_for :title, "Gowane CMS - Import GPX"
+
+.block
+  .block_head
+    %h2 Export POI
+  .block_content
+    .message.info
+      %p
+        = flash[:locations].size
+        locations have been selected for export
+    = semantic_form_for object, :html => { :enctype => "multipart/form-data"} do |f|
+      = f.input :output_format, :collection => object.enums(:output_format).select_options.map {|option| [option[0].upcase, option[1].upcase]}
+      = f.input :output_filename
+      = f.commit_button :button_html => { :class => "submit long" }, :label => "Process File"

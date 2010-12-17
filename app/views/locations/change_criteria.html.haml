@@ -8,8 +8,9 @@
           %h2 Categorization
           = form.input :searchable_name_like, :required => false, :label => "Location Name"
           = form.input :category_id_eq, :as => :select, :collection => @all_categories, :required => false, :label => "Category"
-          %h2 Missing Attributes
-          = form.input :missing_category, :as => :boolean, :required => false, :label => " Missing Category"
+          %h2 Characteristics
+          = form.input :category_missing, :as => :boolean, :required => false, :label => " Category Missing"
+          = form.input :category_present, :as => :boolean, :required => false, :label => " Category Present"
         .filter_group
           %h2 Geography
           = form.input :commune_id_eq, :as => :select, :collection => @all_communes, :required => false, :label => "Commune"

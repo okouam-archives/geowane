@@ -12,18 +12,41 @@ namespace :db do
     ENV['PGPASSWORD'] = config["password"].to_s if config["password"]
   end
 
-  namespace :import do
+  task :pull do
+    ActiveRecord::Base.configurations = Rails.configuration.database_configuration
+    production_db = ActiveRecord::Base.configurations["production"]['database']
+    database = ActiveRecord::Base.configurations[Rails.env]['database']
+    system("sudo service postgresql-8.4 restart")
+    system("dropdb #{database}")
+    system("createdb #{database}")
+    system("ssh okouam@xkcd.codeifier.com 'pg_dump #{production_db} -f #{production_db}.backup --clean --format c'")
+    system("cd /tmp && scp okouam@xkcd.codeifier.com:/home/okouam/cms_production.backup cms_production.backup")
+    system("cd /tmp && pg_restore #{production_db}.backup -d #{database} -v > pg_restore.log 2>&1")
+    system("cd /tmp && rm cms_production.backup")
+    system("ssh okouam@xkcd.codeifier.com 'rm #{production_db}.backup'")
+  end
 
-    desc "Import POI shapefiles into database"
-    task :poi, [:response] => [:load_config, :environment] do |t, args|
+  task :postgis do
 
-      `#{File.join(File.dirname(__FILE__), "shp2pgsql")} -s 4326  -d  #{args[:response]} public.poi_external | iconv -f LATIN1 -t UTF-8 | psql -U #{config["username"]} -d #{database}`
-      `psql #{database} -U #{config["username"]} -f #{File.join(File.dirname(__FILE__), "shp_to_gowane.sql")}`
+    ActiveRecord::Base.configurations = Rails.configuration.database_configuration
+    database = ActiveRecord::Base.configurations[Rails.env]['database']
+    `createlang plpgsql #{database}`
 
-      Location.all.where("feature is null AND name is not null").each do |location|
-        location.save!
-      end
+    postgis_sql_candidates = `locate postgis.sql`
+    unless postgis_sql_candidates && !postgis_sql_candidates.blank?
+      raise "The postgis.sql script cannot be found."
     end
+
+    spatial_ref_sys_sql_candidates = `locate spatial_ref_sys.sql`
+    unless spatial_ref_sys_sql_candidates && !spatial_ref_sys_sql_candidates.blank?
+      raise "The spatial_ref_sys.sql script cannot be found."
+    end
+
+    postgis_sql = postgis_sql_candidates.split("\n")[0]
+    spatial_ref_sys_sql = spatial_ref_sys_sql_candidates.split("\n")[0]
+
+    `psql -d #{database} -f #{postgis_sql}`
+    `psql -d #{database} -f #{spatial_ref_sys_sql}`
 
   end
 

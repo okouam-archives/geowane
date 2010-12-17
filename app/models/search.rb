@@ -28,8 +28,12 @@ class Search
 
     query = query.where("user_id = ?", params[:added_by]) unless params[:added_by].blank?
 
-    if params[:missing_category] == "1"
+    if params[:category_missing] == "1"
       query = query.where("category_id IS NULL")
+    end
+
+    if params[:category_present] == "1"
+      query = query.where("category_id IS NOT NULL")
     end
 
     unless params[:country_id_eq].blank?

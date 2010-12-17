@@ -55,7 +55,7 @@ class LocationsController < ApplicationController
   end
 
   def mass_delete
-    locations = Location.find(params[:shapefile][:locations])
+    locations = Location.find(params[:export][:locations])
     locations.each do |location|
       current_user.may_destroy_location!(location)
       location.destroy
@@ -64,12 +64,12 @@ class LocationsController < ApplicationController
   end
 
   def mass_update
-    @locations = Location.find(params[:shapefile][:locations], :order => "name")
+    @locations = Location.find(params[:export][:locations], :order => "name")
     @categories = ["", ""] + Category.order("french").map{|c| [c.french, c.id]}
   end
 
   def mass_audit
-    locations = Location.find(params[:shapefile][:locations])
+    locations = Location.find(params[:export][:locations])
     locations.each do |location|
       location.status = 'AUDIT'
     end
