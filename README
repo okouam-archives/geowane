@@ -254,3 +254,28 @@ vendor
   External libraries that the application depends on. Also includes the plugins
   subdirectory. If the app has frozen rails, those gems also go here, under
   vendor/rails/. This directory is in the load path.
+
+
+Founders at Work: Stories of Startups' Early Days 
+http://www.waterstones.com/waterstonesweb/products/jessica+livingston/founders+at+work/6265477/
+Publisher: APress
+ISBN: 9781430210788
+
+
+**
+Design to Thrive: Creating Social Networks and Online Communities that Last
+Tharon Howard
+
+***
+Designing for the Social Web (Voices That Matter)
+Joshua Porter
+
+***
+Designing Social Interfaces: Principles, Patterns, and Practices for Improving the User Experience [
+Erin Malone
+
+Search Patterns (Design for Disciple-Making)
+Peter Morville
+
+Search User Interfaces
+Marti A. Hearst

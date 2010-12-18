@@ -4,18 +4,19 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>GeoCMS - <%=h yield(:title) %></title>
     <%= csrf_meta_tag %>
-    <%= stylesheet_link_tag "admin.css" %>
-    <!--[if lt IE 8]><style type="text/css" media="all">@import url("/stylesheets/ie/ie.css");</style><![endif]-->
+    <%= stylesheet_link_tag 'admin' %>
+    <% stylesheet_link_tag 'shared' %>
 	<script type="text/javascript" src="/javascripts/jquery-1.4.4.min.js"></script>
-    <script type="text/javascript" src="/javascripts/admin/facebox.js"></script>
-	<script type="text/javascript" src="/javascripts/admin/jquery.img.preload.js"></script>
-	<script type="text/javascript" src="/javascripts/admin/jquery.filestyle.mini.js"></script>
-	<script type="text/javascript" src="/javascripts/admin/jquery.date_input.pack.js"></script>
-	<script type="text/javascript" src="/javascripts/admin/excanvas.js"></script>
-	<script type="text/javascript" src="/javascripts/admin/jquery.visualize.js"></script>
-	<script type="text/javascript" src="/javascripts/admin/jquery.select_skin.js"></script>
+	<script type="text/javascript" src="/javascripts/jquery-ui-1.8rc3.custom.min.js"></script>
+    <script type="text/javascript" src="/javascripts/theme/facebox.js"></script>
+	<script type="text/javascript" src="/javascripts/theme/jquery.img.preload.js"></script>
+	<script type="text/javascript" src="/javascripts/theme/jquery.filestyle.mini.js"></script>
+	<script type="text/javascript" src="/javascripts/theme/jquery.date_input.pack.js"></script>
+	<script type="text/javascript" src="/javascripts/theme/excanvas.js"></script>
+	<script type="text/javascript" src="/javascripts/theme/jquery.visualize.js"></script>
+	<script type="text/javascript" src="/javascripts/theme/jquery.select_skin.js"></script>
     <script type="text/javascript" src="/javascripts/rails.js"></script>
-	<script type="text/javascript" src="/javascripts/admin/custom.js"></script>
+	<script type="text/javascript" src="/javascripts/theme/custom.js"></script>
     <script type="text/javascript" src="/javascripts/jquery.ba-bbq.min.js"></script>
 </head>
 <body class="<%="#{controller.controller_name} #{controller.action_name}"%>">

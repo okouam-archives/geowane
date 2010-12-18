@@ -37,7 +37,7 @@
               %th Name
               %th City
               %th{:style=>"width: 120px"}
-                Category
+                Tags
               %th{:style=>"width: 80px"}
                 Added By
               %th{:style=>"width: 80px"}
@@ -57,7 +57,7 @@
                   = link_to location.name, edit_location_path(location)
 
                 %td= location.city_name
-                %td= location.category_name || ""
+                %td= location.tags.map {|t| t.category.french}.join(", ") || ""
                 %td= location.username
                 %td= location.created_at.strftime("%d-%m-%Y")
                 %td= location.updated_at.strftime("%d-%m-%Y")
