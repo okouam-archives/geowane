@@ -1,0 +1,26 @@
+.olControlScaleLineTop {
+  border: 1px solid white;
+  clear: both;
+  float: right;
+  text-align: center;
+  border-top: medium none; }
+
+.olControlScaleLineBottom {
+  border: 1px solid white;
+  clear: both;
+  float: right;
+  text-align: center;
+  border-bottom: medium none;
+  margin-top: -1px; }
+
+.olControlScaleLine {
+  bottom: 25px;
+  float: right;
+  font-size: xx-small;
+  right: 10px; }
+
+.olPopup {
+  padding: 7px;
+  border: 1px solid #434343 !important;
+  text-align: center !important;
+  color: #434343 !important; }

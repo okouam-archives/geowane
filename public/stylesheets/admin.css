@@ -5,32 +5,19 @@
 @import url(admin/date_input.css);
 @import url(admin/formtastic.css);
 
-.olControlScaleLineTop {
-  border: 1px solid white;
-  clear: both;
-  float: right;
-  text-align: center;
-  border-top: medium none; }
+/* .locations.edit */
 
-.olControlScaleLineBottom {
-  border: 1px solid white;
-  clear: both;
-  float: right;
-  text-align: center;
-  border-bottom: medium none;
-  margin-top: -1px; }
+.locations.edit .block_sub a {margin-right: 5px}
+.locations.edit .block_sub .change_status {margin-right: 25px}
+.locations.edit fieldset {border-width: 0}
+.locations.edit fieldset ol {padding-left: 0}
+.locations.edit .submit input {padding: 2px; background-color: #444; margin-right: 3px; margin-top: 3px; color: white; font-weight: bold; border: 1px solid #222}
+.locations.edit .submit input:hover {cursor: pointer; color: #008EE8}
+.locations.edit #location-tabs-menu {margin-bottom: 20px; margin-left: -30px}
+.locations.edit #location-tabs-menu li {float: left; list-style-type: none; font-weight: bold; background-image: none}
+.locations.edit .ui-tabs-hide {display: none}
 
-.olControlScaleLine {
-  bottom: 25px;
-  float: right;
-  font-size: xx-small;
-  right: 10px; }
-
-.olPopup {
-  padding: 7px;
-  border: 1px solid #434343 !important;
-  text-align: center !important;
-  color: #434343 !important; }
+/* .index */
 
 .index table {width: 635px; float: left; margin-left: 30px; }
 .index td.view, .index th.view {width: 22px}
@@ -43,38 +30,18 @@
 .index .audited, .index .invalid, .index .pending {width: 50px; text-align: center}
 .index .categorized {width: 80px; text-align: center; font-style: italic}
 
+/* #search-parameters */
+
+#search-parameters { padding: 20px; display: block; margin-bottom: 10px; }
+#search-parameters input { padding: 5px; width: 195px; }
+#search-parameters input .button { width: auto; }
+#search-parameters select { padding: 5px; width: 206px; }
+
+/* Others */
+
 .block_sub {height: 30px; background-color: #777; padding-left: 30px; color: white; line-height: 30px; width: 952px; left: -10px; position: relative}
 .block_sub a {color: white}
 .block_sub a:hover {color: orange}
-
-.locations.edit .block_sub a {margin-right: 5px}
-.locations.edit .block_sub .change_status {margin-right: 25px}
-.locations.edit fieldset {border-width: 0}
-.locations.edit fieldset ol {padding-left: 0}
-
-#search-parameters {
-    padding: 20px;
-    display: block;
-    margin-bottom: 10px; }
-
-#search-parameters input {
-    padding: 5px;
-    width: 195px; }
-
-#search-parameters input .button {
-    width: auto; }
-
-#search-parameters select {
-    padding: 5px;
-    width: 206px; }
-
-.edit .mceIframeContainer {padding: 0 !important;}
-
-.info-message {background-color: #b7e2b7; border: 1px solid green; float: left; width: 622px;
-  margin-left: 30px; padding: 5px; color: green; margin-bottom: 10px
-}
-
-
 .change_status #location_status {padding: 1px; width: 200px; font-size: 10px}
 .block_content {width: 920px}
 .block .block_content ol {padding-bottom: 0}
@@ -99,3 +66,5 @@
     text-align:left;
     background-color: white ! important
 }
+
+
