@@ -21,7 +21,7 @@ class ExportsController < ApplicationController
     flash.clear
   end
 
-  def selection
+  def prepare
     flash[:locations] = params[:export][:locations]
     redirect_to :action => :new
   end

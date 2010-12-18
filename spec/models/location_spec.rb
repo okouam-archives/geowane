@@ -10,39 +10,7 @@ describe Location do
 
     it "has a status of 'NEW'" do
       location = Factory.build(:valid_location)
-      location.status.should == "NEW"
-    end
-
-  end
-
-  describe "when created outside a workflow" do
-
-    subject { Factory.create(:valid_location) }
-
-    it "creates an audit without an associated user" do
-      subject.audits.count.should == 1
-      subject.audits.first.user.should == nil
-    end
-
-    it "creates an audit with a model change for each attribute" do
-      subject.audits.first.model_changes.count.should == subject.audited_attributes.count
-    end
-
-  end
-
-  describe "when created within a workflow" do
-
-    let(:collector) {Factory(:valid_collector)}
-
-    subject do
-      Audit.as_user collector do
-        Factory(:valid_location)
-      end
-    end
-
-    it "creates an audit with an associated user" do
-      subject.audits.count.should == 1
-      subject.audits.first.user.should == collector
+      location.status.should == :new
     end
 
   end

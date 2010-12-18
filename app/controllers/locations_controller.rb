@@ -3,7 +3,7 @@ class LocationsController < ApplicationController
   resource_controller
   layout "admin"
   before_filter :assign_form_data, :only => [:new, :create, :edit]
-  permissions :locations, :except => [:next, :change_search, :change_criteria, :mass_delete, :mass_update, :do_mass_update]
+  permissions :locations, :except => [:next, :previous, :mass_delete]
 
   def index
     page = params[:page]
@@ -18,15 +18,6 @@ class LocationsController < ApplicationController
     @per_page ||= 10
     @locations =  Location.find_by_sql(search_query).paginate(:page => page, :per_page => @per_page)
     session[:current_search] = {:query => search_query, :page => page, :per_page => @per_page}
-  end
-
-  def change_criteria
-    @all_users = User.order("login ASC").map{|user| [user.login, user.id]}
-    @all_cities = City.select("id, name").order("name ASC").map{|city| [city.name, city.id]}
-    @all_communes = Commune.select("id, name").order("name ASC").map{|commune| [commune.name, commune.id]}
-    @all_regions = Region.select("id, name").order("name ASC").map{|region| [region.name, region.id]}
-    @all_countries = Country.select("id, name").order("name ASC").map{|country| [country.name, country.id]}
-    @all_categories = Category.select("id, french").order("french ASC").map {|category| [category.french, category.id]}
   end
 
   def next
@@ -50,11 +41,7 @@ class LocationsController < ApplicationController
     end
   end
 
-  def change_search
-    redirect_to :action => :index, :s => params[:s], :per_page => params[:per_page]
-  end
-
-  def mass_delete
+  def group_delete
     locations = Location.find(params[:export][:locations])
     locations.each do |location|
       current_user.may_destroy_location!(location)
@@ -63,28 +50,9 @@ class LocationsController < ApplicationController
     redirect_to locations_path
   end
 
-  def mass_update
+  def group_edit
     @locations = Location.find(params[:export][:locations], :order => "name")
     @categories = ["", ""] + Category.order("french").map{|c| [c.french, c.id]}
-  end
-
-  def mass_audit
-    locations = Location.find(params[:export][:locations])
-    locations.each do |location|
-      location.status = 'AUDIT'
-    end
-    redirect_to locations_path
-  end
-
-  def do_mass_update
-    locations = params["locations"]
-    locations.each do |item|
-      location = Location.find(item[1][:id])
-      current_user.may_update_location!(location)
-      location.update_attributes(item[1])
-      location.save!
-    end
-    redirect_to locations_path
   end
 
   def surrounding_landmarks

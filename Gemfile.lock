@@ -95,6 +95,7 @@ GEM
       cucumber (>= 0.8.0)
     culerity (0.2.12)
     daemons (1.1.0)
+    database_cleaner (0.6.0)
     diff-lcs (1.1.2)
     enumerated_attribute (0.2.16)
       meta_programming (>= 0.2.1)
@@ -119,8 +120,6 @@ GEM
       activesupport
       builder
     i18n (0.5.0)
-    irwi (0.2.4)
-      diff-lcs (>= 1.1.2)
     json (1.4.6)
     json_pure (1.4.6)
     launchy (0.3.7)
@@ -153,6 +152,8 @@ GEM
     pg (0.10.0)
     polyglot (0.3.1)
     rack (1.2.1)
+    rack-bug (0.3.0)
+      rack (>= 1.0)
     rack-mount (0.6.13)
       rack (>= 1.0.0)
     rack-test (0.5.6)
@@ -220,6 +221,7 @@ DEPENDENCIES
   capybara
   columnize
   cucumber-rails
+  database_cleaner
   diff-lcs
   dynamic_form!
   enumerated_attribute
@@ -231,13 +233,13 @@ DEPENDENCIES
   haml
   hirb
   hoptoad_notifier
-  irwi
   launchy
   mongrel
   nokogiri
   paperclip
   pg
   rack
+  rack-bug
   rails
   rake
   rcov

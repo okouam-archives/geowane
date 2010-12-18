@@ -8,7 +8,7 @@
         %td= select_tag "category_switcher", options_for_select(@categories), :class => "styled_select"
       %tr
         %td Choose a status for all the locations:
-        %td= select_tag "status_switcher", options_for_select(Location.workflow_states), :class => "styled_select"
+        %td= select_tag "status_switcher", options_for_select(Location.new.enums(:status)), :class => "styled_select"
     = form_for "locations", :url => do_mass_update_locations_path do |form|
       %table.list.updates
         %tr
@@ -18,15 +18,17 @@
             %b Category
           %th
             %b Status
+          %th
         - @locations.each_with_index do |location, i|
           %tr
-            %td= form.text_field "[#{i}][name]", :value => location.name
-            %td.category= select_tag "locations[#{i}][category_id]", options_for_select(@categories, location.try(:category).try(:id) || "")
+            %td= location.name
+            %td.category= location.try(:category).try(:french) || ""
             %td.status
-              =select_tag "locations[#{i}][status]", options_for_select(workflow_actions(current_user, location), location.status)
+              =location.status.to_s.humanize.upcase
               =form.hidden_field "[#{i}][id]", :value => location.id
-      %div.update_button_wrapper
-        = submit_tag "Update All"
+            %td
+              %a{:rel => "facebox", :href => quick_edit_location_url(object)}
+                Edit
 
 :css
   input {padding: 5px}
@@ -35,7 +37,6 @@
   .change select {float: right}
   td.category select {width: 300px}
   td.status select {width: 180px}
-  .update_button_wrapper {margin-bottom: 30px; text-align: right}
 
 :javascript
   $(document).ready(function() {

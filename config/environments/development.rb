@@ -24,6 +24,7 @@ GeoCms::Application.configure do
 
   # Only use best-standards-support built into browsers
   config.action_dispatch.best_standards_support = :builtin
+
 end
 
 if File.exists?(File.join(Rails.root,'tmp', 'debug.txt'))

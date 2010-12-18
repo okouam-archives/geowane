@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101217130403) do
+ActiveRecord::Schema.define(:version => 20101218004922) do
 
   create_table "audits", :force => true do |t|
     t.datetime "created_at"
@@ -131,6 +131,53 @@ ActiveRecord::Schema.define(:version => 20101217130403) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "level0", :force => true do |t|
+    t.string   "name"
+    t.string   "level1"
+    t.string   "level2"
+    t.string   "level3"
+    t.string   "level4"
+    t.string   "level5"
+    t.geometry "feature", :limit => nil, :srid => 4326
+  end
+
+  add_index "level0", ["feature"], :name => "idx_level0_feature", :spatial => true
+
+  create_table "level1", :force => true do |t|
+    t.string   "name"
+    t.geometry "feature", :limit => nil, :srid => 4326
+  end
+
+  add_index "level1", ["feature"], :name => "idx_level1_feature", :spatial => true
+
+  create_table "level2", :force => true do |t|
+    t.string   "name"
+    t.geometry "feature", :limit => nil, :srid => 4326
+  end
+
+  add_index "level2", ["feature"], :name => "idx_level2_feature", :spatial => true
+
+  create_table "level3", :force => true do |t|
+    t.string   "name"
+    t.geometry "feature", :limit => nil, :srid => 4326
+  end
+
+  add_index "level3", ["feature"], :name => "idx_level3_feature", :spatial => true
+
+  create_table "level4", :force => true do |t|
+    t.string   "name"
+    t.geometry "feature", :limit => nil, :srid => 4326
+  end
+
+  add_index "level4", ["feature"], :name => "idx_level4_feature", :spatial => true
+
+  create_table "level5", :force => true do |t|
+    t.string   "name"
+    t.geometry "feature", :limit => nil, :srid => 4326
+  end
+
+  add_index "level5", ["feature"], :name => "idx_level5_feature", :spatial => true
 
   create_table "locations", :force => true do |t|
     t.integer  "category_id"

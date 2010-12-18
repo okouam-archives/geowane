@@ -3,7 +3,7 @@
     %b{:style=>"margin-right: 20px"}
       WORKFLOW STATUS:
     %code
-      = object.status
+      = object.status.to_s.humanize.upcase
       %span.submit{:style=>"float: right"}
         - if current_user.may_update_location? object
           %input{:type=>"submit", :value=>"Save Location"}

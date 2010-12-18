@@ -7,10 +7,9 @@ class CreateLocations < ActiveRecord::Migration
       t.string   :name
       t.decimal  :longitude
       t.decimal  :latitude
-      t.string   :searchable_name
       t.string   :email
       t.string   :telephone
-      t.string   :status
+      t.enum   :status
       t.integer  :user_id
       t.string   :fax
       t.string   :website

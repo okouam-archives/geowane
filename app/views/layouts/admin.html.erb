@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title><%=h yield(:title) %></title>
+	<title>GeoCMS - <%=h yield(:title) %></title>
     <%= csrf_meta_tag %>
     <%= stylesheet_link_tag 'admin' %>
     <% stylesheet_link_tag 'shared'%>
@@ -33,22 +33,22 @@
                  <ul>
                    <li><%= link_to "List Locations", locations_path(:s => :reset)%></li>
                    <li><%= link_to "List Categories", categories_path(:page => 1) %></li>
-                   <li><%= link_to "List Communes", communes_path %></li>
-                   <li><%= link_to "List Regions", regions_path %></li>
-                   <li><%= link_to "List Cities", cities_path %></li>
-                   <li><%= link_to "List Countries", countries_path %></li>
+                   <li><%= link_to "List Level 0 Boundaries ", countries_path %></li>
+                   <li><%= link_to "List Level 1 Boundaries", regions_path %></li>
+                   <li><%= link_to "List Level 2 Boundaries", communes_path %></li>
+                   <li><%= link_to "List Level 3 Boundaries", cities_path %></li>
+                   <li><%= link_to "List Level 4 Boundaries", cities_path %></li>
+                   <li><%= link_to "List Level 5 Boundaries", cities_path %></li>
                    <li><%= link_to "View Entire Map", map_path %></li>
                  </ul>
 
 					</li>
               <li><a href="#">File Management</a>
                  <ul>
-                    <li><%= link_to "Import GPX", new_import_path %></li>
                    <% unless current_user.has_role?("collector") %>
-                    <li><%= link_to "Import Locations", imports_path %></li>
+                    <li><%= link_to "Import Spatial Data", imports_path %></li>
                     <li><%= link_to "Export Locations", exports_path %></li>
                     <li><%= link_to "Convert File Format", conversions_path %></li>
-                   <li><%= link_to "Shapefile Exports", shapefiles_path %></li>
                      <% end %>
                  </ul>
                </li>

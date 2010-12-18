@@ -1,4 +1,18 @@
 class Search
+  extend ActiveModel::Naming
+  include ActiveModel::Conversion
+
+  attr_accessor :modified_by, :name, :added_by, :category_missing, :category_present, :category_id, :commune_id
+  attr_accessor :city_id, :region_id, :country_id, :confirmed_by, :audited_by, :added_on_before, :added_on_after
+  attr_accessor :status
+
+  def initialize(attributes)
+    
+  end
+
+  def persisted?
+    false
+  end
 
   def self.find_next(sql, id)
     locations, index = current_range_and_index(sql, id)
@@ -14,7 +28,7 @@ class Search
     locations[new_index]
   end
 
-  def self.create(params)
+  def self.create(params = nil)
 
     query = Location.select("locations.id, locations.name, category_id, categories.french as category_name, locations.created_at, locations.user_id, users.login as username, status, locations.updated_at, cities.name as city_name").
         order("locations.name ASC").
@@ -61,15 +75,19 @@ class Search
     unless params[:audited_by].blank?
       query = query.
           joins("JOIN audits ON audits.auditable_id = locations.id AND audits.user_id = #{params[:audited_by]}").
-          joins("JOIN model_changes ON audits.id = model_changes.audit_id AND model_changes.new_value = 'AUDITED'")
+          joins("JOIN model_changes ON audits.id = model_changes.audit_id AND model_changes.new_value = 'audited'")
     end
 
-    query = query.where("locations.name ilike ? ", "%#{params[:searchable_name_like]}%") unless params[:searchable_name_like].blank?
+    query = query.where("locations.name ilike ? ", "%#{params[:name_like]}%") unless params[:name_like].blank?
+
+    unless params[:modified_by].blank?
+      query = query.joins("JOIN audits ON audits.auditable_id = locations.id AND audits.user_id = #{params[:modified_by]}")
+    end
 
     unless params[:confirmed_by].blank?
       query = query.
           joins("JOIN audits ON audits.auditable_id = locations.id AND audits.user_id = #{params[:confirmed_by]}").
-          joins("JOIN model_changes ON audits.id = model_changes.audit_id AND model_changes.new_value = 'FIELD CHECKED'")
+          joins("JOIN model_changes ON audits.id = model_changes.audit_id AND model_changes.new_value = 'field_checked'")
     end
 
     query.to_sql

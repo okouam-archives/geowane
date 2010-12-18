@@ -17,18 +17,18 @@ describe "Permissions" do
       end
 
       it "is allowed when the location has a status of NEW or INVALID" do
-        @location.send :status=, "NEW"
+        @location.send :status=, :new
         @collector.should be_allowed_to(:update_location, @location)
-        @location.send :status=, "INVALID"
+        @location.send :status=, :invalid
         @collector.should be_allowed_to(:update_location, @location)
       end
 
       it "is denied when the location has a status of AUDITED or CORRECTED or FIELD CHECKED" do
-        @location.send :status=, "AUDITED"
+        @location.send :status=, :audited
         @collector.should_not be_allowed_to(:update_location, @location)
-        @location.send :status=, "CORRECTED"
+        @location.send :status=, :corrected
         @collector.should_not be_allowed_to(:update_location, @location)
-        @location.send :status=, "FIELD CHECKED"
+        @location.send :status=, :field_checked
         @collector.should_not be_allowed_to(:update_location, @location)
       end
 
@@ -46,18 +46,18 @@ describe "Permissions" do
       end
 
       it "is allowed when the location has a status of NEW or INVALID" do
-        @location.send :status=, "NEW"
+        @location.send :status=, :new
         @collector.should be_allowed_to(:destroy_location, @location)
-        @location.send :status=, "INVALID"
+        @location.send :status=, :invalid
         @collector.should be_allowed_to(:destroy_location, @location)
       end
 
       it "is denied when the location has a status of AUDITED or CORRECTED or FIELD CHECKED" do
-        @location.send :status=, "AUDITED"
+        @location.send :status=, :audited
         @collector.should_not be_allowed_to(:destroy_location, @location)
-        @location.send :status=, "CORRECTED"
+        @location.send :status=, :corrected
         @collector.should_not be_allowed_to(:destroy_location, @location)
-        @location.send :status=, "FIELD CHECKED"
+        @location.send :status=, :field_checked
         @collector.should_not be_allowed_to(:destroy_location, @location)
       end
 
@@ -75,26 +75,26 @@ describe "Permissions" do
       end
 
       it "is allowed when the original status is INVALID" do
-        @location.send :status=, "INVALID"
-        @collector.should be_allowed_to(:change_status_of_location, @location, 'CORRECTED')
+        @location.send :status=, :invalid
+        @collector.should be_allowed_to(:change_status_of_location, @location, :corrected)
       end
 
       it "is denied when the original status is anything other than INVALID" do
-        @states = Location.workflow_states - ["INVALID", "CORRECTED"]
+        @states = Location.new.enums(:status) - [:invalid, :corrected]
         @states.each do |state|
           @location.send :status=, state
-          @collector.should_not be_allowed_to(:change_status_of_location, @location, 'CORRECTED')
+          @collector.should_not be_allowed_to(:change_status_of_location, @location, :corrected)
         end
       end
 
       it "is allowed to change the status from INVALID to CORRECTED" do
-        @location.send :status=, "INVALID"
-        @collector.should be_allowed_to(:change_status_of_location, @location, 'CORRECTED')
+        @location.send :status=, :invalid
+        @collector.should be_allowed_to(:change_status_of_location, @location, :corrected)
       end
 
       it "is denied when the change is any other transition" do
-        @location.send :status=, "INVALID"
-        @states = Location.workflow_states - ["CORRECTED", "INVALID"]
+        @location.send :status=, :invalid
+        @states = Location.new.enums(:status) - [:corrected, :invalid]
         @states.each do |state|
           @collector.should_not be_allowed_to(:change_status_of_location, @location, state)
         end
@@ -104,9 +104,9 @@ describe "Permissions" do
 
     it "is denied when trying to change the status of a location he has not added" do
       location = Factory(:valid_location)
-      Location.workflow_states.each do |state|
+      Location.new.enums(:status).each do |state|
         location.send :status=, state
-        Location.workflow_states.each do |new_state|
+        Location.new.enums(:status).each do |new_state|
           next if new_state == state
           @collector.should_not be_allowed_to(:change_status_of_location, location, new_state)
         end

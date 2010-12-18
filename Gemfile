@@ -21,7 +21,6 @@ gem 'rake'
 gem 'rack'
 gem "resource_controller", :git => "git://github.com/BDQ/resource_controller.git"
 gem 'paperclip'
-gem "ruby-debug"
 gem "columnize"
 gem "enumerated_attribute"
 gem "wirble"
@@ -29,7 +28,6 @@ gem "hirb"
 gem 'dynamic_form', :git => "git://codaset.com/joelmoss/dynamic-form.git"
 gem 'sqlite3-ruby', '1.2.5', :require => 'sqlite3'
 gem 'diff-lcs'
-gem 'irwi'
 
 group :test do
   gem "faker"
@@ -42,5 +40,8 @@ group :test do
 end
 
 group :test, :development do
+  gem "ruby-debug"
+  gem "rack-bug"
+  gem 'database_cleaner'
   gem "rspec-rails", "~> 2.1.0"
 end

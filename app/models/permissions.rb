@@ -10,14 +10,14 @@ class Permissions < Aegis::Permissions
     action :update do
       allow :auditor
       allow :collector do
-        (object.status == 'INVALID' || object.status == 'NEW') && object.user == user
+        (object.is_invalid? || object.is_new?) && object.user == user
       end
     end
 
     action :destroy do
       allow :auditor
       allow :collector do
-        (object.status == 'NEW' || object.status == 'INVALID') && object.user == user
+        (object.is_new? || object.is_invalid?) && object.user == user
       end
     end
 
@@ -25,18 +25,18 @@ class Permissions < Aegis::Permissions
 
       allow :collector do |new_status|
         if new_status
-          (object.status == 'INVALID' && object.user == user && new_status == "CORRECTED") || new_status == object.status
+          (object.is_invalid? && object.user == user && new_status == :corrected) || new_status == object.status
         else
-          object.status == 'INVALID'
+          object.status == :invalid
         end
       end
 
       allow :auditor do |new_status|
         if new_status
-          ((object.status == 'NEW' && ["AUDITED", "INVALID"].include?(new_status)) ||
-            (object.status == 'INVALID' && ["AUDITED"].include?(new_status)) ||
-            (object.status == 'CORRECTED' && ["AUDITED", "INVALID"].include?(new_status)) ||
-            (object.status == 'AUDITED' && ["FIELD CHECKED", "INVALID"].include?(new_status))) || new_status == object.status
+          ((object.is_new? && [:audited, :invalid].include?(new_status)) ||
+            (object.is_invalid? && [:audited].include?(new_status)) ||
+            (object.is_corrected? && [:audited, :invalid].include?(new_status)) ||
+            (object.is_audited? && [:field_checked, :invalid].include?(new_status))) || new_status == object.status
         else
           true
         end

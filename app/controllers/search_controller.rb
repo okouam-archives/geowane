@@ -1,18 +1,18 @@
 class SearchController < ApplicationController
-  resource_controller
+  resource_controller :singleton
   layout "admin"
 
-  def next
-    if session.has_key?(:current_search) || session.has_key?("current_search")
-      current_search = session.has_key?(:current_search) ?  session[:current_search] : session["current_search"]
-      next_index = current_search.index(params[:id].to_i) + 1
-      if next_index > current_search.size - 2
-        next_index = 0
-      end
-      redirect_to edit_location_path(current_search[next_index])
-    else
-      redirect_to locations_path
-    end
+  new_action.before do
+    @all_users = User.order("login ASC").map{|user| [user.login, user.id]}
+    @all_cities = City.select("id, name").order("name ASC").map{|city| [city.name, city.id]}
+    @all_communes = Commune.select("id, name").order("name ASC").map{|commune| [commune.name, commune.id]}
+    @all_regions = Region.select("id, name").order("name ASC").map{|region| [region.name, region.id]}
+    @all_countries = Country.select("id, name").order("name ASC").map{|country| [country.name, country.id]}
+    @all_categories = Category.select("id, french").order("french ASC").map {|category| [category.french, category.id]}
+  end
+
+  def create
+    redirect_to locations_path(:s => params[:search])
   end
 
 end

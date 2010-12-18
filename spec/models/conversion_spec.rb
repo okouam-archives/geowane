@@ -2,7 +2,9 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Conversion do
 
-  EXAMPLE_MP = File.expand_path(File.join(File.dirname(__FILE__), "../samples/example2.mp"))
+  before(:all) do
+    @example_file = File.expand_path(File.join(File.dirname(__FILE__), "../samples/example2.mp"))
+  end
 
   describe "when executing a conversion" do
 
@@ -10,7 +12,7 @@ describe Conversion do
       
       it "throws an error" do
         @conversion = Conversion.new(:input_format => :".SHP", :output_format => :".SHP")
-        File.open(EXAMPLE_MP, 'rb') do |input_file|
+        File.open(@example_file, 'rb') do |input_file|
           @conversion.input = input_file
         end
         @conversion.save!
@@ -23,7 +25,7 @@ describe Conversion do
 
     before(:each) do
         @conversion = Conversion.new(:input_format => :".MP", :output_format => :".SHP")
-        File.open(EXAMPLE_MP, 'rb') do |input_file|
+        File.open(@example_file, 'rb') do |input_file|
           @conversion.input = input_file
         end
         @conversion.save!

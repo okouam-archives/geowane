@@ -2,26 +2,17 @@ GeoCms::Application.routes.draw do
 
   resources :locations do
     collection do
-      get :search
-      get :find
-      get :import
-      get :change_criteria
       post :mass_delete
       post :mass_audit
-      post :mass_update
-      post :do_mass_update
-      get :export
-      post :change_search
+      post :group_edit
     end
     member do
       get :next
+      post :group_item_edit
       get :previous
       get :surrounding_landmarks
-      post :change_status
     end
   end
-
-  resource :user_sessions
 
   resources :categories do
     collection do
@@ -34,18 +25,13 @@ GeoCms::Application.routes.draw do
     end
   end               
 
-  resource :account, :map
+  resource :search, :controller => "search"
+  resource :account, :map, :user_sessions
   resources :users, :communes, :cities, :regions, :imports, :countries, :counters, :exports, :conversions
 
   resources :exports do
     collection do
-      post :selection
-    end
-  end
-
-  resources :shapefiles do
-    member do
-      get :download
+      post :prepare
     end
   end
 

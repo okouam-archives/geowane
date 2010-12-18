@@ -1,9 +1,0 @@
-= content_for :title, "Gowane CMS - Import GPX"
-
-.block
-  .block_head
-    %h2 Import GPX
-  .block_content
-    = semantic_form_for :gpx, :url => "insert", :html => { :enctype => "multipart/form-data"} do |f|
-      = f.input :upload, :as => :file, :label => "GPX File"
-      = f.commit_button :button_html => { :class => "submit long" }, :label => "Process File"

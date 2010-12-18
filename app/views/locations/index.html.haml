@@ -7,18 +7,19 @@
         Locations
       %ul
         %li.nobg
-          = link_to "Change Criteria", change_criteria_locations_path
+          = link_to "Search", new_search_path
+        %li.nobg
+          = link_to "New Location", new_location_path
         - unless @locations.empty?
           - if @locations.any? {|l| current_user.may_update_location?(l)}
             %li.nobg.mass_update
-              = link_to "Update", "#"
+              = link_to "Edit Selection", "#"
           - if @locations.any? {|l| current_user.may_destroy_location?(l)}
             %li.nobg.mass_delete
-              = link_to "Delete", "#"
+              = link_to "Delete Selection", "#"
           %li.nobg.export
-            = link_to "Export", "#"
-        %li.nobg
-          = link_to "New Location", new_location_path
+            = link_to "Export SELECTION", "#"
+
     .block_sub
       %b{:style=>"margin-right: 20px"}
         SEARCH CRITERIA
@@ -60,7 +61,7 @@
                 %td= location.username
                 %td= location.created_at.strftime("%d-%m-%Y")
                 %td= location.updated_at.strftime("%d-%m-%Y")
-                %td= location.status
+                %td= location.status.to_s.humanize.upcase 
       %br
         %div
           = select_tag "pages", options_for_select([ "10", "20", "50", "100", "1000", "5000"], @per_page), :style => "width: 70px; padding: 2px; margin-top: -3px"
@@ -92,13 +93,13 @@
           alert("Please select one or more locations for " + action);
           return false;
         }
-        $("form.export").attr("action", "/locations/mass_" + action);
+        $("form.export").attr("action", "/locations/group_" + action);
         $("form.export").submit();
         return false;
       }
 
       $("li.mass_update a").click(function() {
-        return mass_change('update')
+        return mass_change('edit')
       });
 
       $("li.mass_delete a").click(function() {
@@ -110,7 +111,7 @@
       });
 
       $("li.export a").click(function() {
-        $("form.export").attr("action", "/exports/selection");
+        $("form.export").attr("action", "/exports/prepare");
         $("form.export").submit();
         return false;
       });

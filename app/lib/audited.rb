@@ -18,7 +18,6 @@ module Audited
 
       has_many :audits, :as => :auditable
 
-      after_create :audit_create
       before_update :audit_update
       before_destroy :audit_destroy
 
@@ -40,17 +39,6 @@ module Audited
       changed_attributes.except(*non_audited_columns).inject({}) do |changes,(attr, old_value)|
         changes[attr] = [old_value, self[attr]]
         changes
-      end
-    end
-
-    def audit_create
-      audit = self.audits.create :action => 'create'
-      audited_attributes.each do |key, value|
-        new_value = value
-        if key == "category_id"
-           new_value = Category.find(value).bilingual_name unless value.blank?
-        end
-        audit.model_changes.create(:datum => key, :old_value => '', :new_value => new_value)
       end
     end
 

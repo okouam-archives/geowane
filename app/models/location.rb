@@ -9,7 +9,7 @@ class Location < ActiveRecord::Base
   validates_presence_of :longitude, :latitude, :name
   belongs_to :category
   belongs_to :user
-  after_initialize :after_initialize_callback
+  enum_attr :status, %w(new invalid corrected audited field_checked), :init => :new, :nil => false
 
   scope :within_bounds_for_category, lambda {|category_id, top, left, right, bottom|
     {:conditions => ["feature && SetSrid('BOX3D(? ?, ? ?)'::box3d, 4326) and category_id = #{category_id}", top, left, right, bottom]}
@@ -23,10 +23,6 @@ class Location < ActiveRecord::Base
 
   def displayable_comments
     comments.where("comment != ''")
-  end
-
-  def self.workflow_states
-    ["NEW", "INVALID", "CORRECTED", "AUDITED", "FIELD CHECKED"]
   end
 
   def city
@@ -79,10 +75,6 @@ class Location < ActiveRecord::Base
     if self.longitude && self.latitude
       self.feature = GeoRuby::SimpleFeatures::Point.from_x_y(self.longitude, self.latitude, 4326)
     end
-  end
-
-  def after_initialize_callback
-    self.status = 'NEW' unless self.status
   end
 
 end

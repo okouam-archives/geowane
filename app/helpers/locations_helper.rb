@@ -28,9 +28,10 @@ module LocationsHelper
   end
 
   def workflow_actions(user, object)
-    Location.workflow_states.select do |state|
-       user.may_change_status_of_location? object, state
+    allowed_states = Location.new.enums(:status).select_options.select do |state|
+       user.may_change_status_of_location? object, state[1].to_sym
     end
+    allowed_states.map {|x| [x[0].upcase, x[1]]}
   end
 
   def show_informational_message(msg)
