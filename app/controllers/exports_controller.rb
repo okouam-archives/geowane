@@ -20,6 +20,10 @@ class ExportsController < ApplicationController
     object.save!
     flash.clear
   end
+  
+  create.wants.html do
+    redirect_to exports_url
+  end
 
   def prepare
     flash[:locations] = params[:export][:locations]

@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   layout "admin"
 
   private
-
+ 
   def convert_permission_error
     yield
   rescue Aegis::AccessDenied

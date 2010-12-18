@@ -2,7 +2,7 @@ class LocationsController < ApplicationController
   include Aegis::Controller
   resource_controller
   layout "admin"
-  before_filter :assign_form_data, :only => [:new, :create, :edit]
+  before_filter :assign_form_data, :only => [:create, :edit]
   permissions :locations, :except => [:next, :previous, :mass_delete]
 
   def index
@@ -41,7 +41,7 @@ class LocationsController < ApplicationController
     end
   end
 
-  def group_delete
+  def collection_delete
     locations = Location.find(params[:export][:locations])
     locations.each do |location|
       current_user.may_destroy_location!(location)
@@ -50,7 +50,7 @@ class LocationsController < ApplicationController
     redirect_to locations_path
   end
 
-  def group_edit
+  def collection_edit
     @locations = Location.find(params[:export][:locations], :order => "name")
     @categories = ["", ""] + Category.order("french").map{|c| [c.french, c.id]}
   end
@@ -63,10 +63,6 @@ class LocationsController < ApplicationController
 
   show.wants.js do
     render :json => object.json_object
-  end
-
-  edit.before do
-    object.comments.build
   end
 
   update do

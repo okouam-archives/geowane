@@ -1,0 +1,26 @@
+.block.comments.new
+  %h3 Add Comment
+  %br
+  = label_tag("Comment")
+  = text_area_tag("comment", nil, :class=>"text", :style=>"width: 410px")
+  %br
+  %br
+  %input.confirm{:type=>"button", :value=>"Confirm", :class=>"button"}
+  %input.cancel{:type=>"button", :value=>"Cancel", :class=>"button close-facebox"}
+  %br
+  %br
+
+:javascript
+  $("#facebox .content").parent().css({width: 425});
+  $(".comments.new .confirm").click(function() {
+    var comment = $(".comments.new textarea").val();
+    $.ajax({
+      type: 'POST',
+      url: "/locations/#{object.commentable.id}/comments",
+      data: {"comment[comment]": comment},
+      success: function() {
+        $(document).trigger("load.location.comments");
+        $(document).trigger("close.facebox");
+      }
+    });
+  });

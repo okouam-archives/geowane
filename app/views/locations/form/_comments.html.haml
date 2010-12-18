@@ -1,6 +1,6 @@
-#comments-tab
-  = form.inputs :for => :comments do |c|
-    - if c.object == object.comments.last
-      = c.input :user_id, :as => :hidden, :value => current_user.id
-      = c.input :comment, :input_html => {:class => "text"}
-
+%li.comments
+  = label_tag "Comments"
+  .list
+  %a.ajax-action.add-comment{:href => new_location_comment_url(object), :rel => "facebox"}
+    = image_tag "/images/add.png"
+    Add Comment

@@ -1,4 +1,4 @@
-= content_for :title, "GeoCMS - Edit Location"
+= content_for :title, "Edit Location"
 = render :partial => "shared/mapping_scripts"
 
 .block
@@ -15,6 +15,18 @@
 
 :javascript
   $(document).ready(function() {
+
+    $(document).bind("load.location.comments", function() {
+      $("li.comments .list").load("#{location_comments_url(object)}");
+    });
+
+    $(document).bind("load.location.tags", function() {
+      $("li.tags .list").load("#{location_tags_url(object)}");
+    });
+
+    $(document).trigger("load.location.tags");
+
+    $(document).trigger("load.location.comments");
 
     var observer = {
       onDragComplete: function(feature, lonlat) {
@@ -59,7 +71,6 @@
     };
 
     showCurrentLocation(function() {map.zoomToFeatures("default");});
-
 
     $("#location-tabs").tabs();
 

@@ -1,0 +1,24 @@
+.block.tags.new
+  %h3 Add Tag
+  %br
+  = select_tag("category_id", options_for_select(Category.all.map {|c| [c.french, c.id]}), html_options = {})
+  %br
+  %br
+  %input.confirm{:type=>"button", :value=>"Confirm", :class=>"button"}
+  %input.cancel{:type=>"button", :value=>"Cancel", :class=>"button close-facebox"}
+  %br
+  %br
+
+:javascript
+  $(".tags.new .confirm").click(function() {
+    var category_id = $(".tags.new select").val();
+    $.ajax({
+      type: 'POST',
+      url: "/locations/#{object.location.id}/tags",
+      data: {"tag[category_id]": category_id},
+      success: function() {
+        $(document).trigger("load.location.tags");
+        $(document).trigger("close.facebox");
+      }
+    });
+  });

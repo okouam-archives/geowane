@@ -18,18 +18,9 @@
           %a{:href=>"#classification-tab"} Coordinates
         %li
           %a{:href=>"#history-tab"} History
-        %li
-          %a{:href=>"#comments-tab"} Comments
       = render :partial => "locations/form/feature", :locals => {:form => form, :form_data => form_data}
+      = render :partial => "locations/form/information", :locals => {:form => form}
       = render :partial => "locations/form/classification", :locals => {:form => form}
       = render :partial => "locations/form/history", :locals => {:form => form, :location => location}
-      = render :partial => "locations/form/comments", :locals => {:form => form, :location => location}
-      = render :partial => "locations/form/information", :locals => {:form => form}
-      %div{:style=>"clear: both"}
+      %div{:style=>"clear: both; margin-bottom: 30px"}
 
-    :css
-      .ui-tabs-hide {display: none}
-      .submit input {padding: 2px; background-color: #444; margin-right: 3px; margin-top: 3px; color: white; font-weight: bold; border: 1px solid #222}
-      .submit input:hover {cursor: pointer; color: #008EE8}
-      #location-tabs-menu {margin-bottom: 20px; margin-left: -30px}
-      #location-tabs-menu li {float: left; list-style-type: none; font-weight: bold; background-image: none}

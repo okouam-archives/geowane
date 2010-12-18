@@ -4,86 +4,69 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>GeoCMS - <%=h yield(:title) %></title>
     <%= csrf_meta_tag %>
-    <%= stylesheet_link_tag 'admin' %>
-    <% stylesheet_link_tag 'shared'%>
-  <!--[if lt IE 8]><style type="text/css" media="all">@import url("/stylesheets/admin/ie.css");</style><![endif]-->
-	<script type="text/javascript" src="/client/resources/jquery-1.4.4.min.js"></script>
-  <script type="text/javascript" src="/client/resources/admin/facebox.js"></script>
-	<script type="text/javascript" src="/client/resources/admin/jquery.img.preload.js"></script>
-	<script type="text/javascript" src="/client/resources/admin/jquery.filestyle.mini.js"></script>
-	<script type="text/javascript" src="/client/resources/admin/jquery.wysiwyg.js"></script>
-	<script type="text/javascript" src="/client/resources/admin/jquery.date_input.pack.js"></script>
-	<script type="text/javascript" src="/client/resources/admin/excanvas.js"></script>
-	<script type="text/javascript" src="/client/resources/admin/jquery.visualize.js"></script>
-	<script type="text/javascript" src="/client/resources/admin/jquery.select_skin.js"></script>
-	<script type="text/javascript" src="/client/resources/admin/jquery.pngfix.js"></script>
-  <script type="text/javascript" src="/client/resources/rails.js"></script>
-	<script type="text/javascript" src="/client/resources/admin/custom.js"></script>
-  <script type="text/javascript" src="/client/resources/jquery.ba-bbq.min.js"></script>
+    <%= stylesheet_link_tag "admin.css" %>
+    <!--[if lt IE 8]><style type="text/css" media="all">@import url("/stylesheets/ie/ie.css");</style><![endif]-->
+	<script type="text/javascript" src="/javascripts/jquery-1.4.4.min.js"></script>
+    <script type="text/javascript" src="/javascripts/admin/facebox.js"></script>
+	<script type="text/javascript" src="/javascripts/admin/jquery.img.preload.js"></script>
+	<script type="text/javascript" src="/javascripts/admin/jquery.filestyle.mini.js"></script>
+	<script type="text/javascript" src="/javascripts/admin/jquery.date_input.pack.js"></script>
+	<script type="text/javascript" src="/javascripts/admin/excanvas.js"></script>
+	<script type="text/javascript" src="/javascripts/admin/jquery.visualize.js"></script>
+	<script type="text/javascript" src="/javascripts/admin/jquery.select_skin.js"></script>
+    <script type="text/javascript" src="/javascripts/rails.js"></script>
+	<script type="text/javascript" src="/javascripts/admin/custom.js"></script>
+    <script type="text/javascript" src="/javascripts/jquery.ba-bbq.min.js"></script>
 </head>
 <body class="<%="#{controller.controller_name} #{controller.action_name}"%>">
 	<div id="hld">
 		<div class="wrapper">
 			<div id="header">
-
 				<h1><%= link_to "Gowane", dashboard_path %></h1>
-
 				<ul id="nav">
 					<li><%= link_to "Geospatial Database", dashboard_path %>
-                 <ul>
-                   <li><%= link_to "List Locations", locations_path(:s => :reset)%></li>
-                   <li><%= link_to "List Categories", categories_path(:page => 1) %></li>
-                   <li><%= link_to "List Level 0 Boundaries ", countries_path %></li>
-                   <li><%= link_to "List Level 1 Boundaries", regions_path %></li>
-                   <li><%= link_to "List Level 2 Boundaries", communes_path %></li>
-                   <li><%= link_to "List Level 3 Boundaries", cities_path %></li>
-                   <li><%= link_to "List Level 4 Boundaries", cities_path %></li>
-                   <li><%= link_to "List Level 5 Boundaries", cities_path %></li>
-                   <li><%= link_to "View Entire Map", map_path %></li>
-                 </ul>
-
+                        <ul>
+                            <li><%= link_to "List Locations", locations_path(:s => :reset)%></li>
+                            <li><%= link_to "List Categories", categories_path(:page => 1) %></li>
+                            <li><%= link_to "List Level 0 Boundaries ", countries_path %></li>
+                            <li><%= link_to "List Level 1 Boundaries", regions_path %></li>
+                            <li><%= link_to "List Level 2 Boundaries", communes_path %></li>
+                            <li><%= link_to "List Level 3 Boundaries", cities_path %></li>
+                            <li><%= link_to "List Level 4 Boundaries", cities_path %></li>
+                            <li><%= link_to "List Level 5 Boundaries", cities_path %></li>
+                            <li><%= link_to "View Entire Map", map_path %></li>
+                        </ul>
 					</li>
-              <li><a href="#">File Management</a>
-                 <ul>
-                   <% unless current_user.has_role?("collector") %>
-                    <li><%= link_to "Import Spatial Data", imports_path %></li>
-                    <li><%= link_to "Export Locations", exports_path %></li>
-                    <li><%= link_to "Convert File Format", conversions_path %></li>
-                     <% end %>
-                 </ul>
-               </li>
-
-					<li><a href="#">Administration</a>
-                 <ul>
-                    <li><%= link_to "Your Account", account_path %></li>
-                    <% if current_user.has_role?("administrator") %>
-                   <li><%= link_to "List Users", users_path %></li>
-                     <% end %>
-                   <li><%= link_to "Counters", counters_path %></li>
-                 </ul>
-               </li>
-
+                    <li>
+                        <a href="#">File Management</a>
+                        <ul>
+                            <% unless current_user.has_role?("collector") %>
+                                <li><%= link_to "Import Spatial Data", imports_path %></li>
+                                <li><%= link_to "Export Locations", exports_path %></li>
+                                <li><%= link_to "Convert File Format", conversions_path %></li>
+                            <% end %>
+                        </ul>
+                    </li>
+					<li>
+                        <a href="#">Administration</a>
+                        <ul>
+                            <li>
+                                <%= link_to "Your Account", account_path %></li>
+                            <% if current_user.has_role?("administrator") %>
+                                <li><%= link_to "List Users", users_path %></li>
+                            <% end %>
+                            <li><%= link_to "Counters", counters_path %></li>
+                        </ul>
+                    </li>
 				</ul>
-
 				<p class="user">Hello, <a href="#"><%= @current_user.login %></a> | <%= link_to "Logout", user_sessions_path, :method => :delete, :confirm => "Are you sure you want to logout?" %></p>
-
 			</div>
-
-        <%= yield %>
-
-     
-			<div id="footer">
-
-				<p class="left"><a href="http://www.0-one.net">Gowane @ 0-One</a></p>
-				<p class="right">Powered by <a href="#">Codeifier Labs</a></p>
-
-			</div>
-
-
+            <%= yield %>
+            <div id="footer">
+                <p class="left"><a href="http://www.0-one.net">Gowane @ 0-One</a></p>
+                <p class="right">Powered by <a href="#">Codeifier Labs</a></p>
+            </div>
 		</div>
-
 	</div>
-
 </body>
-
 </html>
