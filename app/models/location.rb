@@ -8,7 +8,7 @@ class Location < ActiveRecord::Base
   accepts_nested_attributes_for :comments, :reject_if => lambda { |a| a[:comment].blank? || a[:title].blank? }
 
   validates_presence_of :longitude, :latitude, :name
-  has_many :categories, :through => :tag
+  has_many :categories, :through => :tags
   belongs_to :user
   has_many :tags, :autosave => true
   enum_attr :status, %w(new invalid corrected audited field_checked), :init => :new, :nil => false
@@ -57,6 +57,10 @@ class Location < ActiveRecord::Base
       :feature => feature.as_wkt
     }
   end
+
+  def category
+    categories.empty? ? nil : categories.first
+  end  
 
   def longitude=(longitude)
     self[:longitude] = longitude

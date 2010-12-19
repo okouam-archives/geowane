@@ -11,7 +11,7 @@
         %td= object.try(:region).try(:name) || "Unknown"
         %td= object.try(:city).try(:name) || "Unknown"
         %td= object.try(:commune).try(:name) || "Unknown"
-    #map-instructions
+    .map-instructions
       Drag the blue square to update the coordinates
     #map
     #actions{:style=>"margin-top: 15px"}
@@ -31,7 +31,4 @@
   .ajax-action img {position: relative; top: 3px}
   .right-panel {margin-top: 7px; width: 450px; float: right}
   #map {background-color: #6699cc; border: 1px solid #666666; margin-top: 7px; width: 450px; height: 330px}
-  #map-instructions {font-style: italic; font-size: 10px; text-align: center}
-  .right-panel table td, .right-panel table th {border-bottom-width: 0 ! important}
-  .right-panel table tr {background-color: none ! important}
-  .right-panel table {width: 100%; margin-top: -15px}
+

@@ -46,7 +46,6 @@
                 Last Changed
               %th{:style=>"width: 95px"}
                 Status
-
             - @locations.each do |location|
               %tr
                 %td.selector
@@ -55,7 +54,6 @@
                   - if location.name.length > 40
                     = image_tag("warning-icon.png", :style=>"position: relative; top: 3px; margin-right: 3px")
                   = link_to location.name, edit_location_path(location)
-
                 %td= location.city_name
                 %td= location.tags.map {|t| t.category.french}.join(", ") || ""
                 %td= location.username
@@ -75,8 +73,6 @@
 
   :javascript
     $(document).ready(function() {
-
-      $($.date_input.initialize);
 
       $("#pages").change(function() {
         window.location = $.param.querystring(window.location.href, {per_page: $(this).val()});

@@ -2,9 +2,9 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Category do
 
-  it "can have many locations" do
+  it "can have many locations though tags" do
     category = Factory(:valid_category)
-    Factory(:valid_location, :category => category)
+    category.tags << Factory(:valid_tag, :category => category)
     category.locations.size.should eql(1)
   end
 

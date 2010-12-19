@@ -20,10 +20,10 @@
           %tbody
             - collection.each do |commune|
               %tr
-                %td= link_to(commune.name, "/locations?s[commune_id_eq]=#{commune.id}")
-                %td= commune.city
-                %td= commune.region
-                %td= commune.country
+                %td= link_to(commune.name, "/locations?s[commune_id]=#{commune.id}")
+                %td= commune.city_name
+                %td= commune.region_name
+                %td= commune.country_name
                 %td.count= commune.locations_count
                 - if @can_edit
                   %td= link_to "Edit", edit_commune_path(commune)

@@ -7,6 +7,7 @@ development:
   password: com99123
   timeout: 5000
   encoding: utf8
+  min_messages: warning
   template: postgis
 
 test: &test
@@ -20,10 +21,12 @@ test: &test
   host: localhost
   template: postgis
   encoding: utf8
+  min_messages: warning
 
 production:
   template: postgis
   host: localhost
+  min_messages: warning
   adapter: postgresql
   database: cms_production
   pool: 5

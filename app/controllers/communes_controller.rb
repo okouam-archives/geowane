@@ -3,20 +3,23 @@ class CommunesController < ApplicationController
 
   def collection_sql
     "
-    SELECT
-      countries.name as country,
-      regions.name as region,
-      cities.name as city,
-      communes.id,
-      communes.name, count(locations) as locations_count
-    FROM communes
-      LEFT JOIN locations on ST_Within(locations.feature, communes.feature)
-      LEFT JOIN countries on ST_Within(communes.feature, countries.feature)
-      LEFT JOIN regions on ST_Within(communes.feature, regions.feature)
-      LEFT JOIN cities on ST_Within(communes.feature, cities.feature)
-    GROUP BY country, region, city, communes.id, communes.name
-    ORDER BY country, region, city, name
+      SELECT 
+        countries.name as country_name, 
+        regions.name as region_name, 
+        cities.name as city_name, 
+        commune_id as id, 
+        communes.name as name, 
+        count(*) as locations_count
+      FROM topologies 
+      JOIN countries ON countries.id = topologies.country_id
+      JOIN regions ON regions.id = topologies.region_id
+      JOIN cities ON cities.id = topologies.city_id
+      JOIN communes ON communes.id = topologies.commune_id
+      GROUP BY countries.name, regions.name, cities.name, commune_id, communes.name 
+      ORDER BY countries.name, regions.name, cities.name, commune_id, communes.name 
     "
   end
 
 end
+
+

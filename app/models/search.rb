@@ -30,9 +30,8 @@ class Search
 
   def self.create(params = nil)
 
-    query = Location.select("locations.id, locations.name, category_id, categories.french as category_name, locations.created_at, locations.user_id, users.login as username, status, locations.updated_at, cities.name as city_name").
+    query = Location.select("locations.id, locations.name, locations.created_at, locations.user_id, users.login as username, status, locations.updated_at, cities.name as city_name").
         order("locations.name ASC").
-        joins("LEFT JOIN categories ON locations.category_id = categories.id ").
         joins("LEFT JOIN users ON users.id = locations.user_id").
         joins("LEFT JOIN cities ON ST_Within(locations.feature, cities.feature)")
 
@@ -43,29 +42,33 @@ class Search
     query = query.where("user_id = ?", params[:added_by]) unless params[:added_by].blank?
 
     if params[:category_missing] == "1"
-      query = query.where("category_id IS NULL")
+      query = query.joins("LEFT JOIN tags ON tags.location_id = locations.id").where("tags.id IS NULL")
     end
 
     if params[:category_present] == "1"
-      query = query.where("category_id IS NOT NULL")
+      query = query.joins(:tags)
     end
 
-    unless params[:country_id_eq].blank?
-      query = query.joins("join countries on ST_Within(locations.feature, countries.feature)").where("countries.id = ?", params[:country_id_eq])
+    unless params[:country_id].blank?
+      query = query.joins("join countries on ST_Within(locations.feature, countries.feature)").where("countries.id = ?", params[:country_id])
     end
 
-    query = query.where("category_id = ? ", params[:category_id_eq]) unless params[:category_id_eq].blank?
-
-    unless params[:commune_id_eq].blank?
-      query = query.joins("join communes on ST_Within(locations.feature, communes.feature)").where("communes.id = ?", params[:commune_id_eq])
+    unless params[:category_id].blank?
+      query = query.
+          joins(:tags).
+          joins("JOIN categories ON tags.category_id = categories.id AND categories.id = #{params[:category_id]}")
     end
 
-    unless params[:city_id_eq].blank?
-      query = query.where("cities.id = ?", params[:city_id_eq])
+    unless params[:commune_id].blank?
+      query = query.joins("join communes on ST_Within(locations.feature, communes.feature)").where("communes.id = ?", params[:commune_id])
     end
 
-    unless params[:region_id_eq].blank?
-      query = query.joins("join regions on ST_Within(locations.feature, regions.feature)").where("regions.id = ?", params[:region_id_eq])
+    unless params[:city_id].blank?
+      query = query.where("cities.id = ?", params[:city_id])
+    end
+
+    unless params[:region_id].blank?
+      query = query.joins("join regions on ST_Within(locations.feature, regions.feature)").where("regions.id = ?", params[:region_id])
     end
 
     query = query.where("locations.created_at > ?", params[:added_on_after]) unless params[:added_on_after].blank?

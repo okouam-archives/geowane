@@ -5,82 +5,33 @@
   .block_head
     %h2 Edit Location #{@location.id}
     %ul
-      %li.nobg
-        = link_to "Back", locations_path
-      %li.nobg
-        = link_to "Previous POI", previous_location_path(@location)
-      %li.nobg
-        = link_to "Next POI", next_location_path(@location)
-  = render :partial => 'form', :locals => {:location => @location, :form_data => @form_data}
+      %li.nobg= link_to "Back", locations_path
+      %li.nobg= link_to "Previous POI", previous_location_path(@location)
+      %li.nobg= link_to "Next POI", next_location_path(@location)
+      %li.nobg= link_to "Save", "#"
+  = semantic_form_for @location do |form|
+    #edit-location-tabs
+      .block_sub
+        %ul
+          %li= link_to "Feature", "#feature-tab"
+          %li= link_to "Information", "#information-tab"
+          %li= link_to "Coordinates", "#classification-tab"
+          %li= link_to "History", "#history-tab"  
+      .block_content
+        = render :partial => "locations/form/feature", :locals => {:form => form, :form_data => @form_data}
+        = render :partial => "locations/form/information", :locals => {:form => form}
+        = render :partial => "locations/form/classification", :locals => {:form => form}
+        = render :partial => "locations/form/history", :locals => {:form => form, :location => @location}
+        .clear
 
 :javascript
   $(document).ready(function() {
-
-    $(document).bind("load.location.comments", function() {
-      $("li.comments .list").load("#{location_comments_url(object)}");
-    });
-
-    $(document).bind("load.location.tags", function() {
-      $("li.tags .list").load("#{location_tags_url(object)}");
-    });
-
-    $(document).trigger("load.location.tags");
-
-    $(document).trigger("load.location.comments");
-
-    var observer = {
-      onDragComplete: function(feature, lonlat) {
-        $("#location_latitude").val(lonlat.lat);
-        $("#location_longitude").val(lonlat.lon);
-      },
-      onZoomChanged: function(extent) {}
+    var options = {
+      commentsContainer: $("li.comments .list"),
+      commentsFetchUrl: "#{location_comments_url(object)}",
+      locationId: '#{@location.id}',
+      tagsContainer: $("li.tags .list"),
+      tagsFetchUrl: '#{location_tags_url(object)}'
     };
-
-    var map = new SingleFeatureMap({element: "map", observer: observer});
-
-    var showCurrentLocation = function(func) {
-      $.ajax({
-        type: "GET",
-        dataType : 'script',
-        url: "/locations/#{@location.id}",
-        success: function(msg) {
-          poi = eval("(" + msg + ")");
-          poi.icon = "/shape_square_purple.png";
-          map.removeLayer("default");
-          if (func) {
-            map.displayDraggableFeatures([poi], "default", func);
-          } else {
-            map.displayDraggableFeatures([poi], "default");
-          }
-        }
-      });
-    };
-
-    var showLandmarks = function() {
-      $.ajax({
-        type: "GET",
-        dataType: "json",
-        data: {
-          "bounds[]": map.map.getExtent().toArray(),
-        },
-        url: "/locations/#{@location.id}/surrounding_landmarks",
-        success: function(points) {
-          map.displayFeaturesWithPopups(points, "landmarks");
-        }
-      });
-    };
-
-    showCurrentLocation(function() {map.zoomToFeatures("default");});
-
-    $("#location-tabs").tabs();
-
-    $("input[name='show_landmarks']").change(function(){
-      if ($("input[name='show_landmarks']:checked").val() == '0') {
-        map.removeLayer("landmarks");
-      }
-      else {
-        showLandmarks();
-      }
-    });
-
+    var editor = new LocationEditor(options);
   });

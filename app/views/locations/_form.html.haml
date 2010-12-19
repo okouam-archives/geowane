@@ -1,26 +1,15 @@
-= semantic_form_for location, :html => { :enctype => "multipart/form-data"} do |form|
-  .block_sub
-    %b{:style=>"margin-right: 20px"}
-      WORKFLOW STATUS:
-    %code
-      = object.status.to_s.humanize.upcase
-      %span.submit{:style=>"float: right"}
-        - if current_user.may_update_location? object
-          %input{:type=>"submit", :value=>"Save Location"}
-  .block_content
-    #location-tabs
-      %ul#location-tabs-menu
-        %li
-          %a{:href=>"#feature-tab"} Feature
-        %li
-          %a{:href=>"#information-tab"} Information
-        %li
-          %a{:href=>"#classification-tab"} Coordinates
-        %li
-          %a{:href=>"#history-tab"} History
+= semantic_form_for location do |form|
+  #edit-location-tabs
+    .block_sub
+      %ul
+        %li= link_to "Feature", "#feature-tab"
+        %li= link_to "Information", "#information-tab"
+        %li= link_to "Coordinates", "#classification-tab"
+        %li= link_to "History", "#history-tab"  
+    .block_content
       = render :partial => "locations/form/feature", :locals => {:form => form, :form_data => form_data}
       = render :partial => "locations/form/information", :locals => {:form => form}
       = render :partial => "locations/form/classification", :locals => {:form => form}
       = render :partial => "locations/form/history", :locals => {:form => form, :location => location}
-      %div{:style=>"clear: both; margin-bottom: 30px"}
+      .clear
 

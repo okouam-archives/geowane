@@ -1,6 +1,6 @@
 %li.comments
-  = label_tag "Comments"
+  %label 
+    Comments
+    = link_to "(+)", new_location_comment_url(object), :rel => "facebox"
   .list
-  %a.ajax-action.add-comment{:href => new_location_comment_url(object), :rel => "facebox"}
-    = image_tag "/images/add.png"
-    Add Comment
+

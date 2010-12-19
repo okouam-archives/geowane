@@ -1,2 +1,6 @@
-= collection.map{|c|c.category.french + "<a class='delete' style='position: relative; top: 3px' href='#'>x</a>"}.join(", ").html_safe
+= collection.map{|c|"<span>" + c.category.french + link_to("x", location_tag_url(c.location, c), :method => :delete, :confirm => "Are you sure you want to delete this tag?", :remote => :true, :class => "tag_delete") + "</span>"}.join(" ").html_safe
 
+:javascript
+    $(".tags .list a").bind("ajax:complete", function() {
+        $(this).parent().remove();   
+    });

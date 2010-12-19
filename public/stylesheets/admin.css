@@ -13,9 +13,17 @@
 .locations.edit fieldset ol {padding-left: 0}
 .locations.edit .submit input {padding: 2px; background-color: #444; margin-right: 3px; margin-top: 3px; color: white; font-weight: bold; border: 1px solid #222}
 .locations.edit .submit input:hover {cursor: pointer; color: #008EE8}
-.locations.edit #location-tabs-menu {margin-bottom: 20px; margin-left: -30px}
-.locations.edit #location-tabs-menu li {float: left; list-style-type: none; font-weight: bold; background-image: none}
+.locations.edit #edit-location-tabs .block_content {padding-bottom: 30px; position: relative; top: -15px}
+.locations.edit #edit-location-tabs ul {margin-left: -30px}
+.locations.edit #edit-location-tabs ul li:first-child {margin-left: 30px}
+.locations.edit #edit-location-tabs ul li {float: left; list-style-type: none; font-weight: bold; background-image: none; margin-right: 20px}
 .locations.edit .ui-tabs-hide {display: none}
+.locations.edit .tags .list span {margin-right: 5px}
+.locations.edit .tags .list a {position: relative; top: 3px}
+.locations.edit .map-instructions {font-style: italic; font-size: 10px; text-align: center}
+.locations.edit .right-panel table td, .right-panel table th {border-bottom-width: 0 ! important}
+.locations.edit .right-panel table tr {background-color: none ! important}
+.locations.edit .right-panel table {width: 100%; margin-top: -15px}
 
 /* .index */
 
@@ -45,26 +53,7 @@
 .change_status #location_status {padding: 1px; width: 200px; font-size: 10px}
 .block_content {width: 920px}
 .block .block_content ol {padding-bottom: 0}
-
-.styled_select {
-    -moz-border-radius:3px 3px 3px 3px;
-    background:none repeat scroll 0 0 #FEFEFE;
-    border:1px solid #BBBBBB;
-    color:#333333;
-    font-family:"Lucida Grande",Verdana,sans-serif;
-    font-size:14px;
-    outline:medium none;
-    padding:7px;
-    vertical-align:middle;
-    width:410px;
-}
-
-.block table.layout tr td, .block table.layout tr th {
-    border-bottom-width: 0;
-    line-height:normal;
-    padding:10px;
-    text-align:left;
-    background-color: white ! important
-}
+.styled_select {-moz-border-radius:3px 3px 3px 3px; background:none repeat scroll 0 0 #FEFEFE; border:1px solid #BBBBBB; color:#333333; font-family:"Lucida Grande",Verdana,sans-serif; font-size:14px; outline:medium none; padding:7px; vertical-align:middle; width:410px }
+.block table.layout tr td, .block table.layout tr th { border-bottom-width: 0; line-height:normal; padding:10px; text-align:left; background-color: white ! important}
 
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101218031747) do
+ActiveRecord::Schema.define(:version => 20101219185935) do
 
   create_table "audits", :force => true do |t|
     t.datetime "created_at"
@@ -44,11 +44,19 @@ ActiveRecord::Schema.define(:version => 20101218031747) do
     t.string  "sygic_french"
     t.string  "sygic_english"
     t.string  "sygic_code"
+    t.integer "tags_count",                     :default => 0
   end
 
   create_table "cities", :force => true do |t|
     t.string   "name"
-    t.geometry "feature", :limit => nil
+    t.geometry "feature",                 :limit => nil
+    t.integer  "uncategorized_locations"
+    t.integer  "locations"
+    t.integer  "new_locations"
+    t.integer  "invalid_locations"
+    t.integer  "corrected_locations"
+    t.integer  "audited_locations"
+    t.integer  "field_checked_locations"
   end
 
   add_index "cities", ["feature"], :name => "idx_cities_feature", :spatial => true
@@ -69,7 +77,14 @@ ActiveRecord::Schema.define(:version => 20101218031747) do
 
   create_table "communes", :force => true do |t|
     t.string   "name"
-    t.geometry "feature", :limit => nil
+    t.geometry "feature",                 :limit => nil
+    t.integer  "uncategorized_locations"
+    t.integer  "locations"
+    t.integer  "new_locations"
+    t.integer  "invalid_locations"
+    t.integer  "corrected_locations"
+    t.integer  "audited_locations"
+    t.integer  "field_checked_locations"
   end
 
   create_table "conversions", :force => true do |t|
@@ -92,7 +107,14 @@ ActiveRecord::Schema.define(:version => 20101218031747) do
 
   create_table "countries", :force => true do |t|
     t.string   "name"
-    t.geometry "feature", :limit => nil, :srid => 4326
+    t.geometry "feature",                 :limit => nil, :srid => 4326
+    t.integer  "uncategorized_locations"
+    t.integer  "locations"
+    t.integer  "new_locations"
+    t.integer  "invalid_locations"
+    t.integer  "corrected_locations"
+    t.integer  "audited_locations"
+    t.integer  "field_checked_locations"
   end
 
   add_index "countries", ["feature"], :name => "idx_countries_feature", :spatial => true
@@ -180,7 +202,6 @@ ActiveRecord::Schema.define(:version => 20101218031747) do
   add_index "level5", ["feature"], :name => "idx_level5_feature", :spatial => true
 
   create_table "locations", :force => true do |t|
-    t.integer  "category_id"
     t.string   "name"
     t.decimal  "longitude"
     t.decimal  "latitude"
@@ -192,15 +213,15 @@ ActiveRecord::Schema.define(:version => 20101218031747) do
     t.string   "postal_address"
     t.string   "opening_hours"
     t.integer  "user_rating"
-    t.geometry "feature",         :limit => nil, :srid => 4326
+    t.geometry "feature",         :limit => nil,                :srid => 4326
     t.string   "status"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "long_name"
+    t.integer  "tags_count",                     :default => 0
   end
 
-  add_index "locations", ["category_id"], :name => "index_features_on_category_id"
   add_index "locations", ["feature"], :name => "idx_locations_feature", :spatial => true
   add_index "locations", ["name"], :name => "idx_features_name"
 
@@ -213,7 +234,14 @@ ActiveRecord::Schema.define(:version => 20101218031747) do
 
   create_table "regions", :force => true do |t|
     t.string   "name"
-    t.geometry "feature", :limit => nil
+    t.geometry "feature",                 :limit => nil
+    t.integer  "uncategorized_locations"
+    t.integer  "locations"
+    t.integer  "new_locations"
+    t.integer  "invalid_locations"
+    t.integer  "corrected_locations"
+    t.integer  "audited_locations"
+    t.integer  "field_checked_locations"
   end
 
   add_index "regions", ["feature"], :name => "idx_regions_feature", :spatial => true
@@ -245,6 +273,19 @@ ActiveRecord::Schema.define(:version => 20101218031747) do
   create_table "tags", :force => true do |t|
     t.integer  "location_id"
     t.integer  "category_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "tags", ["category_id", "location_id", "id"], :name => "idx_tags_categories"
+  add_index "tags", ["location_id", "category_id", "id"], :name => "idx_tags_locations"
+
+  create_table "topologies", :force => true do |t|
+    t.integer  "location_id"
+    t.integer  "country_id"
+    t.integer  "region_id"
+    t.integer  "commune_id"
+    t.integer  "city_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -19,7 +19,7 @@ GeoCms::Application.configure do
 
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log
-  config.log_level = Logger::DEBUG
+  config.log_level = :debug
   config.active_record.logger = Logger.new(STDOUT)
 
   # Only use best-standards-support built into browsers

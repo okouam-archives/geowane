@@ -1,5 +1,3 @@
-#rake gowane:db:import[shapefile_name] RAILS_ENV=?
-
 namespace :db do
 
   task :load_config => :rails_env do

@@ -1,6 +1,5 @@
 %li.tags
-  = label_tag "Tags"
+  %label 
+    Tags
+    = link_to "(+)", new_location_tag_url(object), :rel => "facebox"
   .list
-  %a.ajax-action.add-tag{:href => new_location_tag_url(location), :rel => "facebox"}
-    = image_tag "/images/add.png"
-    Add Tag

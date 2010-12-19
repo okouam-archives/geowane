@@ -1,5 +1,6 @@
 class Category < ActiveRecord::Base
-  has_many :locations
+  has_many :tags
+  has_many :locations, :through => :tags
   validates_presence_of :french, :english
 
   def json_object

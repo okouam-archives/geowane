@@ -52,7 +52,7 @@ describe Search do
     describe "and searching by 'Category Missing'" do
 
       it "returns the correct results" do
-        @a.category = Factory(:valid_category)
+        @a.tags << Factory(:valid_tag, :location => @a)
         @a.save!
         sql = Search.create(:category_missing => "1")
         results = Location.find_by_sql(sql)
@@ -65,7 +65,7 @@ describe Search do
     describe "and searching by 'Category Present'" do
 
       it "returns the correct results" do
-        @a.category = Factory(:valid_category)
+        @a.tags << Factory(:valid_tag, :location => @a)
         @a.save!
         sql = Search.create(:category_present => "1")
         results = Location.find_by_sql(sql)
