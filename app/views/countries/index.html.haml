@@ -20,7 +20,7 @@
       %tbody
         - @countries.each do |country|
           %tr
-            %td= link_to(country.name, "/locations?s[country_id_eq]=#{country.id}")
+            %td= link_to(country.name, "/locations?s[country_id]=#{country.id}")
             = render :partial => "/areas/list_stats", :locals => {:area => country}
             - if @can_edit
               %td.view= link_to("Edit", edit_country_path(country))

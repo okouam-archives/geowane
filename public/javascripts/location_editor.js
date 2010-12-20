@@ -28,6 +28,10 @@ var LocationEditor = Class.extend({
 
     $(document).trigger("load.location.tags");
     $(document).trigger("load.location.comments");
+
+    $(".save").click(function() {
+      $(".block form").submit();
+    });
   }, 
 
   loadTags: function() {

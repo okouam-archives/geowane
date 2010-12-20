@@ -30,10 +30,11 @@ class Search
 
   def self.create(params = nil)
 
-    query = Location.select("locations.id, locations.name, locations.created_at, locations.user_id, users.login as username, status, locations.updated_at, cities.name as city_name").
+    query = Location.select("locations.id, locations.tags_count, longitude, latitude, locations.name, locations.created_at, locations.user_id, users.login as username, status, locations.updated_at, cities.name as city_name").
         order("locations.name ASC").
         joins("LEFT JOIN users ON users.id = locations.user_id").
-        joins("LEFT JOIN cities ON ST_Within(locations.feature, cities.feature)")
+        joins("JOIN topologies ON topologies.location_id = locations.id").
+        joins("LEFT JOIN cities ON cities.id = topologies.city_id")
 
     return query.to_sql if params.nil?
 
@@ -42,11 +43,11 @@ class Search
     query = query.where("user_id = ?", params[:added_by]) unless params[:added_by].blank?
 
     if params[:category_missing] == "1"
-      query = query.joins("LEFT JOIN tags ON tags.location_id = locations.id").where("tags.id IS NULL")
+      query = query.where("tags_count < 1")
     end
 
     if params[:category_present] == "1"
-      query = query.joins(:tags)
+      query = query.where("tags_count > 0")
     end
 
     unless params[:country_id].blank?
@@ -81,7 +82,7 @@ class Search
           joins("JOIN model_changes ON audits.id = model_changes.audit_id AND model_changes.new_value = 'audited'")
     end
 
-    query = query.where("locations.name ilike ? ", "%#{params[:name_like]}%") unless params[:name_like].blank?
+    query = query.where("locations.name ilike ? ", "%#{params[:name]}%") unless params[:name].blank?
 
     unless params[:modified_by].blank?
       query = query.joins("JOIN audits ON audits.auditable_id = locations.id AND audits.user_id = #{params[:modified_by]}")

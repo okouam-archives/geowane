@@ -7,10 +7,10 @@
         %th City
         %th Commune
       %tr
-        %td= object.try(:country).try(:name) || "Unknown"
-        %td= object.try(:region).try(:name) || "Unknown"
-        %td= object.try(:city).try(:name) || "Unknown"
-        %td= object.try(:commune).try(:name) || "Unknown"
+        %td= object.country_name 
+        %td= object.region_name
+        %td= object.city_name
+        %td= object.commune_name
     .map-instructions
       Drag the blue square to update the coordinates
     #map

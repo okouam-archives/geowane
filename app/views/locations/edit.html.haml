@@ -8,7 +8,7 @@
       %li.nobg= link_to "Back", locations_path
       %li.nobg= link_to "Previous POI", previous_location_path(@location)
       %li.nobg= link_to "Next POI", next_location_path(@location)
-      %li.nobg= link_to "Save", "#"
+      %li.nobg= link_to "Save", "#", :class => "save"
   = semantic_form_for @location do |form|
     #edit-location-tabs
       .block_sub

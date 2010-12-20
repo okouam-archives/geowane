@@ -1,4 +1,14 @@
-- collection.each do |item|
-  - if item.persisted?
-    %h4= "#{item.user.login} | #{item.created_at.strftime("%e %B %Y")} @ #{item.created_at.strftime("%H:%M %p")}"
-    %p= item.comment
+- if @show_facebox_actions
+  %h3 Comments  
+  %br
+= render :partial => "collection", :locals => {:items => collection}
+- if @show_facebox_actions
+  .block
+    %input.close{:type=>"button", :value=>"Close", :class=>"button index-comments-close"}
+    %br
+    %br
+:javascript
+  $(".index-comments-close").click(function() {
+    $(document).trigger("close.facebox");
+  });
+ 

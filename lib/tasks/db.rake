@@ -24,6 +24,11 @@ namespace :db do
     system("ssh okouam@xkcd.codeifier.com 'rm #{production_db}.backup'")
   end
 
+  task :shapefile => [:load_config, :environment]  do
+       
+  
+  end
+
   task :postgis do
 
     ActiveRecord::Base.configurations = Rails.configuration.database_configuration

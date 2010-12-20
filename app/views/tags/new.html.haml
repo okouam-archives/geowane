@@ -1,7 +1,7 @@
 .block.tags.new
   %h3 Add Tag
   %br
-  = select_tag("category_id", options_for_select(Category.all.map {|c| [c.french, c.id]}), html_options = {})
+  = select_tag("category_id", options_for_select(Category.all.map {|c| [c.french, c.id]}), :class => "styled_select")
   %br
   %br
   %input.confirm{:type=>"button", :value=>"Confirm", :class=>"button"}
@@ -17,7 +17,7 @@
       url: "/locations/#{object.location.id}/tags",
       data: {"tag[category_id]": category_id},
       success: function() {
-        $(document).trigger("load.location.tags");
+        $(document).trigger("load.location.tags", "#{object.location.id}");
         $(document).trigger("close.facebox");
       }
     });

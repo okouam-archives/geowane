@@ -2,4 +2,4 @@
   %label 
     Tags
     = link_to "(+)", new_location_tag_url(object), :rel => "facebox"
-  .list
+  .list{:class=>"tags_for_#{object.id}"}

@@ -8,7 +8,6 @@ class Location < ActiveRecord::Base
   accepts_nested_attributes_for :comments, :reject_if => lambda { |a| a[:comment].blank? || a[:title].blank? }
 
   validates_presence_of :longitude, :latitude, :name
-  has_many :categories, :through => :tags
   belongs_to :user
   has_many :tags, :autosave => true
   enum_attr :status, %w(new invalid corrected audited field_checked), :init => :new, :nil => false
@@ -44,16 +43,41 @@ class Location < ActiveRecord::Base
     Country.find_by_sql("select * from countries WHERE ST_WITHIN(setsrid(ST_Point(#{self.longitude}, #{self.latitude}), 4326), countries.feature)").first
   end
 
+  def country_name
+    return nil unless self.longitude && self.latitude  
+    resultset = Location.connection.select_all("SELECT name FROM countries JOIN topologies ON topologies.country_id = countries.id AND topologies.location_id = #{self.id}")
+    resultset[0] ? resultset[0]["name"]: nil 
+  end
+
+  def region_name
+    return nil unless self.longitude && self.latitude  
+    resultset = Location.connection.select_all("SELECT name FROM regions JOIN topologies ON topologies.region_id = regions.id AND topologies.location_id = #{self.id}")
+    resultset[0] ? resultset[0]["name"]: nil 
+  end
+
+  def commune_name
+    return nil unless self.longitude && self.latitude  
+    resultset = Location.connection.select_all("SELECT name FROM communes JOIN topologies ON topologies.commune_id = communes.id AND topologies.location_id = #{self.id}")
+    resultset[0] ? resultset[0]["name"]: nil 
+  end
+
+  def city_name
+    return nil unless self.longitude && self.latitude  
+    resultset = Location.connection.select_all("SELECT name FROM cities JOIN topologies ON topologies.city_id = cities.id AND topologies.location_id = #{self.id}")
+    resultset[0] ? resultset[0]["name"] : nil
+  end
+
   def json_object
     { :label => name,
       :id => id,
       :name => name,
       :longitude => longitude,
       :latitude => latitude,
-      :icon => category && category.icon ? category.icon : nil,
-      :commune => commune ? commune.name : nil,
-      :city => city ? city.name : nil,
-      :region => region ? region.name : nil,
+      :icon => !tags.empty? && tags.first.category.icon ? tags.first.category.icon : nil,
+      :commune => commune_name,
+      :country => country_name,
+      :city => city_name,
+      :region => region_name,
       :feature => feature.as_wkt
     }
   end

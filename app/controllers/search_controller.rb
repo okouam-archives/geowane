@@ -3,16 +3,23 @@ class SearchController < ApplicationController
   layout "admin"
 
   new_action.before do
-    @all_users = User.order("login ASC").map{|user| [user.login, user.id]}
-    @all_cities = City.select("id, name").order("name ASC").map{|city| [city.name, city.id]}
-    @all_communes = Commune.select("id, name").order("name ASC").map{|commune| [commune.name, commune.id]}
-    @all_regions = Region.select("id, name").order("name ASC").map{|region| [region.name, region.id]}
-    @all_countries = Country.select("id, name").order("name ASC").map{|country| [country.name, country.id]}
-    @all_categories = Category.select("id, french").order("french ASC").map {|category| [category.french, category.id]}
+    @all_users = User.connection.select_all("SELECT login, id FROM users ORDER BY login ASC").
+                        map {|rs| [rs["login"], rs["id"]]}
+    @all_cities = City.connection.select_all("SELECT id, name FROM cities ORDER BY name ASC").
+                        map {|rs| [rs["name"], rs["id"]]}
+    @all_communes = Commune.connection.select_all("SELECT id, name FROM communes ORDER BY name ASC").
+                        map {|rs| [rs["name"], rs["id"]]}
+    @all_regions = Region.connection.select_all("SELECT id, name FROM regions ORDER BY name ASC").
+                        map {|rs| [rs["name"], rs["id"]]}
+    @all_countries = Country.connection.select_all("SELECT id, name FROM countries ORDER BY name ASC").
+                        map {|rs| [rs["name"], rs["id"]]}
+    @all_categories = Category.connection.select_all("SELECT id, french FROM categories ORDER BY french ASC").
+                        map {|rs| [rs["french"], rs["id"]]}
   end
 
   def create
-    redirect_to locations_path(:s => params[:search])
+    criteria = params[:search].delete_if {|key, value| value.blank? || (["category_missing", "category_present"].include?(key) && value == "0")}
+    redirect_to locations_path(:s => criteria)
   end
 
 end

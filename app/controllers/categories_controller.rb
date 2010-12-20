@@ -15,7 +15,9 @@ class CategoriesController < ApplicationController
         sum(CASE WHEN status = 'invalid' THEN 1 ELSE 0 END) as invalid_locations,
         sum(CASE WHEN status = 'audited' THEN 1 ELSE 0 END) as audited_locations,
         sum(CASE WHEN status = 'field_checked' THEN 1 ELSE 0 END) as field_checked_locations
-      FROM categories LEFT JOIN locations on locations.category_id = categories.id
+      FROM categories 
+      JOIN tags ON tags.category_id = categories.id 
+      LEFT JOIN locations on locations.id = tags.location_id
       GROUP BY categories.id, categories.french, categories.english, icon
       ORDER BY #{@language}
     }

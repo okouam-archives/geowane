@@ -18,6 +18,7 @@
     <script type="text/javascript" src="/javascripts/rails.js"></script>
 	<script type="text/javascript" src="/javascripts/theme/custom.js"></script>
     <script type="text/javascript" src="/javascripts/jquery.ba-bbq.min.js"></script>
+    <script type="text/javascript" src="/javascripts/geocms.rails.js"></script>
 </head>
 <body class="<%="#{controller.controller_name} #{controller.action_name}"%>">
 	<div id="hld">
@@ -31,10 +32,8 @@
                             <li><%= link_to "List Categories", categories_path(:page => 1) %></li>
                             <li><%= link_to "List Level 0 Boundaries ", countries_path %></li>
                             <li><%= link_to "List Level 1 Boundaries", regions_path %></li>
-                            <li><%= link_to "List Level 2 Boundaries", communes_path %></li>
-                            <li><%= link_to "List Level 3 Boundaries", cities_path %></li>
-                            <li><%= link_to "List Level 4 Boundaries", cities_path %></li>
-                            <li><%= link_to "List Level 5 Boundaries", cities_path %></li>
+                            <li><%= link_to "List Level 2 Boundaries", cities_path %></li>
+                            <li><%= link_to "List Level 3 Boundaries", communes_path %></li>
                             <li><%= link_to "View Entire Map", map_path %></li>
                         </ul>
 					</li>

@@ -1,114 +1,94 @@
 = content_for :title, "Gowane CMS - Locations"
 
-.locations.index
-  .block
-    .block_head
-      %h2
-        Locations
-      %ul
-        %li.nobg
-          = link_to "Search", new_search_path
-        %li.nobg
-          = link_to "New Location", new_location_path
-        - unless @locations.empty?
-          - if @locations.any? {|l| current_user.may_update_location?(l)}
-            %li.nobg.mass_update
-              = link_to "Edit Selection", "#"
-          - if @locations.any? {|l| current_user.may_destroy_location?(l)}
-            %li.nobg.mass_delete
-              = link_to "Delete Selection", "#"
-          %li.nobg.export
-            = link_to "Export SELECTION", "#"
-
-    .block_sub
-      %b{:style=>"margin-right: 20px"}
-        SEARCH CRITERIA
-      %code
-        = show_search_criteria
-    .block_content
-      - if flash[:msg]
-        .flash_msg= flash[:msg]
-      = semantic_form_for :export, :url => new_export_path do
-        %table.main{:cellspacing => "0", :cellpadding => "0", :style => "width: 100%; margin-left: 0px"}
-          %tbody
+.block
+  .block_head
+    %h2 Locations
+    %ul
+      %li.nobg= link_to "Search", new_search_path
+      %li.nobg= link_to "New Location", new_location_path
+      - unless @locations.empty?
+        - if @locations.any? {|l| current_user.may_update_location?(l)}
+          %li.nobg.collection_edit= link_to "Edit Selection", "#"
+        - if @locations.any? {|l| current_user.may_destroy_location?(l)}
+          %li.nobg.collection_delete= link_to "Delete Selection", "#"
+        %li.nobg.export= link_to "Export SELECTION", "#"
+  .block_sub
+    %span
+      SEARCH CRITERIA
+    %code
+      = show_search_criteria
+  .block_content
+    = semantic_form_for :locations, :url => new_export_path do
+      %table.main{:cellspacing => "0", :cellpadding => "0", :style => "width: 100%; margin-left: 0px"}
+        %tbody
+          %tr
+            %th
+              %input{:type=>"checkbox"}
+            %th Name
+            %th City
+            %th.tags Tags
+            %th.added_by Added By
+            %th.date_added Date Added
+            %th.last_changed Last Changed
+            %th.status Status
+          - @locations.each do |location|
             %tr
-              %th
-                %input{:type=>"checkbox"}
-              %th Name
-              %th City
-              %th{:style=>"width: 120px"}
-                Tags
-              %th{:style=>"width: 80px"}
-                Added By
-              %th{:style=>"width: 80px"}
-                Date Added
-              %th{:style=>"width: 95px"}
-                Last Changed
-              %th{:style=>"width: 95px"}
-                Status
-            - @locations.each do |location|
-              %tr
-                %td.selector
-                  %input{:type=>"checkbox", :name=>"export[locations][]", :value => "#{location.id}"}
-                %td
-                  - if location.name.length > 40
-                    = image_tag("warning-icon.png", :style=>"position: relative; top: 3px; margin-right: 3px")
-                  = link_to location.name, edit_location_path(location)
-                %td= location.city_name
-                %td= location.tags.map {|t| t.category.french}.join(", ") || ""
-                %td= location.username
-                %td= location.created_at.strftime("%d-%m-%Y")
-                %td= location.updated_at.strftime("%d-%m-%Y")
-                %td= location.status.to_s.humanize.upcase 
-      %br
-        %div
+              %td.selector
+                %input{:type=>"checkbox", :name=>"locations[]", :value => "#{location.id}"}
+              %td.name
+                - if location.name.length > 40
+                  = image_tag("warning-icon.png")
+                = link_to location.name, edit_location_path(location)
+              %td= location.city_name
+              %td= location.tags.map {|t| t.category.french}.join(", ") || ""
+              %td= location.username
+              %td= location.created_at.strftime("%d-%m-%Y")
+              %td= location.updated_at.strftime("%d-%m-%Y")
+              %td= location.status.to_s.humanize.upcase 
+    %br
+      %div
+        - unless @locations.empty?
           = select_tag "pages", options_for_select([ "10", "20", "50", "100", "1000", "5000"], @per_page), :style => "width: 70px; padding: 2px; margin-top: -3px"
           = will_paginate @locations, :params => @params, :class => "paggination right"
-      %div.clear
-      %span{:style=>"float: right; margin-bottom: 20px"}
-        = page_entries_info @locations
+    %div.clear
+    %span{:style=>"float: right; margin-bottom: 20px"}
+      = page_entries_info @locations
 
-  :css
-    .flash_msg {padding:5px 5px 5px 10px}
+:javascript
+  $(document).ready(function() {
 
-  :javascript
-    $(document).ready(function() {
+    $("#pages").change(function() {
+      window.location = $.param.querystring(window.location.href, {per_page: $(this).val()});
+    });
 
-      $("#pages").change(function() {
-        window.location = $.param.querystring(window.location.href, {per_page: $(this).val()});
-      });
+    $("th input[type=checkbox]").click(function() {
+      var master = $(this);
+      var isChecked = master.attr("checked");
+      $("td input[type=checkbox]").attr("checked", isChecked);
+    });
 
-      $("th input[type=checkbox]").click(function() {
-        var master = $(this);
-        var isChecked = master.attr("checked");
-        $("td input[type=checkbox]").attr("checked", isChecked);
-      });
-
-      var mass_change = function(action) {
-        if ($("td.selector input:checked").length < 1) {
-          alert("Please select one or more locations for " + action);
-          return false;
-        }
-        $("form.export").attr("action", "/locations/group_" + action);
-        $("form.export").submit();
+    var collection_change = function(url, method) {
+      if ($("td.selector input:checked").length < 1) {
+        alert("Please select one or more locations");
         return false;
       }
+      $("form").attr("action", url);      
+      if (method)   $('<input type="hidden" name="_method" value="' + method + '" />').appendTo($("form"));
+      $("form").submit();
+      return false;
+    }
 
-      $("li.mass_update a").click(function() {
-        return mass_change('edit')
-      });
-
-      $("li.mass_delete a").click(function() {
-        return mass_change('delete')
-      });
-
-      $("li.mass_audit a").click(function() {
-        return mass_change('audit')
-      });
-
-      $("li.export a").click(function() {
-        $("form.export").attr("action", "/exports/prepare");
-        $("form.export").submit();
-        return false;
-      });
+    $("li.collection_edit a").click(function() {
+      return collection_change('locations/edit')
     });
+
+    $("li.collection_delete a").click(function() {
+      return collection_change('locations', 'delete')
+    });
+
+    $("li.export a").click(function() {
+      $("form").attr("action", "/exports/prepare");
+      $("form").submit();
+      return false;
+    });
+  });

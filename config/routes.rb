@@ -1,13 +1,13 @@
 GeoCms::Application.routes.draw do
 
+  match'/locations' => 'locations#collection_delete', :via => :delete 
+  match'/locations/edit' => 'locations#collection_edit', :via => [:get, :post] 
+  match'/locations' => 'locations#collection_update', :via => :put 
+
   resources :locations do
     resources :comments, :tags
-    collection do
-      post :collection_delete, :collection_edit
-    end
     member do
       get :next, :previous, :surrounding_landmarks
-      post :group_item_edit
     end
   end
 
@@ -24,9 +24,7 @@ GeoCms::Application.routes.draw do
   resources :users, :communes, :cities, :regions, :imports, :countries, :counters, :exports, :conversions
 
   resources :exports do
-    collection do
-      post :prepare
-    end
+    post :prepare, :on => :collection
   end
 
   match '/' => 'user_sessions#new'

@@ -16,7 +16,7 @@ class LocationsController < ApplicationController
       search_query = Search.create(params[:s])
     end
     @per_page ||= 10
-    @locations =  Location.find_by_sql(search_query).paginate(:page => page, :per_page => @per_page)
+    @locations =  Location.paginate_by_sql(search_query, :page => page, :per_page => @per_page)
     session[:current_search] = {:query => search_query, :page => page, :per_page => @per_page}
   end
 
@@ -42,7 +42,7 @@ class LocationsController < ApplicationController
   end
 
   def collection_delete
-    locations = Location.find(params[:export][:locations])
+    locations = Location.find(params[:locations])
     locations.each do |location|
       current_user.may_destroy_location!(location)
       location.destroy
@@ -51,8 +51,28 @@ class LocationsController < ApplicationController
   end
 
   def collection_edit
-    @locations = Location.find(params[:export][:locations], :order => "name")
-    @categories = ["", ""] + Category.order("french").map{|c| [c.french, c.id]}
+    if request.post?
+      session[:collection] = params[:locations]
+      redirect_to "/locations/edit"
+    else
+      @locations = Location.find(session[:collection], :order => "name")
+      @categories = ["", ""] + Category.order("french").map{|c| [c.french, c.id]}      
+    end
+  end
+
+  def collection_update
+    locations = params[:locations]
+    locations.each do |location_attributes| 
+      attributes = location_attributes[1]
+      id = attributes.delete(:id)
+      location = Location.find(id)
+      if category_id = attributes.delete(:tag)
+        location.tags << Tag.new(:location_id => id, :category_id => category_id)
+      end
+      location.update_attributes(attributes)
+      location.save!
+    end
+    head :ok
   end
 
   def surrounding_landmarks

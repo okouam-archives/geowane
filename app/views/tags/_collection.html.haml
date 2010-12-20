@@ -1,0 +1,7 @@
+= items.map{|c|"<span>" + c[:name] + link_to("x", c[:delete_link], :method => :delete, :confirm => "Are you sure you want to delete this tag?", :remote => :true, :class => "tag_delete") + "</span>"}.join(" ").html_safe
+
+:javascript
+    $("a.tag_delete").bind("ajax:complete", function() {
+      $(this).parent().remove();   
+    });
+    

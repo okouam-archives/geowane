@@ -8,7 +8,6 @@
 /* .locations.edit */
 
 .locations.edit .block_sub a {margin-right: 5px}
-.locations.edit .block_sub .change_status {margin-right: 25px}
 .locations.edit fieldset {border-width: 0}
 .locations.edit fieldset ol {padding-left: 0}
 .locations.edit .submit input {padding: 2px; background-color: #444; margin-right: 3px; margin-top: 3px; color: white; font-weight: bold; border: 1px solid #222}
@@ -19,11 +18,22 @@
 .locations.edit #edit-location-tabs ul li {float: left; list-style-type: none; font-weight: bold; background-image: none; margin-right: 20px}
 .locations.edit .ui-tabs-hide {display: none}
 .locations.edit .tags .list span {margin-right: 5px}
-.locations.edit .tags .list a {position: relative; top: 3px}
+.locations a.tag_delete {position: relative; top: 3px}
 .locations.edit .map-instructions {font-style: italic; font-size: 10px; text-align: center}
 .locations.edit .right-panel table td, .right-panel table th {border-bottom-width: 0 ! important}
 .locations.edit .right-panel table tr {background-color: none ! important}
 .locations.edit .right-panel table {width: 100%; margin-top: -15px}
+
+/* .locations.index */
+
+.locations.index .block_sub span {font-weight: bold; margin-right: 20px}
+.locations.index table.main td.name img {position: relative; top: 3px; margin-right: 3px} 
+.locations.index table.main th.city {}
+.locations.index table.main th.added_by {width: 80px}
+.locations.index table.main th.date_added {width: 80px}
+.locations.index table.main th.tags {width: 120px}
+.locations.index table.main th.last_changed {width: 95px}
+.locations.index table.main th.status {width: 95px}
 
 /* .index */
 

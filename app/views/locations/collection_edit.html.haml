@@ -4,32 +4,42 @@
   .block_content
     %table.layout
       %tr
-        %td Choose a category for all the locations:
+        %td Add a category tag to all the locations:
         %td= select_tag "category_switcher", options_for_select(@categories), :class => "styled_select"
+        %td
+          %input#tag_update{:type=>"button", :value=>"Update", :class=>"button"}
       %tr
         %td Choose a status for all the locations:
-        %td= select_tag "status_switcher", options_for_select(Location.new.enums(:status)), :class => "styled_select"
-    = form_for "locations", :url => do_mass_update_locations_path do |form|
+        %td= select_tag "status_switcher", options_for_select(workflow_actions(current_user, nil)), :class => "styled_select"
+        %td 
+          %input#status_update{:type=>"button", :value=>"Update", :class=>"button"}
+    = form_for "locations", :url => "/locations", :method => :put do |form|
       %table.list.updates
         %tr
           %th
-            %b Name
           %th
-            %b Category
+            %b Name
           %th
             %b Status
           %th
+            %b Tags
+          %th 
+            %b Comments              
         - @locations.each_with_index do |location, i|
           %tr
-            %td= location.name
-            %td.category= location.try(:category).try(:french) || ""
+            %td= link_to("Edit", "#", :class => "edit-location", :"data-id" => location.id)
+            %td.name= location.name
             %td.status
               =location.status.to_s.humanize.upcase
               =form.hidden_field "[#{i}][id]", :value => location.id
             %td
-              %a{:rel => "facebox", :href => quick_edit_location_url(object)}
-                Edit
-
+              = link_to "(+)", new_location_tag_url(location), :rel => "facebox"
+              %span.list{:class=>"tags_for_#{location.id}"}
+                = render :partial => "tags/collection", :locals => {:items => location.tags.map {|c| {:name => c.category.french, :delete_link => location_tag_url(c.location_id, c.id)}}}
+            %th 
+              = link_to "(+)", new_location_comment_url(location), :rel => "facebox"
+              = link_to location.comments.count, "/locations/#{location.id}/comments?layout=facebox", :rel => "facebox", :id => "comments_for_#{location.id}" 
+             
 :css
   input {padding: 5px}
   .list.updates {width: 100%}
@@ -40,10 +50,82 @@
 
 :javascript
   $(document).ready(function() {
-    $("#category_switcher").change(function() {
-      $("td.category select").val($(this).val());
+
+    $("#status_update").click(function() {
+      var new_status = $("#status_switcher").find("option:selected").text();
+      locations = jQuery.map($(".edit-location"), function(item, i) {
+        return {id: $(item).data("id"), status: new_status.underscore()};
+      });
+      $.ajax({
+        url: "/locations",
+        type: "POST",
+        data: {_method:"PUT", locations: locations},
+        success: function() {
+          window.location = "/locations/edit";
+        }
+      }); 
     });
-    $("#status_switcher").change(function() {
-      $("td.status select").val($(this).val());
+
+    $("#tag_update").click(function() {
+      var new_tag = $("#category_switcher").val();
+      locations = jQuery.map($(".edit-location"), function(item, i) {
+        return {id: $(item).data("id"), tag: new_tag};
+      });
+      $.ajax({
+        url: "/locations",
+        type: "POST",
+        data: {_method:"PUT", locations: locations},
+        success: function() {
+          window.location = "/locations/edit";
+        }
+      }); 
     });
+
+    $(".edit-location").click(function() {
+      var mode = $(this).text();
+      var status_element = $(this).parents("tr").find("td.status");
+      var name_element = $(this).parents("tr").find("td.name");
+      if (mode == "Edit") {
+        var status = status_element.text();
+        var name = name_element.text();
+        status_element.empty();
+        name_element.empty();
+        name_element.append('<input type="text" value="' + name + '"></input>');
+        $("#status_switcher").clone().appendTo(status_element);
+        status_element.find("select").val(status.underscore());
+        $(this).text("Confirm");
+      } else {
+        var id = $(this).data("id");
+        var name = name_element.find("input").val();
+        var status = status_element.find("select option:selected").text();
+        a = $(this);
+        name_element.find("input").attr("disabled", "disabled");
+        status_element.find("select option").attr("disabled", "disabled");
+        $.ajax({
+          url: "/locations",
+          type: "POST",
+          data: {_method:"PUT", locations: [{id: id, name: name, status: status.underscore()}]},
+          success: function() {
+            name_element.html(name);
+            status_element.html(status);
+            a.text("Edit");
+          }
+        });       
+      }
+    });
+  
+    var loadComments = function(location_id) {
+      $(".comments_for_" + location_id).load("/locations/" + location_id + "/comments");
+    };
+
+    var loadTags = function(evt, location_id) {
+      console.debug(location_id);
+      $(".tags_for_" + location_id).load("/locations/" + location_id + "/tags");
+    };
+
+    $(document).bind("load.location.comments", loadComments);
+
+    $(document).bind("load.location.tags", loadTags);       
   });
+
+  
