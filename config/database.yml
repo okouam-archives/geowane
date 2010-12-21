@@ -15,13 +15,12 @@ staging:
   database: geocms_staging
   host: localhost
   pool: 5
-  username: geocms
+  username: o1
   password: com99123
   timeout: 5000
   encoding: utf8
   min_messages: warning
   template: postgis
-  min_messages: warning
 
 test: &test
   adapter: postgresql
