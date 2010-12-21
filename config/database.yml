@@ -10,6 +10,19 @@ development:
   min_messages: warning
   template: postgis
 
+staging:
+  adapter: postgresql
+  database: geocms_staging
+  host: localhost
+  pool: 5
+  username: geocms
+  password: com99123
+  timeout: 5000
+  encoding: utf8
+  min_messages: warning
+  template: postgis
+  min_messages: warning
+
 test: &test
   adapter: postgresql
   database: cms_test
