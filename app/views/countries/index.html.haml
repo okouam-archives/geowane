@@ -9,9 +9,10 @@
       %thead
         %tr
           %th Country
-          %th.total_POI Total POI
-          %th.pending Pending
+          %th.total_POI Total
+          %th.pending New
           %th.invalid Invalid
+          %th.pending Corrected
           %th.audited Audited
           %th.field_checked Field Checked
           %th.categorized Categorized
@@ -27,18 +28,20 @@
         %tr
           %td
           %td.total_POI
-            %b= @countries.inject(0) {|total, city| total + city.locations_count.to_i }
+            %b= @countries.inject(0) {|total, city| total + city.total_locations.to_i }
           %td.pending
-            %b= @countries.inject(0) {|total, city| total + city.pending_locations.to_i }
+            %b= @countries.inject(0) {|total, city| total + city.new_locations.to_i }
           %td.invalid
             %b= @countries.inject(0) {|total, city| total + city.invalid_locations.to_i }
+          %td.pending
+            %b= @countries.inject(0) {|total, city| total + city.corrected_locations.to_i }
           %td.audited
             %b= @countries.inject(0) {|total, city| total + city.audited_locations.to_i }
           %td.field_checked
             %b= @countries.inject(0) {|total, city| total + city.field_checked_locations.to_i }
           %td.categorized
             %b
-              %i= @countries.inject(0) {|total, city| total + city.categorized_locations.to_i }
+              %i= @countries.inject(0) {|total, city| total + city.uncategorized_locations.to_i }
           - if @can_edit
             %td
     %br

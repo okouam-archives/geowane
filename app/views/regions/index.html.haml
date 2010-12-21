@@ -12,12 +12,13 @@
             %tr
               %th Region
               %th Country
-              %th.total_POI Total POI
-              %th.pending Pending
+              %th.total_POI Total 
+              %th.invalid New
               %th.invalid Invalid
+              %th.invalid Corrected
               %th.audited Audited
               %th.field_checked Field Checked
-              %th.categorized Categorized
+              %th.categorized Uncategorized
               %th.view
           %tbody
             - @regions.each do |region|
@@ -30,18 +31,20 @@
               %td
               %td
               %td.total_POI
-                %b= @regions.inject(0) {|total, city| total + city.locations_count.to_i }
-              %td.pending
-                %b= @regions.inject(0) {|total, city| total + city.pending_locations.to_i }
+                %b= @regions.inject(0) {|total, city| total + city.total_locations.to_i }
+              %td.new
+                %b= @regions.inject(0) {|total, city| total + city.new_locations.to_i }
               %td.invalid
                 %b= @regions.inject(0) {|total, city| total + city.invalid_locations.to_i }
+              %td.corrected
+                %b= @regions.inject(0) {|total, city| total + city.corrected_locations.to_i }
               %td.audited
                 %b= @regions.inject(0) {|total, city| total + city.audited_locations.to_i }
               %td.field_checked
                 %b= @regions.inject(0) {|total, city| total + city.field_checked_locations.to_i }
               %td.categorized
                 %b
-                  %i= @regions.inject(0) {|total, city| total + city.categorized_locations.to_i }
+                  %i= @regions.inject(0) {|total, city| total + city.uncategorized_locations.to_i }
               %td
       - else
         %p

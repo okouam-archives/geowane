@@ -1,6 +1,7 @@
-%td.total_POI= area.locations_count
-%td.pending= area.pending_locations
-%td.invalid= area.invalid_locations
-%td.audited= area.audited_locations
-%td.field_checked= area.field_checked_locations
-%td.categorized= area.categorized_locations
+%td.total_POI= area.total_locations || 0
+%td.pending= area.new_locations || 0
+%td.invalid= area.invalid_locations || 0
+%td.invalid= area.corrected_locations || 0
+%td.audited= area.audited_locations || 0
+%td.field_checked= area.field_checked_locations || 0
+%td.categorized= area.uncategorized_locations || 0
