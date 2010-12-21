@@ -280,3 +280,7 @@ Peter Morville
 Search User Interfaces
 Marti A. Hearst
 
+PassengerLogLevel 0
+RailsEnv production
+
+

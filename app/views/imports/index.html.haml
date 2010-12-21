@@ -1,3 +1,4 @@
+= content_for :title, "View Imports"
 .block
   .block_head
     %h2
@@ -19,7 +20,7 @@
             %tr
               %td= link_to conversion.input.original_filename, conversion.input.url
               %td= conversion.input_format
-              %td= conversion.locations_count
+              %td= link_to conversion.locations_count, "/locations?s[import_id]=#{conversion.id}"
               %td= conversion.user.login
               %td= conversion.created_at
     - else

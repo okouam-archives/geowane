@@ -2,12 +2,14 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Import do
 
-  EXAMPLE_MP = File.expand_path(File.join(File.dirname(__FILE__), "../samples/example.gpx"))
+  @example_gpx = File.expand_path(File.join(File.dirname(__FILE__), "../samples/example.gpx"))
 
   describe "when importing locations" do
 
     it "selects the correct importer" do
-      pending
+      import = Factory(:valid_gpx_import, :input => @example_gpx)
+      
+      import.execute
     end
 
     it "assigns the number of locations imported" do

@@ -50,6 +50,10 @@ class Search
       query = query.where("tags_count > 0")
     end
 
+    unless params[:import_id].blank?
+      query = query.where("import_id = ?", params[:import_id])
+    end
+
     unless params[:country_id].blank?
       query = query.joins("join countries on ST_Within(locations.feature, countries.feature)").where("countries.id = ?", params[:country_id])
     end

@@ -1,3 +1,4 @@
+= content_for :title, "Edit Selected Locations"
 .block
   .block_head
     %h2 Update Locations
@@ -17,17 +18,16 @@
       %table.list.updates
         %tr
           %th
-          %th
             %b Name
           %th
             %b Status
           %th
             %b Tags
           %th 
-            %b Comments              
+            %b Comments     
+          %th         
         - @locations.each_with_index do |location, i|
           %tr
-            %td= link_to("Edit", "#", :class => "edit-location", :"data-id" => location.id)
             %td.name= location.name
             %td.status
               =location.status.to_s.humanize.upcase
@@ -36,10 +36,10 @@
               = link_to "(+)", new_location_tag_url(location), :rel => "facebox"
               %span.list{:class=>"tags_for_#{location.id}"}
                 = render :partial => "tags/collection", :locals => {:items => location.tags.map {|c| {:name => c.category.french, :delete_link => location_tag_url(c.location_id, c.id)}}}
-            %th 
+            %td 
               = link_to "(+)", new_location_comment_url(location), :rel => "facebox"
               = link_to location.comments.count, "/locations/#{location.id}/comments?layout=facebox", :rel => "facebox", :id => "comments_for_#{location.id}" 
-             
+            %td= link_to("Edit", "#", :class => "edit-location", :"data-id" => location.id)     
 :css
   input {padding: 5px}
   .list.updates {width: 100%}
@@ -119,7 +119,6 @@
     };
 
     var loadTags = function(evt, location_id) {
-      console.debug(location_id);
       $(".tags_for_" + location_id).load("/locations/" + location_id + "/tags");
     };
 

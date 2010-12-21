@@ -17,12 +17,12 @@
           %li= link_to "Information", "#information-tab"
           %li= link_to "Coordinates", "#classification-tab"
           %li= link_to "History", "#history-tab"  
-      .block_content
-        = render :partial => "locations/form/feature", :locals => {:form => form, :form_data => @form_data}
-        = render :partial => "locations/form/information", :locals => {:form => form}
-        = render :partial => "locations/form/classification", :locals => {:form => form}
-        = render :partial => "locations/form/history", :locals => {:form => form, :location => @location}
-        .clear
+    .block_content
+      = render :partial => "locations/form/feature", :locals => {:form => form, :form_data => @form_data}
+      = render :partial => "locations/form/information", :locals => {:form => form}
+      = render :partial => "locations/form/classification", :locals => {:form => form}
+      = render :partial => "locations/form/history", :locals => {:form => form, :location => @location}
+      .clear
 
 :javascript
   $(document).ready(function() {

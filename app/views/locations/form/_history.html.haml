@@ -1,4 +1,13 @@
 #history-tab
+  - if object.import_id
+    %b Imported from
+    = link_to Import.find(object.import_id).input.original_filename, Import.find(object.import_id).input.url
+  %p
+    %b Added by
+    = object.user.login
+    %b on
+    = object.created_at
+  %p    
   - object.audits.each do |audit|
     %p
       %b
