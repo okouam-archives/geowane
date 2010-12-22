@@ -9,8 +9,8 @@ describe Export do
     end
 
     it "saves the count of locations exported" do
-      export = Export.new(:name => "testing", :output_format => :SHP)
-      export.execute(Location.all.map{|l|l.id})
+      export = Export.new(:name => "testing", :output_format => ".SHP")
+      export.execute(Location.all)
       export.locations_count = 10
     end
 

@@ -75,7 +75,11 @@ class LocationsController < ApplicationController
       location.update_attributes(attributes)
       location.save!
     end
-    head :ok
+    if request.xhr?
+      head :ok
+    else
+      redirect_to "/locations/edit"
+    end
   end
 
   def surrounding_landmarks
