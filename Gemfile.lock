@@ -133,6 +133,7 @@ GEM
       treetop (~> 1.4.8)
     meta_programming (0.2.2)
     mime-types (1.16)
+    minitar (0.5.3)
     mongrel (1.1.5)
       cgi_multipart_eof_fix (>= 2.4)
       daemons (>= 1.0.3)
@@ -235,6 +236,7 @@ DEPENDENCIES
   hirb
   hoptoad_notifier
   launchy
+  minitar
   mongrel
   newrelic_rpm
   nokogiri

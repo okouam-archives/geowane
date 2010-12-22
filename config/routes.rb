@@ -30,5 +30,4 @@ GeoCms::Application.routes.draw do
   match '/' => 'user_sessions#new'
   match '/dashboard' => 'admin#dashboard', :as => :dashboard
   match '/jobs' => 'admin#jobs', :as => :periodic_jobs
-  
 end

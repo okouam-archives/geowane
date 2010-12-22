@@ -11,6 +11,7 @@ gem 'aegis', :require => 'aegis'
 gem 'capistrano-ext'
 gem 'capistrano'
 gem "rails"
+gem "minitar"
 gem "arel"
 gem 'authlogic', :git => 'git://github.com/odorcicd/authlogic.git', :branch => 'rails3'
 gem "will_paginate", "~> 3.0.pre2"

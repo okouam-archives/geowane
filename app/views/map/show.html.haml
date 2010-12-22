@@ -12,5 +12,42 @@
 
 :javascript
   $(document).ready(function() {
-   var map = new SingleFeatureMap({element: "map"});
+    var params = {
+      resolutions: [
+          0.0125,
+          0.00625,
+          0.003125,
+          0.0015625,
+          0.00078125,
+          0.000390625,
+          0.0001953125,
+          0.00009765625,
+          0.000048828125,
+          0.0000244140625,
+          0.00001220703125,
+          0.00000610351563
+      ],
+      isBaseLayer: true,
+      buffer: 0,
+      layers: "countries"
+    };
+    var mapOptions = {
+      buffer: 0,
+      maxExtent: new OpenLayers.Bounds(-25, -5, 15, 25),
+      restrictedExtent: new OpenLayers.Bounds(-20, 0, 10, 20)
+    };
+    var options = {
+      map_imagetype: "png",
+      format: "aggpng24",
+      transparent: "false",
+      tileSize: 256,
+      buffer: 0
+    };
+    var url = "http://localhost/cgi-bin/mapserv?map=/var/www/mapserver/mapfiles/geocms.map";
+    OpenLayers.ImgPath = "/images/OpenLayers/";
+    var map = new OpenLayers.Map( 'map', mapOptions );
+    layer = new OpenLayers.Layer.MapServer( "OpenLayers WMS", [url], params);
+    map.addLayer(layer);
+    map.zoomToMaxExtent();
+    <!--var map = new SingleFeatureMap({element: "map"}); -->     
   });
