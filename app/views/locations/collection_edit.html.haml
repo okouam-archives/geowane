@@ -53,6 +53,10 @@
 
     $("#status_update").click(function() {
       var new_status = $("#status_switcher").find("option:selected").text();
+      if (new_status == "") {
+        alert("Please select a valid status.");
+        return false;
+      }
       locations = jQuery.map($(".edit-location"), function(item, i) {
         return {id: $(item).data("id"), status: new_status.underscore()};
       });
@@ -64,10 +68,15 @@
           window.location = "/locations/edit";
         }
       }); 
+      return false;
     });
 
     $("#tag_update").click(function() {
       var new_tag = $("#category_switcher").val();
+      if (new_tag == "") {
+        alert("Please select a valid category.");
+        return false;
+      }      
       locations = jQuery.map($(".edit-location"), function(item, i) {
         return {id: $(item).data("id"), tag: new_tag};
       });

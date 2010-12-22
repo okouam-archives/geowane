@@ -41,6 +41,8 @@
           %td.invalid
             %b= @cities.inject(0) {|total, city| total + city.invalid_locations.to_i }
           %td.audited
+            %b= @cities.inject(0) {|total, city| total + city.corrected_locations.to_i }
+          %td.audited
             %b= @cities.inject(0) {|total, city| total + city.audited_locations.to_i }
           %td.field_checked
             %b= @cities.inject(0) {|total, city| total + city.field_checked_locations.to_i }
