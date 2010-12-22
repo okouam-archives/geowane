@@ -1,5 +1,3 @@
-= content_for :title, "View Locations"
-
 <div class="block">
 
   <div class="block_head">
@@ -39,7 +37,7 @@
               <%= image_tag "/images/" + category.icon %>
               <% end %>
             </td>
-            <td class="count"><%= category.locations_count %></td>
+            <td class="count"><%= category.total_locations %></td>
             <td><%= category.new_locations %></td>
             <td><%= category.corrected_locations %></td>
             <td><%= category.invalid_locations %></td>
