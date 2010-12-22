@@ -4,13 +4,13 @@ class Counter
   def initialize(user)
       @user = user
       @total_locations = Location.where("user_id = ?", user.id).count
-      @new_locations = Location.where("user_id = ?", user.id).where("status = 'NEW'").count
-      @field_checked_locations = Location.where("user_id = ?", user.id).where("status = 'FIELD CHECKED'").count
-      @corrected_locations = Location.where("user_id = ?", user.id).where("status = 'CORRECTED'").count
-      @invalid_locations = Location.where("user_id = ?", user.id).where("status = 'INVALID'").count
-      @rejected_locations = Location.where("user_id = ?", user.id).where("status = 'REJECTED'").count
-      @audited_locations = Location.where("user_id = ?", user.id).where("status = 'AUDITED'").count
-      @categorized_locations = Location.where("user_id = ?", user.id).where("category_id IS NOT NULL").count
+      @new_locations = Location.where("user_id = ?", user.id).where("status = 'new'").count
+      @field_checked_locations = Location.where("user_id = ?", user.id).where("status = 'field_checked'").count
+      @corrected_locations = Location.where("user_id = ?", user.id).where("status = 'corrected'").count
+      @invalid_locations = Location.where("user_id = ?", user.id).where("status = 'invalid'").count
+      @rejected_locations = Location.where("user_id = ?", user.id).where("status = 'rejected'").count
+      @audited_locations = Location.where("user_id = ?", user.id).where("status = 'audited'").count
+      @categorized_locations = Location.where("user_id = ?", user.id).where("locations.id IN (SELECT location_id FROM tags)").count
   end
 
 end
