@@ -67,7 +67,11 @@ class LocationsController < ApplicationController
       id = attributes.delete(:id)
       location = Location.find(id)
       if category_id = attributes.delete(:tag)
-        location.tags << Tag.new(:location_id => id, :category_id => category_id)
+        if category_id.blank?
+          location.tags.clear
+        else
+          location.tags << Tag.new(:location_id => id, :category_id => category_id)  
+        end        
       end
       location.update_attributes(attributes)
       location.save!

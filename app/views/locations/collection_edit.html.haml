@@ -11,7 +11,7 @@
           %input#tag_update{:type=>"button", :value=>"Update", :class=>"button"}
       %tr
         %td Choose a status for all the locations:
-        %td= select_tag "status_switcher", options_for_select(workflow_actions(current_user, nil)), :class => "styled_select"
+        %td= select_tag "status_switcher", options_for_select(workflow_actions(current_user, nil).insert(0, "")), :class => "styled_select"
         %td 
           %input#status_update{:type=>"button", :value=>"Update", :class=>"button"}
     = form_for "locations", :url => "/locations", :method => :put do |form|
@@ -73,10 +73,6 @@
 
     $("#tag_update").click(function() {
       var new_tag = $("#category_switcher").val();
-      if (new_tag == "") {
-        alert("Please select a valid category.");
-        return false;
-      }      
       locations = jQuery.map($(".edit-location"), function(item, i) {
         return {id: $(item).data("id"), tag: new_tag};
       });
@@ -123,8 +119,10 @@
       }
     });
   
-    var loadComments = function(location_id) {
-      $(".comments_for_" + location_id).load("/locations/" + location_id + "/comments");
+    var loadComments = function(evt, location_id) {
+      var old_count = parseInt($("#comments_for_" + location_id).html());
+      var new_count = old_count + 1;
+      $("#comments_for_" + location_id).text(new_count);  
     };
 
     var loadTags = function(evt, location_id) {
