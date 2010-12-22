@@ -3,7 +3,6 @@ class LocationsController < ApplicationController
   resource_controller
   layout "admin"
   before_filter :assign_form_data, :only => [:create, :edit]
-  permissions :locations, :except => [:next, :previous, :mass_delete]
 
   def index
     page = params[:page]

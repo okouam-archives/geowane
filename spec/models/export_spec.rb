@@ -9,19 +9,9 @@ describe Export do
     end
 
     it "saves the count of locations exported" do
-      pending
-    end
-
-    it "exports the locations to a temporary .shp fileset" do
-      pending  
-    end
-
-    it "compresses and archives the temporary .shp fileset" do
-      pending
-    end
-
-    it "assigns the archived .shp fileset to the output of the export" do
-      pending
+      export = Export.new(:name => "testing", :output_format => :SHP)
+      export.execute(Location.all.map{|l|l.id})
+      export.locations_count = 10
     end
 
   end
