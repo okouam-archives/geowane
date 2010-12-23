@@ -61,21 +61,24 @@ class LocationsController < ApplicationController
 
   def collection_update
     locations = params[:locations]
+    redirect_url = "/locations"
     locations.each do |location_attributes| 
       attributes = location_attributes[1]
       id = attributes.delete(:id)
       location = Location.find(id)
-      if category_id = attributes.delete(:tag)
-        if category_id.blank?
-          location.tags.clear
-        else
-          location.tags << Tag.new(:location_id => id, :category_id => category_id)  
-        end        
-      end
       location.update_attributes(attributes)
+      if params[:commit] == "Add Tag" && params[:category_switcher]
+        location.tags << Tag.new(:location_id => self.id, :category_id => params[:category_switcher])
+        redirect_url = "/locations/edit"
+      elsif params[:commit] == "Remove Tag" && params[:category_switcher]
+        Tag.where("location_id = ?", id).where("category_id = ?", params[:category_switcher]).all.each do |t|
+          t.destroy
+        end
+        redirect_url = "/locations/edit"
+      end
       location.save!
     end
-    redirect_to "/locations"
+    redirect_to redirect_url
   end
 
   def surrounding_landmarks
