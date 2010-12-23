@@ -11,6 +11,7 @@ class CreateComments < ActiveRecord::Migration
     add_index :comments, :commentable_type
     add_index :comments, :commentable_id
     add_index :comments, :user_id
+    add_column :comments, :user_id, :integer
   end
 
   def self.down

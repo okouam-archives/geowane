@@ -39,7 +39,7 @@ namespace :db do
       Statistics.new.refresh(:areas)
       Statistics.new.refresh(:categories)
       Statistics.new.refresh(:cache_counters)
-      Statistics.new.refresh(:counters)
+      Statistics.new.refresh(:collectors)
     end
 
     task :areas => [:environment] do

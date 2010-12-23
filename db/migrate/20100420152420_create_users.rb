@@ -19,6 +19,9 @@ class CreateUsers < ActiveRecord::Migration
       t.boolean :is_active, :default => true, :null => false
       t.timestamps
     end
+    add_column :users, :mobile_number, :string
+    add_column :users, :skype_alias, :string
+    add_column :users, :home_country, :string
   end
 
   def self.down

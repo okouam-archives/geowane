@@ -74,10 +74,13 @@ class Statistics
   end
 
   def cache_counters
-
+    @connection.execute %{
+      UPDATE categories SET tags_count = (SELECT COUNT(*) FROM tags WHERE category_id = categories.id);
+      UPDATE locations SET tags_count = (SELECT COUNT(*) FROM tags WHERE location_id = locations.id);
+    }
   end
 
-  def counters
+  def collectors
   end
 
 end

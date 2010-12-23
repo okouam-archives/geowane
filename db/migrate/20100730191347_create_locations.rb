@@ -19,6 +19,8 @@ class CreateLocations < ActiveRecord::Migration
       t.timestamps
     end
 
+    add_column :locations, :import_id, :integer
+    add_column :locations, :long_name, :string
     add_column :locations, :feature, :geometry, :limit => nil, :srid => 4326
     add_index "locations", ["feature"], :name => "idx_locations_feature", :spatial => true
     add_index :locations, ["name"], :name => "idx_features_name"
