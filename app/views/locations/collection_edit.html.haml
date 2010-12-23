@@ -5,14 +5,8 @@
   .block_content
     %table.layout
       %tr
-        %td Add a category tag to all the locations:
-        %td= select_tag "category_switcher", options_for_select(@categories), :class => "styled_select"
-        %td
-          %input#tag_update{:type=>"button", :value=>"Update", :class=>"button"}
-      %tr
         %td Choose a status for all the locations:
         %td= select_tag "status_switcher", options_for_select(workflow_actions(current_user, nil).insert(0, "")), :class => "styled_select"
-        %td 
     = form_for "locations", :url => "/locations", :html=>{:method=>:put} do |form|
       %table.list.updates
         %thead
@@ -24,8 +18,7 @@
             %th
               %b Tags
             %th 
-              %b Comments     
-            %th        
+              %b Comments        
         %tbody 
         - @locations.each_with_index do |location, i|
           %tr{"data-id"=>location.id}
@@ -40,13 +33,21 @@
             %td 
               = link_to "(+)", new_location_comment_url(location), :rel => "facebox"
               = link_to location.comments.count, "/locations/#{location.id}/comments?layout=facebox", :rel => "facebox", :id => "comments_for_#{location.id}" 
-      %div.update_button_wrapper
-        = submit_tag "Update All"
+
+      %table.layout{:style=>"width: 100%"}
+        %tr
+          %td= select_tag "category_switcher", options_for_select(@categories), :class => "styled_select"
+          %td{:style=>"width: 60px"}
+            = submit_tag "Add Tag", :class => "button"  
+          %td{:style=>"width: 60px"}
+            = submit_tag "Remove Tags", :class => "button mid"
+          %td{:style=>"width: 200px; text-align: right"}
+            = submit_tag "Update All", :class => "button" 
 
 :css
-  .update_button_wrapper {text-align: right; mar}
   input {padding: 5px}
   .list.updates {width: 100%}
+  #status_switcher {width: 650px}
   .change {margin-right: 105px; margin-left: 15px}
   .change select {float: right}
   td.category select {width: 300px}

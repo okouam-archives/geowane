@@ -1,7 +1,7 @@
 .block.tags.new
   %h3 Add Tag
   %br
-  = select_tag("category_id", options_for_select(Category.all.map {|c| [c.french, c.id]}), :class => "styled_select")
+  = select_tag("category_id", options_for_select(Category.order("french ASC").map {|c| [c.french, c.id]}), :class => "styled_select")
   %br
   %br
   %input.confirm{:type=>"button", :value=>"Confirm", :class=>"button"}
