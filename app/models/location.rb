@@ -10,7 +10,7 @@ class Location < ActiveRecord::Base
   validates_presence_of :longitude, :latitude, :name
   belongs_to :user
   belongs_to :source, :class_name => "Import"
-  has_many :tags, :autosave => true
+  has_many :tags, :autosave => true, :counter_cache => true
   enum_attr :status, %w(new invalid corrected audited field_checked), :init => :new, :nil => false
   accepts_nested_attributes_for :tags, :reject_if => lambda { |a| a[:category_id].blank? }
 

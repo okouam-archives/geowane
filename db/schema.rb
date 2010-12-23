@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101222171059) do
+ActiveRecord::Schema.define(:version => 20101223110225) do
 
   create_table "audits", :force => true do |t|
     t.datetime "created_at"
@@ -148,6 +148,20 @@ ActiveRecord::Schema.define(:version => 20101222171059) do
     t.datetime "updated_at"
     t.string   "name"
   end
+
+  create_table "features", :force => true do |t|
+    t.integer  "end_level"
+    t.boolean  "one_way"
+    t.string   "label"
+    t.integer  "level"
+    t.integer  "road_id"
+    t.integer  "road_class"
+    t.integer  "speed"
+    t.integer  "type"
+    t.geometry "geom",       :limit => nil, :srid => 4326
+  end
+
+  add_index "features", ["geom"], :name => "idx_features_geom", :spatial => true
 
   create_table "imports", :force => true do |t|
     t.integer  "locations_count",    :default => 0

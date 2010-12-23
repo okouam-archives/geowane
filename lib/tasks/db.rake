@@ -24,6 +24,15 @@ namespace :db do
     system("ssh okouam@xkcd.codeifier.com 'rm #{production_db}.backup'")
   end
 
+  namespace :features do
+
+    task :import => [:environment] do
+      @directory = "/home/okouam/Dropbox/0-One/Operations/Technical/Mapping/Shapefiles/Carte Partielle Bénin"
+      Feature.import(@directory)
+    end  
+
+  end
+
   namespace :refresh do
  
     task :statistics => [:environment] do

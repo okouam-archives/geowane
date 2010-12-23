@@ -29,7 +29,7 @@
       ],
       isBaseLayer: true,
       buffer: 0,
-      layers: "countries"
+      layers: ["road-labels", "countries", "roads-far"]
     };
     var mapOptions = {
       buffer: 0,
@@ -48,6 +48,12 @@
     var map = new OpenLayers.Map( 'map', mapOptions );
     layer = new OpenLayers.Layer.MapServer( "OpenLayers WMS", [url], params);
     map.addLayer(layer);
+    map.events.on({
+      "zoomend": function() { 
+      if (console) console.debug("Map.getResolution(): " + map.getResolution());
+      if (console) console.debug("Map.getScale(): " + map.getScale());  
+      }
+    });
     map.zoomToMaxExtent();
     <!--var map = new SingleFeatureMap({element: "map"}); -->     
   });
