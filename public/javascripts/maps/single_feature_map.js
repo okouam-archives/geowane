@@ -1,17 +1,8 @@
-/**
- *  Implementation of a Single Feature Map
- *    - mapElement
- *    The jQuery element inside which the map will be displayed
- *    - observer
- *    An object containing a set of callbacks for Single Feature Maps.
- *    - options
- *    Options for the map
- */
-
 var SingleFeatureMap = SimpleMap.extend({
 
-  init: function(mapElement, observer, options) {
-    this._super(mapElement, observer, options);
+  init: function(options) {
+    this._super(options);
+    this.options = options;
   },
 
   addFeatureLayer: function() {
@@ -29,7 +20,7 @@ var SingleFeatureMap = SimpleMap.extend({
 
   onDragFeatureComplete: function(feature, pixel) {
     document.body.style.cursor = 'auto';
-    if (this.observer.onDragComplete) this.observer.onDragComplete(feature, this.map.getLonLatFromPixel(pixel));
+    if (this.options.observer.onDragComplete) this.options.observer.onDragComplete(feature, this.map.getLonLatFromPixel(pixel));
   }
 
 });
