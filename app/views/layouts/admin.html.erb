@@ -39,12 +39,11 @@
                         </ul>
 					</li>
                     <li>
-                        <a href="#">File Management</a>
+                        <a href="#">Data Management</a>
                         <ul>
                             <% unless current_user.has_role?("collector") %>
-                                <li><%= link_to "Import Spatial Data", imports_path %></li>
-                                <li><%= link_to "Export Locations", exports_path %></li>
-                                <li><%= link_to "Convert File Format", conversions_path %></li>
+                                <li><%= link_to "Import Data", imports_path %></li>
+                                <li><%= link_to "Export Data", exports_path %></li>
                             <% end %>
                         </ul>
                     </li>

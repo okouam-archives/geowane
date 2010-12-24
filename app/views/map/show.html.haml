@@ -11,6 +11,7 @@
   #map {width: 100%; height: 500px; border: 1px solid #ccc; margin-bottom: 20px; margin-top: 10px}
 
 :javascript
+  var map;
   $(document).ready(function() {
     var params = {
       resolutions: [
@@ -40,12 +41,11 @@
       layers: ["road-labels", "countries", "roads-far", "roads-close"],
       format: "aggpng24",
       transparent: "false",
-      //tileSize: 256,
       buffer: 0
     };
     var url = "http://localhost/cgi-bin/mapserv?map=/var/www/mapserver/mapfiles/geocms.map";
     OpenLayers.ImgPath = "/images/OpenLayers/";
-    var map = new OpenLayers.Map( 'map', mapOptions );
+    map = new OpenLayers.Map( 'map', mapOptions );
     layer = new OpenLayers.Layer.WMS( "OpenLayers WMS", [url], options, params);
     map.addLayer(layer);
     map.events.on({
