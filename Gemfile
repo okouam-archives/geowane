@@ -26,6 +26,7 @@ gem "columnize"
 gem "enumerated_attribute"
 gem "wirble"
 gem "hirb"
+gem 'craken', :git => 'git://github.com/voomify/craken.git'
 gem 'newrelic_rpm'
 gem 'dynamic_form', :git => "git://codaset.com/joelmoss/dynamic-form.git"
 gem 'sqlite3-ruby', '1.2.5', :require => 'sqlite3'
