@@ -27,8 +27,9 @@ namespace :db do
   namespace :features do
 
     task :import => [:environment] do
-      @directory = "/home/okouam/Dropbox/0-One/Operations/Technical/Mapping/Shapefiles/Carte Partielle Bénin"
-      Feature.import(@directory)
+      Feature.import("/home/okouam/Dropbox/0-One/Operations/Technical/Mapping/Shapefiles/Carte Partielle Bénin")
+      Feature.import("/home/okouam/Dropbox/0-One/Operations/Technical/Mapping/Shapefiles/Carte Partielle du Togo")
+      Feature.import("/home/okouam/Dropbox/0-One/Operations/Technical/Mapping/Shapefiles/Carte Partielle Sénégal")
     end  
 
   end

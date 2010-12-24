@@ -37,7 +37,7 @@ module LocationsHelper
       html += " &nbsp; Modified by: #{modified_by}" unless modified_by.blank?
     end
     if confirmed_by = params[:s][:confirmed_by]
-      html += " &nbsp; Confirmed by: #{confirmed_by}" unless confirmed_bye.blank?
+      html += " &nbsp; Confirmed by: #{confirmed_by}" unless confirmed_by.blank?
     end
     if category_missing = params[:s][:category_missing]
       html += " &nbsp; Without Any Tags" unless category_missing.blank?
