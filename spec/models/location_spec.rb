@@ -61,6 +61,7 @@ describe Location do
       Factory(:valid_commune, :name => "Plateau", :feature => Geometry::square(:center => [0,0], :side => 10))
       location = Factory(:valid_location, :name => "0-One", :longitude => 0, :latitude => 0)
       location.tags << Factory(:valid_tag, :location => location) 
+      location.reload
       json = location.json_object
       json[:region].should_not be_nil
       json[:city].should_not be_nil

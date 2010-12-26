@@ -1,18 +1,9 @@
 = semantic_form_for object, :html => { :enctype => "multipart/form-data"} do |form|
   = form.input :french, :input_html => { :class => "text" }
   = form.input :english, :input_html => { :class => "text" }
-  = form.input :garmin_french, :required => true, :input_html => { :class => "text" }
-  = form.input :garmin_english, :required => true, :input_html => { :class => "text" }
   = form.input :code, :label => "Garmin Code", :required => true, :input_html => { :class => "text" }
-  = form.input :navitel_french, :input_html => { :class => "text" }
-  = form.input :navitel_english, :input_html => { :class => "text" }
-  = form.input :navitel_code, :input_html => { :class => "text" }
-  = form.input :navteq_french, :input_html => { :class => "text" }
-  = form.input :navteq_english, :input_html => { :class => "text" }
-  = form.input :navteq_code, :input_html => { :class => "text" }
-  = form.input :sygic_french, :input_html => { :class => "text" }
-  = form.input :sygic_english, :input_html => { :class => "text" }
-  = form.input :sygic_code, :input_html => { :class => "text" }
+  = form.input :level, :as => :select, :collection => [0, 1, 2, 3, 4]
+  = form.input :end_level, :as => :select, :collection => [0, 1, 2, 3, 4]
   = form.input :icon, :as => :hidden
   - if object.persisted? && object.icon
     %label

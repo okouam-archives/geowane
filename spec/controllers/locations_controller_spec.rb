@@ -69,7 +69,7 @@ describe LocationsController do
 
           it "creates a search query using the given search filters" do
             Search.should_receive(:create).with({"x" => "z"}).and_return(nil)
-            Location.stub_chain(:find_by_sql, :paginate)
+            Location.stub_chain(:paginate_by_sql)
             get :index, :s => {"x" => "z"}
           end
 
@@ -80,7 +80,7 @@ describe LocationsController do
           it "creates a search query with no filters and the current user" do
             query = mock('query').as_null_object
             Search.should_receive(:create).with(nil).and_return(query)
-            Location.stub_chain(:find_by_sql, :paginate)
+            Location.stub_chain(:paginate_by_sql)
             get :index
           end
 
@@ -88,16 +88,14 @@ describe LocationsController do
 
         it "paginates the query results" do
           Search.stub(:create)
-          resultset = mock('resultset')
-          resultset.should_receive(:paginate)
-          Location.should_receive(:find_by_sql).and_return(resultset)
+          Location.should_receive(:paginate_by_sql)
           get :index
         end
 
         it "assigns the fetched locations to the view" do
           locations = mock('locations')
           Search.stub(:create)
-          Location.stub_chain(:find_by_sql, :paginate).and_return(locations)
+          Location.stub(:paginate_by_sql).and_return(locations)
           get :index
           assigns(:locations).should == locations
         end
@@ -105,7 +103,7 @@ describe LocationsController do
         it "saves the search query to the session" do
           query = "X"
           Search.stub(:create).and_return(query)
-          Location.stub_chain(:find_by_sql, :paginate)
+          Location.stub_chain(:paginate_by_sql)
           get :index
           session[:current_search][:query].should == "X"
         end
@@ -113,7 +111,7 @@ describe LocationsController do
         it "saves the page number to the session" do
           query = mock('query').as_null_object
           Search.stub(:create)
-          Location.stub_chain(:find_by_sql, :paginate)
+          Location.stub_chain(:paginate_by_sql)
           get :index, :page => 12
           session[:current_search][:page].should == 12
         end
@@ -121,7 +119,7 @@ describe LocationsController do
         it "saves the number of entries per page to the session" do
           query = mock('query').as_null_object
           Search.stub(:create).and_return(query)
-          Location.stub_chain(:find_by_sql, :paginate)
+          Location.stub_chain(:paginate_by_sql)
           get :index, :per_page => 32
           session[:current_search][:per_page].should == 32
         end

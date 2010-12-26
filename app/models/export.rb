@@ -6,25 +6,57 @@ class Export < ActiveRecord::Base
   has_attached_file :output
   attr_protected :output_file_name, :output_content_type, :output_size
   enum_attr :output_format, %w(.MP ^.SHP .GPX)
+  enum_attr :client, %w(^NAVTEQ)
   belongs_to :user
 
   def execute(locations)
 
-    shpfile_path = Tempfile.new(self.name).path
+    statistics = {
+      :category_code_missing => [], 
+      :city_missing => [], 
+      :country_missing => [],
+      :region_missing => []
+    }      
+
+    shpfile_directory = Tempfile.new(self.name).path 
+    File.delete(shpfile_directory)
+    Dir.mkdir(shpfile_directory)
+    
     shpfile = GeoRuby::Shp4r::ShpFile.create(
-      shpfile_path, 
+      shpfile_directory + "/import", 
       GeoRuby::Shp4r::ShpType::POINT,
       [
-        GeoRuby::Shp4r::Dbf::Field.new("Hoyoyo","C",10),
-        GeoRuby::Shp4r::Dbf::Field.new("Boyoul","N",10,0)
+        GeoRuby::Shp4r::Dbf::Field.new("FID","C",10),
+        GeoRuby::Shp4r::Dbf::Field.new("Type","C",10),
+        GeoRuby::Shp4r::Dbf::Field.new("Label","C",200),
+        GeoRuby::Shp4r::Dbf::Field.new("Descry","C",200),
+        GeoRuby::Shp4r::Dbf::Field.new("City","C",40),
+        GeoRuby::Shp4r::Dbf::Field.new("Region","C",40),
+        GeoRuby::Shp4r::Dbf::Field.new("Country","C",40),
+        GeoRuby::Shp4r::Dbf::Field.new("Highway","C",40),
+        GeoRuby::Shp4r::Dbf::Field.new("Level","C",10),
+        GeoRuby::Shp4r::Dbf::Field.new("Endlevel","C",10,0)
       ]
     )
-
+    
     shpfile.transaction do |tr|
       locations.each do |l|
+
+        statistics[:category_code_missing] << l unless l.tags.first.category.numeric_code
+        statistics[:region_missing] << l unless l.topology.region
+        statistics[:country_missing] << l unless l.topology.country
+        statistics[:city_missing] << l unless l.topology.city
+        
         new_record = GeoRuby::Shp4r::ShpRecord.new(l.feature,
-          'Hoyoyo' => "AEZ",
-          'Bouyoul' => 45
+          'FID' => l.id,
+          'Type' => l.tags.first.category.numeric_code,
+          'Label' => l.name,
+          'City' => l.topology.city.try(:name),
+          'Region' => l.topology.region.try(:name),
+          'Country' => l.topology.country.try(:name),
+          'Highway' => "",
+          'Level' => l.tags.first.category.level,
+          'Endlevel' => l.tags.first.category.end_level
         )
         tr.add(new_record)
       end
@@ -32,17 +64,13 @@ class Export < ActiveRecord::Base
 
     shpfile.close
 
-    puts shpfile_path 
-    
-    tgz = Zlib::GzipWriter.new(File.open(Tempfile.new(self.name).path, 'wb'))
+    File.open("import.tar", "wb") do |tar|
+      Archive::Tar::Minitar.pack("#{shpfile_directory}", tar)
+    end  
+       
+    File.open("import.tar", 'rb') {|output_file| self.output = output_file} 
 
-    puts tgz.path
-
-    Archive::Tar::Minitar.pack("#{shpfile.path}", tgz)
-    output_file_path = tgz.path
-    tgz.close
-    
-    File.open(output_file_path, 'rb') {|output_file| self.output = output_file}
+    statistics
     
   end
 

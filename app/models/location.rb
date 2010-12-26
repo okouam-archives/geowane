@@ -6,6 +6,7 @@ class Location < ActiveRecord::Base
   acts_as_commentable
   acts_as_audited
   accepts_nested_attributes_for :comments, :reject_if => lambda { |a| a[:comment].blank? || a[:title].blank? }
+  has_one :topology
 
   validates_presence_of :longitude, :latitude, :name
   belongs_to :user

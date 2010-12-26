@@ -26,18 +26,28 @@ class Import < ActiveRecord::Base
         locations_count = 0
         doc = Nokogiri::XML(File.open(file).readlines.join)
         doc.css("wpt").each do |node|
-          longitude = node.attr("lon")
-          latitude = node.attr("lat")
-          name = node.css("name")[0].inner_text
-          next if name.blank?
-          location = Location.new(:longitude => longitude, :name => name, :latitude => latitude, :long_name => name)
-          location.feature = Point.from_x_y(longitude, latitude, 4326)
-          location.import_id = import_id
-          location.user = user
-          location.save!
+          longitude, latitude, name = parse(node)
+          next unless is_valid?(longitude, latitude, name) 
+          self.save_location(longitude, latitude, name, import_id, user)
           locations_count += 1
         end
         locations_count
+      end
+
+      def parse(node)
+        [node.attr("lon"), node.attr("lat"), node.css("name")[0].inner_text]
+      end
+
+      def is_valid?(longitude, latitude, name)
+        return !name.blank?
+      end
+
+      def save_location(longitude, latitude, name, import_id, user)
+        location = Location.new(:longitude => longitude, :name => name, :latitude => latitude, :long_name => name)
+        location.feature = Point.from_x_y(longitude, latitude, 4326)
+        location.import_id = import_id
+        location.user = user
+        location.save!
       end
 
     end

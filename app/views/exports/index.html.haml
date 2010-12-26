@@ -3,22 +3,24 @@
   .block_head
     %h2
       Exports
+    %ul
+      %li.nobg= link_to "Create Selection", "/exports/selection"
   .block_content
     - if collection && collection.count > 0
       %table{:cellspacing => "0", :cellpadding => "0", :style => "width: 100%; margin-left: 0px"}
         %thead
           %tr
-            %th Export File
+            %th Name
             %th Export Format
-            %th User
             %th Date Exported
+            %th Location Count
         %tbody
           - collection.each do |export|
             %tr
-              %td= link_to export.output.original_filename, export.output.url
+              %td= link_to export.name, export.output.url
               %td= export.output_format
-              %td= export.user.login
-              %td= export.created_at
+              %td= export.created_at.strftime("%d-%m-%Y")
+              %td= export.locations_count
     - else
       %p
         %br

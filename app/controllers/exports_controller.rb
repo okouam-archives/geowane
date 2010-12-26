@@ -4,7 +4,11 @@ class ExportsController < ApplicationController
   create.after do
     object.user = current_user
     object.locations_count = session[:locations].size
-    object.execute(session[:locations])
+    statistics = object.execute Location.find(session[:locations], :include => [:tags => :category, :topology => [:country, :region, :city]])
+    logger.debug("The exported file included #{statistics[:category_code_missing].size} with no category code")
+    logger.debug("The exported file included #{statistics[:city_missing].size} with no city")
+    logger.debug("The exported file included #{statistics[:region_missing].size} with no region")
+    logger.debug("The exported file included #{statistics[:country_missing].size} with no country")
     object.save!
   end
   
@@ -12,8 +16,31 @@ class ExportsController < ApplicationController
     redirect_to exports_url
   end
 
+  def selection
+    @all_countries = Country.connection.select_all("SELECT id, name FROM countries ORDER BY name ASC").map {|rs| [rs["name"], rs["id"]]}
+    @all_categories = Category.connection.select_all("SELECT id, french FROM categories ORDER BY french ASC").map {|rs| [rs["french"], rs["id"]]}
+    @all_users = User.connection.select_all("SELECT login, id FROM users ORDER BY login ASC").map {|rs| [rs["login"], rs["id"]]}
+  end
+
   def prepare    
-    session[:locations] = params[:locations]
+    if params[:s]
+      countries = params[:s][:country_id].delete_if {|c| c.blank?}
+      users = params[:s][:user_id].delete_if {|c| c.blank?}
+      categories = params[:s][:category_id].delete_if {|c| c.blank?}
+      query = Location.joins(:topology)
+      if users.count > 0
+        query = query.where("user_id IN (" + users.join(",") + ")")
+      end
+      if categories.count > 0 
+        query = query.where("locations.id IN (SELECT location_id FROM tags WHERE category_id IN (" + categories.join(",") + "))")
+      end
+      if countries.count > 0
+        query = query.where("country_id IN (" + countries.join(",") +")")
+      end
+      session[:locations] = query.all.map{|c| c.id} 
+    else
+      session[:locations] = params[:locations]
+    end
     redirect_to :action => :new
   end
 

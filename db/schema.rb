@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101223175542) do
+ActiveRecord::Schema.define(:version => 20101226105242) do
 
   create_table "audits", :force => true do |t|
     t.datetime "created_at"
@@ -51,6 +51,8 @@ ActiveRecord::Schema.define(:version => 20101223175542) do
     t.integer "corrected_locations"
     t.integer "audited_locations"
     t.integer "field_checked_locations"
+    t.integer "level",                                  :default => 0, :null => false
+    t.integer "end_level",                              :default => 0, :null => false
   end
 
   create_table "cities", :force => true do |t|

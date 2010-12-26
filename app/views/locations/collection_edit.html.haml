@@ -29,10 +29,10 @@
             %td.status
               =select_tag "locations[#{i}][status]", options_for_select(workflow_actions(current_user, location), location.status)
               =form.hidden_field "[#{i}][id]", :value => location.id
-            %td
-              = link_to "(+)", new_location_tag_url(location), :rel => "facebox"
+            %td.tags              
               %span.list{:class=>"tags_for_#{location.id}"}
                 = render :partial => "tags/collection", :locals => {:items => location.tags.map {|c| {:name => c.category.french, :delete_link => location_tag_url(c.location_id, c.id)}}}
+              = link_to "(+)", new_location_tag_url(location), :rel => "facebox"
             %td 
               = link_to "(+)", new_location_comment_url(location), :rel => "facebox"
               = link_to location.comments.count, "/locations/#{location.id}/comments?layout=facebox", :rel => "facebox", :id => "comments_for_#{location.id}" 
@@ -49,6 +49,7 @@
 
 :css
   td.name input {width: 200px}
+  td.tags .list span:first-child {font-style: italic}
   input {padding: 2px; font-size: 11px}
   .list.updates {width: 100%}
   #category_switcher {width: 476px}

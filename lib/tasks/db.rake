@@ -1,4 +1,4 @@
-namespace :db do
+namespace :geocms do
 
   task :load_config => :rails_env do
     require 'active_record'
@@ -10,6 +10,7 @@ namespace :db do
     ENV['PGPASSWORD'] = config["password"].to_s if config["password"]
   end
 
+  desc "Pulls down the production database into the development database"
   task :pull do
     ActiveRecord::Base.configurations = Rails.configuration.database_configuration
     production_db = ActiveRecord::Base.configurations["production"]['database']
@@ -26,16 +27,22 @@ namespace :db do
 
   namespace :features do
 
+    desc "Import features required for rendering the 0-One digital map from shapefiles"
     task :import => [:environment] do
-      Feature.import("/home/okouam/Dropbox/0-One/Operations/Technical/Mapping/Shapefiles/Carte Partielle Bénin")
-      Feature.import("/home/okouam/Dropbox/0-One/Operations/Technical/Mapping/Shapefiles/Carte Partielle du Togo")
-      Feature.import("/home/okouam/Dropbox/0-One/Operations/Technical/Mapping/Shapefiles/Carte Partielle Sénégal")
-    end  
-
+      folders = ["/home/okouam/Dropbox/0-One/Operations/Technical/Mapping/Shapefiles/Bénin",
+        "/home/okouam/Dropbox/0-One/Operations/Technical/Mapping/Shapefiles/Côte d'Ivoire",
+        "/home/okouam/Dropbox/0-One/Operations/Technical/Mapping/Shapefiles/Togo",
+        "/home/okouam/Dropbox/0-One/Operations/Technical/Mapping/Shapefiles/Sénégal"]
+      ActiveRecord::Base.connection.execute("TRUNCATE features")
+      folders.each do |folder|
+        puts "#{Feature.import(folder)} features were imported from the files in '#{folder}'"
+      end
+    end   
   end
 
   namespace :refresh do
- 
+
+    desc "Refresh all statistics"
     task :statistics => [:environment] do
       Statistics.new.refresh(:areas)
       Statistics.new.refresh(:categories)
@@ -43,24 +50,29 @@ namespace :db do
       Statistics.new.refresh(:collectors)
     end
 
+    desc "Refresh area statistics"
     task :areas => [:environment] do
       Statistics.new.refresh(:areas)
     end
 
+    desc "Refresh category statistics"
     task :categories => [:environment] do
       Statistics.new.refresh(:categories)
     end
 
+    desc "Refresh cache counters"
     task :cache_counters => [:environment] do
       Statistics.new.refresh(:cache_counters)
     end
 
+    desc "Refresh counter statistics"
     task :counters => [:environment] do
       Statistics.new.refresh(:counters)
     end
 
   end
 
+  desc "Load PostGIS functionality into a database"
   task :postgis do
 
     ActiveRecord::Base.configurations = Rails.configuration.database_configuration
