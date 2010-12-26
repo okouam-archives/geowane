@@ -17,7 +17,7 @@ var LocationEditor = Class.extend({
         onZoomChanged: function(extent) {}
       }, 
       element: "map",
-      urls: ["http://localhost/cgi-bin/mapserv?map=/var/www/mapserver/mapfiles/geocms.map"],
+      urls: ["http://xkcd.codeifier.com/cgi-bin/mapserv?map=/var/www/mapserver/mapfiles/geocms.map"],
       resolutions: [
           0.05,
           0.025,
