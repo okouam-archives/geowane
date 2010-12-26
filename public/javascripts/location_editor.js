@@ -8,15 +8,42 @@ var LocationEditor = Class.extend({
 
     $(document).bind("load.location.tags", this.loadTags.bind(this));
 
-    var observer = {
-      onDragComplete: function(feature, lonlat) {
-        $("#location_latitude").val(lonlat.lat);
-        $("#location_longitude").val(lonlat.lon);
+    var options = {
+      observer: {
+        onDragComplete: function(feature, lonlat) {
+          $("#location_latitude").val(lonlat.lat);
+          $("#location_longitude").val(lonlat.lon);
+        },
+        onZoomChanged: function(extent) {}
+      }, 
+      element: "map",
+      urls: ["http://localhost/cgi-bin/mapserv?map=/var/www/mapserver/mapfiles/geocms.map"],
+      resolutions: [
+          0.05,
+          0.025,
+          0.0125,
+          0.00625,
+          0.003125,
+          0.0015625,
+          0.00078125,
+          0.000390625,
+          0.0001953125,
+          0.00009765625,
+          0.000048828125,
+          0.0000244140625,
+          0.0000122070313,
+          0.0000061035156,
+      ],
+       mapOptions: {
+        bounds: 0,
+        maxExtent: new OpenLayers.Bounds(-25, -5, 15, 25),
+        restrictedExtent: new OpenLayers.Bounds(-20, 0, 10, 20)
       },
-      onZoomChanged: function(extent) {}
-    };  
+      layers: ["road-labels", "countries", "water", "roads-other", "roads-type-5", "roads-type-4", "roads-type-3", 
+        "roads-type-2", "roads-type-1"]
+    };
       
-    this.map = new SingleFeatureMap({element: "map", observer: observer});
+    this.map = new SingleFeatureMap(options);
     this.showCurrentLocation(function() {this.map.zoomToFeatures("default");}.bind(this));
 
     $("#edit-location-tabs").tabs();

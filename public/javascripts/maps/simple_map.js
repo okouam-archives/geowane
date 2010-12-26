@@ -33,7 +33,7 @@ var SimpleMap = Class.extend({
         format: 'aggpng24',
         imageType: 'png',
         isTransparent: 'true',
-        tilecacheLayer: "kubudum",
+        layers: ["kubudum"],
         roadStyle: {
           fill: true,
           stroke: true,
@@ -209,7 +209,7 @@ var SimpleMap = Class.extend({
       tileSize: this.opts.tileSize,
       buffer: 0
     };
-    options.layers = this.opts.tilecacheLayer;
+    options.layers = this.opts.layers;
     return options;
   },
 

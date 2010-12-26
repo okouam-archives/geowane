@@ -8,12 +8,14 @@
     #map
 
 :css
-  #map {width: 100%; height: 500px; border: 1px solid #ccc; margin-bottom: 20px; margin-top: 10px}
+  #map {width: 100%; height: 500px; border: 1px solid #ccc; margin-bottom: 20px; margin-top: 10px; background-color: #6699cc}
 
 :javascript
   var map;
   $(document).ready(function() {
-    var params = {
+    var options = {
+      element: "map",
+      urls: ["http://localhost/cgi-bin/mapserv?map=/var/www/mapserver/mapfiles/geocms.map"],
       resolutions: [
           0.05,
           0.025,
@@ -26,36 +28,17 @@
           0.0001953125,
           0.00009765625,
           0.000048828125,
-          0.0000244140625
+          0.0000244140625,
+          0.0000122070313,
+          0.0000061035156,
       ],
-      isBaseLayer: true,
-      buffer: 0
+       mapOptions: {
+        bounds: 0,
+        maxExtent: new OpenLayers.Bounds(-25, -5, 15, 25),
+        restrictedExtent: new OpenLayers.Bounds(-20, 0, 10, 20)
+      },
+      layers: ["road-labels", "countries", "water", "roads-other", "roads-type-5", "roads-type-4", "roads-type-3", 
+        "roads-type-2", "roads-type-1"]
     };
-    var mapOptions = {
-      buffer: 0,
-      maxExtent: new OpenLayers.Bounds(-25, -5, 15, 25),
-      restrictedExtent: new OpenLayers.Bounds(-20, 0, 10, 20)
-    };
-    var options = {
-      map_imagetype: "png",
-      layers: ["road-labels", "countries", "roads-far", "roads-close"],
-      format: "aggpng24",
-      transparent: "false",
-      buffer: 0
-    };
-    var url = "http://localhost/cgi-bin/mapserv?map=/var/www/mapserver/mapfiles/geocms.map";
-    OpenLayers.ImgPath = "/images/OpenLayers/";
-    map = new OpenLayers.Map( 'map', mapOptions );
-    layer = new OpenLayers.Layer.WMS( "OpenLayers WMS", [url], options, params);
-    map.addLayer(layer);
-    map.events.on({
-      "zoomend": function() { 
-      if (console) console.debug("Map.getResolution(): " + map.getResolution());
-      if (console) console.debug("Map.getScale(): " + map.getScale());  
-      if (console) console.debug("Map.getZoom(): " + map.getZoom())
-      }
-    });
-    map.zoomToMaxExtent();
-    if (console) console.debug("Map.getNumZoomLevels(): " + map.getNumZoomLevels()); 
-    <!--var map = new SingleFeatureMap({element: "map"}); -->     
+    var map = new SingleFeatureMap(options);
   });

@@ -66,4 +66,30 @@
 .styled_select {-moz-border-radius:3px 3px 3px 3px; background:none repeat scroll 0 0 #FEFEFE; border:1px solid #BBBBBB; color:#333333; font-family:"Lucida Grande",Verdana,sans-serif; font-size:14px; outline:medium none; padding:7px; vertical-align:middle; width:410px }
 .block table.layout tr td, .block table.layout tr th { border-bottom-width: 0; line-height:normal; padding:10px; text-align:left; background-color: white ! important}
 
+.olControlScaleLineTop {
+  border: 1px solid white;
+  clear: both;
+  float: right;
+  text-align: center;
+  border-top: medium none; }
+
+.olControlScaleLineBottom {
+  border: 1px solid white;
+  clear: both;
+  float: right;
+  text-align: center;
+  border-bottom: medium none;
+  margin-top: -1px; }
+
+.olControlScaleLine {
+  bottom: 25px;
+  float: right;
+  font-size: xx-small;
+  right: 10px; }
+
+.olPopup {
+  padding: 7px;
+  border: 1px solid #434343 !important;
+  text-align: center !important;
+  color: #434343 !important; }
 
