@@ -30,7 +30,6 @@ class ExportsController < ApplicationController
       include_uncategorized = params[:include_uncategorized]
       puts params[:include_uncategorized]
       query = Location.joins(:topology)
-      debugger
       if users.count > 0
         query = query.where("user_id IN (" + users.join(",") + ")")
       end
