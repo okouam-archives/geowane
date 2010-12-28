@@ -11,8 +11,11 @@
           All Countries
           = form.input :country_id, :as => :check_boxes, :collection => @all_countries, :required => false, :label => "Countries", :wrapper_html => {:class => "selector"}
         .filter_group{:style=>"width: 350px"}
-          <input type="checkbox" id="all_categories"> 
-          All Categories        
+          %span{:style=>"margin-right: 20px"}
+            <input type="checkbox" id="all_categories"> 
+            All Categories 
+          <input type="checkbox" name="include_uncategorized" id="include_uncategorized"> 
+          Uncategorized       
           = form.input :category_id, :as => :check_boxes, :collection => @all_categories, :required => false, :label => "Categories"
         .filter_group
           <input type="checkbox" id="all_users"> 

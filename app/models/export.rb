@@ -42,21 +42,21 @@ class Export < ActiveRecord::Base
     shpfile.transaction do |tr|
       locations.each do |l|
 
-        statistics[:category_code_missing] << l unless l.tags.first.category.numeric_code
+        statistics[:category_code_missing] << l unless l.tags.try(:first).try(:category).try(:numeric_code)
         statistics[:region_missing] << l unless l.topology.region
         statistics[:country_missing] << l unless l.topology.country
         statistics[:city_missing] << l unless l.topology.city
         
         new_record = GeoRuby::Shp4r::ShpRecord.new(l.feature,
           'FID' => l.id,
-          'Type' => l.tags.first.category.numeric_code,
+          'Type' => l.tags.try(:first).try(:category).try(:numeric_code),
           'Label' => l.name,
           'City' => l.topology.city.try(:name),
           'Region' => l.topology.region.try(:name),
           'Country' => l.topology.country.try(:name),
           'Highway' => "",
-          'Level' => l.tags.first.category.level,
-          'Endlevel' => l.tags.first.category.end_level
+          'Level' => l.tags.try(:first).try(:category).try(:level) || 0,
+          'Endlevel' => l.tags.try(:first).try(:category).try(:end_level) || 0
         )
         tr.add(new_record)
       end

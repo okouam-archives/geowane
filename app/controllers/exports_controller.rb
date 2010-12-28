@@ -27,12 +27,21 @@ class ExportsController < ApplicationController
       countries = params[:s][:country_id].delete_if {|c| c.blank?}
       users = params[:s][:user_id].delete_if {|c| c.blank?}
       categories = params[:s][:category_id].delete_if {|c| c.blank?}
+      include_uncategorized = params[:include_uncategorized]
+      puts params[:include_uncategorized]
       query = Location.joins(:topology)
+      debugger
       if users.count > 0
         query = query.where("user_id IN (" + users.join(",") + ")")
       end
-      if categories.count > 0 
-        query = query.where("locations.id IN (SELECT location_id FROM tags WHERE category_id IN (" + categories.join(",") + "))")
+      if categories.count > 0 || include_uncategorized
+        if include_uncategorized.nil? && categories.count > 0
+          query = query.where("locations.id IN (SELECT location_id FROM tags WHERE category_id IN (" + categories.join(",") + "))")
+        elsif include_uncategorized && categories.count > 0
+          query = query.where("locations.id IN (SELECT location_id FROM tags WHERE category_id IN (" + categories.join(",") + ")) OR locations.id NOT IN (SELECT location_id FROM tags)")
+        else 
+          query = query.where("locations.id NOT IN (SELECT location_id FROM tags)")
+        end
       end
       if countries.count > 0
         query = query.where("country_id IN (" + countries.join(",") +")")
