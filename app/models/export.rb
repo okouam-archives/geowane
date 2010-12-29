@@ -28,6 +28,7 @@ class Export < ActiveRecord::Base
       [
         GeoRuby::Shp4r::Dbf::Field.new("FID","C",10),
         GeoRuby::Shp4r::Dbf::Field.new("Type","C",10),
+        GeoRuby::Shp4r::Dbf::Field.new("Shape","C",10),
         GeoRuby::Shp4r::Dbf::Field.new("Label","C",200),
         GeoRuby::Shp4r::Dbf::Field.new("Descry","C",200),
         GeoRuby::Shp4r::Dbf::Field.new("City","C",40),
@@ -48,6 +49,7 @@ class Export < ActiveRecord::Base
         statistics[:city_missing] << l unless l.topology.city
         
         new_record = GeoRuby::Shp4r::ShpRecord.new(l.feature,
+          'Shape' => 'POINT',
           'FID' => l.id,
           'Type' => l.tags.try(:first).try(:category).try(:numeric_code),
           'Label' => l.name,
