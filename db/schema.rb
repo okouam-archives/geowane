@@ -33,6 +33,12 @@ ActiveRecord::Schema.define(:version => 20101226105242) do
     t.string  "icon",                    :limit => 200
     t.boolean "visible"
     t.integer "numeric_code"
+    t.integer "total_locations"
+    t.integer "new_locations"
+    t.integer "invalid_locations"
+    t.integer "corrected_locations"
+    t.integer "audited_locations"
+    t.integer "field_checked_locations"
     t.string  "navitel_french"
     t.string  "navitel_english"
     t.string  "navitel_code"
@@ -45,19 +51,13 @@ ActiveRecord::Schema.define(:version => 20101226105242) do
     t.string  "sygic_english"
     t.string  "sygic_code"
     t.integer "tags_count",                             :default => 0
-    t.integer "total_locations"
-    t.integer "new_locations"
-    t.integer "invalid_locations"
-    t.integer "corrected_locations"
-    t.integer "audited_locations"
-    t.integer "field_checked_locations"
     t.integer "level",                                  :default => 0, :null => false
     t.integer "end_level",                              :default => 0, :null => false
   end
 
   create_table "cities", :force => true do |t|
     t.string   "name"
-    t.geometry "feature",                 :limit => nil
+    t.geometry "feature",                 :limit => nil, :srid => 4326
     t.integer  "uncategorized_locations"
     t.integer  "total_locations"
     t.integer  "new_locations"
@@ -85,7 +85,7 @@ ActiveRecord::Schema.define(:version => 20101226105242) do
 
   create_table "communes", :force => true do |t|
     t.string   "name"
-    t.geometry "feature",                 :limit => nil
+    t.geometry "feature",                 :limit => nil, :srid => 4326
     t.integer  "uncategorized_locations"
     t.integer  "total_locations"
     t.integer  "new_locations"
@@ -94,6 +94,8 @@ ActiveRecord::Schema.define(:version => 20101226105242) do
     t.integer  "audited_locations"
     t.integer  "field_checked_locations"
   end
+
+  add_index "communes", ["feature"], :name => "idx_communes_feature", :spatial => true
 
   create_table "conversions", :force => true do |t|
     t.string   "input_file_name"
@@ -126,6 +128,14 @@ ActiveRecord::Schema.define(:version => 20101226105242) do
   end
 
   add_index "countries", ["feature"], :name => "idx_countries_feature", :spatial => true
+
+  create_table "events", :force => true do |t|
+    t.integer  "location_id"
+    t.integer  "user_id"
+    t.string   "label",       :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "exports", :force => true do |t|
     t.integer  "locations_count"
@@ -169,73 +179,26 @@ ActiveRecord::Schema.define(:version => 20101226105242) do
     t.datetime "updated_at"
   end
 
-  create_table "level0", :force => true do |t|
-    t.string   "name"
-    t.string   "level1"
-    t.string   "level2"
-    t.string   "level3"
-    t.string   "level4"
-    t.string   "level5"
-    t.geometry "feature", :limit => nil, :srid => 4326
-  end
-
-  add_index "level0", ["feature"], :name => "idx_level0_feature", :spatial => true
-
-  create_table "level1", :force => true do |t|
-    t.string   "name"
-    t.geometry "feature", :limit => nil, :srid => 4326
-  end
-
-  add_index "level1", ["feature"], :name => "idx_level1_feature", :spatial => true
-
-  create_table "level2", :force => true do |t|
-    t.string   "name"
-    t.geometry "feature", :limit => nil, :srid => 4326
-  end
-
-  add_index "level2", ["feature"], :name => "idx_level2_feature", :spatial => true
-
-  create_table "level3", :force => true do |t|
-    t.string   "name"
-    t.geometry "feature", :limit => nil, :srid => 4326
-  end
-
-  add_index "level3", ["feature"], :name => "idx_level3_feature", :spatial => true
-
-  create_table "level4", :force => true do |t|
-    t.string   "name"
-    t.geometry "feature", :limit => nil, :srid => 4326
-  end
-
-  add_index "level4", ["feature"], :name => "idx_level4_feature", :spatial => true
-
-  create_table "level5", :force => true do |t|
-    t.string   "name"
-    t.geometry "feature", :limit => nil, :srid => 4326
-  end
-
-  add_index "level5", ["feature"], :name => "idx_level5_feature", :spatial => true
-
   create_table "locations", :force => true do |t|
+    t.integer  "category_id"
     t.string   "name"
     t.decimal  "longitude"
     t.decimal  "latitude"
-    t.string   "searchable_name"
     t.string   "email"
     t.string   "telephone"
+    t.string   "status"
+    t.integer  "user_id"
     t.string   "fax"
     t.string   "website"
     t.string   "postal_address"
     t.string   "opening_hours"
     t.integer  "user_rating"
-    t.geometry "feature",         :limit => nil,                :srid => 4326
-    t.string   "status"
-    t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "long_name"
-    t.integer  "tags_count",                     :default => 0
     t.integer  "import_id"
+    t.string   "long_name"
+    t.geometry "feature",        :limit => nil,                :srid => 4326
+    t.integer  "tags_count",                    :default => 0
   end
 
   add_index "locations", ["feature"], :name => "idx_locations_feature", :spatial => true
@@ -250,7 +213,7 @@ ActiveRecord::Schema.define(:version => 20101226105242) do
 
   create_table "regions", :force => true do |t|
     t.string   "name"
-    t.geometry "feature",                 :limit => nil
+    t.geometry "feature",                 :limit => nil, :srid => 4326
     t.integer  "uncategorized_locations"
     t.integer  "total_locations"
     t.integer  "new_locations"
@@ -261,15 +224,6 @@ ActiveRecord::Schema.define(:version => 20101226105242) do
   end
 
   add_index "regions", ["feature"], :name => "idx_regions_feature", :spatial => true
-
-  create_table "roles", :force => true do |t|
-    t.string "title"
-  end
-
-  create_table "roles_users", :id => false, :force => true do |t|
-    t.integer "user_id"
-    t.integer "role_id"
-  end
 
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :null => false
@@ -289,9 +243,7 @@ ActiveRecord::Schema.define(:version => 20101226105242) do
   end
 
   add_index "tags", ["category_id", "location_id", "id"], :name => "idx_tags_categories"
-  add_index "tags", ["category_id"], :name => "idx_tags_category_id"
   add_index "tags", ["location_id", "category_id", "id"], :name => "idx_tags_locations"
-  add_index "tags", ["location_id"], :name => "idx_tags_location_id"
 
   create_table "topologies", :force => true do |t|
     t.integer  "location_id"

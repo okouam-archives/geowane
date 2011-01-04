@@ -1,7 +1,7 @@
 module LocationsHelper
 
   def show_search_criteria
-    return "None" unless params[:s]    
+    return "None" unless params[:s].is_a?(Hash)   
     html = ""
     if category_id = params[:s][:category_id]
       html += " &nbsp; Category: #{Category.find(category_id).french}" unless category_id.blank?

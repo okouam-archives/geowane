@@ -29,10 +29,10 @@ namespace :geocms do
 
     desc "Import features required for rendering the 0-One digital map from shapefiles"
     task :import => [:environment] do
-      folders = ["/home/okouam/Dropbox/0-One/Operations/Technical/Mapping/Shapefiles/Bénin",
-        "/home/okouam/Dropbox/0-One/Operations/Technical/Mapping/Shapefiles/Côte d'Ivoire",
+      folders = ["/home/okouam/Dropbox/0-One/Operations/Technical/Mapping/Shapefiles/Benin",
+        "/home/okouam/Dropbox/0-One/Operations/Technical/Mapping/Shapefiles/Cote d'Ivoire",
         "/home/okouam/Dropbox/0-One/Operations/Technical/Mapping/Shapefiles/Togo",
-        "/home/okouam/Dropbox/0-One/Operations/Technical/Mapping/Shapefiles/Sénégal"]
+        "/home/okouam/Dropbox/0-One/Operations/Technical/Mapping/Shapefiles/Senegal"]
       ActiveRecord::Base.connection.execute("TRUNCATE features")
       folders.each do |folder|
         puts "#{Feature.import(folder)} features were imported from the files in '#{folder}'"

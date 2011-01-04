@@ -6,7 +6,7 @@ class CategoriesController < ApplicationController
   def index
     session[:category_index_language] = @language = params[:language] || session[:category_index_language] || "french"
     session[:category_index_page] = params[:page] || session[:category_index_page]
-    per_page = params[:per_page] || 20
+    per_page = params[:per_page] || 10
     sql = "SELECT * FROM categories ORDER BY #{@language}"
     @categories = Category.find_by_sql(sql).paginate(:page => session[:category_index_page], :per_page => per_page)
   end

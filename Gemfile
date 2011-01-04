@@ -17,7 +17,8 @@ gem 'authlogic', :git => 'git://github.com/odorcicd/authlogic.git', :branch => '
 gem "will_paginate", "~> 3.0.pre2"
 gem 'haml'
 gem 'acts_as_commentable'
-gem 'mongrel'
+gem 'mongrel', '>= 1.2.0.pre2'
+gem 'unicorn'
 gem 'rake'
 gem 'rack'
 gem "resource_controller", :git => "git://github.com/BDQ/resource_controller.git"
@@ -32,6 +33,7 @@ gem 'dynamic_form', :git => "git://codaset.com/joelmoss/dynamic-form.git"
 gem 'sqlite3-ruby', '1.2.5', :require => 'sqlite3'
 gem 'diff-lcs'
 
+
 group :test do
   gem "faker"
   gem 'cucumber-rails'
@@ -43,7 +45,7 @@ group :test do
 end
 
 group :test, :development do
-  gem "ruby-debug"
+  gem "ruby-debug19"
   gem "rack-bug"
   gem 'database_cleaner'
   gem "rspec-rails", "~> 2.1.0"

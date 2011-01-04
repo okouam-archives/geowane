@@ -1,4 +1,4 @@
-class CreateTopologiesWithAssociatedTriggers < ActiveRecord::Migration
+class CreateTopologies < ActiveRecord::Migration
   def self.up
     
     create_table :topologies, :force => true do |t|

@@ -12,7 +12,7 @@ class LocationsController < ApplicationController
       @per_page ||= session[:current_search][:per_page]
       search_query = session[:current_search][:query]
     else
-      search_query = Search.create(params[:s])
+      search_query = Search.create(params[:s].is_a?(Hash) ? params[:s] : nil)
     end
     @per_page ||= 10
     @locations =  Location.paginate_by_sql(search_query, :page => page, :per_page => @per_page)
