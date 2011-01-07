@@ -6,6 +6,7 @@ class Export < ActiveRecord::Base
   has_attached_file :output
   attr_protected :output_file_name, :output_content_type, :output_size
   enum_attr :output_format, %w(.MP ^.SHP .GPX)
+  enum_attr :output_platform, %w(MAC ^WINDOWS LINUX)
   enum_attr :client, %w(^NAVTEQ)
   belongs_to :user
 
@@ -40,6 +41,8 @@ class Export < ActiveRecord::Base
       ]
     )
     
+    ic = Iconv.new('LATIN1//TRANSLIT//IGNORE', 'UTF-8')
+    
     shpfile.transaction do |tr|
       locations.each do |l|
 
@@ -47,15 +50,24 @@ class Export < ActiveRecord::Base
         statistics[:region_missing] << l unless l.topology.region
         statistics[:country_missing] << l unless l.topology.country
         statistics[:city_missing] << l unless l.topology.city
+    
+        label = l.name
+        
+        if self.output_format == "WINDOWS"
+          label = ic.iconv(label + ' ')[0..-2]
+          city = l.topology.city.try(:name)
+          region = l.topology.region.try(:name)
+          country = l.topology.country.try(:name)
+        end            
         
         new_record = GeoRuby::Shp4r::ShpRecord.new(l.feature,
           'Shape' => 'POINT',
           'FID' => l.id,
           'Type' => l.tags.try(:first).try(:category).try(:numeric_code),
-          'Label' => l.name,
-          'City' => l.topology.city.try(:name),
-          'Region' => l.topology.region.try(:name),
-          'Country' => l.topology.country.try(:name),
+          'Label' => label,
+          'City' => city,
+          'Region' => region,
+          'Country' => country,
           'Highway' => "",
           'Level' => l.tags.try(:first).try(:category).try(:level) || 0,
           'Endlevel' => l.tags.try(:first).try(:category).try(:end_level) || 0

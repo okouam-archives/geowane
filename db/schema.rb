@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101226105242) do
+ActiveRecord::Schema.define(:version => 20110107220053) do
 
   create_table "audits", :force => true do |t|
     t.datetime "created_at"
@@ -57,7 +57,7 @@ ActiveRecord::Schema.define(:version => 20101226105242) do
 
   create_table "cities", :force => true do |t|
     t.string   "name"
-    t.geometry "feature",                 :limit => nil, :srid => 4326
+    t.geometry "feature",                 :limit => nil
     t.integer  "uncategorized_locations"
     t.integer  "total_locations"
     t.integer  "new_locations"
@@ -85,7 +85,7 @@ ActiveRecord::Schema.define(:version => 20101226105242) do
 
   create_table "communes", :force => true do |t|
     t.string   "name"
-    t.geometry "feature",                 :limit => nil, :srid => 4326
+    t.geometry "feature",                 :limit => nil
     t.integer  "uncategorized_locations"
     t.integer  "total_locations"
     t.integer  "new_locations"
@@ -117,7 +117,7 @@ ActiveRecord::Schema.define(:version => 20101226105242) do
 
   create_table "countries", :force => true do |t|
     t.string   "name"
-    t.geometry "feature",                 :limit => nil, :srid => 4326
+    t.geometry "feature",                 :limit => nil
     t.integer  "uncategorized_locations"
     t.integer  "total_locations"
     t.integer  "new_locations"
@@ -151,6 +151,7 @@ ActiveRecord::Schema.define(:version => 20101226105242) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "name"
+    t.string   "output_platform"
   end
 
   create_table "features", :force => true do |t|
@@ -162,7 +163,7 @@ ActiveRecord::Schema.define(:version => 20101226105242) do
     t.integer  "road_class"
     t.integer  "speed"
     t.integer  "type"
-    t.geometry "geom",       :limit => nil, :srid => 4326
+    t.geometry "geom",       :limit => nil
   end
 
   add_index "features", ["geom"], :name => "idx_features_geom", :spatial => true
@@ -197,7 +198,7 @@ ActiveRecord::Schema.define(:version => 20101226105242) do
     t.datetime "updated_at"
     t.integer  "import_id"
     t.string   "long_name"
-    t.geometry "feature",        :limit => nil,                :srid => 4326
+    t.geometry "feature",        :limit => nil
     t.integer  "tags_count",                    :default => 0
   end
 
@@ -213,7 +214,7 @@ ActiveRecord::Schema.define(:version => 20101226105242) do
 
   create_table "regions", :force => true do |t|
     t.string   "name"
-    t.geometry "feature",                 :limit => nil, :srid => 4326
+    t.geometry "feature",                 :limit => nil
     t.integer  "uncategorized_locations"
     t.integer  "total_locations"
     t.integer  "new_locations"
