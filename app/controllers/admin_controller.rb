@@ -7,7 +7,7 @@ class AdminController < ApplicationController
     @city_count = City.count(:all)
     @new_locations = Location.where("status = 'new'").count
     @audited_locations = Location.where("status = 'audited'").count
-    @invalid_locations = Location.where("status = 'nvalid'").count
+    @invalid_locations = Location.where("status = 'invalid'").count
     @field_checked_locations = Location.where("status = 'field_checked'").count
     @corrected_locations = Location.where("status = 'corrected'").count
   end
