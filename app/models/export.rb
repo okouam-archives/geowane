@@ -24,7 +24,7 @@ class Export < ActiveRecord::Base
     Dir.mkdir(shpfile_directory)
     
     shpfile = GeoRuby::Shp4r::ShpFile.create(
-      shpfile_directory + "/import", 
+      shpfile_directory + "/" + self.name, 
       GeoRuby::Shp4r::ShpType::POINT,
       [
         GeoRuby::Shp4r::Dbf::Field.new("FID","C",10),
@@ -53,11 +53,11 @@ class Export < ActiveRecord::Base
     
         label = l.name
         
-        if self.output_format == "WINDOWS"
-          label = ic.iconv(label + ' ')[0..-2]
-          city = l.topology.city.try(:name)
-          region = l.topology.region.try(:name)
-          country = l.topology.country.try(:name)
+        if self.output_platform == :WINDOWS
+	        label = ic.iconv(label + ' ')[0..-2]
+          city = ic.iconv(l.topology.city.name + ' ')[0..-2] if l.topology.city
+          region = ic.iconv(l.topology.region.name + ' ')[0..-2] if l.topology.region
+          country = ic.iconv(l.topology.country.name + ' ')[0..-2] if l.topology.country					
         end            
         
         new_record = GeoRuby::Shp4r::ShpRecord.new(l.feature,

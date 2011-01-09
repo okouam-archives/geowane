@@ -77,7 +77,7 @@ namespace :geocms do
 
     ActiveRecord::Base.configurations = Rails.configuration.database_configuration
     database = ActiveRecord::Base.configurations[Rails.env]['database']
-    `createlang plpgsql #{database}`
+    #`createlang plpgsql #{database}`
 
     postgis_sql_candidates = `locate postgis.sql`
     unless postgis_sql_candidates && !postgis_sql_candidates.blank?
@@ -93,7 +93,7 @@ namespace :geocms do
     spatial_ref_sys_sql = spatial_ref_sys_sql_candidates.split("\n")[0]
 
     `psql -d #{database} -f #{postgis_sql}`
-    `psql -d #{database} -f #{spatial_ref_sys_sql}`
+    #`psql -d #{database} -f #{spatial_ref_sys_sql}`
 
   end
 
