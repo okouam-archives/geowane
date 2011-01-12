@@ -26,27 +26,36 @@ class Import < ActiveRecord::Base
         locations_count = 0
         doc = Nokogiri::XML(File.open(file).readlines.join)
         doc.css("wpt").each do |node|
-          longitude, latitude, name = parse(node)
-          next unless is_valid?(longitude, latitude, name) 
-          self.save_location(longitude, latitude, name, import_id, user)
+          content = parse(node)
+          next unless is_valid?(content) 
+          self.save_location(content, import_id, user)
           locations_count += 1
         end
         locations_count
       end
 
       def parse(node)
-        [node.attr("lon"), node.attr("lat"), node.css("name")[0].inner_text]
+        content = Hash.new
+        content[:longitude] = node.attr("lon")
+        content[:latitude] = node.attr("lat")
+        content[:name] = node.css("name")[0].inner_text
+        content[:cmt] = node.css("cmt")[0].inner_text
+        content[:desc] = node.css("desc")[0].inner_text        
+        content[:ele] = node.css("ele")[0].inner_text  
+        content[:sym] = node.css("sym")[0].inner_text 
+        content 
       end
 
-      def is_valid?(longitude, latitude, name)
-        return !name.blank?
+      def is_valid?(content)
+        return !content[:name].blank?
       end
 
-      def save_location(longitude, latitude, name, import_id, user)
-        location = Location.new(:longitude => longitude, :name => name, :latitude => latitude, :long_name => name)
-        location.feature = Point.from_x_y(longitude, latitude, 4326)
+      def save_location(content, import_id, user)
+        location = Location.new(:longitude => content[:longitude], :name => content[:name], :latitude => content[:latitude], :long_name => content[:name])
+        location.feature = Point.from_x_y(content[:longitude].to_f, content[:latitude].to_f, 4326)
         location.import_id = import_id
         location.user = user
+        location.comments.build(:title => "Imported from GPX - CMT node", :comment => "Imported from GPX - CMT node: " + content[:cmt], :user => user)
         location.save!
       end
 
