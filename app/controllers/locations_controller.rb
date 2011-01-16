@@ -68,7 +68,7 @@ class LocationsController < ApplicationController
       location = Location.find(id)
       location.update_attributes(attributes)
       if params[:commit] == "Add Tag" && !params[:category_switcher].blank?
-        location.tags << Tag.new(:location_id => self.id, :category_id => params[:category_switcher])
+        location.tags << Tag.new(:location_id => id, :category_id => params[:category_switcher])
         redirect_url = "/locations/edit"
       elsif params[:commit] == "Remove Tag" && !params[:category_switcher].blank?
         Tag.where("location_id = ?", id).where("category_id = ?", params[:category_switcher]).all.each do |t|

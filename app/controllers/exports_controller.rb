@@ -1,4 +1,5 @@
 class ExportsController < ApplicationController
+  include Aegis::Controller
   resource_controller
 
   create.after do

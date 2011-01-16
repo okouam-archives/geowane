@@ -52,6 +52,10 @@ class Permissions < Aegis::Permissions
     end
   end
 
+  resources :exports do  
+    allow :administrator
+  end
+
   resources :categories do
     action :index do
       allow :everyone
