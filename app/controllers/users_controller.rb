@@ -1,7 +1,8 @@
 class UsersController < ApplicationController
   resource_controller
+  before_filter :require_user, :except => [:new, :create]
   before_filter :check_edit_permissions, :only => [:update, :edit]
-  before_filter :check_create_permissions, :only => [:new_action, :create]
+#  before_filter :check_create_permissions, :only => [:new_action, :create]
   layout "admin"
 
   def index
@@ -16,8 +17,9 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(params[:user])
-    if @user.save
-      redirect_to users_path
+    if @user.signup!(:user => params[:user])
+      flash[:notice] = "Patienter une demande d'activation est adressé à l'administrateur" 
+      redirect_to user_sessions_url
     else
       render :action => "new"
     end

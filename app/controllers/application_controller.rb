@@ -3,9 +3,13 @@ class ApplicationController < ActionController::Base
   cache_sweeper :audit_sweeper
   helper :all
   around_filter :convert_permission_error
-  helper_method :current_user
+  helper_method :current_user, :logedin?
   protect_from_forgery
   layout "admin"
+
+ def logedin? 
+  !current_user.nil?
+ end
 
   private
  
