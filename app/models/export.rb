@@ -37,7 +37,8 @@ class Export < ActiveRecord::Base
         GeoRuby::Shp4r::Dbf::Field.new("Country","C",40),
         GeoRuby::Shp4r::Dbf::Field.new("Highway","C",40),
         GeoRuby::Shp4r::Dbf::Field.new("Level","C",10),
-        GeoRuby::Shp4r::Dbf::Field.new("Endlevel","C",10,0)
+        GeoRuby::Shp4r::Dbf::Field.new("Endlevel","C",10),
+        GeoRuby::Shp4r::Dbf::Field.new("Comment","C",10,0)
       ]
     )
     
