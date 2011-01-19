@@ -21,8 +21,7 @@ class UsersController < ApplicationController
       flash[:notice] = "Patienter une demande d'activation est adressé à l'administrateur" 
       redirect_to user_sessions_url
     else
-      raise Exception
-#    render :action => "new"
+   render :action => "new"
     end
   end
 
