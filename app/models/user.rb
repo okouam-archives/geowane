@@ -16,6 +16,10 @@ class User < ActiveRecord::Base
 
   scope :active, :conditions => {:is_active => true}
 
+  def has_no_credentials?
+   self.crypted_password.blank?
+  end
+
  def signup!(params)
   self.login = params[:user][:login]
   self.email = params[:user][:email]
@@ -25,6 +29,7 @@ class User < ActiveRecord::Base
   # Ces colonnes sont NOT NULL, on évite une erreur SQL
   self.crypted_password = ''
   self.password_salt = ''
+  self.role_name = "collector"
   self.is_active = false
   save_without_session_maintenance
  end

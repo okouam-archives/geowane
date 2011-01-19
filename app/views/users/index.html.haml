@@ -16,6 +16,8 @@
             %th Can Login?
             %th Role
             %th
+            %th
+            %th
         %tbody
         - for user in @users
           %tr
@@ -23,6 +25,8 @@
             %td= user.last_login_at
             %td= user.is_active
             %td= user.role_name
+            %td= user.email
+            %td= link_to_unless user.is_active,"Edit",edit_user_path(user)
             %td.delete= link_to "Delete", user_path(user), :confirm => 'Are you sure?', :method => :delete
       %div{:style=>"width: 100%; float: right"}
         = select_tag "pages", options_for_select(["10", "20", "50", "100"], params[:per_page]), :style => "width: 70px; padding: 2px; margin-top: -3px"

@@ -1,16 +1,15 @@
 = content_for :title, "New User"
-
 %div.block
   %div.block_head
     %h2
       Add User
     %ul
       %li.nobg= link_to "Back", users_path
- %div.block_content
-   = semantic_form_for @user, :html => { :enctype => "multipart/form-data"} do |form|
-    = form.input :login, :input_html => { :class => "text" }
-    = form.input :email, :input_html => { :class => "text" }
-    = form.input :skype_alias, :input_html => { :class => "text" }
-    = form.input :home_country, :as => :string, :input_html => { :class => "text" }
-    = form.input :mobile_number, :input_html => { :class => "text" }
-    = form.commit_button :button_html => { :class => "submit long" }
+  %div.block_content
+    = semantic_form_for @user, :html => { :enctype => "multipart/form-data"} do |form|
+      = form.input :login, :input_html => { :class => "text" }
+      = form.input :email, :input_html => { :class => "text" }
+      = form.input :skype_alias, :input_html => { :class => "text" }
+      = form.input :home_country, :as => :string, :input_html => { :class => "text" }
+      = form.input :mobile_number, :input_html => { :class => "text" }
+      = form.commit_button :button_html => { :class => "submit long" }

@@ -16,12 +16,13 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(params[:user])
-    if @user.signup!(:user => params[:user])
+    @user = User.new
+    if @user.signup!(params)
       flash[:notice] = "Patienter une demande d'activation est adressé à l'administrateur" 
       redirect_to user_sessions_url
     else
-      render :action => "new"
+      raise Exception
+#    render :action => "new"
     end
   end
 
