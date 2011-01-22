@@ -21,7 +21,7 @@ GeoCms::Application.routes.draw do
   resource :account, :controller => "account"
   resource :map, :controller => "map"
   resource :user_sessions
-  resources :users, :communes, :cities, :regions, :imports, :countries, :counters, :conversions
+  resources :users, :communes, :cities, :regions, :imports, :countries, :counters, :conversions, :reports
 
   resources :exports do
     collection do
