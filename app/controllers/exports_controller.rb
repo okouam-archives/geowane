@@ -5,11 +5,7 @@ class ExportsController < ApplicationController
   create.after do
     object.user = current_user
     object.locations_count = session[:locations].size
-    statistics = object.execute Location.find(session[:locations], :include => [:tags => :category, :topology => [:country, :region, :city]])
-    logger.debug("The exported file included #{statistics[:category_code_missing].size} with no category code")
-    logger.debug("The exported file included #{statistics[:city_missing].size} with no city")
-    logger.debug("The exported file included #{statistics[:region_missing].size} with no region")
-    logger.debug("The exported file included #{statistics[:country_missing].size} with no country")
+    object.execute Location.find(session[:locations], :include => [:tags => :category, :topology => [:country, :region, :city]])
     object.save!
   end
   

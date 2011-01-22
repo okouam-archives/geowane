@@ -7,6 +7,7 @@ class UserSessionsController < ApplicationController
   end
 
   def create
+        
     @user_session = UserSession.new(params[:user_session])
     if @user_session.save
       if @user_session.user.is_active

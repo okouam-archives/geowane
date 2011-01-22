@@ -48,5 +48,5 @@ group :test, :development do
   gem "ruby-debug19"
   gem "rack-bug"
   gem 'database_cleaner'
-  gem "rspec-rails", "~> 2.1.0"
+  gem "rspec-rails"
 end
