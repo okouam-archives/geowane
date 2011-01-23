@@ -2,11 +2,11 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Import do
 
-  before(:all) do
-    @example_gpx = Rails.root.join("spec/samples/example.gpx")
-  end
-
   describe "when importing locations" do
+
+    before(:all) do
+      @example_gpx = Rails.root.join("spec/samples/example.gpx")
+    end
 
     it "selects the correct importer" do
       import = Factory(:valid_gpx_import, :input => File.new(@example_gpx))
@@ -36,6 +36,18 @@ describe Import do
         locations_count.should == 7
       end
 
+    end
+
+  end
+
+  describe "when importing a .MP file" do
+
+    before(:all) do
+      @example_mp = Rails.root.join("spec/samples/export.mp")
+    end
+
+    it "does what it should" do
+      Import::Importers::MP.new.execute(@example_mp, Factory(:valid_collector), 54)
     end
 
   end

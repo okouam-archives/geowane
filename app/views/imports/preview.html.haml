@@ -1,0 +1,43 @@
+= content_for :title, "Preview Updates"
+.block
+  .block_head
+    %h2
+      Imports - Preview Changes
+    %ul
+      %li.nobg.back= link_to "Apply Updates", "#"
+  .block_content
+    = semantic_form_for :changes, :url => change_import_path(object) do
+      %table
+        %tr
+          %th
+            %input{:type=>"checkbox"}
+          %th ID
+          %th Name
+          %th{:style=>"width: 150px"} Longitude
+          %th{:style=>"width: 150px"} Latitude
+        - @updates.each do |key, value|
+          %tr
+            %td
+              %input{:type=>"checkbox", :name=>"changes[]", :value => "#{key}"}
+            %td= "#{key}"
+            %td= "<b class='change'>Before:</b> #{value[:before][:name]} <br/> <b class='change'>After:</b> #{value[:after][:name]}".html_safe
+            %td= "<b class='change'>Before:</b> #{value[:before][:longitude]} <br/> <b class='change'>After:</b> #{value[:after][:longitude]}".html_safe
+            %td= "<b class='change'>Before:</b> #{value[:before][:latitude]} <br/> <b class='change'>After:</b> #{value[:after][:latitude]}".html_safe
+
+:css
+  .change {display: inline-block; width: 50px}
+
+:javascript
+  $(document).ready(function() {
+
+    $("th input[type=checkbox]").click(function() {
+      var master = $(this);
+      var isChecked = master.attr("checked");
+      $("td input[type=checkbox]").attr("checked", isChecked);
+    });
+
+    $(".block_head a").click(function() {
+      $("form").submit();
+      return false;
+    });
+  });
