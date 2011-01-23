@@ -39,15 +39,15 @@ class Import < ActiveRecord::Base
         content[:longitude] = node.attr("lon")
         content[:latitude] = node.attr("lat")
         content[:name] = node.css("name")[0].inner_text
-        content[:cmt] = node.css("cmt")[0].inner_text
-        content[:desc] = node.css("desc")[0].inner_text        
-        content[:ele] = node.css("ele")[0].inner_text  
-        content[:sym] = node.css("sym")[0].inner_text 
+        content[:cmt] = node.css("cmt")[0].inner_text if node.css("cmt") && node.css("cmt").size > 0
+        content[:desc] = node.css("desc")[0].inner_text if node.css("desc") && node.css("desc").size > 0
+        content[:ele] = node.css("ele")[0].inner_text if node.css("ele") && node.css("ele").size > 0 
+        content[:sym] = node.css("sym")[0].inner_text if node.css("sym") && node.css("sym").size > 0
         content 
       end
 
       def is_valid?(content)
-        return !content[:name].blank?
+        !content[:name].blank?
       end
 
       def save_location(content, import_id, user)
