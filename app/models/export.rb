@@ -51,14 +51,17 @@ class Export < ActiveRecord::Base
         statistics[:region_missing] << l unless l.topology.region
         statistics[:country_missing] << l unless l.topology.country
         statistics[:city_missing] << l unless l.topology.city
-    
+
         label = l.name
-        
+        city = l.topology.city
+        region = l.topology.region
+        country = l.topology.country
+
         if self.output_platform == :WINDOWS
 	        label = ic.iconv(label + ' ')[0..-2]
           city = ic.iconv(l.topology.city.name + ' ')[0..-2] if l.topology.city
           region = ic.iconv(l.topology.region.name + ' ')[0..-2] if l.topology.region
-          country = ic.iconv(l.topology.country.name + ' ')[0..-2] if l.topology.country					
+          country = ic.iconv(l.topology.country.name + ' ')[0..-2] if l.topology.country
         end            
         
         new_record = GeoRuby::Shp4r::ShpRecord.new(l.feature,
@@ -70,6 +73,7 @@ class Export < ActiveRecord::Base
           'Region' => region,
           'Country' => country,
           'Highway' => "",
+          'Description' => l.id,
           'Level' => l.tags.try(:first).try(:category).try(:level) || 0,
           'Endlevel' => l.tags.try(:first).try(:category).try(:end_level) || 0
         )
