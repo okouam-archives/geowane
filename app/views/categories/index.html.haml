@@ -27,24 +27,25 @@
             %th &nbsp;
           - if current_user.may_destroy_category? @categories.first 
             %th &nbsp;
-        - @categories.each do |category|
-          %tr
-            = render :partial => @language, :locals => {:category => category} 
-            %td
-              - if category.icon 
-                - image_tag "/images/" + category.icon 
-            %td.count= category.total_locations
-            %td= category.new_locations 
-            %td= category.corrected_locations 
-            %td= category.invalid_locations 
-            %td= category.audited_locations 
-            %td= category.field_checked_locations 
-            - if current_user.may_update_category? @categories.first 
-              %td.edit{:style=>"width: 20px"}
-                = link_to "Edit", edit_category_path(category) 
-            - if current_user.may_destroy_category? @categories.first
-              %td.delete{:style=>"width: 20px"}
-                = link_to "Delete", category, :confirm => 'Are you sure?', :method => :delete
+        - if @categories && @categories.size > 0
+          - @categories.each do |category|
+            %tr
+              = render :partial => @language, :locals => {:category => category}
+              %td
+                - if category.icon 
+                  - image_tag "/images/" + category.icon
+              %td.count= category.total_locations
+              %td= category.new_locations
+              %td= category.corrected_locations
+              %td= category.invalid_locations
+              %td= category.audited_locations
+              %td= category.field_checked_locations
+              - if current_user.may_update_category? @categories.first
+                %td.edit{:style=>"width: 20px"}
+                  = link_to "Edit", edit_category_path(category)
+              - if current_user.may_destroy_category? @categories.first
+                %td.delete{:style=>"width: 20px"}
+                  = link_to "Delete", category, :confirm => 'Are you sure?', :method => :delete
     %br
     = render :partial => "shared/paging", :locals => {:collection => @categories}
 

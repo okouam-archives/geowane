@@ -6,6 +6,7 @@ Feature: Manage categories
   Scenario: Add a new category
     Given I am a auditor who has logged into the site
     When I go to the categories page
+    And sleep
     And I follow "New Category"
     And I fill in "French" with "Magasins"
     And I fill in "English" with "Shops"
@@ -38,7 +39,3 @@ Feature: Manage categories
     Then I should see in the categories list:
       | 0-One   |
       | Magasin |
-
-  Scenario: Update a category
-
-  Scenario: Change the icon for a category
