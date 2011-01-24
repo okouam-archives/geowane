@@ -19,29 +19,28 @@ Feature: Login to the site
 
   Scenario: A user attempts to login with an invalid password
     Given I am on the login page
-  #noinspection CucumberUndefinedStep
     And the following valid collector exists:
       | login    | password  | password_confirmation |
       | johnson  | corr9383  | corr9383              |
     When I fill in "Login" with "johnson"
     And I fill in "Password" with "corr1111"
     And I press "Login"
+    And show me the page
     Then I should see the message "Password is not valid" on the login page
 
+  @current
   Scenario: A user logs with valid credentials
     Given I am on the login page
-  #noinspection CucumberUndefinedStep
     And the following valid collector exists:
       | login    | password | password_confirmation |
-      | johnson  | corr9383 | corr9383              |
+      | johnson  | minty    | minty                 |
     When I fill in "Login" with "johnson"
-    And I fill in "Password" with "corr9383"
+    And I fill in "Password" with "minty"
     And I press "Login"
     Then I should be on the dashboard page
 
   Scenario: A user attempts to login with valid but inactive credentials
     Given I am on the login page
-  #noinspection CucumberUndefinedStep
     And the following valid collector exists:
       | login    | password | password_confirmation | is_active |
       | johnson  | corr9383 | corr9383              | false     |

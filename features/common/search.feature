@@ -1,1 +1,0 @@
-Feature: Search for locations

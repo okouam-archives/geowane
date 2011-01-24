@@ -1,1 +1,0 @@
-Feature: View a summary of the site activity

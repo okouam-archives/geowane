@@ -4,7 +4,7 @@ Feature: Manage categories
   I want to manage categories
 
   Scenario: Add a new category
-    Given I am an auditor who has logged into the site
+    Given I am a auditor who has logged into the site
     When I go to the categories page
     And I follow "New Category"
     And I fill in "French" with "Magasins"
@@ -15,7 +15,7 @@ Feature: Manage categories
       |Magasins | 0         |
 
   Scenario: Edit a category
-    Given I am an auditor who has logged into the site
+    Given I am a auditor who has logged into the site
     And the following valid category exists:
       | French    |
       | Assurance |
@@ -28,7 +28,7 @@ Feature: Manage categories
       |Base militaire | 0         |
 
   Scenario: Delete a category
-    Given I am an auditor who has logged into the site
+    Given I am a auditor who has logged into the site
     And the following valid categories exists:
       | French    |
       | Assurance |
