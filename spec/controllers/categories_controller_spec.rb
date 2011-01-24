@@ -20,7 +20,7 @@ describe CategoriesController do
       it "paginates the retrieved categories" do
         categories = mock('Categories')
         Category.stub(:find_by_sql).and_return(categories)
-        categories.should_receive(:paginate).with(:page => 54, :per_page => 20)
+        categories.should_receive(:paginate).with(:page => 54, :per_page => 10)
         get :index, :page => 54
       end
 

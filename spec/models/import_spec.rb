@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Import do
 
-  describe "when importing locations" do
+  describe "when inserting locations" do
 
     before(:all) do
       @example_gpx = Rails.root.join("spec/samples/example.gpx")
@@ -10,16 +10,15 @@ describe Import do
 
     it "selects the correct importer" do
       import = Factory(:valid_gpx_import, :input => File.new(@example_gpx))
-      Import::Importers::GPX.stub(:new).and_return(mock('Import').as_null_object) 
-      import.execute
+      Importers::GPX.stub(:new).and_return(mock('Import').as_null_object)
+      import.insert
     end
 
     it "assigns the number of locations imported" do
       import = Factory(:valid_gpx_import, :input => File.new(@example_gpx))
-      mock = mock('Import', :execute => 484)
-      Import::Importers::GPX.stub(:new).and_return(mock) 
-      import.execute
-      import.locations_count.should == 484
+      mock = mock('Import', :insert => 484)
+      Importers::GPX.stub(:new).and_return(mock)
+      import.insert.should == 484
     end
 
     describe "and using the GPX importer" do
@@ -28,26 +27,26 @@ describe Import do
         mock_document = mock('Document')
         mock_document.stub(:css).and_return([])
         Nokogiri.should_receive(:XML).and_return(mock_document)
-        Import::Importers::GPX.new.execute(@example_gpx, Factory(:valid_collector), 54)
+        Importers::GPX.new.insert(@example_gpx, Factory(:valid_collector), 54)
       end
 
       it "counts the number of locations imported" do
-        locations_count = Import::Importers::GPX.new.execute(@example_gpx, Factory(:valid_collector), 54)
-        locations_count.should == 7
+        locations_count = Importers::GPX.new.insert(@example_gpx, Factory(:valid_collector), 54)
+        locations_count.should == 1
       end
 
     end
 
   end
 
-  describe "when importing a .MP file" do
+  describe "when updating from a .MP file" do
 
     before(:all) do
       @example_mp = Rails.root.join("spec/samples/export.mp")
     end
 
     it "does what it should" do
-      Import::Importers::MP.new.execute(@example_mp, Factory(:valid_collector), 54)
+      Importers::MP.new.update(@example_mp, [1,2])
     end
 
   end

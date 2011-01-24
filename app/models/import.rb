@@ -20,7 +20,7 @@ class Import < ActiveRecord::Base
   end
 
   def importer
-    "Import::Importers::#{self.import_format}".constantize.new
+    "Importers::#{self.import_format}".constantize.new
   end
 
 end
