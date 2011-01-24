@@ -6,7 +6,7 @@
     %ul
       %li.nobg= link_to "Create Selection", "/exports/selection"
   .block_content
-    - if collection && collection.count > 0
+    - if @exports && @exports.count > 0
       %table{:cellspacing => "0", :cellpadding => "0", :style => "width: 100%; margin-left: 0px"}
         %thead
           %tr
@@ -15,12 +15,15 @@
             %th Date Exported
             %th Location Count
         %tbody
-          - collection.each do |export|
+          - @exports.each do |export|
             %tr
               %td= link_to export.name, export.output.url
               %td= export.output_format
               %td= export.created_at.strftime("%d-%m-%Y")
               %td= export.locations_count
+      %br
+        %div
+          = render :partial => "shared/paging", :locals => {:collection => @exports}
     - else
       %p
         %br

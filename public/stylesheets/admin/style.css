@@ -391,7 +391,6 @@ a:hover {
 	text-align: right;
 	padding-top: 0;
 	border: 0;
-	overflow: hidden;
 	}
 
 .block .paggination a, .block .paggination span.current, .block .paggination span.disabled {

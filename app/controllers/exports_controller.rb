@@ -8,6 +8,12 @@ class ExportsController < ApplicationController
     object.execute Location.find(session[:locations], :include => [:tags => :category, :topology => [:country, :region, :city]])
     object.save!
   end
+
+  def index
+    session[:exports_index_page] = params[:page] || session[:exports_index_page]
+    per_page = params[:per_page] || 20
+    @exports = Export.all.paginate(:page => session[:exports_index_page], :per_page => per_page)
+  end
   
   create.wants.html do
     redirect_to exports_url
