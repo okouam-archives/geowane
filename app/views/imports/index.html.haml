@@ -6,23 +6,24 @@
     %ul
       %li.nobg.back= link_to "New Import", new_import_url
   .block_content
-    - if collection && collection.count > 0
+    - if @imports && @imports.count > 0
       %table{:cellspacing => "0", :cellpadding => "0", :style => "width: 100%; margin-left: 0px"}
         %thead
           %tr
             %th Input File
-            %th Format
-            %th Locations Imported
-            %th User
-            %th Date Imported
+            %th{:style=>"width: 140px"} Locations Imported
+            %th{:style=>"width: 100px"} User
+            %th{:style=>"width: 100px"} Date Imported
         %tbody
-          - collection.each do |conversion|
+          - @imports.each do |import|
             %tr
-              %td= link_to conversion.input.original_filename, conversion.input.url
-              %td= conversion.import_format
-              %td= link_to conversion.locations_count, "/locations?s[import_id]=#{conversion.id}"
-              %td= conversion.user.login
-              %td= conversion.created_at
+              %td= link_to import.input.original_filename, import.input.url
+              %td= link_to import.locations.count, "/locations?s[import_id]=#{import.id}"
+              %td= import.user.login
+              %td= import.created_at.strftime("%d-%m-%Y")
+      %br
+        %div
+          = render :partial => "shared/paging", :locals => {:collection => @imports}
     - else
       %p
         %br

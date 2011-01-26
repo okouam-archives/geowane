@@ -11,8 +11,8 @@ class ExportsController < ApplicationController
 
   def index
     session[:exports_index_page] = params[:page] || session[:exports_index_page]
-    per_page = params[:per_page] || 20
-    @exports = Export.all.paginate(:page => session[:exports_index_page], :per_page => per_page)
+    @per_page = params[:per_page] || 10
+    @exports = Export.order("created_at desc").paginate(:page => session[:exports_index_page], :per_page => @per_page)
   end
   
   create.wants.html do
@@ -20,9 +20,9 @@ class ExportsController < ApplicationController
   end
 
   def selection
-    @all_countries = Country.connection.select_all("SELECT id, name FROM countries ORDER BY name ASC").map {|rs| [rs["name"], rs["id"]]}
-    @all_categories = Category.connection.select_all("SELECT id, french FROM categories ORDER BY french ASC").map {|rs| [rs["french"], rs["id"]]}
-    @all_users = User.connection.select_all("SELECT login, id FROM users ORDER BY login ASC").map {|rs| [rs["login"], rs["id"]]}
+    @all_countries = Country.dropdown_items
+    @all_categories = Category.dropdown_items
+    @all_users = User.dropdown_items
   end
 
   def prepare    

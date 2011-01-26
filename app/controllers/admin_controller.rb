@@ -1,10 +1,10 @@
 class AdminController < ApplicationController
 
   def dashboard
-    @location_count = Location.count(:all)
-    @commune_count = Commune.count(:all)
-    @region_count = Region.count(:all)
-    @city_count = City.count(:all)
+    @location_count = Location.count
+    @commune_count = Commune.count
+    @region_count = Region.count
+    @city_count = City.count
     @new_locations = Location.where("status = 'new'").count
     @audited_locations = Location.where("status = 'audited'").count
     @invalid_locations = Location.where("status = 'invalid'").count

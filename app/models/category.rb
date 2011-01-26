@@ -12,4 +12,13 @@ class Category < ActiveRecord::Base
     "#{self.french} / #{self.english}"
   end
 
+  def self.dropdown_items
+    sql = "SELECT id, french FROM categories ORDER BY french ASC"
+    Category.connection.select_all(sql).map {|rs| [rs["french"], rs["id"]]}
+  end
+
+  def self.available_icons
+    Dir[File.expand_path(File.join(Rails.root,'public/images/google/*'))].map {|file| file.gsub("#{Rails.root}/public/images/", "")}
+  end
+
 end

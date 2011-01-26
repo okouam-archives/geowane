@@ -1,3 +1,5 @@
+#TO BE REMOVED AND PUT AS AN IMPORTER
+
 require "iconv"
 
 class Feature

@@ -8,5 +8,6 @@ class CreateReports < ActiveRecord::Migration
   end
 
   def self.down
+    drop_table :reports
   end
 end

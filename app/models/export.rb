@@ -83,11 +83,11 @@ class Export < ActiveRecord::Base
 
     shpfile.close
 
-    File.open("import.tar", "wb") do |tar|
+    File.open("#{self.name}.tar", "wb") do |tar|
       Archive::Tar::Minitar.pack("#{shpfile_directory}", tar)
     end  
        
-    File.open("import.tar", 'rb') {|output_file| self.output = output_file} 
+    File.open("#{self.name}.tar", 'rb') {|output_file| self.output = output_file}
 
     statistics
     

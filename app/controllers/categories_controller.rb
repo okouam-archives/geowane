@@ -18,7 +18,7 @@ class CategoriesController < ApplicationController
   end
 
   def change_icon
-    @icons =  Dir[File.expand_path(File.join(Rails.root,'public/images/google/*'))].map {|file| file.gsub("#{Rails.root}/public/images/", "")}
+    @icons =  Category.available_icons
   end
 
   def locations

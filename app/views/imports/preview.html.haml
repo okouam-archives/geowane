@@ -6,8 +6,8 @@
     %ul
       %li.nobg.back= link_to "Apply Updates", "#"
   .block_content
-    = semantic_form_for :changes, :url => change_import_path(object) do
-      %table
+    = semantic_form_for :changes, :url => execute_import_path(object) do
+      %table{:style=>"width: 100%"}
         %tr
           %th
             %input{:type=>"checkbox"}
@@ -15,14 +15,20 @@
           %th Name
           %th{:style=>"width: 150px"} Longitude
           %th{:style=>"width: 150px"} Latitude
-        - @updates.each do |key, value|
+        - @selections.each do |selection|
           %tr
             %td
-              %input{:type=>"checkbox", :name=>"changes[]", :value => "#{key}"}
-            %td= "#{key}"
-            %td= "<b class='change'>Before:</b> #{value[:before][:name]} <br/> <b class='change'>After:</b> #{value[:after][:name]}".html_safe
-            %td= "<b class='change'>Before:</b> #{value[:before][:longitude]} <br/> <b class='change'>After:</b> #{value[:after][:longitude]}".html_safe
-            %td= "<b class='change'>Before:</b> #{value[:before][:latitude]} <br/> <b class='change'>After:</b> #{value[:after][:latitude]}".html_safe
+              %input{:type=>"checkbox", :name=>"selected[]", :value => "#{selection.id}"}
+            - if selection.original
+              %td= selection.original.id
+              %td= "<b class='change'>Before:</b> #{selection.original.name} <br/> <b class='change'>After:</b> #{selection.name}".html_safe
+              %td= "<b class='change'>Before:</b> #{selection.original.longitude} <br/> <b class='change'>After:</b> #{selection.longitude}".html_safe
+              %td= "<b class='change'>Before:</b> #{selection.original.latitude} <br/> <b class='change'>After:</b> #{selection.latitude}".html_safe
+            - else
+              %td NEW
+              %td= selection.name
+              %td= selection.longitude
+              %td= selection.latitude
 
 :css
   .change {display: inline-block; width: 50px}
@@ -37,6 +43,10 @@
     });
 
     $(".block_head a").click(function() {
+      if ($("td input[type=checkbox]:checked").length < 1) {
+        alert("Please select one or more changes to make");
+        return false;
+      }
       $("form").submit();
       return false;
     });

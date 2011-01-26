@@ -33,7 +33,7 @@ GeoCms::Application.routes.draw do
   resources :imports do
     member do
       get :preview
-      post :change
+      post :execute
     end
   end
 

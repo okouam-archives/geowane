@@ -9,4 +9,9 @@ class User < ActiveRecord::Base
 
   scope :active, :conditions => {:is_active => true}
 
+  def self.dropdown_items
+    sql = "SELECT login, id FROM users ORDER BY login ASC"
+    User.connection.select_all(sql).map {|rs| [rs["login"], rs["id"]]}
+  end
+
 end

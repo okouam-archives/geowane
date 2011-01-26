@@ -7,32 +7,33 @@ class ImportsController < ApplicationController
     object.user_id = current_user.id
   end
 
-  create.before do
-    @all_users = User.order("login")
+  def index
+    setup_paging(:imports_index_page, params)
+    @imports = Import.paged(session[:imports_index_page], @per_page)
   end
 
-  create.after do
-    if object.import_format == :GPX
-      object.locations_count = object.insert
-      object.save!
-      @redirect = imports_path
-    else
-      @redirect = preview_import_path(object.id)
-    end
+  create.before do
+    @all_users = User.dropdown_items
   end
 
   def preview
-    @updates = object.preview
+    @selections = object.selections
   end
 
-  def change
-    object.locations_count = object.update(params[:changes])
-    object.save!
+  def execute
+    object.execute(params[:selected])
     redirect_to imports_path
   end
 
   create.wants.html do
-    redirect_to @redirect
+    redirect_to preview_import_path(object.id)
+  end
+
+  private
+
+  def setup_paging(key, options, page_size = 10)
+    session[key] = options[:page] || session[key]
+    @per_page = options[:per_page] || page_size
   end
 
 end
