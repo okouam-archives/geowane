@@ -51,7 +51,8 @@ class Search
     end
 
     unless params[:import_id].blank?
-      query = query.where("import_id = ?", params[:import_id])
+      query = query.joins("JOIN labels ON labels.location_id = locations.id")
+        .where("labels.key = 'IMPORTED FROM' AND labels.classification = 'SYSTEM' AND labels.value = ?", params[:import_id])
     end
 
     unless params[:country_id].blank?

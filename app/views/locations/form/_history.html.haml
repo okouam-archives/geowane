@@ -1,7 +1,9 @@
 #history-tab
-  - if object.import_id
-    %b Imported from
-    = link_to Import.find(object.import_id).input.original_filename, Import.find(object.import_id).input.url
+  - if object.labels.count > 0
+    - object.labels.each do |label|
+      - if label.classification == 'SYSTEM' && label.key == 'IMPORTED FROM'
+        %b Imported from
+        = link_to Import.find(label.value).input.original_filename, Import.find(label.value).input.url
   %p
     %b Added by
     = object.user.login
