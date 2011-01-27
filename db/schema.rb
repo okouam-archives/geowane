@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110126202217) do
+ActiveRecord::Schema.define(:version => 20110126225902) do
 
   create_table "audits", :force => true do |t|
     t.datetime "created_at"
@@ -175,6 +175,15 @@ ActiveRecord::Schema.define(:version => 20110126202217) do
     t.datetime "input_updated_at"
     t.string   "import_format"
     t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "labels", :force => true do |t|
+    t.string   "key",            :null => false
+    t.string   "value",          :null => false
+    t.string   "classification"
+    t.integer  "location_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

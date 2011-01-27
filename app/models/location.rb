@@ -7,11 +7,11 @@ class Location < ActiveRecord::Base
   acts_as_audited
   accepts_nested_attributes_for :comments, :reject_if => lambda { |a| a[:comment].blank? || a[:title].blank? }
   has_one :topology
-
   validates_presence_of :longitude, :latitude, :name
   belongs_to :user
   belongs_to :source, :class_name => "Import"
   has_many :tags, :autosave => true
+  has_many :labels, :autosave => true
   enum_attr :status, %w(new invalid corrected audited field_checked), :init => :new, :nil => false
   accepts_nested_attributes_for :tags, :reject_if => lambda { |a| a[:category_id].blank? }
 

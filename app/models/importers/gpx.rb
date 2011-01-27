@@ -34,6 +34,7 @@ module Importers
     def save_location(selected, import_id, user)
       location = Location.new(longitude: selected.longitude, name: selected.name,
                               import_id: import_id, user: user, latitude: selected.latitude, long_name: selected.name)
+      location.labels.build(key: "IMPORTED FROM", value: import_id, classification: system)
       comment_title = "Imported from GPX - CMT node"
       comment_body = "Imported from GPX - CMT node: " + selected.comment
       location.comments.build(title: comment_title, comment: comment_body, user: user) if selected.comment

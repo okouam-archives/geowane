@@ -24,6 +24,9 @@
     - if object.persisted? && current_user.may_change_status_of_location?(object, nil)
       = form.input :status, :collection => workflow_actions(current_user, object), :include_blank => false
     = render :partial => "locations/form/tags", :locals => {:location => object}
+    %li.tags
+      %label
+        Labels
     = render :partial => "locations/form/comments", :locals => {:location => object}
 
 :css

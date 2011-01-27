@@ -15,6 +15,11 @@ class Import < ActiveRecord::Base
     importer_for(self.input.path).execute(self, selected_items)
   end
 
+  def labelled_locations
+    Location.joins(:labels).where("labels.classification = 'SYSTEM'").where("labels.key = 'IMPORTED FROM'")
+      .where("labels.value = '#{id}'").count
+  end
+
   private
 
   def identify_selection

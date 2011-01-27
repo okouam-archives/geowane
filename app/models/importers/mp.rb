@@ -23,6 +23,7 @@ module Importers
         item.original.latitude = item.latitude
         item.original.name = item.original.long_name = item.name
         item.original.comments.build(title: "Updated from .MP", comment: "Updated from .MP", user: import.user)
+        item.original.labels.build(key: "IMPORTED FROM", value: import.id, classification: "SYSTEM")
         item.original.save!
       end
     end

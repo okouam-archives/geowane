@@ -18,7 +18,7 @@
             %th
               %b Status
             %th
-              %b Tags
+              %b Categories
             %th 
               %b Comments        
         %tbody 
@@ -41,7 +41,7 @@
         %tr
           %td= select_tag "category_switcher", options_for_select(@categories), :class => "styled_select"
           %td.add-tag-action{:style=>"width: 60px"}
-            = submit_tag "Add Tag", :class => "button"  
+            = submit_tag "Add Tag", :class => "button"
           %td.remove-tag-action{:style=>"width: 60px"}
             = submit_tag "Remove Tag", :class => "button mid"
           %td{:style=>"width: 153px; text-align: right"}
