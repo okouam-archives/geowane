@@ -3,6 +3,9 @@ source 'http://rubygems.org'
 gem 'gherkin'
 gem 'hoptoad_notifier'
 gem 'pg'
+gem 'paperclip-extended_validations',
+    :git => "git://github.com/meskyanichi/paperclip-extended_validations.git",
+    :require  => "extended_validations"        
 gem 'formtastic', :git => 'git://github.com/justinfrench/formtastic.git'
 gem 'haml'
 gem 'nokogiri'

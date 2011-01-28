@@ -14,13 +14,6 @@ describe Import do
       import.insert
     end
 
-    it "assigns the number of locations imported" do
-      import = Factory(:valid_gpx_import, :input => File.new(@example_gpx))
-      mock = mock('Import', :insert => 484)
-      Importers::GPX.stub(:new).and_return(mock)
-      import.insert.should == 484
-    end
-
     describe "and using the GPX importer" do
 
       it "uses Nokogiri to parse the file" do
@@ -42,11 +35,11 @@ describe Import do
   describe "when updating from a .MP file" do
 
     before(:all) do
-      @example_mp = Rails.root.join("spec/samples/export.mp")
+      @sample_mp = Rails.root.join("spec/samples/sample.mp")
     end
 
     it "does what it should" do
-      Importers::MP.new.update(@example_mp, [1,2])
+      Importers::MP.new.update(@sample_mp, [1,2])
     end
 
   end

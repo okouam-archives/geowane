@@ -60,6 +60,15 @@ class Permissions < Aegis::Permissions
     action :index do
       allow :everyone
     end
+    action :destroy do
+      allow :administrator
+    end
+    action :create do
+      allow :administrator
+    end
+    action :edit do
+      allow :administrator
+    end
   end
 
   action :edit_area do

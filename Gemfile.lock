@@ -20,6 +20,12 @@ GIT
       i18n (~> 0.4)
 
 GIT
+  remote: git://github.com/meskyanichi/paperclip-extended_validations.git
+  revision: f8d810a3125a5cf055056faedc536e9f5a75a4ea
+  specs:
+    paperclip-extended_validations (0.1.0)
+
+GIT
   remote: git://github.com/odorcicd/authlogic.git
   revision: a087ad0cba3c165ba22fcf176c28b6f7517931e8
   branch: rails3
@@ -258,6 +264,7 @@ DEPENDENCIES
   newrelic_rpm
   nokogiri
   paperclip
+  paperclip-extended_validations!
   pg
   rack
   rack-bug

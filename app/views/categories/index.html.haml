@@ -5,14 +5,15 @@
       %li.nobg.back
         %a{:href=>"#"}
           = link_to switch_language(@language), categories_path(:language => switch_language(@language)) 
-      %li.nobg.back
-        %a{:href=>"#"}
-          = link_to "New Category", new_category_path 
+      - if current_user.may_create_category?
+        %li.nobg.back
+          %a{:href=>"#"}
+            = link_to "New Category", new_category_path
       %li.nobg.back
         %a{:href=>"#"}
           = link_to "Back", :back 
   .block_content
-    %table{:width=>"100%", :cellspacing=>"0", :style=>"width: 100%; margin-left: 0px", :cellpadding=>"0"}
+    %table.list{:width=>"100%", :cellspacing=>"0", :style=>"width: 100%; margin-left: 0px", :cellpadding=>"0"}
       %tbody
         %tr
           %th Name
@@ -23,10 +24,11 @@
           %th.invalid Invalid
           %th.audited Audited
           %th.field_checked Field Checked
-          - if current_user.may_update_category? @categories.first 
-            %th &nbsp;
-          - if current_user.may_destroy_category? @categories.first 
-            %th &nbsp;
+          - if @categories && @categories.size > 0
+            - if current_user.may_update_category? @categories.first
+              %th &nbsp;
+            - if current_user.may_destroy_category? @categories.first
+              %th &nbsp;
         - if @categories && @categories.size > 0
           - @categories.each do |category|
             %tr
@@ -40,14 +42,16 @@
               %td= category.invalid_locations
               %td= category.audited_locations
               %td= category.field_checked_locations
-              - if current_user.may_update_category? @categories.first
-                %td.edit{:style=>"width: 20px"}
-                  = link_to "Edit", edit_category_path(category)
-              - if current_user.may_destroy_category? @categories.first
-                %td.delete{:style=>"width: 20px"}
-                  = link_to "Delete", category, :confirm => 'Are you sure?', :method => :delete
+              - if @categories && @categories.size > 0
+                - if current_user.may_update_category? @categories.first
+                  %td.edit{:style=>"width: 20px"}
+                    = link_to "Edit", edit_category_path(category)
+                - if current_user.may_destroy_category? @categories.first
+                  %td.delete{:style=>"width: 20px"}
+                    = link_to "Delete", category, :confirm => 'Are you sure?', :method => :delete
     %br
-    = render :partial => "shared/paging", :locals => {:collection => @categories}
+    - if @categories && @categories.size > 0
+      = render :partial => "shared/paging", :locals => {:collection => @categories}
 
 
 

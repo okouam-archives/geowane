@@ -7,22 +7,22 @@ class CreateCategories < ActiveRecord::Migration
       t.string  "classification", :limit => 100
       t.string  "icon",           :limit => 200
       t.boolean "visible"
+      t.integer  :numeric_code, :default => 0
+      t.integer :total_locations, :default => 0
+      t.integer :new_locations, :default => 0
+      t.integer :invalid_locations, :default => 0
+      t.integer :corrected_locations, :default => 0
+      t.integer :audited_locations, :default => 0
+      t.integer :field_checked_locations, :default => 0
+      t.string :navitel_french, :string
+      t.string :navitel_english, :string
+      t.string :navitel_code, :string
+      t.string :navteq_french, :string
+      t.string :navteq_english, :string
+      t.string :navteq_code, :string
+      t.string :garmin_french, :string
+      t.string :garmin_english, :string
     end
-   add_column :categories, :numeric_code, :integer
-   add_column :categories, :total_locations, :integer
-   add_column :categories, :new_locations, :integer
-   add_column :categories, :invalid_locations, :integer
-   add_column :categories, :corrected_locations, :integer
-   add_column :categories, :audited_locations, :integer
-   add_column :categories, :field_checked_locations, :integer
-   add_column :categories, :navitel_french, :string
-   add_column :categories, :navitel_english, :string
-   add_column :categories, :navitel_code, :string
-   add_column :categories, :navteq_french, :string
-   add_column :categories, :navteq_english, :string
-   add_column :categories, :navteq_code, :string
-   add_column :categories, :garmin_french, :string
-   add_column :categories, :garmin_english, :string
   end
 
   def self.down

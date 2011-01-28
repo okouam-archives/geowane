@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110126225902) do
+ActiveRecord::Schema.define(:version => 20110126235130) do
 
   create_table "audits", :force => true do |t|
     t.datetime "created_at"
@@ -32,8 +32,15 @@ ActiveRecord::Schema.define(:version => 20110126225902) do
     t.string  "classification",          :limit => 100
     t.string  "icon",                    :limit => 200
     t.boolean "visible"
-    t.integer "numeric_code"
+    t.integer "numeric_code",                           :default => 0
+    t.integer "total_locations",                        :default => 0
+    t.integer "new_locations",                          :default => 0
+    t.integer "invalid_locations",                      :default => 0
+    t.integer "corrected_locations",                    :default => 0
+    t.integer "audited_locations",                      :default => 0
+    t.integer "field_checked_locations",                :default => 0
     t.string  "navitel_french"
+    t.string  "string"
     t.string  "navitel_english"
     t.string  "navitel_code"
     t.string  "navteq_french"
@@ -45,19 +52,13 @@ ActiveRecord::Schema.define(:version => 20110126225902) do
     t.string  "sygic_english"
     t.string  "sygic_code"
     t.integer "tags_count",                             :default => 0
-    t.integer "total_locations"
-    t.integer "new_locations"
-    t.integer "invalid_locations"
-    t.integer "corrected_locations"
-    t.integer "audited_locations"
-    t.integer "field_checked_locations"
     t.integer "level",                                  :default => 0, :null => false
     t.integer "end_level",                              :default => 0, :null => false
   end
 
   create_table "cities", :force => true do |t|
     t.string   "name"
-    t.geometry "feature",                 :limit => nil
+    t.geometry "feature",                 :limit => nil, :srid => 4326
     t.integer  "uncategorized_locations"
     t.integer  "total_locations"
     t.integer  "new_locations"
@@ -85,7 +86,7 @@ ActiveRecord::Schema.define(:version => 20110126225902) do
 
   create_table "communes", :force => true do |t|
     t.string   "name"
-    t.geometry "feature",                 :limit => nil
+    t.geometry "feature",                 :limit => nil, :srid => 4326
     t.integer  "uncategorized_locations"
     t.integer  "total_locations"
     t.integer  "new_locations"
@@ -94,6 +95,8 @@ ActiveRecord::Schema.define(:version => 20110126225902) do
     t.integer  "audited_locations"
     t.integer  "field_checked_locations"
   end
+
+  add_index "communes", ["feature"], :name => "idx_communes_feature", :spatial => true
 
   create_table "conversions", :force => true do |t|
     t.string   "input_file_name"
@@ -127,11 +130,10 @@ ActiveRecord::Schema.define(:version => 20110126225902) do
 
   add_index "countries", ["feature"], :name => "idx_countries_feature", :spatial => true
 
-  create_table "events_backup", :id => false, :force => true do |t|
-    t.integer  "id"
+  create_table "events", :force => true do |t|
     t.integer  "location_id"
     t.integer  "user_id"
-    t.string   "label"
+    t.string   "label",       :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -188,63 +190,29 @@ ActiveRecord::Schema.define(:version => 20110126225902) do
     t.datetime "updated_at"
   end
 
-  create_table "level0", :force => true do |t|
-    t.integer  "parent_id"
-    t.string   "name",      :limit => 80
-    t.geometry "the_geom",  :limit => nil
-  end
-
-  create_table "level1", :force => true do |t|
-    t.string   "name",      :limit => 80
-    t.integer  "parent_id"
-    t.geometry "the_geom",  :limit => nil
-  end
-
-  create_table "level2", :force => true do |t|
-    t.integer  "parent_id"
-    t.string   "name",      :limit => 80
-    t.geometry "the_geom",  :limit => nil
-  end
-
-  create_table "level3", :force => true do |t|
-    t.integer  "parent_id"
-    t.string   "name",      :limit => 80
-    t.geometry "the_geom",  :limit => nil
-  end
-
-  create_table "level4", :force => true do |t|
-    t.integer  "parent_id"
-    t.string   "name",      :limit => 80
-    t.geometry "the_geom",  :limit => nil
-  end
-
   create_table "locations", :force => true do |t|
     t.integer  "category_id"
     t.string   "name"
     t.decimal  "longitude"
     t.decimal  "latitude"
-    t.string   "searchable_name"
     t.string   "email"
     t.string   "telephone"
+    t.string   "status"
+    t.integer  "user_id"
     t.string   "fax"
     t.string   "website"
     t.string   "postal_address"
     t.string   "opening_hours"
     t.integer  "user_rating"
-    t.geometry "feature",         :limit => nil,                :srid => 4326
-    t.string   "status"
-    t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "long_name"
-    t.integer  "tags_count",                     :default => 0
-    t.integer  "import_id"
+    t.geometry "feature",        :limit => nil,                :srid => 4326
+    t.integer  "tags_count",                    :default => 0
   end
 
-  add_index "locations", ["category_id"], :name => "index_features_on_category_id"
   add_index "locations", ["feature"], :name => "idx_locations_feature", :spatial => true
   add_index "locations", ["name"], :name => "idx_features_name"
-  add_index "locations", ["user_id"], :name => "idx_locations_user_id"
 
   create_table "model_changes", :force => true do |t|
     t.string  "old_value"
@@ -255,7 +223,7 @@ ActiveRecord::Schema.define(:version => 20110126225902) do
 
   create_table "regions", :force => true do |t|
     t.string   "name"
-    t.geometry "feature",                 :limit => nil
+    t.geometry "feature",                 :limit => nil, :srid => 4326
     t.integer  "uncategorized_locations"
     t.integer  "total_locations"
     t.integer  "new_locations"
@@ -272,15 +240,6 @@ ActiveRecord::Schema.define(:version => 20110126225902) do
     t.string   "name",       :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "roles", :force => true do |t|
-    t.string "title"
-  end
-
-  create_table "roles_users", :id => false, :force => true do |t|
-    t.integer "user_id"
-    t.integer "role_id"
   end
 
   create_table "selections", :force => true do |t|
@@ -304,11 +263,6 @@ ActiveRecord::Schema.define(:version => 20110126225902) do
   add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
 
-  create_table "shapefiles", :force => true do |t|
-    t.string "filename"
-    t.string "locations"
-  end
-
   create_table "tags", :force => true do |t|
     t.integer  "location_id"
     t.integer  "category_id"
@@ -317,9 +271,7 @@ ActiveRecord::Schema.define(:version => 20110126225902) do
   end
 
   add_index "tags", ["category_id", "location_id", "id"], :name => "idx_tags_categories"
-  add_index "tags", ["category_id"], :name => "idx_tags_category_id"
   add_index "tags", ["location_id", "category_id", "id"], :name => "idx_tags_locations"
-  add_index "tags", ["location_id"], :name => "idx_tags_location_id"
 
   create_table "topologies", :force => true do |t|
     t.integer  "location_id"
@@ -329,15 +281,7 @@ ActiveRecord::Schema.define(:version => 20110126225902) do
     t.integer  "city_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "country_name"
-    t.string   "region_name"
-    t.string   "commune_name"
-    t.string   "city_name"
   end
-
-  add_index "topologies", ["city_id", "location_id"], :name => "idx_topologies_city", :unique => true
-  add_index "topologies", ["country_id", "location_id"], :name => "idx_topologies_country", :unique => true
-  add_index "topologies", ["region_id", "location_id"], :name => "idx_topologies_region", :unique => true
 
   create_table "users", :force => true do |t|
     t.string   "login",                                 :null => false

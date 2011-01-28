@@ -1,7 +1,8 @@
-require 'enumerated_attribute'
-
 class Import < ActiveRecord::Base
   has_attached_file :input
+  validates_format_of :input_file_name, :with => /\.(mp|gpx)/
+  validates_attachment_presence :input
+
   belongs_to :user
   has_many :locations
   has_many :selections          

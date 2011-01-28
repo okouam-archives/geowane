@@ -7,4 +7,5 @@
     = semantic_form_for @import, :html => { :enctype => "multipart/form-data"} do |f|
       = f.input :input, :as => :file, :label => "Data File"
       = f.input :user_id, :as => :select, :label => "Author", :collection => @all_users
+      = f.semantic_errors :input
       = f.commit_button :button_html => { :class => "submit long" }, :label => "Process File"
