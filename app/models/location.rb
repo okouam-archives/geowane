@@ -9,7 +9,6 @@ class Location < ActiveRecord::Base
   has_one :topology
   validates_presence_of :longitude, :latitude, :name
   belongs_to :user
-  belongs_to :source, :class_name => "Import"
   has_many :tags, :autosave => true
   has_many :labels, :autosave => true
   enum_attr :status, %w(new invalid corrected audited field_checked), :init => :new, :nil => false

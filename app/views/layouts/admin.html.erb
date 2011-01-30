@@ -28,14 +28,14 @@
 				<ul id="nav">
 					<li><%= link_to "Geospatial Database", dashboard_path %>
                         <ul>
-                            <li><%= link_to "View Locations", locations_path(:s => :reset)%></li>
-                            <li><%= link_to "View Categories", categories_path(:page => 1) %></li>
-                             <li><%= link_to "View Collectors", counters_path %></li>
-                            <li><%= link_to "View Level 0 Boundaries ", countries_path %></li>
-                            <li><%= link_to "View Level 1 Boundaries", regions_path %></li>
-                            <li><%= link_to "View Level 2 Boundaries", cities_path %></li>
-                            <li><%= link_to "View Level 3 Boundaries", communes_path %></li>
-                            <li><%= link_to "View Entire Map", map_path %></li>
+                            <li><%= link_to "Points of Interest", locations_path(:s => :reset)%></li>
+                            <li><%= link_to "Categories", categories_path(:page => 1) %></li>
+                             <li><%= link_to "Collectors", counters_path %></li>
+                            <li><%= link_to "Level 0 Boundaries ", countries_path %></li>
+                            <li><%= link_to "Level 1 Boundaries", regions_path %></li>
+                            <li><%= link_to "Level 2 Boundaries", cities_path %></li>
+                            <li><%= link_to "Level 3 Boundaries", communes_path %></li>
+                            <li><%= link_to "Entire Map", map_path %></li>
                         </ul>
 					</li>
                     <li>
@@ -53,10 +53,10 @@
                             <li>
                                 <%= link_to "Your Account", account_path %></li>
                             <% if current_user.has_role?("administrator") %>
-                                <li><%= link_to "Manage Users", users_path %></li>
+                                <li><%= link_to "Users", users_path %></li>
                             <% end %>
 
-                             <li><%= link_to "Review Scheduled Jobs", periodic_jobs_path %></li>
+                             <li><%= link_to "Scheduled Jobs", periodic_jobs_path %></li>
                         </ul>
                     </li>
 				</ul>

@@ -2,7 +2,7 @@
 
 .block
   .block_head
-    %h2 Locations
+    %h2 Points of Interest
     %ul
       %li.nobg= link_to "Search", new_search_path
       %li.nobg= link_to "New Location", new_location_path
@@ -24,13 +24,20 @@
           %tr
             %th
               %input{:type=>"checkbox"}
-            %th Name
-            %th City
-            %th.tags Tags
-            %th.added_by Added By
-            %th.date_added Date Added
-            %th.last_changed Last Changed
-            %th.status Status
+            %th
+              = link_to "Name", "#", :"data-sort" => "name"
+            %th
+              = link_to "City", "#", :"data-sort" => "city_name"
+            %th.tags
+              Tags
+            %th.added_by
+              = link_to "Added By", "#", :"data-sort" => "username"
+            %th.date_added
+              = link_to "Date Added", "#", :"data-sort" => "created_at"
+            %th.last_changed
+              = link_to "Last Changed", "#", :"data-sort" => "updated_at"
+            %th.status
+              = link_to "Status", "#", :"data-sort" => "status"
           - @locations.each do |location|
             %tr
               %td.selector
@@ -54,6 +61,11 @@
 
 :javascript
   $(document).ready(function() {
+
+    $("th a").click(function() {
+      url = jQuery.param.querystring(window.location.href, {sort: $(this).data("sort"), page: 1});
+      window.location = url;
+    });
 
     $("th input[type=checkbox]").click(function() {
       var master = $(this);

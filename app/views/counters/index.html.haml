@@ -1,31 +1,33 @@
 .block
   .block_head
-    %h2 Counters
+    %h2 Collectors
     %ul
+      %li.nobg.back Download As excel
       %li.nobg.back= link_to "Back", :back
   .block_content
-    %table{:cellspacing => "0", :cellpadding => "0", :style => "width: 100%; margin-left: 0px"}
+    %table.index
       %thead
         %tr
           %th Collector
-          %th Total POI
-          %th New
-          %th Audited
-          %th Invalid
-          %th Corrected
-          %th Field Checked
-          %th
-            %i Categorized
+          %th.total_POI Total 
+          %th.new New
+          %th.audited Audited
+          %th.invalid Invalid
+          %th.corrected Corrected
+          %th.checked Checked
+          %th.uncategorized
+            %i Uncategorized
       %tbody
         - @counters.each do |counter|
           %tr
-            %td= link_to(counter.user.login, "/locations?s[added_by]=#{counter.user.id}")
-            %td= number_with_delimiter(counter.total_locations)
-            %td= number_with_delimiter(counter.new_locations)
-            %td= "#{number_with_delimiter(counter.audited_locations)} (#{number_to_percentage((counter.audited_locations.to_f / counter.total_locations.to_f) * 100, :precision => 2)})"
-            %td= number_with_delimiter(counter.invalid_locations)
-            %td= number_with_delimiter(counter.corrected_locations)
-            %td= "#{number_with_delimiter(counter.field_checked_locations)} (#{number_to_percentage((counter.field_checked_locations.to_f / counter.total_locations.to_f) * 100, :precision => 2)})"
-            %td= "#{number_with_delimiter(counter.categorized_locations)} (#{number_to_percentage((counter.categorized_locations.to_f / counter.total_locations.to_f) * 100, :precision => 2)})"
+            %td= counter.user.login
+            %td.total_POI= linked_figure(counter.total_locations, "/locations?s[added_by]=#{counter.user.id}")
+            %td.new= linked_figure(counter.new_locations, "/locations?s[added_by]=#{counter.user.id}&s[status]=new")
+            %td.audited= linked_figure(counter.audited_locations, "/locations?s[added_by]=#{counter.user.id}&s[status]=audited")
+            %td.invalid= linked_figure(counter.invalid_locations, "/locations?s[added_by]=#{counter.user.id}&s[status]=invalid")
+            %td.corrected= linked_figure(counter.corrected_locations, "/locations?s[added_by]=#{counter.user.id}&s[status]=corrected")
+            %td.checked= linked_figure(counter.field_checked_locations, "/locations?s[added_by]=#{counter.user.id}&s[status]=field+checked")
+            %td{:style=>"text-align: right"}
+              %i= linked_figure(counter.total_locations - counter.categorized_locations, "/locations?s[added_by]=#{counter.user.id}&s[category_missing]=1")
 
     %br

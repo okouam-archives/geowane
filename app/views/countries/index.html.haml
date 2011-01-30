@@ -1,7 +1,7 @@
 .block
   .block_head
     %h2
-      Countries
+      Level 0 Boundaries - Countries
     %ul
       %li.nobg= link_to "Back", :back
   .block_content
@@ -10,40 +10,32 @@
         %tr
           %th Country
           %th.total_POI Total
-          %th.pending New
+          %th.new New
           %th.invalid Invalid
-          %th.pending Corrected
+          %th.corrected Corrected
           %th.audited Audited
-          %th.field_checked Field Checked
-          %th.categorized Uncategorized
-          - if @can_edit
-            %th
-      %tbody
-        - @countries.each do |country|
-          %tr
-            %td= link_to(country.name, "/locations?s[country_id]=#{country.id}")
-            = render :partial => "/areas/list_stats", :locals => {:area => country}
-            - if @can_edit
-              %td.view= link_to("Edit", edit_country_path(country))
+          %th.checked Checked
+          %th.uncategorized Uncategorized
+      %tfoot
         %tr
           %td
           %td.total_POI
-            %b= @countries.inject(0) {|total, city| total + city.total_locations.to_i }
-          %td.pending
-            %b= @countries.inject(0) {|total, city| total + city.new_locations.to_i }
+            = linked_figure(@countries.inject(0) {|total, city| total + city.total_locations.to_i }, nil)
+          %td.new
+            = linked_figure(@countries.inject(0) {|total, city| total + city.new_locations.to_i }, nil)
           %td.invalid
-            %b= @countries.inject(0) {|total, city| total + city.invalid_locations.to_i }
-          %td.pending
-            %b= @countries.inject(0) {|total, city| total + city.corrected_locations.to_i }
+            = linked_figure(@countries.inject(0) {|total, city| total + city.invalid_locations.to_i }, nil)
+          %td.corrected
+            = linked_figure(@countries.inject(0) {|total, city| total + city.corrected_locations.to_i }, nil)
           %td.audited
-            %b= @countries.inject(0) {|total, city| total + city.audited_locations.to_i }
-          %td.field_checked
-            %b= @countries.inject(0) {|total, city| total + city.field_checked_locations.to_i }
-          %td.categorized
-            %b
-              %i= @countries.inject(0) {|total, city| total + city.uncategorized_locations.to_i }
-          - if @can_edit
-            %td
+            = linked_figure(@countries.inject(0) {|total, city| total + city.audited_locations.to_i }, nil)
+          %td.checked
+            = linked_figure(@countries.inject(0) {|total, city| total + city.field_checked_locations.to_i }, nil)
+          %td.uncategorized
+            = linked_figure(@countries.inject(0) {|total, city| total + city.uncategorized_locations.to_i }, nil)
+      %tbody
+        - @countries.each do |country|
+          %tr
+            %td= country.name
+            = render :partial => "/areas/list_stats", :locals => {:area => country, :prefix => "/locations?s[country_id]=#{country.id}"}
     %br
-
-

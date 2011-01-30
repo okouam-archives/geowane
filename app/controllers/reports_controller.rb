@@ -6,7 +6,7 @@ class ReportsController < ApplicationController
   end
 
 
-  def show
+  def excel
 
     workbook = WriteExcel.new(Tempfile.new.path)
 

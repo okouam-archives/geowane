@@ -37,16 +37,17 @@
 
 /* .index */
 
-.index table {width: 635px; float: left; margin-left: 30px; }
+.index table {width: 100%; border-collapse: collapse}
 .index td.view, .index th.view {width: 22px}
 .index td.count, .index th.count {width: 90px; text-align: center}
 .index table td.edit, .index table td.delete, .index table td.history {width: 22px; }
 .index .block_head .back {padding-right: 10px}
 .index table td, .index table th {font-size: 11px}
-.index .total_POI {width: 60px; text-align: center}
-.index .field_checked {width: 95px; text-align: center}
-.index .audited, .index .invalid, .index .pending {width: 50px; text-align: center}
-.index .categorized {width: 80px; text-align: center; font-style: italic}
+.index .checked {width: 60px; text-align: right; border-right: 1px solid #ccc; padding-right: 20px}
+.index .corrected {width: 70px; text-align: right}
+.index .total_POI, .index .audited, .index .invalid, .index .new {width: 60px; text-align: right}
+.index .uncategorized {width: 80px; font-style: italic; text-align: right}
+.index table tfoot td {font-weight: bold}
 
 /* #search-parameters */
 

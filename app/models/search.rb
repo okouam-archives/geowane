@@ -28,10 +28,9 @@ class Search
     locations[new_index]
   end
 
-  def self.create(params = nil)
+  def self.create(params = nil, sort = nil)
 
     query = Location.select("locations.id, locations.tags_count, longitude, latitude, locations.name, locations.created_at, locations.user_id, users.login as username, status, locations.updated_at, cities.name as city_name").
-        order("locations.name ASC").
         joins("LEFT JOIN users ON users.id = locations.user_id").
         joins("JOIN topologies ON topologies.location_id = locations.id").
         joins("LEFT JOIN cities ON cities.id = topologies.city_id")
@@ -52,7 +51,7 @@ class Search
 
     unless params[:import_id].blank?
       query = query.joins("JOIN labels ON labels.location_id = locations.id")
-        .where("labels.key = 'IMPORTED FROM' AND labels.classification = 'SYSTEM' AND labels.value = ?", params[:import_id])
+        .where("labels.key ilike 'IMPORTED FROM' AND labels.classification ilike 'SYSTEM' AND labels.value = ?", params[:import_id])
     end
 
     unless params[:country_id].blank?
@@ -99,11 +98,23 @@ class Search
           joins("JOIN model_changes ON audits.id = model_changes.audit_id AND model_changes.new_value = 'field_checked'")
     end
 
+    query = set_sorting_order(query, sort)
+
+    puts query.to_sql
+
     query.to_sql
 
   end
 
   private
+
+  def self.set_sorting_order(query, sort)
+    if sort
+      query.order(sort + " ASC")
+    else
+      query.order("locations.name ASC")
+    end
+  end
 
   def self.current_range_and_index(sql, id)
     locations = Location.find_by_sql(sql).map{|l|l.id}
