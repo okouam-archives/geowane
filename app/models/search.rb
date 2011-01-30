@@ -35,6 +35,8 @@ class Search
         joins("JOIN topologies ON topologies.location_id = locations.id").
         joins("LEFT JOIN cities ON cities.id = topologies.city_id")
 
+    query = set_sorting_order(query, sort)
+
     return query.to_sql if params.nil?
 
     query = query.where("status = ?", params[:status]) unless params[:status].blank?
@@ -97,10 +99,6 @@ class Search
           joins("JOIN audits ON audits.auditable_id = locations.id AND audits.user_id = #{params[:confirmed_by]}").
           joins("JOIN model_changes ON audits.id = model_changes.audit_id AND model_changes.new_value = 'field_checked'")
     end
-
-    query = set_sorting_order(query, sort)
-
-    puts query.to_sql
 
     query.to_sql
 
