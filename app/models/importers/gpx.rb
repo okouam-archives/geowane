@@ -37,7 +37,7 @@ module Importers
       location.labels.build(key: "IMPORTED FROM", value: import_id, classification: "system", location: location)
       comment_title = "Imported from GPX - CMT node"
       comment_body = selected.comment
-      location.comments.build(title: comment_title, comment: comment_body, user: user, location: location) if selected.comment
+      location.comments.build(title: comment_title, comment: comment_body, user: user) if selected.comment
       location.save!
     end
 
