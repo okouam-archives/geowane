@@ -3,7 +3,7 @@ class Search
   include ActiveModel::Conversion
 
   attr_accessor :modified_by, :name, :added_by, :category_missing, :category_present, :category_id, :commune_id
-  attr_accessor :city_id, :region_id, :country_id, :confirmed_by, :audited_by, :added_on_before, :added_on_after
+  attr_accessor :administrative_unit_4, :administrative_unit_3, :administrative_unit_0, :administrative_unit_1, :administrative_unit_2, :confirmed_by, :audited_by, :added_on_before, :added_on_after
   attr_accessor :status
 
   def initialize(attributes)
@@ -56,8 +56,24 @@ class Search
         .where("labels.key ilike 'IMPORTED FROM' AND labels.classification ilike 'SYSTEM' AND labels.value = ?", params[:import_id])
     end
 
-    unless params[:country_id].blank?
-      query = query.joins("join countries on ST_Within(locations.feature, countries.feature)").where("countries.id = ?", params[:country_id])
+    unless params[:administrative_unit_0].blank?
+      query = query.where("locations.administrative_unit_0 = ?", params[:administrative_unit_0])
+    end
+
+    unless params[:administrative_unit_1].blank?
+      query = query.where("locations.administrative_unit_1 = ?", params[:administrative_unit_1])
+    end
+
+    unless params[:administrative_unit_2].blank?
+      query = query.where("locations.administrative_unit_2 = ?", params[:administrative_unit_2])
+    end
+
+    unless params[:administrative_unit_3].blank?
+      query = query.where("locations.administrative_unit_3 = ?", params[:administrative_unit_3])
+    end
+
+    unless params[:administrative_unit_4].blank?
+      query = query.where("locations.administrative_unit_4 = ?", params[:administrative_unit_4])
     end
 
     unless params[:category_id].blank?
@@ -66,16 +82,8 @@ class Search
           joins("JOIN categories ON tags.category_id = categories.id AND categories.id = #{params[:category_id]}")
     end
 
-    unless params[:commune_id].blank?
-      query = query.joins("join communes on ST_Within(locations.feature, communes.feature)").where("communes.id = ?", params[:commune_id])
-    end
-
     unless params[:city_id].blank?
       query = query.where("cities.id = ?", params[:city_id])
-    end
-
-    unless params[:region_id].blank?
-      query = query.joins("join regions on ST_Within(locations.feature, regions.feature)").where("regions.id = ?", params[:region_id])
     end
 
     query = query.where("locations.created_at > ?", params[:added_on_after]) unless params[:added_on_after].blank?

@@ -23,6 +23,12 @@ class CreateCategories < ActiveRecord::Migration
       t.string :garmin_french, :string
       t.string :garmin_english, :string
     end
+    add_column :categories, :sygic_french, :string
+    add_column :categories, :sygic_english, :string
+    add_column :categories, :sygic_code, :string
+    add_column :categories, :tags_count, :integer, :default => 0
+    add_column :categories, :level, :integer, :default => 0, :null => false
+    add_column :categories, :end_level, :integer, :default => 0, :null => false
   end
 
   def self.down

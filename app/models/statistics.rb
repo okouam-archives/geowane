@@ -10,13 +10,25 @@ class Statistics
 
   def categories
     @connection.execute %{
-      UPDATE categories 
-	    SET total_locations = statistics.locations_count,
-	    new_locations = statistics.new,
-	    invalid_locations = statistics.invalid,
-	    corrected_locations = statistics.corrected,
-	    audited_locations = statistics.audited,
-	    field_checked_locations = statistics.field_checked
+      BEGIN;
+      UPDATE
+        categories
+	    SET
+        total_locations = 0,
+        new_locations = 0,
+        invalid_locations = 0,
+        corrected_locations = 0,
+        audited_locations = 0,
+        field_checked_locations = 0;
+      UPDATE
+        categories
+	    SET
+        total_locations = statistics.locations_count,
+	      new_locations = statistics.new,
+	      invalid_locations = statistics.invalid,
+	      corrected_locations = statistics.corrected,
+	      audited_locations = statistics.audited,
+	      field_checked_locations = statistics.field_checked
          FROM
          (SELECT       
 		    categories.id,
@@ -34,13 +46,22 @@ class Statistics
           SELECT 
 	    categories.id, 0, 0, 0, 0, 0, 0
 	    FROM categories WHERE categories.id NOT IN (SELECT category_id FROM tags)) as statistics
-         WHERE statistics.id = categories.id
+         WHERE statistics.id = categories.id;
+      COMMIT;
     }
   end
 
   def areas
     ["countries", "regions", "cities", "communes"].each do |level|
       @connection.execute %{
+      BEGIN;
+      UPDATE #{level} SET
+	      new_locations = 0,
+	      invalid_locations = 0,
+	      corrected_locations = 0,
+	      field_checked_locations = 0,
+	      audited_locations = 0,
+	      total_locations = 0;
       UPDATE #{level} SET 
 	      new_locations = "new", 
 	      invalid_locations = invalid,
@@ -69,14 +90,17 @@ class Statistics
             WHERE tags_count < 1
             GROUP BY #{level.singularize}_id) as statistics
             where statistics.#{level.singularize}_id = #{level}.id;
+      COMMIT;
       }
     end
   end
 
   def cache_counters
     @connection.execute %{
+      BEGIN;
       UPDATE categories SET tags_count = (SELECT COUNT(*) FROM tags WHERE category_id = categories.id);
       UPDATE locations SET tags_count = (SELECT COUNT(*) FROM tags WHERE location_id = locations.id);
+      COMMIT;
     }
   end
 
