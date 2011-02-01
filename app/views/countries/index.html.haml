@@ -1,0 +1,41 @@
+.block
+  .block_head
+    %h2
+      Level 0 Boundaries - Countries
+    %ul
+      %li.nobg= link_to "Back", :back
+  .block_content
+    %table{:cellspacing => "0", :cellpadding => "0", :style => "width: 100%; margin-left: 0px"}
+      %thead
+        %tr
+          %th Country
+          %th.total_POI Total
+          %th.new New
+          %th.invalid Invalid
+          %th.corrected Corrected
+          %th.audited Audited
+          %th.checked Checked
+          %th.uncategorized Uncategorized
+      %tfoot
+        %tr
+          %td
+          %td.total_POI
+            = linked_figure(@countries.inject(0) {|total, city| total + city.total_locations.to_i }, nil)
+          %td.new
+            = linked_figure(@countries.inject(0) {|total, city| total + city.new_locations.to_i }, nil)
+          %td.invalid
+            = linked_figure(@countries.inject(0) {|total, city| total + city.invalid_locations.to_i }, nil)
+          %td.corrected
+            = linked_figure(@countries.inject(0) {|total, city| total + city.corrected_locations.to_i }, nil)
+          %td.audited
+            = linked_figure(@countries.inject(0) {|total, city| total + city.audited_locations.to_i }, nil)
+          %td.checked
+            = linked_figure(@countries.inject(0) {|total, city| total + city.field_checked_locations.to_i }, nil)
+          %td.uncategorized
+            = linked_figure(@countries.inject(0) {|total, city| total + city.uncategorized_locations.to_i }, nil)
+      %tbody
+        - @countries.each do |country|
+          %tr
+            %td= country.name
+            = render :partial => "/areas/list_stats", :locals => {:area => country, :prefix => "/locations?s[country_id]=#{country.id}"}
+    %br

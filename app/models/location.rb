@@ -14,12 +14,10 @@ class Location < ActiveRecord::Base
   enum_attr :status, %w(new invalid corrected audited field_checked), :init => :new, :nil => false
   accepts_nested_attributes_for :tags, :reject_if => lambda { |a| a[:category_id].blank? }
 
-  #TO CHANGE!
   scope :within_bounds_for_category, lambda {|category_id, top, left, right, bottom|
     {:conditions => ["feature && SetSrid('BOX3D(? ?, ? ?)'::box3d, 4326) and category_id = #{category_id}", top, left, right, bottom]}
   }
 
-  #TO CHANGE!
   scope :surrounding_landmarks, lambda {|location_id, top, left, right, bottom, limit|
     {:conditions => ["categories.icon is not null AND feature && SetSrid('BOX3D(? ?, ? ?)'::box3d, 4326) AND locations.id != ?", top, left, right, bottom, location_id],
      :joins => "join categories on categories.id = locations.category_id", :limit => limit,

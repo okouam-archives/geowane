@@ -8,7 +8,6 @@ class CreateExports < ActiveRecord::Migration
       t.integer :output_file_size, :integer
       t.enum :output_format
       t.datetime :output_updated_at, :datetime
-      add_column :exports, :output_platform, :string
       t.timestamps
     end
     add_column :exports, :name, :string

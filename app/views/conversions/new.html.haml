@@ -1,0 +1,12 @@
+%div.block
+  %div.block_head
+    %h2
+      New Conversion
+    %ul
+      %li.nobg= link_to "Previous Conversions", conversions_path
+  %div.block_content
+    = semantic_form_for object, :html => { :enctype => "multipart/form-data"} do |form|
+      = form.input :input, :input_html => { :class => "text" }
+      = form.input :input_format, :collection => object.enums(:input_format).select_options.map {|option| [option[0].upcase, option[1].upcase]}
+      = form.input :output_format, :collection => object.enums(:output_format).select_options.map {|option| [option[0].upcase, option[1].upcase]}
+      = form.commit_button :button_html => { :class => "submit long" }

@@ -15,11 +15,10 @@
           = form.input :category_present, :as => :boolean, :required => false, :label => " Category Present"
         .filter_group
           %h2 Geography
-          = form.input :administrative_unit_4, :as => :select, :collection => @all_administrative_units_4, :required => false, :label => "Administrative Unit 4"
-          = form.input :administrative_unit_3, :as => :select, :collection => @all_administrative_units_3, :required => false, :label => "Administrative Unit 3"
-          = form.input :administrative_unit_2, :as => :select, :collection => @all_administrative_units_2, :required => false, :label => "Administrative Unit 2"
-          = form.input :administrative_unit_1, :as => :select, :collection => @all_administrative_units_1, :required => false, :label => "Administrative Unit 1"
-          = form.input :administrative_unit_0, :as => :select, :collection => @all_administrative_units_0, :required => false, :label => "Administrative Unit 0"
+          = form.input :commune_id, :as => :select, :collection => @all_communes, :required => false, :label => "Commune"
+          = form.input :city_id, :as => :select, :collection => @all_cities, :required => false, :label => "City"
+          = form.input :region_id, :as => :select, :collection => @all_regions, :required => false, :label => "Region"
+          = form.input :country_id, :as => :select, :collection => @all_countries, :required => false, :label => "Country"
         .filter_group
           %h2 Auditing
           = form.input :added_by, :as => :select, :collection => @all_users, :label => "Added By", :required => false

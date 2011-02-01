@@ -1,0 +1,53 @@
+= content_for :title, "View Regions"
+.regions.index
+  .block
+    .block_head
+      %h2 Level 1 Boundaries - Regions
+      %ul
+        %li.nobg.back= link_to "Back", :back
+    .block_content
+      - if @regions && @regions.count > 0
+        %table
+          %thead
+            %tr
+              %th Region
+              %th Country
+              %th.total_POI Total 
+              %th.new New
+              %th.invalid Invalid
+              %th.corrected Corrected
+              %th.audited Audited
+              %th.checked Checked
+              %th.categorized Uncategorized
+          %tfoot
+            %tr
+              %td
+              %td
+              %td.total_POI
+                %b= linked_figure(@regions.inject(0) {|total, city| total + city.total_locations.to_i }, nil)
+              %td.new
+                %b= linked_figure(@regions.inject(0) {|total, city| total + city.new_locations.to_i }, nil)
+              %td.invalid
+                %b= linked_figure(@regions.inject(0) {|total, city| total + city.invalid_locations.to_i }, nil)
+              %td.corrected
+                %b= linked_figure(@regions.inject(0) {|total, city| total + city.corrected_locations.to_i }, nil)
+              %td.audited
+                %b= linked_figure(@regions.inject(0) {|total, city| total + city.audited_locations.to_i }, nil)
+              %td.checked
+                %b= linked_figure(@regions.inject(0) {|total, city| total + city.field_checked_locations.to_i }, nil)
+              %td.uncategorized
+                %b
+                  %i= @regions.inject(0) {|total, city| total + city.uncategorized_locations.to_i }
+          %tbody
+            - @regions.each do |region|
+              %tr
+                %td= region.name
+                %td= region.country
+                = render :partial => "/areas/list_stats", :locals => {:area => region, :prefix => "/locations?s[region_id_eq]=#{region.id}"}
+      - else
+        %p
+          %br
+            No regions are currently available
+          %br
+          %br
+
