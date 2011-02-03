@@ -27,6 +27,7 @@ gem "columnize"
 gem "enumerated_attribute"
 gem "wirble"
 gem "hirb"
+gem 'rgeo'
 gem 'craken', :git => 'git://github.com/voomify/craken.git'
 gem 'newrelic_rpm'
 gem 'dynamic_form', :git => "git://codaset.com/joelmoss/dynamic-form.git"

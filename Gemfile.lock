@@ -180,6 +180,7 @@ GEM
       thor (~> 0.14.4)
     rake (0.8.7)
     rcov (0.9.9)
+    rgeo (0.2.4)
     rspec (2.4.0)
       rspec-core (~> 2.4.0)
       rspec-expectations (~> 2.4.0)
@@ -265,6 +266,7 @@ DEPENDENCIES
   rake
   rcov
   resource_controller!
+  rgeo
   rspec-rails
   ruby-debug19
   spatial_adapter
