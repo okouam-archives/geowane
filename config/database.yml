@@ -9,6 +9,7 @@ development:
   encoding: utf8
   min_messages: warning
   template: postgis
+  script_dir: sdfsdf
 
 staging:
   adapter: postgresql

@@ -11,6 +11,12 @@ gem 'aegis', :require => 'aegis'
 gem 'capistrano-ext'
 gem 'capistrano'
 gem "rails"
+gem "dbf"
+gem "rgeo"
+gem "activerecord-postgis-adapter"
+gem "rgeo-activerecord"
+gem "rgeo-geojson"
+gem "rgeo-shapefile"
 gem "minitar"
 gem "arel"
 gem 'authlogic', :git => 'git://github.com/odorcicd/authlogic.git', :branch => 'rails3'

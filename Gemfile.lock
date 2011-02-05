@@ -12,7 +12,7 @@ GIT
 
 GIT
   remote: git://github.com/justinfrench/formtastic.git
-  revision: 44a9cc3cf19a268420c04f170bc94f1077bd3dba
+  revision: 91d5292fddd672e3aea3dbce21854bac82e5365b
   specs:
     formtastic (1.2.3)
       actionpack (>= 2.3.7)
@@ -60,6 +60,9 @@ GEM
       activesupport (= 3.0.3)
       arel (~> 2.0.2)
       tzinfo (~> 0.3.23)
+    activerecord-postgis-adapter (0.3.1)
+      pg (>= 0.10.0)
+      rgeo-activerecord (~> 0.3.0)
     activeresource (3.0.3)
       activemodel (= 3.0.3)
       activesupport (= 3.0.3)
@@ -101,7 +104,10 @@ GEM
       cucumber (>= 0.8.0)
     culerity (0.2.15)
     daemons (1.0.10)
-    database_cleaner (0.6.0)
+    database_cleaner (0.6.2)
+    dbf (1.5.1)
+      activesupport (~> 3.0.0)
+      fastercsv (= 1.5.3)
     diff-lcs (1.1.2)
     enumerated_attribute (0.2.16)
       meta_programming (>= 0.2.1)
@@ -111,8 +117,9 @@ GEM
     factory_girl_rails (1.0.1)
       factory_girl (~> 1.3)
       railties (>= 3.0.0)
-    faker (0.9.4)
+    faker (0.9.5)
       i18n (~> 0.4)
+    fastercsv (1.5.3)
     ffi (0.6.3)
       rake (>= 0.8.7)
     gem_plugin (0.2.3)
@@ -121,19 +128,19 @@ GEM
     haml (3.0.25)
     highline (1.6.1)
     hirb (0.3.6)
-    hoptoad_notifier (2.4.2)
+    hoptoad_notifier (2.4.5)
       activesupport
       builder
     i18n (0.5.0)
     json (1.4.6)
-    json_pure (1.4.6)
-    kgio (2.1.1)
+    json_pure (1.5.1)
+    kgio (2.2.0)
     launchy (0.3.7)
       configuration (>= 0.0.5)
       rake (>= 0.8.1)
     linecache19 (0.5.11)
       ruby_core_source (>= 0.1.4)
-    mail (2.2.14)
+    mail (2.2.15)
       activesupport (>= 2.3.6)
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
@@ -180,6 +187,15 @@ GEM
       thor (~> 0.14.4)
     rake (0.8.7)
     rcov (0.9.9)
+    rgeo (0.2.4)
+    rgeo-activerecord (0.3.0)
+      activerecord (>= 3.0.3)
+      arel (>= 2.0.6)
+      rgeo (>= 0.2.4)
+    rgeo-geojson (0.2.0)
+      rgeo (>= 0.2.0)
+    rgeo-shapefile (0.2.0)
+      rgeo (>= 0.2.0)
     rspec (2.4.0)
       rspec-core (~> 2.4.0)
       rspec-expectations (~> 2.4.0)
@@ -218,8 +234,8 @@ GEM
     treetop (1.4.9)
       polyglot (>= 0.3.1)
     tzinfo (0.3.24)
-    unicorn (3.3.1)
-      kgio (~> 2.1)
+    unicorn (3.4.0)
+      kgio (~> 2.2)
       rack
     will_paginate (3.0.pre2)
     wirble (0.1.3)
@@ -230,6 +246,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activerecord-postgis-adapter
   acts_as_commentable
   aegis
   arel
@@ -241,6 +258,7 @@ DEPENDENCIES
   craken!
   cucumber-rails
   database_cleaner
+  dbf
   diff-lcs
   dynamic_form!
   enumerated_attribute
@@ -265,6 +283,10 @@ DEPENDENCIES
   rake
   rcov
   resource_controller!
+  rgeo
+  rgeo-activerecord
+  rgeo-geojson
+  rgeo-shapefile
   rspec-rails
   ruby-debug19
   spatial_adapter

@@ -1,0 +1,1 @@
+AdministrativeUnit.load_from_resources
