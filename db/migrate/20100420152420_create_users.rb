@@ -1,4 +1,5 @@
 class CreateUsers < ActiveRecord::Migration
+
   def self.up
     create_table :users do |t|
       t.string :login, :null => false
@@ -17,14 +18,15 @@ class CreateUsers < ActiveRecord::Migration
       t.string :last_login_ip
       t.string :role_name
       t.boolean :is_active, :default => true, :null => false
+      t.string :mobile_number
+      t.string :skype_alis
+      t.string :home_country
       t.timestamps
     end
-    add_column :users, :mobile_number, :string
-    add_column :users, :skype_alias, :string
-    add_column :users, :home_country, :string
   end
 
   def self.down
     drop_table :users
   end
+  
 end

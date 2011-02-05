@@ -1,4 +1,5 @@
 class CreateExports < ActiveRecord::Migration
+
   def self.up
     create_table :exports, :force => true do |t|
       t.integer :locations_count
@@ -10,10 +11,12 @@ class CreateExports < ActiveRecord::Migration
       t.datetime :output_updated_at, :datetime
       t.timestamps
     end
+    add_column :exports, :output_platform, :string
     add_column :exports, :name, :string
   end
 
   def self.down
     drop_table :exports
   end
+
 end

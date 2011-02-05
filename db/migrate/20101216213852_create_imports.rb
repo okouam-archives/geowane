@@ -1,4 +1,5 @@
 class CreateImports < ActiveRecord::Migration
+
   def self.up
     create_table :imports, :force => true do |t|
       t.integer :locations_count, :default => 0
@@ -15,4 +16,5 @@ class CreateImports < ActiveRecord::Migration
   def self.down
     drop_table :imports
   end
+
 end

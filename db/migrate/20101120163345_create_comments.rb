@@ -1,4 +1,5 @@
 class CreateComments < ActiveRecord::Migration
+
   def self.up
     create_table :comments do |t|
       t.string :title, :limit => 50, :default => "" 
@@ -16,4 +17,5 @@ class CreateComments < ActiveRecord::Migration
   def self.down
     drop_table :comments
   end
+
 end
