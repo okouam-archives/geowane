@@ -2,8 +2,8 @@ class CreateTags < ActiveRecord::Migration
 
   def self.up
     create_table :tags, :force => true do |t|
-      t.references :location
-      t.references :category
+      t.references :location, :null => false
+      t.references :category, :null => false
       t.timestamps
     end
     add_index "tags", ["location_id", "category_id", "id"], :name => "idx_tags_locations"
