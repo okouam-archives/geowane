@@ -1,0 +1,62 @@
+.block
+  .block_head
+    %h2
+      = "Statistics"
+    %ul
+      - [0, 1, 2, 3].each do |depth|
+        %li.nobg= link_to "Level #{depth}", "/stats?depth=#{depth}"
+      %li.nobg= link_to "Back", :back
+  .block_content
+    %table{:cellspacing => "0", :cellpadding => "0", :style => "width: 100%; margin-left: 0px"}
+      %thead
+        %tr
+          %th Level 0
+          - if @depth >= 1
+            %th Level 1
+          - if @depth >= 2
+            %th Level 2
+          - if @depth >= 3
+            %th Level 3
+          %th.total_POI Total
+          %th.new New
+          %th.invalid Invalid
+          %th.corrected Corrected
+          %th.audited Audited
+          %th.checked Checked
+          %th.uncategorized Untagged
+      %tfoot
+        %tr
+          %td
+          - if @depth >= 1
+            %td
+          - if @depth >= 2
+            %td
+          - if @depth >= 3
+            %td
+          %td.total_POI
+            = linked_figure(@collection.inject(0) {|total, city| total + city.total_locations.to_i }, nil)
+          %td.new
+            = linked_figure(@collection.inject(0) {|total, city| total + city.new_locations.to_i }, nil)
+          %td.invalid
+            = linked_figure(@collection.inject(0) {|total, city| total + city.invalid_locations.to_i }, nil)
+          %td.corrected
+            = linked_figure(@collection.inject(0) {|total, city| total + city.corrected_locations.to_i }, nil)
+          %td.audited
+            = linked_figure(@collection.inject(0) {|total, city| total + city.audited_locations.to_i }, nil)
+          %td.checked
+            = linked_figure(@collection.inject(0) {|total, city| total + city.field_checked_locations.to_i }, nil)
+          %td.uncategorized
+            = linked_figure(@collection.inject(0) {|total, city| total + city.uncategorized_locations.to_i }, nil)
+      %tbody
+        - @collection.each do |row|
+          %tr
+            %td= row.level_0
+            - if @depth >= 1
+              %td= row.level_1
+            - if @depth >= 2
+              %td= row.level_2
+            - if @depth >= 3
+              %td= row.level_3
+            = render :partial => "list_stats", :locals => {:area => row, :prefix => "/locations?s[country_id]=#{row.level_0_id}"}
+    %br
+
