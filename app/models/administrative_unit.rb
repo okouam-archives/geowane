@@ -3,6 +3,10 @@ require 'rgeo/shapefile'
 
 class AdministrativeUnit < ActiveRecord::Base
 
+  def self.find_enclosing(longitude, latitude, depth)
+    
+  end
+
   def self.load_from_resources
 
     ActiveRecord::Base.connection.execute %{

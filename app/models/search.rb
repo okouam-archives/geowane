@@ -56,8 +56,13 @@ class Search
         .where("labels.key ilike 'IMPORTED FROM' AND labels.classification ilike 'SYSTEM' AND labels.value = ?", params[:import_id])
     end
 
-    unless params[:country_id].blank?
-      query = query.joins("join countries on ST_Within(locations.feature, countries.feature)").where("countries.id = ?", params[:country_id])
+    unless params[:level_id].blank?
+      level = params[:level_id]
+      if level == "none"
+        query = query.where("level_0 IS NULL AND level_1 IS NULL AND level_2 IS NULL AND level_3 IS NULL")
+      else
+        query = query.where("level_0 = #{level} OR level_1 = #{level} OR level_2 = #{level} OR level_3 = #{level}")
+      end
     end
 
     unless params[:category_id].blank?
@@ -66,16 +71,8 @@ class Search
           joins("JOIN categories ON tags.category_id = categories.id AND categories.id = #{params[:category_id]}")
     end
 
-    unless params[:commune_id].blank?
-      query = query.joins("join communes on ST_Within(locations.feature, communes.feature)").where("communes.id = ?", params[:commune_id])
-    end
-
     unless params[:city_id].blank?
       query = query.where("cities.id = ?", params[:city_id])
-    end
-
-    unless params[:region_id].blank?
-      query = query.joins("join regions on ST_Within(locations.feature, regions.feature)").where("regions.id = ?", params[:region_id])
     end
 
     query = query.where("locations.created_at > ?", params[:added_on_after]) unless params[:added_on_after].blank?

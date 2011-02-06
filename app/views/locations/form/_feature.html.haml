@@ -2,23 +2,19 @@
   .right-panel
     %table
       %tr
-        %th Country
-        %th Region
-        %th City
-        %th Commune
+        - [0,1,2,3].each do |level|
+          %th= object.administrative_unit(level).classification
       %tr
-        %td= object.country_name 
-        %td= object.region_name
-        %td= object.city_name
-        %td= object.commune_name
+        - [0,1,2,3].each do |level|
+          %td= object.administrative_unit(level).name
     .map-instructions
       Drag the blue square to update the coordinates
     #map
-    #actions{:style=>"margin-top: 15px"}
+    #actions
       Show surrounding landmarks:
       <input type="radio" name="show_landmarks" value="1"/> Yes
       <input type="radio" name="show_landmarks" checked value="0" /> No
-  %div{:style=>"width: 400px; float: left"}
+  .general_info
     = form.input :name, :input_html => {:class => "text"}, :required => false
     = form.input :long_name, :input_html => {:class => "text"}
     - if object.persisted? && current_user.may_change_status_of_location?(object, nil)
@@ -30,6 +26,8 @@
     = render :partial => "locations/form/comments", :locals => {:location => object}
 
 :css
+  #actions {margin-top: 15px}
+  .general_info {width: 400px; float: left}
   .ajax-action {margin-top: 3px}
   .ajax-action img {position: relative; top: 3px}
   .right-panel {margin-top: 7px; width: 450px; float: right}

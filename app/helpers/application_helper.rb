@@ -9,4 +9,20 @@ module ApplicationHelper
     end
   end
 
+  def administrative_unit_finder(depth, row)
+    case
+      when depth >= 3 && row.level_3_id
+        level_id = row.level_3_id
+      when depth >= 2 && row.level_2_id
+        level_id = row.level_2_id
+      when depth >= 1 && row.level_1_id
+        level_id = row.level_1_id
+      when depth >= 0 && row.level_0_id
+        level_id = row.level_0_id
+      else
+        level_id = "none"
+    end
+    "s[level_id]=#{level_id}"
+  end
+
 end

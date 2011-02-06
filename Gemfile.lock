@@ -20,6 +20,14 @@ GIT
       i18n (~> 0.4)
 
 GIT
+  remote: git://github.com/loosecubes/geokit-rails3.git
+  revision: 1e8cc1c54e2974f81cfa474368e6fac93f20675b
+  specs:
+    geokit-rails3 (0.1.2)
+      geokit (~> 1.5.0)
+      rails (~> 3.0.0)
+
+GIT
   remote: git://github.com/odorcicd/authlogic.git
   revision: a087ad0cba3c165ba22fcf176c28b6f7517931e8
   branch: rails3
@@ -123,6 +131,7 @@ GEM
     ffi (0.6.3)
       rake (>= 0.8.7)
     gem_plugin (0.2.3)
+    geokit (1.5.0)
     gherkin (2.3.3)
       json (~> 1.4.6)
     haml (3.0.25)
@@ -266,6 +275,7 @@ DEPENDENCIES
   factory_girl_rails
   faker
   formtastic!
+  geokit-rails3!
   gherkin
   haml
   hirb
