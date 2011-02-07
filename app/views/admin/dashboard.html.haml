@@ -27,14 +27,17 @@
           Number of Points of Interest:
           = number_with_delimiter(@location_count)
         %li
-          Number of communes:
-          = number_with_delimiter(@commune_count)
+          Number of Level 3 Administrative Units:
+          = number_with_delimiter(@level_3_count)
         %li
-          Number of regions:
-          = number_with_delimiter(@region_count)
+          Number of Level 2 Administrative Units:
+          = number_with_delimiter(@level_2_count)
         %li
-          Number of cities:
-          = number_with_delimiter(@city_count)
+          Number of Level 1 Administrative Units:
+          = number_with_delimiter(@level_1_count)
+        %li
+          Number of Level 0 Administrative Units:
+          = number_with_delimiter(@level_0_count)
       %h3 Workflow Statistics
       %ul
         %li

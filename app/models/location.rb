@@ -5,18 +5,21 @@ class Location < ActiveRecord::Base
   include Audited
   acts_as_commentable
   acts_as_audited
-  accepts_nested_attributes_for :comments, :reject_if => lambda { |a| a[:comment].blank? || a[:title].blank? }
-  has_one :topology
   validates_presence_of :longitude, :latitude, :name
   belongs_to :user
-  belongs_to :administrative_unit_0, :class_name => "AdministrativeUnit", :foreign_key => "level_0"
-  belongs_to :administrative_unit_1, :class_name => "AdministrativeUnit", :foreign_key => "level_1"
-  belongs_to :administrative_unit_2, :class_name => "AdministrativeUnit", :foreign_key => "level_2"
-  belongs_to :administrative_unit_3, :class_name => "AdministrativeUnit", :foreign_key => "level_3"
-  has_many :tags, :autosave => true
-  has_many :labels, :autosave => true
+  with_options :class_name => "AdministrativeUnit" do |entity|
+    entity.belongs_to :administrative_unit_0, :foreign_key => "level_0"
+    entity.belongs_to :administrative_unit_1, :foreign_key => "level_1"
+    entity.belongs_to :administrative_unit_2, :foreign_key => "level_2"
+    entity.belongs_to :administrative_unit_3, :foreign_key => "level_3"
+  end
+  with_options :autosave => true do |entity|
+    entity.has_many :tags
+    entity.has_many :labels
+  end
   enum_attr :status, %w(new invalid corrected audited field_checked), :init => :new, :nil => false
   accepts_nested_attributes_for :tags, :reject_if => lambda { |a| a[:category_id].blank? }
+  accepts_nested_attributes_for :comments, :reject_if => lambda { |a| a[:comment].blank? || a[:title].blank? }
 
   scope :within_bounds_for_category, lambda {|category_id, top, left, right, bottom|
     {:conditions => ["feature && SetSrid('BOX3D(? ?, ? ?)'::box3d, 4326) and category_id = #{category_id}", top, left, right, bottom]}
@@ -46,10 +49,10 @@ class Location < ActiveRecord::Base
       :longitude => longitude,
       :latitude => latitude,
       :icon => !tags.empty? && tags.first.category.icon ? tags.first.category.icon : nil,
-      :commune => administrative_unit(3).name,
-      :country => administrative_unit(0).name,
-      :city => administrative_unit(2).name,
-      :region => administrative_unit(1).name,
+      :commune => administrative_unit(3).try(:name),
+      :country => administrative_unit(0).try(:name),
+      :city => administrative_unit(2).try(:name),
+      :region => administrative_unit(1).try(:name),
       :feature => feature.as_wkt
     }
   end

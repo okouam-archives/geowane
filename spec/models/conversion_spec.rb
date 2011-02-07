@@ -3,7 +3,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe Conversion do
 
   before(:all) do
-    @example_file = File.expand_path(File.join(File.dirname(__FILE__), "../samples/example.mp"))
+    @example_file = File.expand_path(File.join(File.dirname(__FILE__), "../samples/sample.mp"))
   end
 
   describe "when executing a conversion" do
@@ -57,7 +57,7 @@ describe Conversion do
       it "compresses and archives the .SHP fileset" do
         @conversion.stub(:`).and_return("X")
         Dir.stub(:mktmpdir).and_return("/a_temp_dir")
-        @conversion.should_receive(:`).with("cd /tmp && tar czvf example.mp.tgz /a_temp_dir")
+        @conversion.should_receive(:`).with("cd /tmp && tar czvf sample.mp.tgz /a_temp_dir")
         File.stub(:open)
         @conversion.execute
       end
@@ -65,7 +65,7 @@ describe Conversion do
       it "assigns the created fileset to the object" do
         Dir.should_receive(:mktmpdir)
         @conversion.stub(:`).and_return("X")
-        File.should_receive(:open).with("/tmp/example.mp.tgz", 'rb')
+        File.should_receive(:open).with("/tmp/sample.mp.tgz", 'rb')
         @conversion.execute
       end
 

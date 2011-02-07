@@ -68,7 +68,7 @@ describe LocationsController do
         describe "and search parameters have been provided" do
 
           it "creates a search query using the given search filters" do
-            Search.should_receive(:create).with({"x" => "z"}).and_return(nil)
+            Search.should_receive(:create).with({"x" => "z"}, nil).and_return(nil)
             Location.stub_chain(:paginate_by_sql)
             get :index, :s => {"x" => "z"}
           end
@@ -79,7 +79,7 @@ describe LocationsController do
 
           it "creates a search query with no filters and the current user" do
             query = mock('query').as_null_object
-            Search.should_receive(:create).with(nil).and_return(query)
+            Search.should_receive(:create).with(nil, nil).and_return(query)
             Location.stub_chain(:paginate_by_sql)
             get :index
           end
@@ -109,7 +109,6 @@ describe LocationsController do
         end
 
         it "saves the page number to the session" do
-          query = mock('query').as_null_object
           Search.stub(:create)
           Location.stub_chain(:paginate_by_sql)
           get :index, :page => 12

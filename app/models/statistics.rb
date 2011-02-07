@@ -38,41 +38,6 @@ class Statistics
     }
   end
 
-  def areas
-    ["countries", "regions", "cities", "communes"].each do |level|
-      @connection.execute %{
-      UPDATE #{level} SET 
-	      new_locations = "new", 
-	      invalid_locations = invalid,
-	      corrected_locations = corrected, 
-	      field_checked_locations = field_checked, 
-	      audited_locations = audited,
-	      total_locations = locations_count
-      FROM
-          (SELECT #{level}.id,
-              SUM(CASE WHEN status = 'new' THEN 1 ELSE 0 END) as "new",
-              SUM(CASE WHEN status = 'invalid' THEN 1 ELSE 0 END) as invalid,
-              SUM(CASE WHEN status = 'corrected' THEN 1 ELSE 0 END) as corrected,
-              SUM(CASE WHEN status = 'audited' THEN 1 ELSE 0 END) as audited,
-              SUM(CASE WHEN status = 'field_checked' THEN 1 ELSE 0 END) as field_checked,
-              count(*) as locations_count
-            FROM topologies 
-            JOIN #{level} ON #{level}.id = topologies.#{level.singularize}_id
-            JOIN locations ON locations.id = topologies.location_id
-            GROUP BY #{level}.id) as statistics
-      WHERE 
-        statistics.id = #{level}.id;
-      UPDATE #{level} SET uncategorized_locations = uncategorized 
-      FROM (SELECT #{level.singularize}_id, count(*) as uncategorized
-            FROM topologies 
-            JOIN locations ON locations.id = topologies.location_id
-            WHERE tags_count < 1
-            GROUP BY #{level.singularize}_id) as statistics
-            where statistics.#{level.singularize}_id = #{level}.id;
-      }
-    end
-  end
-
   def cache_counters
     @connection.execute %{
       UPDATE categories SET tags_count = (SELECT COUNT(*) FROM tags WHERE category_id = categories.id);

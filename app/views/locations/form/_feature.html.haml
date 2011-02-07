@@ -3,10 +3,12 @@
     %table
       %tr
         - [0,1,2,3].each do |level|
-          %th= object.administrative_unit(level).classification
+          - if object.administrative_unit(level)
+            %th= object.administrative_unit(level).classification
       %tr
         - [0,1,2,3].each do |level|
-          %td= object.administrative_unit(level).name
+          - if object.administrative_unit(level)
+            %td= object.administrative_unit(level).name
     .map-instructions
       Drag the blue square to update the coordinates
     #map

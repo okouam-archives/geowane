@@ -1,7 +1,6 @@
 .block
   .block_head
-    %h2
-      = "Statistics"
+    %h2 Administrative Units
     %ul
       - [0, 1, 2, 3].each do |depth|
         %li.nobg= link_to "Level #{depth}", "/stats?depth=#{depth}"

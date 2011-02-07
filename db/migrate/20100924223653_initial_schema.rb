@@ -1,4 +1,4 @@
-class AddSessionsTable < ActiveRecord::Migration
+class InitialSchema < ActiveRecord::Migration
 
   def self.up
 

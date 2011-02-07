@@ -1,7 +1,0 @@
-%td.total_POI= linked_figure(area.total_locations || 0, prefix)
-%td.new= linked_figure(area.new_locations || 0, (prefix ? (prefix + "&s[status]=new") : nil))
-%td.invalid= linked_figure(area.invalid_locations || 0, (prefix ? (prefix + "&s[status]=invalid") : nil))
-%td.corrected= linked_figure(area.corrected_locations || 0, (prefix ? (prefix + "&s[status]=corrected") : nil))
-%td.audited= linked_figure(area.audited_locations || 0, (prefix ? (prefix + "&s[status]=audited") : nil))
-%td.checked= linked_figure(area.field_checked_locations || 0, (prefix ? (prefix + "&s[status]=field_checked") : nil))
-%td.uncategorized= linked_figure(area.uncategorized_locations || 0, (prefix ? (prefix + "&s[category_missing]=1") : nil))

@@ -14,11 +14,14 @@
           = form.input :category_missing, :as => :boolean, :required => false, :label => " Category Missing"
           = form.input :category_present, :as => :boolean, :required => false, :label => " Category Present"
         .filter_group
-          %h2 Geography
-          = form.input :commune_id, :as => :select, :collection => @all_communes, :required => false, :label => "Commune"
-          = form.input :city_id, :as => :select, :collection => @all_cities, :required => false, :label => "City"
-          = form.input :region_id, :as => :select, :collection => @all_regions, :required => false, :label => "Region"
-          = form.input :country_id, :as => :select, :collection => @all_countries, :required => false, :label => "Country"
+          %h2 Administrative Unit
+          = form.input :location_level_0, :as => :select, :collection => @all_level_0, :required => false, :label => "Country"
+          /= form.input :location_level_1, :as => :select, :collection => @all_level_1, :required => false, :label => "Level 1"
+          /= form.input :location_level_2, :as => :select, :collection => @all_level_2, :required => false, :label => "Level 2"
+          /= form.input :location_level_3, :as => :select, :collection => @all_level_3, :required => false, :label => "Level 3"
+          %h2 Localization (city)
+          = form.input :city_level_0, :as => :select, :collection => @all_level_0, :required => false, :label => "Country"
+          /= form.input :city_id, :as => :select, :collection => @all_cities, :required => false, :label => "City"
         .filter_group
           %h2 Auditing
           = form.input :added_by, :as => :select, :collection => @all_users, :label => "Added By", :required => false

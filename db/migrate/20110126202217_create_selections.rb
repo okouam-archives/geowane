@@ -1,4 +1,4 @@
-class CreateImportSelections < ActiveRecord::Migration
+class CreateSelections < ActiveRecord::Migration
   def self.up
     create_table :selections do |t|
       t.string :name, :null => false

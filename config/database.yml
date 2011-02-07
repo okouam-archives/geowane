@@ -8,7 +8,6 @@ development:
   timeout: 5000
   encoding: utf8
   min_messages: warning
-  template: postgis
   script_dir: sdfsdf
 
 staging:
@@ -21,7 +20,6 @@ staging:
   timeout: 5000
   encoding: utf8
   min_messages: warning
-  template: postgis
 
 test: &test
   adapter: postgresql
@@ -32,12 +30,10 @@ test: &test
   password: com99123
   encoding: utf8
   host: localhost
-  template: postgis
   encoding: utf8
   min_messages: warning
 
 production:
-  template: postgis
   host: localhost
   min_messages: warning
   adapter: postgresql

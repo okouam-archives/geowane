@@ -3,8 +3,22 @@ require 'rgeo/shapefile'
 
 class AdministrativeUnit < ActiveRecord::Base
 
+  def self.dropdown_items(depth)
+    sql = "SELECT id, name FROM administrative_units WHERE level = #{depth} ORDER BY name ASC"
+    AdministrativeUnit.connection.select_all(sql).map {|rs| [rs["name"], rs["id"]]}
+  end
+  
   def self.find_enclosing(longitude, latitude, depth)
-    
+    result = AdministrativeUnit.find_by_sql(%{
+      SELECT
+        *
+      FROM
+        administrative_units
+      WHERE
+        level = #{depth}
+        AND ST_WITHIN(ST_SetSRID(ST_POINT(#{longitude}, #{latitude}), 4326), administrative_units.feature)
+    })
+    result.is_a?(Array) ? result.first : result 
   end
 
   def self.load_from_resources

@@ -1,6 +1,0 @@
-select date_trunc('day', audits.created_at), login,
-	UPPER(COALESCE(NULLIF(new_value, ''), 'DELETED')), count(*) from audits
-JOIN model_changes ON model_changes.audit_id = audits.id
-JOIN users ON users.id = user_id
-WHERE datum = 'status'
-GROUP BY date_trunc('day', audits.created_at), login, new_value

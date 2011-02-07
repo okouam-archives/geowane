@@ -4,7 +4,7 @@ class Search
 
   attr_accessor :modified_by, :name, :added_by, :category_missing, :category_present, :category_id, :commune_id
   attr_accessor :city_id, :region_id, :country_id, :confirmed_by, :audited_by, :added_on_before, :added_on_after
-  attr_accessor :status
+  attr_accessor :status, :city_level_0, :city_id, :location_level_0, :location_level_1, :location_level_2, :location_level_3
 
   def initialize(attributes)
     
@@ -28,86 +28,140 @@ class Search
     locations[new_index]
   end
 
+
   def self.create(params = nil, sort = nil)
 
-    query = Location.select("locations.id, locations.tags_count, longitude, latitude, locations.name, locations.created_at, locations.user_id, users.login as username, status, locations.updated_at, cities.name as city_name").
-        joins("LEFT JOIN users ON users.id = locations.user_id").
-        joins("JOIN topologies ON topologies.location_id = locations.id").
-        joins("LEFT JOIN cities ON cities.id = topologies.city_id")
+    query = {sort: sort ? " ORDER BY " + sort + " ASC" : " ORDER BY locations.name ASC"}
 
-    query = set_sorting_order(query, sort)
+    query[:from] = %{
+      SELECT locations.id, longitude, latitude, locations.name, locations.created_at, users.login as username, status, locations.updated_at
+      FROM locations
+      JOIN users ON users.id = locations.user_id
+    }
 
-    return query.to_sql if params.nil?
+    return query[:from] + query[:sort] if params.nil?
 
-    query = query.where("status = ?", params[:status]) unless params[:status].blank?
+    query[:where] = " WHERE 1 = 1 "
 
-    query = query.where("user_id = ?", params[:added_by]) unless params[:added_by].blank?
+    query[:group_by] = %{
+      GROUP BY locations.id, longitude, latitude, locations.name, locations.created_at, users.login, status, locations.updated_at
+    }
 
-    if params[:category_missing] == "1"
-      query = query.where("tags_count < 1")
-    end
+    query = filter_on_status(query, params[:status])
 
-    if params[:category_present] == "1"
-      query = query.where("tags_count > 0")
-    end
+    query = filter_on_user(query, params[:added_by])
 
-    unless params[:import_id].blank?
-      query = query.joins("JOIN labels ON labels.location_id = locations.id")
-        .where("labels.key ilike 'IMPORTED FROM' AND labels.classification ilike 'SYSTEM' AND labels.value = ?", params[:import_id])
-    end
+    query = filter_on_category_presence(query, params[:category_missing] == "1", params[:category_present] == "1", params[:category_id])
 
-    unless params[:level_id].blank?
-      level = params[:level_id]
-      if level == "none"
-        query = query.where("level_0 IS NULL AND level_1 IS NULL AND level_2 IS NULL AND level_3 IS NULL")
-      else
-        query = query.where("level_0 = #{level} OR level_1 = #{level} OR level_2 = #{level} OR level_3 = #{level}")
-      end
-    end
+    query = filter_on_label(query, params[:import_id])
 
-    unless params[:category_id].blank?
-      query = query.
-          joins(:tags).
-          joins("JOIN categories ON tags.category_id = categories.id AND categories.id = #{params[:category_id]}")
-    end
+    query = filter_on_change(query, params[:confirmed_by], params[:audited_by], params[:modified_by])
 
-    unless params[:city_id].blank?
-      query = query.where("cities.id = ?", params[:city_id])
-    end
+    query = filter_on_administrative_unit(query, params[:level_id])
 
-    query = query.where("locations.created_at > ?", params[:added_on_after]) unless params[:added_on_after].blank?
+    query = filter_on_city(query, params[:city_id])
 
-    query = query.where("locations.created_at < ?", params[:added_on_before]) unless params[:added_on_before].blank?
+    query = filter_on_creation_after_date(query, params[:added_on_after])
 
-    unless params[:audited_by].blank?
-      query = query.
-          joins("JOIN audits ON audits.auditable_id = locations.id AND audits.user_id = #{params[:audited_by]}").
-          joins("JOIN model_changes ON audits.id = model_changes.audit_id AND model_changes.new_value = 'audited'")
-    end
+    query = filter_on_creation_before_date(query, params[:added_on_before])
 
-    query = query.where("locations.name ilike ? ", "%#{params[:name]}%") unless params[:name].blank?
+    query = filter_on_name(query, params[:name])
 
-    unless params[:modified_by].blank?
-      query = query.joins("JOIN audits ON audits.auditable_id = locations.id AND audits.user_id = #{params[:modified_by]}")
-    end
-
-    unless params[:confirmed_by].blank?
-      query = query.
-          joins("JOIN audits ON audits.auditable_id = locations.id AND audits.user_id = #{params[:confirmed_by]}").
-          joins("JOIN model_changes ON audits.id = model_changes.audit_id AND model_changes.new_value = 'field_checked'")
-    end
-
-    query.to_sql
+    query[:from] + query[:where] + query[:group_by] + (query[:having] || "") + query[:sort]
 
   end
 
   private
 
-  def self.set_sorting_order(query, sort)
-    if sort
-      query.order(sort + " ASC")
-    else
-      query.order("locations.name ASC")
+  def self.filter_on_name(query, field)
+    query.tap do |o|
+      unless field.blank?
+        o[:where] = "#{o[:where]} AND locations.name ilike '%#{field}%'"
+      end
+    end
+  end
+
+  def self.filter_on_city(query, field)
+    query.tap do |o|
+      unless field.blank?
+        o[:where] = "#{o[:where]} AND cities.id = #{field}"
+      end
+    end
+  end
+
+  def self.filter_on_creation_before_date(query, date)
+    query.tap do |o|
+      unless date.blank?
+        o[:where] = "#{o[:where]} AND locations.created_at < '#{date}'"
+      end
+    end
+  end
+
+  def self.filter_on_creation_after_date(query, date)
+    query.tap do |o|
+      unless date.blank?
+        o[:where] = "#{o[:where]} AND locations.created_at > '#{date}'"
+      end
+    end
+  end
+
+  def self.filter_on_administrative_unit(query, level)
+    query.tap do |o|
+      unless level.blank?
+        if level == "none"
+          o[:where] = "#{o[:where]} AND level_0 IS NULL AND level_1 IS NULL AND level_2 IS NULL AND level_3 IS NULL"
+        else
+          o[:where] = "#{o[:where]} AND level_0 = #{level} OR level_1 = #{level} OR level_2 = #{level} OR level_3 = #{level}"
+        end
+      end
+    end
+  end
+
+  def self.filter_on_status(query, field)
+    query.tap do |o|
+      o[:where] = "#{o[:where]} AND status = '#{field}'" unless field.blank?
+    end
+  end
+
+  def self.filter_on_change(query, confirmed_by, audited_by, modified_by)
+    confirmed_by = confirmed_by.blank? ? nil : confirmed_by
+    modified_by = modified_by.blank? ? nil : modified_by
+    audited_by = audited_by.blank? ? nil : audited_by
+    query.tap do |o|
+      unless confirmed_by.blank? && audited_by.blank? && modified_by.blank?
+        user_id = confirmed_by || audited_by || modified_by
+        query[:from] = "#{o[:from]} JOIN audits ON audits.auditable_id = locations.id AND audits.user_id = #{user_id}"
+        if audited_by || confirmed_by
+          value = audited_by ? 'audited' : 'field_checked'
+          query[:from] = "#{o[:from]} JOIN model_changes ON audits.id = model_changes.audit_id AND model_changes.new_value = '#{value}'"
+        end
+      end
+    end
+  end
+
+  def self.filter_on_category_presence(query, missing, not_missing, id)
+    query.tap do |o|
+      if missing || not_missing || id.present?
+        o[:from] = "#{o[:from]} LEFT JOIN tags ON tags.location_id = locations.id"
+        o[:from] = "#{o[:from]} JOIN categories ON tags.category_id = categories.id AND categories.id = #{id}" if id.present?
+        o[:having] = "HAVING 1 = 1 AND count(distinct tags.category_id) > 0" if not_missing
+        o[:having] = "HAVING 1 = 1 AND count(distinct tags.category_id) < 1" if missing
+      end
+    end   
+  end
+
+  def self.filter_on_label(query, field)
+    query.tap do |o|
+      unless field.blank?
+        o[:from] = "#{o[:from]} JOIN labels ON labels.location_id = locations.id"
+        o[:where] = "#{o[:where]} AND labels.key ilike 'IMPORTED FROM' AND labels.classification ilike 'SYSTEM' AND labels.value = '#{field}'"
+      end
+    end
+  end
+
+  def self.filter_on_user(query, field)
+    query.tap do |o|
+      o[:where] = "#{o[:where]} AND user_id = #{field}" unless field.blank?
     end
   end
 
