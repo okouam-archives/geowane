@@ -25,6 +25,7 @@ class AdministrativeUnit < ActiveRecord::Base
 
     ActiveRecord::Base.connection.execute %{
       ALTER TABLE administrative_units DROP CONSTRAINT "enforce_srid_the_geom" RESTRICT;
+      TRUNCATE TABLE administrative_units;
     }
 
     ic = Iconv.new('UTF-8//TRANSLIT//IGNORE', 'LATIN1')
