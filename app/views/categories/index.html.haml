@@ -50,8 +50,11 @@
                   %td.delete{:style=>"width: 20px"}
                     = link_to "Delete", category, :confirm => 'Are you sure?', :method => :delete
     %br
-    - if @categories && @categories.size > 0
-      = render :partial => "shared/paging", :locals => {:collection => @categories}
+      %div
+        = render :partial => "shared/paging", :locals => {:collection => @categories}
+    %div.clear
+    %span{:style=>"float: right; margin-bottom: 20px"}
+      = page_entries_info @categories
 
 
 

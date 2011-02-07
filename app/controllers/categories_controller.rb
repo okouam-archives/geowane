@@ -6,9 +6,10 @@ class CategoriesController < ApplicationController
   def index
     session[:category_index_language] = @language = params[:language] || session[:category_index_language] || "french"
     session[:category_index_page] = params[:page] || session[:category_index_page]
-    per_page = params[:per_page] || 10
+    session[:category_index_per_page] = params[:per_page] || session[:category_index_per_page] || 10
+    @per_page = session[:category_index_per_page]
     sql = "SELECT * FROM categories ORDER BY #{@language}"
-    @categories = Category.find_by_sql(sql).paginate(:page => session[:category_index_page], :per_page => per_page)
+    @categories = Category.find_by_sql(sql).paginate(:page => session[:category_index_page], :per_page => @per_page)
   end
 
   def save_icon
