@@ -10,21 +10,20 @@ SUM(CASE WHEN status = 'invalid' THEN 1 ELSE 0 END) as invalid_locations,
 SUM(CASE WHEN status = 'corrected' THEN 1 ELSE 0 END) as corrected_locations,
 SUM(CASE WHEN status = 'audited' THEN 1 ELSE 0 END) as audited_locations,
 SUM(CASE WHEN status = 'field_checked' THEN 1 ELSE 0 END) as field_checked_locations,
-SUM(CASE WHEN tags_count > 1 THEN 1 ELSE 0 END) as uncategorized_locations,
+SUM(CASE WHEN my_tags_count < 1 THEN 1 ELSE 0 END) as uncategorized_locations,
 count(*) as total_locations
 FROM
-(SELECT
-locations.id,
-#{x(@depth)},
-status,
-count(*) as tags_count
-FROM locations
-LEFT JOIN tags
-ON tags.location_id = locations.id
-GROUP BY
-locations.id,
-#{x(@depth)}, status) AS L
-#{z(@depth)} GROUP BY #{y(@depth)}
+  locations
+  JOIN
+  (SELECT
+  locations.id,
+  count(distinct tags.category_id) as my_tags_count
+  FROM locations
+  LEFT JOIN tags
+  ON tags.location_id = locations.id
+  GROUP BY
+  locations.id) AS L ON locations.id = L.id
+#{z(@depth)} GROUP BY #{y(@depth)} ORDER BY #{h(@depth)}
 }
     @collection = AdministrativeUnit.find_by_sql(sql)
   end
@@ -47,10 +46,18 @@ locations.id,
     sql.join(",")
   end
 
+  def h(depth)
+    sql = []
+    for i in 0..depth do
+      sql << "level_#{i}.name"
+    end
+    sql.join(",")
+  end
+
   def z(depth)
     sql = []
     for i in 0..depth do
-      sql << "LEFT JOIN administrative_units as level_#{i} ON L.level_#{i} = level_#{i}.id"
+      sql << "LEFT JOIN administrative_units as level_#{i} ON locations.level_#{i} = level_#{i}.id"
     end
     sql.join(" ")
   end

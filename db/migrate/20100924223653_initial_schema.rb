@@ -27,7 +27,6 @@ class InitialSchema < ActiveRecord::Migration
       t.string :sygic_french
       t.string :sygic_english
       t.string :sygic_code
-      t.integer :tags_count, :default => 0
       t.integer :level, :default => 0, :null => false
       t.integer :end_level, :default => 0, :null => false
       t.timestamps
@@ -71,10 +70,15 @@ class InitialSchema < ActiveRecord::Migration
       t.integer :user_rating
       t.references :import
       t.string :long_name
-      t.integer :tags_count, :default => 0
       t.geometry :feature, :srid => 4326
       t.timestamps
     end
+
+    add_column :locations, :level_0, :integer
+    add_column :locations, :level_1, :integer
+    add_column :locations, :level_2, :integer
+    add_column :locations, :level_3, :integer
+    add_column :locations, :level_4, :integer
 
     add_index :locations, ["feature"], :name => "idx_locations_feature", :spatial => true
     add_index :locations, ["name"], :name => "idx_features_name"
