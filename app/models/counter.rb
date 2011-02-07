@@ -10,7 +10,7 @@ class Counter
       @invalid_locations = Location.where("user_id = ?", user.id).where("status = 'invalid'").count
       @rejected_locations = Location.where("user_id = ?", user.id).where("status = 'rejected'").count
       @audited_locations = Location.where("user_id = ?", user.id).where("status = 'audited'").count
-      @categorized_locations = Location.where("user_id = ?", user.id).where("locations.id IN (SELECT location_id FROM tags)").count
+      @categorized_locations = Location.where("user_id = ?", user.id).where("locations.id IN (SELECT location_id FROM tags JOIN categories ON categories.id = tags.category_id)").count
   end
 
 end

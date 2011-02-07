@@ -29,5 +29,22 @@
             %td.checked= linked_figure(counter.field_checked_locations, "/locations?s[added_by]=#{counter.user.id}&s[status]=field+checked")
             %td{:style=>"text-align: right"}
               %i= linked_figure(counter.total_locations - counter.categorized_locations, "/locations?s[added_by]=#{counter.user.id}&s[category_missing]=1")
+      %tfoot
+        %tr
+          %td
+          %td.total_POI
+            = linked_figure(@counters.inject(0) {|total, city| total + city.total_locations.to_i }, nil)
+          %td.new
+            = linked_figure(@counters.inject(0) {|total, city| total + city.new_locations.to_i }, nil)
+          %td.invalid
+            = linked_figure(@counters.inject(0) {|total, city| total + city.invalid_locations.to_i }, nil)
+          %td.corrected
+            = linked_figure(@counters.inject(0) {|total, city| total + city.corrected_locations.to_i }, nil)
+          %td.audited
+            = linked_figure(@counters.inject(0) {|total, city| total + city.audited_locations.to_i }, nil)
+          %td.checked
+            = linked_figure(@counters.inject(0) {|total, city| total + city.field_checked_locations.to_i }, nil)
+          %td.uncategorized
+            = linked_figure(@counters.inject(0) {|total, counter| total + (counter.total_locations.to_i - counter.categorized_locations.to_i) }, nil)
 
     %br
