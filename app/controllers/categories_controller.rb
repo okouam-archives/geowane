@@ -8,7 +8,29 @@ class CategoriesController < ApplicationController
     session[:category_index_page] = params[:page] || session[:category_index_page]
     session[:category_index_per_page] = params[:per_page] || session[:category_index_per_page] || 10
     @per_page = session[:category_index_per_page]
-    sql = "SELECT * FROM categories ORDER BY #{@language}"
+
+    sql = %{
+      SELECT
+        categories.id,
+        categories.french,
+        categories.english,
+        categories.icon,
+        SUM(CASE WHEN status = 'new' THEN 1 ELSE 0 END) as new_locations,
+        SUM(CASE WHEN status = 'invalid' THEN 1 ELSE 0 END) as invalid_locations,
+        SUM(CASE WHEN status = 'corrected' THEN 1 ELSE 0 END) as corrected_locations,
+        SUM(CASE WHEN status = 'audited' THEN 1 ELSE 0 END) as audited_locations,
+        SUM(CASE WHEN status = 'field_checked' THEN 1 ELSE 0 END) as field_checked_locations,
+        count(*) as total_locations
+      FROM categories
+        JOIN tags ON categories.id = tags.category_id
+        JOIN locations ON locations.id = tags.location_id
+      GROUP BY
+        categories.id,
+        categories.french,
+        categories.english,
+        categories.icon
+      ORDER BY #{@language}
+    }
     @categories = Category.find_by_sql(sql).paginate(:page => session[:category_index_page], :per_page => @per_page)
   end
 
