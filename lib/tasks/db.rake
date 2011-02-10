@@ -40,38 +40,6 @@ namespace :geocms do
     end   
   end
 
-  namespace :refresh do
-
-    desc "Refresh all statistics"
-    task :statistics => [:environment] do
-      Statistics.new.refresh(:areas)
-      Statistics.new.refresh(:categories)
-      Statistics.new.refresh(:cache_counters)
-      Statistics.new.refresh(:collectors)
-    end
-
-    desc "Refresh area statistics"
-    task :areas => [:environment] do
-      Statistics.new.refresh(:areas)
-    end
-
-    desc "Refresh category statistics"
-    task :categories => [:environment] do
-      Statistics.new.refresh(:categories)
-    end
-
-    desc "Refresh cache counters"
-    task :cache_counters => [:environment] do
-      Statistics.new.refresh(:cache_counters)
-    end
-
-    desc "Refresh counter statistics"
-    task :counters => [:environment] do
-      Statistics.new.refresh(:counters)
-    end
-
-  end
-
   desc "Load PostGIS functionality into a database"
   task :postgis do
 
