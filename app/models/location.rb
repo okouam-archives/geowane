@@ -32,17 +32,6 @@ class Location < ActiveRecord::Base
      :select => "locations.*"}
   }
 
-  def city
-    return nil unless self.longitude && self.latitude
-    City.find_by_sql("select * from cities WHERE ST_WITHIN(setsrid(ST_Point(#{self.longitude}, #{self.latitude}), 4326), cities.feature)").first
-  end
-
-  def city_name
-    return nil unless self.longitude && self.latitude  
-    resultset = Location.connection.select_all("SELECT name FROM cities JOIN topologies ON topologies.city_id = cities.id AND topologies.location_id = #{self.id}")
-    resultset[0] ? resultset[0]["name"] : nil
-  end
-
   def json_object
     { :label => name,
       :id => id,

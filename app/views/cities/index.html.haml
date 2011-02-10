@@ -1,0 +1,47 @@
+= content_for :title, "Cities"
+
+.block
+  .block_head
+    %h2 Cities
+    %ul
+      %li.nobg.back= link_to "Back", :back
+  .block_content
+    %table{:cellspacing => "0", :cellpadding => "0", :style => "width: 100%; margin-left: 0px"}
+      %thead
+        %tr
+          %th City
+          %th.total_POI Total
+          %th.pending New
+          %th.invalid Invalid
+          %th.pending Corrected
+          %th.audited Audited
+          %th.checked Checked
+          %th.categorized Untagged
+      %tfoot
+        %tr
+          %td
+          %td.total_POI
+            = linked_figure(@cities.inject(0) {|total, city| total + city.total_locations.to_i }, nil)
+          %td.new
+            = linked_figure(@cities.inject(0) {|total, city| total + city.new_locations.to_i }, nil)
+          %td.invalid
+            = linked_figure(@cities.inject(0) {|total, city| total + city.invalid_locations.to_i }, nil)
+          %td.corrected
+            = linked_figure(@cities.inject(0) {|total, city| total + city.corrected_locations.to_i }, nil)
+          %td.audited
+            = linked_figure(@cities.inject(0) {|total, city| total + city.audited_locations.to_i }, nil)
+          %td.checked
+            = linked_figure(@cities.inject(0) {|total, city| total + city.field_checked_locations.to_i }, nil)
+          %td.uncategorized
+            = linked_figure(@cities.inject(0) {|total, city| total + (city.total_locations.to_i - city.categorized_locations.to_i) }, nil)
+      %tbody
+        - @cities.each do |city|
+          %tr
+            %td= city.name
+            %td.total_POI= linked_figure(city.total_locations || 0, "/locations?s[city_id]=#{city.id}")
+            %td.new= linked_figure(city.new_locations || 0, ("/locations?s[city_id]=#{city.id}" ? ("/locations?s[city_id]=#{city.id}&s[status]=new") : nil))
+            %td.invalid= linked_figure(city.invalid_locations || 0, ("/locations?s[city_id]=#{city.id}" ? ("/locations?s[city_id]=#{city.id}&s[status]=invalid") : nil))
+            %td.corrected= linked_figure(city.corrected_locations || 0, ("/locations?s[city_id]=#{city.id}" ? ("/locations?s[city_id]=#{city.id}&s[status]=corrected") : nil))
+            %td.audited= linked_figure(city.audited_locations || 0, ("/locations?s[city_id]=#{city.id}" ? ("/locations?s[city_id]=#{city.id}&s[status]=audited") : nil))
+            %td.checked= linked_figure(city.field_checked_locations || 0, ("/locations?s[city_id]=#{city.id}" ? ("/locations?s[city_id]=#{city.id}&s[status]=field_checked") : nil))
+            %td.uncategorized= linked_figure((city.total_locations.to_i - city.categorized_locations.to_i) || 0, ("/locations?s[city_id]=#{city.id}" ? ("/locations?s[city_id]=#{city.id}&s[category_missing]=1") : nil))

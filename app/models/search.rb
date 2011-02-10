@@ -34,9 +34,12 @@ class Search
     query = {sort: sort ? " ORDER BY " + sort + " ASC" : " ORDER BY locations.name ASC"}
 
     query[:from] = %{
-      SELECT locations.id, longitude, latitude, locations.name, locations.created_at, users.login as username, status, locations.updated_at
+      SELECT
+        locations.id, longitude, latitude, locations.name, locations.created_at, users.login as username,
+        status, locations.updated_at, cities.name as city_name
       FROM locations
       JOIN users ON users.id = locations.user_id
+      LEFT JOIN cities ON cities.id = locations.city_id
     }
 
     return query[:from] + query[:sort] if params.nil?
@@ -44,7 +47,7 @@ class Search
     query[:where] = " WHERE 1 = 1 "
 
     query[:group_by] = %{
-      GROUP BY locations.id, longitude, latitude, locations.name, locations.created_at, users.login, status, locations.updated_at
+      GROUP BY locations.id, longitude, latitude, locations.name, locations.created_at, users.login, status, locations.updated_at, cities.name
     }
 
     query = filter_on_status(query, params[:status])
@@ -57,7 +60,8 @@ class Search
 
     query = filter_on_change(query, params[:confirmed_by], params[:audited_by], params[:modified_by])
 
-    query = filter_on_administrative_unit(query, params[:level_id])
+    administrative_unit_id = find_most_selective_level(params)
+    query = filter_on_administrative_unit(query, administrative_unit_id)
 
     query = filter_on_city(query, params[:city_id])
 
@@ -72,6 +76,15 @@ class Search
   end
 
   private
+
+  def self.find_most_selective_level(criteria)
+    level_id = criteria[:location_level_4]
+    level_id = criteria[:location_level_3] if level_id.nil?
+    level_id = criteria[:location_level_2] if level_id.nil?
+    level_id = criteria[:location_level_1] if level_id.nil?
+    level_id = criteria[:location_level_0] if level_id.nil?
+    level_id
+  end
 
   def self.filter_on_name(query, field)
     query.tap do |o|
