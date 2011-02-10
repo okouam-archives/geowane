@@ -23,11 +23,13 @@ class ExportsController < ApplicationController
     @all_countries = AdministrativeUnit.dropdown_items(0)
     @all_categories = Category.dropdown_items
     @all_users = User.dropdown_items
+    @all_statuses = Location.new.enums(:status).select_options
   end
 
   def prepare    
     if params[:s]
       countries = params[:s][:country_id].delete_if {|c| c.blank?}
+      statuses = params[:s][:status].delete_if {|c| c.blank?}
       users = params[:s][:user_id].delete_if {|c| c.blank?}
       categories = params[:s][:category_id].delete_if {|c| c.blank?}
       include_uncategorized = params[:include_uncategorized]
@@ -42,6 +44,7 @@ class ExportsController < ApplicationController
           query = query.where("locations.id NOT IN (SELECT location_id FROM tags)")
         end
       end
+      query = query.where("status IN ('" + statuses.join("','") +"')")
       query = query.where("level_0 IN (" + countries.join(",") +")") if countries.count > 0
       session[:locations] = query.all.map{|c| c.id}
     else

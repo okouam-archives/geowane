@@ -20,6 +20,8 @@
         <input type="checkbox" id="all_users">
         All Users
         = form.input :user_id, :as => :check_boxes, :label => "Users", :collection => @all_users, :required => false
+      .filter_group
+        = form.input :status, :as => :check_boxes, :collection => @all_statuses, :required => false, :label => "Statuses"
       .clear
       %input{:class=>"button long", :style=>"float: right; margin-bottom: 20px", :type=>"submit", :value=>"Export"}
   :css
