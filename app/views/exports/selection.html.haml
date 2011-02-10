@@ -5,31 +5,32 @@
     %h2 Export Selection
   .block_content
     = semantic_form_for :s, :url => "/exports/prepare" do |form|
-      #search-parameters
-        .filter_group{:style=>"width: 170px"}
-          <input type="checkbox" id="all_countries"> 
-          All Countries
-          = form.input :country_id, :as => :check_boxes, :collection => @all_countries, :required => false, :label => "Countries", :wrapper_html => {:class => "selector"}
-        .filter_group{:style=>"width: 350px"}
-          %span{:style=>"margin-right: 20px"}
-            <input type="checkbox" id="all_categories"> 
-            All Categories 
-          <input type="checkbox" name="include_uncategorized" id="include_uncategorized"> 
-          Uncategorized       
-          = form.input :category_id, :as => :check_boxes, :collection => @all_categories, :required => false, :label => "Categories"
-        .filter_group
-          <input type="checkbox" id="all_users"> 
-          All Users        
-          = form.input :user_id, :as => :check_boxes, :label => "Users", :collection => @all_users, :required => false
-        .clear
-        %input{:class=>"button long", :style=>"float: right; margin-bottom: 20px", :type=>"submit", :value=>"Export"}
+      .filter_group{:style=>"width: 170px"}
+        <input type="checkbox" id="all_countries">
+        All Countries
+        = form.input :country_id, :as => :check_boxes, :collection => @all_countries, :required => false, :label => "Countries", :wrapper_html => {:class => "selector"}
+      .filter_group{:style=>"width: 350px"}
+        %span{:style=>"margin-right: 20px"}
+          <input type="checkbox" id="all_categories">
+          All Categories
+        <input type="checkbox" name="include_uncategorized" id="include_uncategorized">
+        Uncategorized
+        = form.input :category_id, :as => :check_boxes, :collection => @all_categories, :required => false, :label => "Categories"
+      .filter_group
+        <input type="checkbox" id="all_users">
+        All Users
+        = form.input :user_id, :as => :check_boxes, :label => "Users", :collection => @all_users, :required => false
+      .clear
+      %input{:class=>"button long", :style=>"float: right; margin-bottom: 20px", :type=>"submit", :value=>"Export"}
   :css
-    input {width: 170px ! important}
+
+    form {margin: 30px}
     select {width: 182px ! important}
     div.filter_group {float: left; width: 270px; margin-right: 20px}
     legend {margin-bottom: 10px; padding-top: 10px}
     fieldset ol * {border-width: 0; font-weight: normal ! important}
     fieldset {border: 0 ! important}
+    #search-parameters label input {width: auto}
 
   :javascript 
     $(document).ready(function() {

@@ -5,7 +5,7 @@ class ExportsController < ApplicationController
   create.after do
     object.user = current_user
     object.locations_count = session[:locations].size
-    object.execute Location.find(session[:locations], :include => [:tags => :category, :topology => [:country, :region, :city]])
+    object.execute Location.find(session[:locations], :include => [:city, :tags => :category])
     object.save!
   end
 
@@ -20,7 +20,7 @@ class ExportsController < ApplicationController
   end
 
   def selection
-    @all_countries = Country.dropdown_items
+    @all_countries = AdministrativeUnit.dropdown_items(0)
     @all_categories = Category.dropdown_items
     @all_users = User.dropdown_items
   end
@@ -31,11 +31,8 @@ class ExportsController < ApplicationController
       users = params[:s][:user_id].delete_if {|c| c.blank?}
       categories = params[:s][:category_id].delete_if {|c| c.blank?}
       include_uncategorized = params[:include_uncategorized]
-      puts params[:include_uncategorized]
-      query = Location.joins(:topology)
-      if users.count > 0
-        query = query.where("user_id IN (" + users.join(",") + ")")
-      end
+      query = Location
+      query = query.where("user_id IN (" + users.join(",") + ")") if users.count > 0
       if categories.count > 0 || include_uncategorized
         if include_uncategorized.nil? && categories.count > 0
           query = query.where("locations.id IN (SELECT location_id FROM tags WHERE category_id IN (" + categories.join(",") + "))")
@@ -45,10 +42,8 @@ class ExportsController < ApplicationController
           query = query.where("locations.id NOT IN (SELECT location_id FROM tags)")
         end
       end
-      if countries.count > 0
-        query = query.where("country_id IN (" + countries.join(",") +")")
-      end
-      session[:locations] = query.all.map{|c| c.id} 
+      query = query.where("level_0 IN (" + countries.join(",") +")") if countries.count > 0
+      session[:locations] = query.all.map{|c| c.id}
     else
       session[:locations] = params[:locations]
     end

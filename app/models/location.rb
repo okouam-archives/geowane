@@ -7,6 +7,7 @@ class Location < ActiveRecord::Base
   acts_as_audited
   validates_presence_of :longitude, :latitude, :name
   belongs_to :user
+  belongs_to :city
   with_options :class_name => "AdministrativeUnit" do |entity|
     entity.belongs_to :administrative_unit_0, :foreign_key => "level_0"
     entity.belongs_to :administrative_unit_1, :foreign_key => "level_1"
