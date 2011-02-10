@@ -20,10 +20,10 @@ class CategoriesController < ApplicationController
         SUM(CASE WHEN status = 'corrected' THEN 1 ELSE 0 END) as corrected_locations,
         SUM(CASE WHEN status = 'audited' THEN 1 ELSE 0 END) as audited_locations,
         SUM(CASE WHEN status = 'field_checked' THEN 1 ELSE 0 END) as field_checked_locations,
-        count(*) as total_locations
+        count(locations) as total_locations
       FROM categories
-        JOIN tags ON categories.id = tags.category_id
-        JOIN locations ON locations.id = tags.location_id
+        LEFT JOIN tags ON categories.id = tags.category_id
+        LEFT JOIN locations ON locations.id = tags.location_id
       GROUP BY
         categories.id,
         categories.french,
