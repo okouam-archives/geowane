@@ -55,6 +55,12 @@ class InitialSchema < ActiveRecord::Migration
       t.timestamps
     end
 
+    create_table :cities do |t|
+      t.string :name
+    end
+    add_column :cities, :feature, :geometry, :srid => 4326
+    add_index "cities", ["feature"], :name => "idx_cities_feature", :spatial => true
+
     create_table :locations, :force => true do |t|
       t.string :name
       t.decimal :longitude
@@ -62,6 +68,7 @@ class InitialSchema < ActiveRecord::Migration
       t.string :email
       t.string :telephone
       t.enum :status
+      t.references :city
       t.references :user
       t.string :fax
       t.string :website
@@ -83,47 +90,6 @@ class InitialSchema < ActiveRecord::Migration
     add_index :locations, ["feature"], :name => "idx_locations_feature", :spatial => true
     add_index :locations, ["name"], :name => "idx_features_name"
 
-    create_table :regions do |t|
-      t.string :name
-    end
-
-    add_column :regions, :uncategorized_locations, :integer
-    add_column :regions, :total_locations, :integer
-    add_column :regions, :new_locations, :integer
-    add_column :regions, :invalid_locations, :integer
-    add_column :regions, :corrected_locations, :integer
-    add_column :regions, :audited_locations, :integer
-    add_column :regions, :field_checked_locations, :integer
-    add_column :regions, :feature, :geometry, :srid => 4326
-    add_index "regions", ["feature"], :name => "idx_regions_feature", :spatial => true
-
-    create_table :communes do |t|
-      t.string :name
-    end
-
-    add_column :communes, :uncategorized_locations, :integer
-    add_column :communes, :total_locations, :integer
-    add_column :communes, :new_locations, :integer
-    add_column :communes, :invalid_locations, :integer
-    add_column :communes, :corrected_locations, :integer
-    add_column :communes, :audited_locations, :integer
-    add_column :communes, :field_checked_locations, :integer
-    add_column :communes, :feature, :geometry, :srid => 4326
-    add_index "communes", ["feature"], :name => "idx_communes_feature", :spatial => true
-
-    create_table :cities do |t|
-      t.string :name
-    end
-    add_column :cities, :uncategorized_locations, :integer
-    add_column :cities, :total_locations, :integer
-    add_column :cities, :new_locations, :integer
-    add_column :cities, :invalid_locations, :integer
-    add_column :cities, :corrected_locations, :integer
-    add_column :cities, :audited_locations, :integer
-    add_column :cities, :field_checked_locations, :integer
-    add_column :cities, :feature, :geometry, :srid => 4326
-    add_index "cities", ["feature"], :name => "idx_cities_feature", :spatial => true
-
     execute %{
       create or replace function to_dec(character varying)
        returns integer as $$
@@ -135,19 +101,6 @@ class InitialSchema < ActiveRecord::Migration
        $$ language plpgsql;
     }
 
-    create_table :countries do |t|
-      t.string :name
-    end
-    add_column :countries, :uncategorized_locations, :integer
-    add_column :countries, :total_locations, :integer
-    add_column :countries, :new_locations, :integer
-    add_column :countries, :invalid_locations, :integer
-    add_column :countries, :corrected_locations, :integer
-    add_column :countries, :audited_locations, :integer
-    add_column :countries, :field_checked_locations, :integer
-    add_column :countries, :feature, :geometry, :srid => 4326
-    add_index "countries", ["feature"], :name => "idx_countries_feature", :spatial => true
-
     create_table :sessions do |t|
       t.string :session_id, :null => false
       t.text :data
@@ -156,10 +109,36 @@ class InitialSchema < ActiveRecord::Migration
     add_index :sessions, :session_id
     add_index :sessions, :updated_at
 
-  end
+    create_table :comments do |t|
+      t.string :title, :limit => 50, :default => ""
+      t.text :comment
+      t.references :commentable, :polymorphic => true
+      t.references :user
+      t.timestamps
+    end
 
-  def self.down
-    drop_table :sessions
+    add_index :comments, :commentable_type
+    add_index :comments, :commentable_id
+    add_index :comments, :user_id
+
+    create_table :model_changes, :force => true do |t|
+      t.column :old_value, :string
+      t.references :audit
+      t.column :new_value, :string
+      t.column :datum, :string
+    end
+
+    create_table :imports, :force => true do |t|
+      t.integer :locations_count, :default => 0
+      t.string :input_file_name
+      t.string :input_content_type
+      t.integer :input_file_size
+      t.datetime :input_updated_at
+      t.enum :import_format
+      t.references :user
+      t.timestamps
+    end
+
   end
 
 end
