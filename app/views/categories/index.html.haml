@@ -35,9 +35,9 @@
           - @categories.each do |category|
             %tr
               = render :partial => @language, :locals => {:category => category}
-              %td
+              %td{:style=>"width: 30px"}
                 - if category.icon 
-                  - image_tag "/images/" + category.icon
+                  = image_tag "/images/" + category.icon
               %td.total_POI= linked_figure(category.total_locations, "/locations?s[category_id]=#{category.id}")
               %td.new= linked_figure(category.new_locations, "/locations?s[category_id]=#{category.id}&s[status]=new")
               %td.corrected= linked_figure(category.corrected_locations, "/locations?s[category_id]=#{category.id}&s[status]=corrected")
