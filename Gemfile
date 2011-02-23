@@ -1,5 +1,6 @@
 source 'http://rubygems.org'
 
+gem 'roo'
 gem 'geokit-rails3', :git => 'git://github.com/loosecubes/geokit-rails3.git'
 gem 'gherkin'
 gem 'hoptoad_notifier'
