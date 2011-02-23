@@ -10,7 +10,7 @@ class Feature
     count = 0    
     ["polygon", "point", "line"].each do |shape|
       shpfile = File.join(directory, shape + ".shp")
-      raise "{shpfile} could not be found." unless File.exists? shpfile
+      raise "'#{shpfile}' could not be found." unless File.exists? shpfile
       GeoRuby::Shp4r::ShpFile.open(shpfile) do |shp|
         shp.each do |feature|
           begin

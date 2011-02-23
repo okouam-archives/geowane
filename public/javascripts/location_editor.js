@@ -3,12 +3,16 @@ var LocationEditor = Class.extend({
   init: function(options) {
 
     this.options = options;
-    
-    $(document).bind("load.location.comments", this.loadComments.bind(this));
 
-    $(document).bind("load.location.tags", this.loadTags.bind(this));
+    if (this.options.tagsContainer) {
+      $(document).bind("load.location.tags", this.loadTags.bind(this));
+    }
 
-    var options = {
+    if (this.options.commentsContainer) {
+      $(document).bind("load.location.comments", this.loadComments.bind(this));
+    }
+
+    var mapOptions = {
       observer: {
         onDragComplete: function(feature, lonlat) {
           $("#location_latitude").val(lonlat.lat);
@@ -43,8 +47,16 @@ var LocationEditor = Class.extend({
         "roads-type-2", "roads-type-1"]
     };
       
-    this.map = new SingleFeatureMap(options);
-    this.showCurrentLocation(function() {this.map.zoomToFeatures("default");}.bind(this));
+    this.map = new SingleFeatureMap(mapOptions);
+
+    if (this.options.locationId) {
+      this.showCurrentLocation(function() {this.map.zoomToFeatures("default");}.bind(this));
+    }
+    else
+    {
+      var location = {icon: "../shape_square_purple.png", feature: "POINT", longitude: -6, latitude: 10};
+      this.showLocation(location);
+    }
 
     $("#edit-location-tabs").tabs();
 
@@ -53,8 +65,13 @@ var LocationEditor = Class.extend({
       else this.showLandmarks();
     }.bind(this));    
 
-    $(document).trigger("load.location.tags");
-    $(document).trigger("load.location.comments");
+    if (this.options.tagsContainer) {
+      $(document).trigger("load.location.tags");
+    }
+
+    if (this.options.commentsContainer) {
+      $(document).trigger("load.location.comments");
+    }
 
     $(".save").click(function() {
       $(".block form").submit();
@@ -74,7 +91,7 @@ var LocationEditor = Class.extend({
       type: "GET",
       dataType: "json",
       data: {
-        "bounds[]": this.map.map.getExtent().toArray(),
+        "bounds[]": this.map.map.getExtent().toArray()
       },
       url: "/locations/" + this.options.locationId + "/surrounding_landmarks",
       success: function(points) {
@@ -83,17 +100,20 @@ var LocationEditor = Class.extend({
     });
   },
 
+  showLocation: function(poi, func) {
+    poi.icon = "/shape_square_purple.png";
+    this.map.removeLayer("default");
+    if (func) {
+      this.map.displayDraggableFeatures([poi], "default", func);
+    } else {
+      this.map.displayDraggableFeatures([poi], "default");
+    }
+  },
+
   showCurrentLocation: function(func) {
     var onSuccess = function(msg) {
-      poi = eval("(" + msg + ")");
-      poi.icon = "/shape_square_purple.png";
-      this.map.removeLayer("default");
-      if (func) {
-        this.map.displayDraggableFeatures([poi], "default", func);
-      } else {
-        this.map.displayDraggableFeatures([poi], "default");
-      }
-    };  
-    $.ajax({ type: "GET", dataType : 'script', url: "/locations/" + this.options.locationId, success: onSuccess.bind(this) });    
+      this.showLocation(eval("(" + msg + ")"), func);
+    };
+    $.ajax({ type: "GET", dataType : 'script', url: "/locations/" + this.options.locationId, success: onSuccess.bind(this) });
   }        
 });

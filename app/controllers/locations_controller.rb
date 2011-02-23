@@ -101,6 +101,11 @@ class LocationsController < ApplicationController
     end
   end
 
+  create.after do
+    object.user_id = current_user
+    object.save!
+  end
+
   create.wants.html do
     redirect_to locations_path
   end

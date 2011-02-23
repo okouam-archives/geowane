@@ -1,3 +1,5 @@
+require 'geocms_tools'
+
 namespace :geocms do
 
   task :load_config => :rails_env do
@@ -41,44 +43,28 @@ namespace :geocms do
   end
 
   desc "Load PostGIS functionality into a database"
-  task :postgis do
-
-    ActiveRecord::Base.configurations = Rails.configuration.database_configuration
-    database = ActiveRecord::Base.configurations[Rails.env]['database']
-    `createlang plpgsql #{database}`
-
-    postgis_sql_candidates = `locate postgis.sql`
-    unless postgis_sql_candidates && !postgis_sql_candidates.blank?
-      raise "The postgis.sql script cannot be found."
-    end
-
-    spatial_ref_sys_sql_candidates = `locate spatial_ref_sys.sql`
-    unless spatial_ref_sys_sql_candidates && !spatial_ref_sys_sql_candidates.blank?
-      raise "The spatial_ref_sys.sql script cannot be found."
-    end
-
-    postgis_sql = postgis_sql_candidates.split("\n")[0]
-    spatial_ref_sys_sql = spatial_ref_sys_sql_candidates.split("\n")[0]
-
-    `psql -d #{database} -f #{postgis_sql}`
-    `psql -d #{database} -f #{spatial_ref_sys_sql}`
-
+  task :postgis => [:load_config, :environment] do
+    postgis =  GeocmsTools::Postgis.new(ActiveRecord::Base.connection)
+    postgis.install_postgis
   end
 
   desc "Kill all sessions to a database"
-  task :disconnect =>  [:load_config, :environment] do
-    processes = `ps ax|grep '.*[0-9]:[0-9][0-9] postgres:.*'|grep cms_development`
-    if processes == ""
-      puts "No connections to #{@database} found."
-    else
-      processes.each_line do |process|
-        if process =~ /([0-9]+\s)/
-          command = `sudo kill -9 #{$1.chop}`
-          puts "Executing command: #{command}"
-          `#{command}`
-        end
-      end
-    end
+  task :disconnect => [:load_config, :environment] do
+    GeocmsTools::Postgresql.kill_connections(@database)
+  end
+
+  desc "Rebuild a spatial database"
+  task :rebuild => [:load_config, :environment] do
+    Rake::Task["geocms:disconnect"].reenable
+    Rake::Task["geocms:disconnect"].invoke
+    Rake::Task["db:drop"].reenable
+    Rake::Task["db:drop"].invoke
+    Rake::Task["db:create"].reenable
+    Rake::Task["db:create"].invoke
+    Rake::Task["geocms:postgis"].reenable
+    Rake::Task["geocms:postgis"].invoke
+    Rake::Task["db:migrate"].reenable
+    Rake::Task["db:migrate"].invoke
   end
 
 end

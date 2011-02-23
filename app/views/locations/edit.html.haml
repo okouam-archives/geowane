@@ -1,7 +1,7 @@
 = content_for :title, "Edit Location"
 = render :partial => "shared/mapping_scripts"
 
-.block
+.block.editor
   .block_head
     %h2 Edit Location #{@location.id}
     %ul
@@ -16,13 +16,15 @@
           %li= link_to "Feature", "#feature-tab"
           %li= link_to "Information", "#information-tab"
           %li= link_to "Coordinates", "#classification-tab"
-          %li= link_to "History", "#history-tab"  
+          %li= link_to "History", "#history-tab"
+        .clear
     .block_content
-      = render :partial => "locations/form/feature", :locals => {:form => form, :form_data => @form_data}
-      = render :partial => "locations/form/information", :locals => {:form => form}
-      = render :partial => "locations/form/classification", :locals => {:form => form}
-      = render :partial => "locations/form/history", :locals => {:form => form, :location => @location}
-      .clear
+      .editor-content
+        = render :partial => "locations/form/feature", :locals => {:form => form, :form_data => @form_data}
+        = render :partial => "locations/form/information", :locals => {:form => form}
+        = render :partial => "locations/form/classification", :locals => {:form => form}
+        = render :partial => "locations/form/history", :locals => {:form => form, :location => @location}
+        .clear
 
 :javascript
   $(document).ready(function() {

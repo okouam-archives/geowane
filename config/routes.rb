@@ -5,6 +5,8 @@ GeoCms::Application.routes.draw do
   match'/locations' => 'locations#collection_update', :via => :put 
   match'/stats' => 'stats#index', :via => :get
 
+  resource :network, :controller => "network"
+
   resources :locations do
     resources :comments, :tags
     member do
@@ -20,7 +22,9 @@ GeoCms::Application.routes.draw do
 
   resource :search, :controller => "search"
   resource :account, :controller => "account"
+
   resource :map, :controller => "map"
+
   resource :user_sessions
   resources :users, :communes, :cities, :regions, :countries, :counters, :conversions, :reports
 

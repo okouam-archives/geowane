@@ -12,11 +12,6 @@
         - if @locations.any? {|l| current_user.may_destroy_location?(l)}
           %li.nobg.collection_delete= link_to "Delete Selection", "#"
         %li.nobg.export= link_to "Export SELECTION", "#"
-  .block_sub
-    %span
-      SEARCH CRITERIA
-    %code
-      = show_search_criteria
   .block_content
     = semantic_form_for :locations, :url => new_export_path do
       %table.main{:cellspacing => "0", :cellpadding => "0", :style => "width: 100%; margin-left: 0px"}
