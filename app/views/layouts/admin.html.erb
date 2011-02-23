@@ -42,8 +42,6 @@
                             <% unless current_user.has_role?("collector") %>
                                 <li><%= link_to "Import Data", imports_path %></li>
                                 <li><%= link_to "Export Data", exports_path %></li>
-                                <li><%= link_to "Load Routing Network", new_network_path %></li>
-                                <li><%= link_to "Load Map Features", new_map_path %></li>
                             <% end %>
                         </ul>
                     </li>
