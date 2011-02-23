@@ -1,5 +1,3 @@
-require 'geocms_tools'
-
 namespace :geocms do
 
   task :load_config => :rails_env do
@@ -40,31 +38,7 @@ namespace :geocms do
         puts "#{Feature.import(folder)} features were imported from the files in '#{folder}'"
       end
     end   
-  end
 
-  desc "Load PostGIS functionality into a database"
-  task :postgis => [:load_config, :environment] do
-    postgis =  GeocmsTools::Postgis.new(ActiveRecord::Base.connection)
-    postgis.install_postgis
-  end
-
-  desc "Kill all sessions to a database"
-  task :disconnect => [:load_config, :environment] do
-    GeocmsTools::Postgresql.kill_connections(@database)
-  end
-
-  desc "Rebuild a spatial database"
-  task :rebuild => [:load_config, :environment] do
-    Rake::Task["geocms:disconnect"].reenable
-    Rake::Task["geocms:disconnect"].invoke
-    Rake::Task["db:drop"].reenable
-    Rake::Task["db:drop"].invoke
-    Rake::Task["db:create"].reenable
-    Rake::Task["db:create"].invoke
-    Rake::Task["geocms:postgis"].reenable
-    Rake::Task["geocms:postgis"].invoke
-    Rake::Task["db:migrate"].reenable
-    Rake::Task["db:migrate"].invoke
   end
 
 end
