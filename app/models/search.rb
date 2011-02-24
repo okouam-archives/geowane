@@ -123,7 +123,7 @@ class Search
         if level == "none"
           o[:where] = "#{o[:where]} AND level_0 IS NULL AND level_1 IS NULL AND level_2 IS NULL AND level_3 IS NULL"
         else
-          o[:where] = "#{o[:where]} AND level_0 = #{level} OR level_1 = #{level} OR level_2 = #{level} OR level_3 = #{level}"
+          o[:where] = "#{o[:where]} AND (level_0 = #{level} OR level_1 = #{level} OR level_2 = #{level} OR level_3 = #{level})"
         end
       end
     end
