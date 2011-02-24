@@ -28,7 +28,6 @@ class Search
     locations[new_index]
   end
 
-
   def self.create(params = nil, sort = nil)
 
     query = {sort: sort ? " ORDER BY " + sort + " ASC" : " ORDER BY locations.name ASC"}

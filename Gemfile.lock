@@ -196,7 +196,6 @@ GEM
       rgeo (>= 0.2.0)
     rgeo-shapefile (0.2.0)
       rgeo (>= 0.2.0)
-    roo (1.9.3)
     rspec (2.5.0)
       rspec-core (~> 2.5.0)
       rspec-expectations (~> 2.5.0)
@@ -287,7 +286,6 @@ DEPENDENCIES
   rgeo-activerecord
   rgeo-geojson
   rgeo-shapefile
-  roo
   rspec-rails
   ruby-debug19
   spatial_adapter

@@ -15,6 +15,9 @@ GeoCms::Application.routes.draw do
   end
 
   resources :categories do
+    collection do
+      get :export
+    end
     member do
       get :locations, :save_icon, :change_icon
     end
