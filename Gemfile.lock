@@ -1,10 +1,4 @@
 GIT
-  remote: git://codaset.com/joelmoss/dynamic-form.git
-  revision: 00df39716cafa9f06a70380fbb3f873c92e8571a
-  specs:
-    dynamic_form (1.1.3)
-
-GIT
   remote: git://github.com/BDQ/resource_controller.git
   revision: 5537625a5215d7cf5528aecbb724d718df30e2ca
   specs:
@@ -259,7 +253,6 @@ DEPENDENCIES
   database_cleaner
   dbf
   diff-lcs
-  dynamic_form!
   enumerated_attribute
   factory_girl
   factory_girl_rails

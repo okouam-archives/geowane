@@ -28,6 +28,7 @@
 				<ul id="nav">
 					<li><%= link_to "Geospatial Database", dashboard_path %>
                         <ul>
+                            <li><%= link_to "Search", new_search_path %></li>
                             <li><%= link_to "Points of Interest", locations_path(:s => :reset)%></li>
                             <li><%= link_to "Categories", categories_path(:page => 1) %></li>
                              <li><%= link_to "Collectors", counters_path %></li>
@@ -42,6 +43,7 @@
                             <% unless current_user.has_role?("collector") %>
                                 <li><%= link_to "Import Data", imports_path %></li>
                                 <li><%= link_to "Export Data", exports_path %></li>
+                              <li><%= link_to "Search the Web", exports_path %></li>
                             <% end %>
                         </ul>
                     </li>

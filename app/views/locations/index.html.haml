@@ -4,14 +4,13 @@
   .block_head
     %h2 Points of Interest
     %ul
-      %li.nobg= link_to "Search", new_search_path
       %li.nobg= link_to "New Location", new_location_path
       - unless @locations.empty?
         - if @locations.any? {|l| current_user.may_update_location?(l)}
           %li.nobg.collection_edit= link_to "Edit Selection", "#"
         - if @locations.any? {|l| current_user.may_destroy_location?(l)}
           %li.nobg.collection_delete= link_to "Delete Selection", "#"
-        %li.nobg.export= link_to "Export SELECTION", "#"
+        %li.nobg.export= link_to "Export Selection", "#"
   .block_content
     = semantic_form_for :locations, :url => new_export_path do
       %table.main{:cellspacing => "0", :cellpadding => "0", :style => "width: 100%; margin-left: 0px"}
