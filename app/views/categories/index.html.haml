@@ -5,17 +5,14 @@
     %h2 Categories
     %ul
       %li.nobg.back
-        %a{:href=>"#"}
-          = link_to switch_language(@language), categories_path(:language => switch_language(@language))
+        = link_to switch_language(@language), categories_path(:language => switch_language(@language))
       %li.nobg.back
         = link_to "Export", export_categories_path
       - if current_user.may_create_category?
         %li.nobg.back
-          %a{:href=>"#"}
-            = link_to "New Category", new_category_path
+          = link_to "New Category", new_category_path
       %li.nobg.back
-        %a{:href=>"#"}
-          = link_to "Back", :back 
+        = link_to "Back", :back
   .block_content
     %table.list
       %tbody
