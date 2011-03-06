@@ -90,17 +90,6 @@ class InitialSchema < ActiveRecord::Migration
     add_index :locations, ["feature"], :name => "idx_locations_feature", :spatial => true
     add_index :locations, ["name"], :name => "idx_features_name"
 
-    execute %{
-      create or replace function to_dec(character varying)
-       returns integer as $$
-       declare r int;
-       begin
-         execute E'select x\\''||$1|| E'\\'::integer' into r;
-         return r;
-       end
-       $$ language plpgsql;
-    }
-
     create_table :sessions do |t|
       t.string :session_id, :null => false
       t.text :data

@@ -31,51 +31,44 @@ ActiveRecord::Schema.define(:version => 20110205150037) do
     t.string   "action"
   end
 
-  add_index "audits", ["auditable_id", "auditable_type"], :name => "idx_audits_auditable_id+auditable_type"
-  add_index "audits", ["created_at"], :name => "idx_audits_created_at"
-  add_index "audits", ["user_id"], :name => "idx_audits_user_id"
+  add_index "audits", ["auditable_id", "auditable_type"], :name => "auditable_index"
+  add_index "audits", ["created_at"], :name => "index_audits_on_created_at"
+  add_index "audits", ["user_id"], :name => "user_index"
 
   create_table "categories", :force => true do |t|
-    t.string  "french",                  :limit => 200
-    t.string  "english",                 :limit => 200
-    t.string  "code",                    :limit => 200
-    t.string  "classification",          :limit => 100
-    t.string  "icon",                    :limit => 200
-    t.boolean "visible"
-    t.integer "numeric_code"
-    t.string  "navitel_french"
-    t.string  "navitel_english"
-    t.string  "navitel_code"
-    t.string  "navteq_french"
-    t.string  "navteq_english"
-    t.string  "navteq_code"
-    t.string  "garmin_french"
-    t.string  "garmin_english"
-    t.string  "sygic_french"
-    t.string  "sygic_english"
-    t.string  "sygic_code"
-    t.integer "tags_count",                             :default => 0
-    t.integer "total_locations"
-    t.integer "new_locations"
-    t.integer "invalid_locations"
-    t.integer "corrected_locations"
-    t.integer "audited_locations"
-    t.integer "field_checked_locations"
-    t.integer "level",                                  :default => 0, :null => false
-    t.integer "end_level",                              :default => 0, :null => false
+    t.string   "french",                  :limit => 200
+    t.string   "english",                 :limit => 200
+    t.string   "code",                    :limit => 200
+    t.string   "classification",          :limit => 100
+    t.string   "icon",                    :limit => 200
+    t.boolean  "visible",                                :default => true
+    t.integer  "numeric_code",                           :default => 0
+    t.integer  "total_locations",                        :default => 0
+    t.integer  "new_locations",                          :default => 0
+    t.integer  "invalid_locations",                      :default => 0
+    t.integer  "corrected_locations",                    :default => 0
+    t.integer  "audited_locations",                      :default => 0
+    t.integer  "field_checked_locations",                :default => 0
+    t.string   "navitel_french"
+    t.string   "navitel_english"
+    t.string   "navitel_code"
+    t.string   "navteq_french"
+    t.string   "navteq_english"
+    t.string   "navteq_code"
+    t.string   "garmin_french"
+    t.string   "garmin_english"
+    t.string   "sygic_french"
+    t.string   "sygic_english"
+    t.string   "sygic_code"
+    t.integer  "level",                                  :default => 0,    :null => false
+    t.integer  "end_level",                              :default => 0,    :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "cities", :force => true do |t|
     t.string   "name"
-    t.geometry "feature",                 :limit => nil
-    t.integer  "uncategorized_locations"
-    t.integer  "total_locations"
-    t.integer  "new_locations"
-    t.integer  "invalid_locations"
-    t.integer  "corrected_locations"
-    t.integer  "audited_locations"
-    t.integer  "field_checked_locations"
-    t.geometry "center",                  :limit => nil
+    t.geometry "feature", :limit => nil, :srid => 4326
   end
 
   add_index "cities", ["feature"], :name => "idx_cities_feature", :spatial => true
@@ -125,8 +118,8 @@ ActiveRecord::Schema.define(:version => 20110205150037) do
     t.datetime "datetime"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "name"
     t.string   "output_platform"
+    t.string   "name"
   end
 
   create_table "features", :force => true do |t|
@@ -164,35 +157,35 @@ ActiveRecord::Schema.define(:version => 20110205150037) do
     t.datetime "updated_at"
   end
 
+  add_index "labels", ["classification"], :name => "idx_labels_classification"
+  add_index "labels", ["key"], :name => "idx_labels_key"
+
   create_table "locations", :force => true do |t|
-    t.integer  "category_id"
     t.string   "name"
     t.decimal  "longitude"
     t.decimal  "latitude"
-    t.string   "searchable_name"
     t.string   "email"
     t.string   "telephone"
+    t.string   "status"
+    t.integer  "city_id"
+    t.integer  "user_id"
     t.string   "fax"
     t.string   "website"
     t.string   "postal_address"
     t.string   "opening_hours"
     t.integer  "user_rating"
-    t.geometry "feature",         :limit => nil,                :srid => 4326
-    t.string   "status"
-    t.integer  "user_id"
+    t.integer  "import_id"
+    t.string   "long_name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "long_name"
-    t.integer  "tags_count",                     :default => 0
+    t.geometry "feature",        :limit => nil, :srid => 4326
     t.integer  "level_0"
     t.integer  "level_1"
     t.integer  "level_2"
     t.integer  "level_3"
     t.integer  "level_4"
-    t.integer  "city_id"
   end
 
-  add_index "locations", ["category_id"], :name => "index_features_on_category_id"
   add_index "locations", ["feature"], :name => "idx_locations_feature", :spatial => true
   add_index "locations", ["name"], :name => "idx_features_name"
 
@@ -203,39 +196,19 @@ ActiveRecord::Schema.define(:version => 20110205150037) do
     t.string  "datum"
   end
 
-  create_table "regions", :force => true do |t|
-    t.string   "name"
-    t.geometry "feature",                 :limit => nil
-    t.integer  "uncategorized_locations"
-    t.integer  "total_locations"
-    t.integer  "new_locations"
-    t.integer  "invalid_locations"
-    t.integer  "corrected_locations"
-    t.integer  "audited_locations"
-    t.integer  "field_checked_locations"
-  end
-
-  add_index "regions", ["feature"], :name => "idx_regions_feature", :spatial => true
-
-  create_table "roles", :force => true do |t|
-    t.string "title"
-  end
-
-  create_table "roles_users", :id => false, :force => true do |t|
-    t.integer "user_id"
-    t.integer "role_id"
-  end
-
   create_table "selections", :force => true do |t|
     t.string   "name",        :null => false
-    t.decimal  "longitude"
-    t.decimal  "latitude"
+    t.decimal  "longitude",   :null => false
+    t.decimal  "latitude",    :null => false
     t.string   "comment"
     t.integer  "original_id"
-    t.integer  "import_id"
+    t.integer  "import_id",   :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "selections", ["import_id"], :name => "idx_selections_import_id"
+  add_index "selections", ["original_id"], :name => "idx_selections_original_id"
 
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :null => false
@@ -248,16 +221,14 @@ ActiveRecord::Schema.define(:version => 20110205150037) do
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
 
   create_table "tags", :force => true do |t|
-    t.integer  "location_id"
-    t.integer  "category_id"
+    t.integer  "location_id", :null => false
+    t.integer  "category_id", :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "tags", ["category_id", "location_id", "id"], :name => "idx_tags_categories"
-  add_index "tags", ["category_id"], :name => "idx_tags_category_id"
   add_index "tags", ["location_id", "category_id", "id"], :name => "idx_tags_locations"
-  add_index "tags", ["location_id"], :name => "idx_tags_location_id"
 
   create_table "users", :force => true do |t|
     t.string   "login",                                 :null => false
@@ -276,11 +247,11 @@ ActiveRecord::Schema.define(:version => 20110205150037) do
     t.string   "last_login_ip"
     t.string   "role_name"
     t.boolean  "is_active",           :default => true, :null => false
+    t.string   "mobile_number"
+    t.string   "skype_alis"
+    t.string   "home_country"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "mobile_number"
-    t.string   "skype_alias"
-    t.string   "home_country"
   end
 
 end

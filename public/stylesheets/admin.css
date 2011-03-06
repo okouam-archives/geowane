@@ -5,6 +5,29 @@
 @import url(admin/date_input.css);
 @import url(admin/formtastic.css);
 
+/* .locations.collection_edit */
+
+.locations.collection_edit .block_head span {float: right; font-style: italic}
+.locations.collection_edit td.name input {width: 200px; font-size: 12px; padding: 4px; border: 1px solid #ccc}
+.locations.collection_edit td.long_name input {width: 200px; font-size: 12px; padding: 4px; border: 1px solid #ccc}
+.locations.collection_edit td.tags .list span:first-child {font-style: italic}
+.locations.collection_edit input {padding: 2px; font-size: 11px}
+.locations.collection_edit table.list.updates {width: 100%}
+.locations.collection_edit table.list.updates th {font-weight: bold}
+.locations.collection_edit .comments-container {display: none}
+.locations.collection_edit th, .locations.collection_edit td {font-size: 11px}
+.locations.collection_edit #category_switcher {width: 476px}
+.locations.collection_edit .change {margin-right: 105px; margin-left: 15px}
+.locations.collection_edit .change select {float: right}
+.locations.collection_edit td.category select {width: 300px}
+.locations.collection_edit td.status select {width: 130px; font-size: 10px; padding: 4px}
+.locations.collection_edit td.remove-tag-action * {position: relative; left: -20px}
+
+.locations.collection_edit .widget select {width: 650px}
+.locations.collection_edit .widget a {float: right; margin-left: 20px; margin-top: 5px}
+
+.locations.collection_edit .comments-widget textarea {border: 1px solid #ccc; width: 99%; margin-bottom: 5px}
+
 /* .locations.edit */
 
 .locations .editor .block_sub {padding-top: 5px}

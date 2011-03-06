@@ -5,20 +5,7 @@
 	<title>GeoCMS - <%=h yield(:title) %></title>
     <%= csrf_meta_tag %>
     <%= stylesheet_link_tag 'admin' %>
-    <% stylesheet_link_tag 'shared' %>
-	<script type="text/javascript" src="/javascripts/jquery-1.4.4.min.js"></script>
-	<script type="text/javascript" src="/javascripts/jquery-ui-1.8rc3.custom.min.js"></script>
-    <script type="text/javascript" src="/javascripts/theme/facebox.js"></script>
-	<script type="text/javascript" src="/javascripts/theme/jquery.img.preload.js"></script>
-	<script type="text/javascript" src="/javascripts/theme/jquery.filestyle.mini.js"></script>
-	<script type="text/javascript" src="/javascripts/theme/jquery.date_input.pack.js"></script>
-	<script type="text/javascript" src="/javascripts/theme/excanvas.js"></script>
-	<script type="text/javascript" src="/javascripts/theme/jquery.visualize.js"></script>
-	<script type="text/javascript" src="/javascripts/theme/jquery.select_skin.js"></script>
-    <script type="text/javascript" src="/javascripts/rails.js"></script>
-	<script type="text/javascript" src="/javascripts/theme/custom.js"></script>
-    <script type="text/javascript" src="/javascripts/jquery.ba-bbq.min.js"></script>
-    <script type="text/javascript" src="/javascripts/geocms.rails.js"></script>
+    <%= include_javascripts :global %>
 </head>
 <body class="<%="#{controller.controller_name} #{controller.action_name}"%>">
 	<div id="hld">
@@ -55,8 +42,6 @@
                             <% if current_user.has_role?("administrator") %>
                                 <li><%= link_to "Users", users_path %></li>
                             <% end %>
-
-                             <li><%= link_to "Scheduled Jobs", periodic_jobs_path %></li>
                         </ul>
                     </li>
 				</ul>

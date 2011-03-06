@@ -130,4 +130,20 @@ describe LocationsController do
 
   end
 
+  describe "handling PUT to #collection_update" do
+
+    context "and removing a tag" do
+
+    end
+
+    context "and updating attributes" do
+
+    end
+
+    context "and adding a tag" do
+      pending
+    end
+
+  end
+
 end

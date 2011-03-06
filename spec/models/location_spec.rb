@@ -17,24 +17,6 @@ describe Location do
 
   end
 
-  it "finds the city in which it is located" do
-    city = Factory(:valid_city, :feature => Geometry::square(:center => [110,0], :side => 10))
-    location = Factory.build(:valid_location, :longitude => 110, :latitude => 0)
-    location.city.should == city
-  end
-
-  it "finds the commune in which it is located" do
-    commune = Factory(:valid_commune, :feature => Geometry::square(:center => [50,0], :side => 10))
-    location = Factory.build(:valid_location, :longitude => 50, :latitude => 0)
-    location.commune.should == commune
-  end
-
-  it "finds the region in which it is located" do
-    region = Factory(:valid_region, :feature => Geometry::square(:center => [20,0], :side => 10))
-    location = Factory.build(:valid_location, :longitude => 20, :latitude => 0)
-    location.region.should == region
-  end
-
   describe "when serializing to a JSON object" do
 
     it "can serialize a location outside any city" do
@@ -55,20 +37,6 @@ describe Location do
     it "can serialize a location outside any country" do
       location = Factory(:valid_location)
       location.json_object[:country].should be_nil
-    end
-
-    it "uses all optional attributes when available" do
-      Factory(:valid_region, :name => "Centre", :feature => Geometry::square(:center => [0,0], :side => 10))
-      Factory(:valid_city, :name => "Bouaké", :feature => Geometry::square(:center => [0,0], :side => 10))
-      Factory(:valid_commune, :name => "Plateau", :feature => Geometry::square(:center => [0,0], :side => 10))
-      location = Factory(:valid_location, :name => "0-One", :longitude => 0, :latitude => 0)
-      location.tags << Factory(:valid_tag, :location => location) 
-      location.reload
-      json = location.json_object
-      json[:region].should_not be_nil
-      json[:city].should_not be_nil
-      json[:commune].should_not be_nil
-      json[:icon].should_not be_nil
     end
 
   end

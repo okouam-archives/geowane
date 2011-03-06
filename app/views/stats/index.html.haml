@@ -6,7 +6,6 @@
     %ul
       - [0, 1, 2, 3].each do |depth|
         %li.nobg= link_to "Level #{depth}", "/stats?depth=#{depth}"
-      %li.nobg= link_to "Back", :back
   .block_content
     %table{:cellspacing => "0", :cellpadding => "0", :style => "width: 100%; margin-left: 0px"}
       %thead

@@ -306,6 +306,7 @@ a:hover {
 	color: #666;
 	outline: none;
   background-color: #efefef;
+  -webkit-border-radius: 20px;
   -moz-border-radius: 20px;
   padding: 3px 7px;
   font-size: 9px;

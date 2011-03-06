@@ -3,10 +3,10 @@ rspec_gem_dir = nil
 Dir["#{Rails.root}/vendor/gems/*"].each do |subdir|
   rspec_gem_dir = subdir if subdir.gsub("#{Rails.root}/vendor/gems/","") =~ /^(\w+-)?rspec-(\d+)/ && File.exist?("#{subdir}/lib/spec/rake/spectask.rb")
 end
-rspec_plugin_dir = File.expand_path(File.dirname(__FILE__) + '/../../vendor/plugins/rspec')
+rspec_plugin_dir = File.expand_path(File.dirname(__FILE__) + '/../../vendor/sammy.plugins/rspec')
 
 if rspec_gem_dir && (test ?d, rspec_plugin_dir)
-  raise "\n#{'*'*50}\nYou have rspec installed in both vendor/gems and vendor/plugins\nPlease pick one and dispose of the other.\n#{'*'*50}\n\n"
+  raise "\n#{'*'*50}\nYou have rspec installed in both vendor/gems and vendor/sammy.plugins\nPlease pick one and dispose of the other.\n#{'*'*50}\n\n"
 end
 
 if rspec_gem_dir
@@ -35,7 +35,7 @@ rescue MissingSourceFile
 #{"*" * 80}
 *  You are trying to run an rspec rake task defined in
 *  #{__FILE__},
-*  but rspec can not be found in vendor/gems, vendor/plugins or system gems.
+*  but rspec can not be found in vendor/gems, vendor/sammy.plugins or system gems.
 #{"*" * 80}
 MSG
           end
@@ -80,7 +80,7 @@ namespace :spec do
   desc "Print Specdoc for all plugin examples"
   Spec::Rake::SpecTask.new(:plugin_doc) do |t|
     t.spec_opts = ["--format", "specdoc", "--dry-run"]
-    t.spec_files = FileList['vendor/plugins/**/spec/**/*_spec.rb'].exclude('vendor/plugins/rspec/*')
+    t.spec_files = FileList['vendor/sammy.plugins/**/spec/**/*_spec.rb'].exclude('vendor/sammy.plugins/rspec/*')
   end
 
   [:models, :controllers, :views, :helpers, :lib, :integration].each do |sub|
@@ -91,17 +91,17 @@ namespace :spec do
     end
   end
 
-  desc "Run the code examples in vendor/plugins (except RSpec's own)"
+  desc "Run the code examples in vendor/sammy.plugins (except RSpec's own)"
   Spec::Rake::SpecTask.new(:plugins => spec_prereq) do |t|
     t.spec_opts = ['--options', "\"#{Rails.root}/spec/spec.opts\""]
-    t.spec_files = FileList['vendor/plugins/**/spec/**/*_spec.rb'].exclude('vendor/plugins/rspec/*').exclude("vendor/plugins/rspec-rails/*")
+    t.spec_files = FileList['vendor/sammy.plugins/**/spec/**/*_spec.rb'].exclude('vendor/sammy.plugins/rspec/*').exclude("vendor/sammy.plugins/rspec-rails/*")
   end
 
   namespace :plugins do
     desc "Runs the examples for rspec_on_rails"
     Spec::Rake::SpecTask.new(:rspec_on_rails) do |t|
       t.spec_opts = ['--options', "\"#{Rails.root}/spec/spec.opts\""]
-      t.spec_files = FileList['vendor/plugins/rspec-rails/spec/**/*_spec.rb']
+      t.spec_files = FileList['vendor/sammy.plugins/rspec-rails/spec/**/*_spec.rb']
     end
   end
 

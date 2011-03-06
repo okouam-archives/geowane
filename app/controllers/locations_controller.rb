@@ -58,31 +58,23 @@ class LocationsController < ApplicationController
       session[:collection] = params[:locations]
       redirect_to "/locations/edit"
     else
-      @locations = Location.find(session[:collection], :order => "name")
-      @categories = ["", ""] + Category.order("french").map{|c| [c.french, c.id]}      
+      @locations = Location.includes(:comments, :tags, :user).find(session[:collection], :order => "name")
+      @categories = ["", ""] + Category.order("french").map{|c| [c.french, c.id]}
     end
   end
 
   def collection_update
-    locations = params[:locations]
-    redirect_url = "/locations"
-    locations.each do |location_attributes| 
-      attributes = location_attributes[1]
-      id = attributes.delete(:id)
-      location = Location.find(id)
-      location.update_attributes(attributes)
-      if params[:commit] == "Add Tag" && !params[:category_switcher].blank?
-        location.tags << Tag.new(:location_id => id, :category_id => params[:category_switcher])
-        redirect_url = "/locations/edit"
-      elsif params[:commit] == "Remove Tag" && !params[:category_switcher].blank?
-        Tag.where("location_id = ?", id).where("category_id = ?", params[:category_switcher]).all.each do |t|
-          t.destroy
-        end
-        redirect_url = "/locations/edit"
+    if params[:commit]
+      params[:locations].values.each do |attributes|
+        location = Location.find(attributes.delete(:id))
+        location.update_attributes(attributes)
+        location.save!
       end
-      location.save!
+      redirect_to "/locations"
+    else
+      collection = LocationCollection.new(params[:locations].values)
+      render :json => collection.send(params[:call], params[:category]).to_json
     end
-    redirect_to redirect_url
   end
 
   def surrounding_landmarks

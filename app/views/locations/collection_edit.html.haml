@@ -2,94 +2,132 @@
 .block
   .block_head
     %h2 Update Locations
+    %ul
+      %li.nobg= link_to "Add Category", "#/category/add"
+      %li.nobg= link_to "Remove Category", "#/category/remove"
+      %li.nobg= link_to "Change Status", "#/status/change"
+    %span
+      For selected locations only
   .block_content
     %table.layout
-      %tr
-        %td Choose a status for all the locations:
-        %td= select_tag "status_switcher", options_for_select(workflow_actions(current_user, nil).insert(0, "")), :class => "styled_select"
     = form_for "locations", :url => "/locations", :html=>{:method=>:put} do |form|
       %table.list.updates
         %thead
           %tr
             %th
-              %b Name
-            %th
-              %b Long Name
-            %th
-              %b Status
-            %th
-              %b Categories
-            %th 
-              %b Comments        
+              %input{:type=>"checkbox"}
+            %th Name
+            %th Long Name
+            %th Status
+            %th Categories
+            %th Comments
         %tbody 
         - @locations.each_with_index do |location, i|
           %tr{"data-id"=>location.id}
+            %td.selector
+              %input{:type=>"checkbox"}
             %td.name= form.text_field "[#{i}][name]", :value => location.name
             %td.long_name= form.text_field "[#{i}][long_name]", :value => location.long_name
             %td.status
               =select_tag "locations[#{i}][status]", options_for_select(workflow_actions(current_user, location), location.status)
               =form.hidden_field "[#{i}][id]", :value => location.id
             %td.tags              
-              %span.list{:class=>"tags_for_#{location.id}"}
+              %span.list
                 = render :partial => "tags/collection", :locals => {:items => location.tags.map {|c| {:name => c.category.french, :delete_link => location_tag_url(c.location_id, c.id)}}}
               = link_to "(+)", new_location_tag_url(location), :rel => "facebox"
-            %td 
-              = link_to "(+)", new_location_comment_url(location), :rel => "facebox"
-              = link_to location.comments.count, "/locations/#{location.id}/comments?layout=facebox", :rel => "facebox", :id => "comments_for_#{location.id}" 
+            %td.comments
+              = link_to "(+)", "#"
+              = link_to location.comments.count, "#"
 
-      %table.layout{:style=>"width: 100%"}
-        %tr
-          %td= select_tag "category_switcher", options_for_select(@categories), :class => "styled_select"
-          %td.add-tag-action{:style=>"width: 60px"}
-            = submit_tag "Add Tag", :class => "button"
-          %td.remove-tag-action{:style=>"width: 60px"}
-            = submit_tag "Remove Tag", :class => "button mid"
-          %td{:style=>"width: 153px; text-align: right"}
-            = submit_tag "Update All", :class => "button mid" 
+      %div{:style=>"text-align: right; margin-right: 15px; margin-bottom: 20px"}
+        = submit_tag "Confirm Changes", :class => "button mid", :style => "position: relative; left: 20px"
 
-:css
-  td.name input {width: 200px}
-  td.tags .list span:first-child {font-style: italic}
-  input {padding: 2px; font-size: 11px}
-  .list.updates {width: 100%}
-  #category_switcher {width: 476px}
-  #status_switcher {width: 650px}
-  .change {margin-right: 105px; margin-left: 15px}
-  .change select {float: right}
-  td.category select {width: 300px}
-  td.status select {width: 110px; font-size: 11px}
-  td.remove-tag-action * {position: relative; left: -20px}
+  %script#category-widget{:type=>"text/html"}
+    = select_tag("category_id", options_for_select(@categories), :class => "styled_select")
+    %a.accept{:href=>"#"} Accept
+    %a.cancel{:href=>"#"} Cancel
+
+  %script#comments-widget{:type=>"text/html"}
+    - @locations.each do |location|
+      %div{"data-parent" => location.id, :id => "comments_for_" + location.id.to_s}
+        - location.comments.each do |item|
+          %h4= "#{item.user.login} | #{item.created_at.strftime("%e %B %Y")} @ #{item.created_at.strftime("%H:%M %p")}"
+          %p= item.comment
+
+  %script#status-widget{:type=>"text/html"}
+    = select_tag "status_switcher", options_for_select(workflow_actions(current_user, nil).insert(0, "")), :class => "styled_select"
+    %a.accept{:href=>"#"} Accept
+    %a.cancel{:href=>"#"} Cancel
+
+  %script#comments-widget{:type=>"text/html"}
+    %textarea
+    %a{:href=>"#"} Add Comment
 
 :javascript
   $(document).ready(function() {
 
-    $("#status_switcher").change(function() {
-      $("td.status select").val($(this).val());
+    $("td.comments a").click(function() {
+      location_id = $(this).parents("tr").data("id");
+      var comments = $('div[data-parent=' + location_id + "]");
+      jQuery.facebox({div: "#" + comments.attr("id")});
+      $('#facebox_overlay').click(function() { $(document).trigger('close.facebox') });
+      var overlayContent = $("#facebox .content");
+      overlayContent
+        .addClass("comments-widget")
+        .append($("#comments-widget").html())
+        .find("a").click(function() {
+          var counter = $("#comments_for_" + location_id);
+          var old_count = parseInt(counter.html());
+          counter.text(old_count + 1);
+        });
     });
 
-    $("#add-tag-action input").click(function() {
-      $("form").submit();
-      return false;
-    });
-
-    $("#remove-tag-action input").click(function() {
-      $("form").submit();
-      return false;
-    });
-      
-    var loadComments = function(evt, location_id) {
-      var old_count = parseInt($("#comments_for_" + location_id).html());
-      var new_count = old_count + 1;
-      $("#comments_for_" + location_id).text(new_count);  
-    };
-
-    var loadTags = function(evt, location_id) {
-      $(".tags_for_" + location_id).load("/locations/" + location_id + "/tags");
-    };
-
-    $(document).bind("load.location.comments", loadComments);
-
-    $(document).bind("load.location.tags", loadTags);       
   });
 
-  
+  (function($) {
+
+    var app = Sammy('.collection_edit', function() {
+
+      this.use(Sammy.StatusWidget, "status-widget");
+      this.use(Sammy.CategoryWidget, "category-widget");
+      this.use(Sammy.MultiSelectorWidget, ".list.updates");
+
+      this.get('#/category/add', function() {
+        var items = this.getSelected();
+        if (items.length == 0)
+          return this.showSelectionError("#");
+        var self = this;
+        this.showCategoryWidget("Add Category", "add_tag", function(data) {
+          debugger;
+          $.each(data, function(index, item) {self.addTag(item)})
+        }, items, self.getSelectedCategory);
+      });
+
+      this.get('#/category/remove', function() {
+        var items = this.getSelected();
+        if (items.length == 0)
+          return this.showSelectionError("#");
+        var self = this;
+        this.showCategoryWidget("Remove Category", "remove_tag", function(data) {
+          $.each(data, function(index, item) {self.removeTag(item)})
+        }, items, self.getSelectedCategory);
+      });
+
+      this.get('#/status/change', function() {
+        var items = this.getSelected();
+        if (items.length == 0)
+          return this.showSelectionError("#");
+        this.showStatusWidget(function() {
+          $(document).trigger('close.facebox');
+        });
+      });
+
+    });
+
+    $(function() {
+      app.run('#/');
+    });
+
+  })(jQuery);
+
+

@@ -5,14 +5,10 @@
     %h2 Categories
     %ul
       %li.nobg.back
-        = link_to switch_language(@language), categories_path(:language => switch_language(@language))
-      %li.nobg.back
         = link_to "Export", export_categories_path
       - if current_user.may_create_category?
         %li.nobg.back
           = link_to "New Category", new_category_path
-      %li.nobg.back
-        = link_to "Back", :back
   .block_content
     %table.list
       %tbody
@@ -33,7 +29,10 @@
         - if @categories && @categories.size > 0
           - @categories.each do |category|
             %tr
-              = render :partial => @language, :locals => {:category => category}
+              %td
+                =category.french
+                %br
+                %div{:style=>"font-style: italic; padding-top: 3px"}=category.english
               %td{:style=>"width: 30px"}
                 - if category.icon 
                   = image_tag "/images/" + category.icon

@@ -16,9 +16,9 @@ module GeoCms
     config.time_zone = 'UTC'
     config.i18n.default_locale = :fr
 
-    # Only load the plugins named here, in the order given (default is alphabetical).
-    # :all can be used as a placeholder for all plugins not explicitly named.
-    # config.plugins = [ :exception_notification, :ssl_requirement, :all ]
+    # Only load the sammy.plugins named here, in the order given (default is alphabetical).
+    # :all can be used as a placeholder for all sammy.plugins not explicitly named.
+    # config.sammy.plugins = [ :exception_notification, :ssl_requirement, :all ]
 
     # Activate observers that should always be running.
     # config.active_record.observers = :cacher, :garbage_collector, :forum_observer
@@ -36,6 +36,7 @@ module GeoCms
 
     # Configure the default encoding used in templates for Ruby 1.9.
     config.encoding = "utf-8"
+    config.serve_static_assets = true
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]

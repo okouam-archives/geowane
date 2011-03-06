@@ -30,7 +30,7 @@ class Search
 
   def self.create(params = nil, sort = nil)
 
-    query = {sort: sort ? " ORDER BY " + sort + " ASC" : " ORDER BY locations.name ASC"}
+    query = {sort: sort ? " ORDER BY #{sort} ASC" : " ORDER BY locations.name ASC"}
 
     query[:from] = %{
       SELECT
