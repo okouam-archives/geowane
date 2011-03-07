@@ -1,0 +1,10 @@
+<div>
+  <% for (var i = 0; i < comments.length; i++) { %>
+    <h4><%= comments[i].user %> | <%= comments[i].created_at %></h4>
+    <p><%= comments[i].text %></p>
+  <% } %>
+  <textarea />
+  <a class="accept" href="#">Accept</a>
+  <a class="cancel" href="#">Cancel</a>
+</div>
+

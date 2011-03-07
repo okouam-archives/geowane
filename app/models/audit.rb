@@ -16,7 +16,7 @@ class Audit < ActiveRecord::Base
 
   def set_audit_user
     self.user = Thread.current[:acts_as_audited_user] if Thread.current[:acts_as_audited_user]
-    nil # prevent stopping callback chains
+    nil
   end
 
 end

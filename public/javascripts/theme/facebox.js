@@ -1,4 +1,4 @@
-/*
+/* HEAVILY CUSTOMIZED FOR GEOCMS!!!
  * Facebox (for jQuery)
  * version: 1.2 (05/05/2008)
  * @requires jQuery v1.2 or later
@@ -62,13 +62,14 @@
  */
 (function($) {
   $.facebox = function(data, klass) {
-    $.facebox.loading()
+    $.facebox.loading();
 
-    if (data.ajax) fillFaceboxFromAjax(data.ajax)
+    if (data.ajax) fillFaceboxFromAjax(data.ajax);
     else if (data.iframe) fillFaceboxFromIframe(data.href, klass, data.height);
-    else if (data.image) fillFaceboxFromImage(data.image)
-    else if (data.div) fillFaceboxFromHref(data.div)
-    else if ($.isFunction(data)) data.call($)
+    else if (data.image) fillFaceboxFromImage(data.image);
+    else if (data.div) fillFaceboxFromHref(data.div);
+    else if (data.domElement) fillFaceboxFromDomElement(data.domElement);
+    else if ($.isFunction(data)) data.call($);
     else $.facebox.reveal(data, klass)
   }
 
@@ -109,24 +110,24 @@
     },
 
     loading: function() {
-      init()
-      if ($('#facebox .loading').length == 1) return true
-      showOverlay()
+      init();
+      if ($('#facebox .loading').length == 1) return true;
+      showOverlay();
 
-      $('#facebox .content').empty()
+      $('#facebox .content').empty();
       $('#facebox .body').children().hide().end().
-        append('<div class="loading"><img src="'+$.facebox.settings.loadingImage+'"/></div>')
+        append('<div class="loading"><img src="'+$.facebox.settings.loadingImage+'"/></div>');
 
       $('#facebox').css({
         top:	getPageScroll()[1] + (getPageHeight() / 10),
         left:	385.5
-      }).show()
+      }).show();
 
       $(document).bind('keydown.facebox', function(e) {
         if (e.keyCode == 27) $.facebox.close();
         return true
-      })
-      $(document).trigger('loading.facebox')
+      });
+      $(document).trigger('loading.facebox');
     },
 
     reveal: function(data, klass) {
@@ -163,13 +164,13 @@
       // support for rel="facebox.inline_popup" syntax, to add a class
       // also supports deprecated "facebox[.inline_popup]" syntax
       var klass = this.rel.match(/facebox\[?\.(\w+)\]?/);
-      if (klass) klass = klass[1]
+      if (klass) klass = klass[1];
 
       fillFaceboxFromHref(this.href, klass, this.rev);
       return false
     }
 
-    return this.click(clickHandler)
+    return this.click(clickHandler);
   }
 
   /*
@@ -278,6 +279,10 @@
       $.facebox.reveal('<div class="image"><img src="' + image.src + '" /></div>', klass)
     };
     image.src = href
+  }
+
+  function fillFaceboxFromDomElement(domElement, klass) {
+    $.facebox.reveal(domElement.html(), klass)
   }
 
   function fillFaceboxFromAjax(href, klass) {

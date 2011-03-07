@@ -6,13 +6,13 @@ set :application, "geocms"
 set :repository,  "git@github.com:okouam/geocms.git"
 set :scm, :git
 set :branch, :master
-set :stages, ["staging", "production"]
+set :stages, ["beta", "production"]
 
-set :default_stage, "staging"
+set :default_stage, "beta"
 set :deploy_via, :remote_cache
 set :user, "okouam"
 set :ssh_options, { :forward_agent => true }
-set :deploy_to, "/home/opt/Rails/apps/geocms/staging"
+set :deploy_to, "/home/opt/Rails/apps/geocms/beta"
 set :rake, "/var/lib/gems/1.8/bin/rake"
 role :web, "xkcd.codeifier.com"
 role :app, "xkcd.codeifier.com"
@@ -40,6 +40,5 @@ namespace :bundler do
     run "cd #{release_path} && bundle install --without test"
   end
 end
-
 
 after 'deploy:update_code', 'bundler:bundle_new_release'

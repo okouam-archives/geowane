@@ -36,8 +36,8 @@
                 = render :partial => "tags/collection", :locals => {:items => location.tags.map {|c| {:name => c.category.french, :delete_link => location_tag_url(c.location_id, c.id)}}}
               = link_to "(+)", new_location_tag_url(location), :rel => "facebox"
             %td.comments
-              = link_to "(+)", "#"
-              = link_to location.comments.count, "#"
+              = link_to "(+)", "#/comments/#{location.id}"
+              = link_to location.comments.count, "#/comments/#{location.id}"
 
       %div{:style=>"text-align: right; margin-right: 15px; margin-bottom: 20px"}
         = submit_tag "Confirm Changes", :class => "button mid", :style => "position: relative; left: 20px"
@@ -47,43 +47,15 @@
     %a.accept{:href=>"#"} Accept
     %a.cancel{:href=>"#"} Cancel
 
-  %script#comments-widget{:type=>"text/html"}
-    - @locations.each do |location|
-      %div{"data-parent" => location.id, :id => "comments_for_" + location.id.to_s}
-        - location.comments.each do |item|
-          %h4= "#{item.user.login} | #{item.created_at.strftime("%e %B %Y")} @ #{item.created_at.strftime("%H:%M %p")}"
-          %p= item.comment
+  %script#comments-cache
+    = raw "var comments_cache = #{@comments_cache}"
 
   %script#status-widget{:type=>"text/html"}
     = select_tag "status_switcher", options_for_select(workflow_actions(current_user, nil).insert(0, "")), :class => "styled_select"
     %a.accept{:href=>"#"} Accept
     %a.cancel{:href=>"#"} Cancel
 
-  %script#comments-widget{:type=>"text/html"}
-    %textarea
-    %a{:href=>"#"} Add Comment
-
 :javascript
-  $(document).ready(function() {
-
-    $("td.comments a").click(function() {
-      location_id = $(this).parents("tr").data("id");
-      var comments = $('div[data-parent=' + location_id + "]");
-      jQuery.facebox({div: "#" + comments.attr("id")});
-      $('#facebox_overlay').click(function() { $(document).trigger('close.facebox') });
-      var overlayContent = $("#facebox .content");
-      overlayContent
-        .addClass("comments-widget")
-        .append($("#comments-widget").html())
-        .find("a").click(function() {
-          var counter = $("#comments_for_" + location_id);
-          var old_count = parseInt(counter.html());
-          counter.text(old_count + 1);
-        });
-    });
-
-  });
-
   (function($) {
 
     var app = Sammy('.collection_edit', function() {
@@ -92,34 +64,57 @@
       this.use(Sammy.CategoryWidget, "category-widget");
       this.use(Sammy.MultiSelectorWidget, ".list.updates");
 
-      this.get('#/category/add', function() {
-        var items = this.getSelected();
-        if (items.length == 0)
-          return this.showSelectionError("#");
-        var self = this;
-        this.showCategoryWidget("Add Category", "add_tag", function(data) {
-          debugger;
-          $.each(data, function(index, item) {self.addTag(item)})
-        }, items, self.getSelectedCategory);
-      });
+      this.get("#/", function() {
+        $(document).trigger('close.facebox');
+      })
 
-      this.get('#/category/remove', function() {
-        var items = this.getSelected();
-        if (items.length == 0)
-          return this.showSelectionError("#");
-        var self = this;
-        this.showCategoryWidget("Remove Category", "remove_tag", function(data) {
-          $.each(data, function(index, item) {self.removeTag(item)})
-        }, items, self.getSelectedCategory);
-      });
-
-      this.get('#/status/change', function() {
-        var items = this.getSelected();
-        if (items.length == 0)
-          return this.showSelectionError("#");
-        this.showStatusWidget(function() {
-          $(document).trigger('close.facebox');
+      this.get("#/comments/:location_id", function(context) {
+        var location_id = this.params['location_id'];
+        var comments = _.select(comments_cache, function(x) {return x["location_id"] == parseInt(location_id)});
+        context.log(comments);
+        var output = JST['client.rendering/comment_widget']({comments: comments});
+        context.log(output);
+        jQuery.facebox({domElement: $(output)});
+        var overlay = $("#facebox .content");
+        overlay
+          .addClass("comments-widget").addClass("widget")
+          .append($("#comments-widget").html());
+        overlay.find("a.accept").click(function() {
+            //var comment = $(".comments.new textarea").val();
+            var new_comment = "TESTING";
+            $.ajax({
+              type: 'POST',
+              url: "/locations/" + location_id + "/comments",
+              data: {"comment[comment]": new_comment},
+              success: function(data) {
+                var counter = $('div[data-location-id=' + location_id + "]");
+                var old_count = parseInt(counter.html());
+                counter.text(old_count + 1);
+              }
+            });
+          });
+        overlay.find("a.cancel").click(function() {
+          context.redirect("#/");
         });
+      });
+
+      this.get('#/category/add', function(context) {
+        if (!context.hasSelection) return this.showSelectionError("#");
+        this.showCategoryWidget("Add", "add_tag", function(data) {
+          $.each(data, function(index, item) {context.addTag(item)})
+        }, context);
+      });
+
+      this.get('#/category/remove', function(context) {
+        if (!context.hasSelection) return this.showSelectionError("#");
+        this.showCategoryWidget("Remove", "remove_tag", function(data) {
+          $.each(data, function(index, item) {context.removeTag(item)})
+        }, context);
+      });
+
+      this.get('#/status/change', function(context) {
+        if (!context.hasSelection) return this.showSelectionError("#");
+        this.showStatusWidget(context);
       });
 
     });

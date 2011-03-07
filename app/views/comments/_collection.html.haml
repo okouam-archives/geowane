@@ -1,4 +1,5 @@
-- items.each do |item|
-  - if item.persisted?
-    %h4= "#{item.user.login} | #{item.created_at.strftime("%e %B %Y")} @ #{item.created_at.strftime("%H:%M %p")}"
-    %p= item.comment
+%div{"data-parent" => id, :id => "comments_for_" + id.to_s}
+  - items.each do |item|
+    - if item.persisted?
+      %h4= "#{item.user.login} | #{item.created_at.strftime("%e %B %Y")} @ #{item.created_at.strftime("%H:%M %p")}"
+      %p= item.comment

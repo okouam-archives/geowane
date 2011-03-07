@@ -6,11 +6,6 @@
           %b Imported from
           = link_to Import.find(label.value).input.original_filename, Import.find(label.value).input.url
     %p
-      %b Added by
-      = object.user.login
-      %b on
-      = object.created_at
-    %p
     - object.audits.each do |audit|
       %p
         %b
@@ -18,3 +13,8 @@
       %ul
         - audit.model_changes.each do |model_change|
           %li= "Changed #{model_change.datum} from #{model_change.old_value} to #{model_change.new_value}"
+    %p
+      %b Changes on #{object.created_at} by #{object.user.login}
+    %ul
+      %li
+        %i Added to database

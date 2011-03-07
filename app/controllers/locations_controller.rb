@@ -60,6 +60,9 @@ class LocationsController < ApplicationController
     else
       @locations = Location.includes(:comments, :tags, :user).find(session[:collection], :order => "name")
       @categories = ["", ""] + Category.order("french").map{|c| [c.french, c.id]}
+      @comments_cache = @locations.map do |loc|
+        loc.comments.map {|x| {location_id: x.commentable_id, created_at: x.created_at, text: x.comment, user: x.user.login}}
+      end.reject{|x| x.empty?}.flatten.to_json
     end
   end
 

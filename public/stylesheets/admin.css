@@ -30,6 +30,17 @@
 
 /* .locations.edit */
 
+
+.locations.edit #history-tab {margin-top: 10px}
+.locations.edit #history-tab p {padding-bottom: 3px}
+.locations.edit #history-tab ul {padding-bottom: 5px}
+.locations.edit  #actions {margin-top: 15px}
+.locations.edit .general_info {width: 400px; float: left}
+.locations.edit .ajax-action {margin-top: 3px}
+.locations.edit .ajax-action img {position: relative; top: 3px}
+.locations.edit .right-panel {margin-top: 7px; width: 450px; float: right}
+.locations.edit #map {background-color: #6699cc; border: 1px solid #666666; margin-top: 7px; width: 450px; height: 330px}
+
 .locations .editor .block_sub {padding-top: 5px}
 .locations .editor .block_sub a {margin-right: 5px}
 .locations .editor .block_sub li {margin-bottom: 5px}
@@ -46,7 +57,7 @@
 .locations a.tag_delete {position: relative; top: 3px}
 .locations .editor .map-instructions {font-style: italic; font-size: 10px; text-align: center}
 .locations .editor .right-panel table td, .locations.editor .right-panel table th {border-bottom-width: 0 ! important}
-.locations .editor .right-panel table tr {background-color: none ! important}
+.locations .editor .right-panel table tr {background-color: transparent ! important}
 .locations .editor .right-panel table {width: 100%; margin-top: -15px}
 .locations .editor .editor-content {margin-bottom: 30px}
 

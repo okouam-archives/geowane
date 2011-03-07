@@ -4,7 +4,6 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <title>GeoCMS - Login</title>
   <%= stylesheet_link_tag 'admin/style.css' %>
-  <!--[if lt IE 8]><style type="text/css" media="all">@import url("stylesheets/admin/ie.css");</style><![endif]-->
 </head>
 <body>
 <div id="hld">
@@ -12,12 +11,9 @@
     <div class="block small center login">
       <div class="block_head">
         <h2>Login</h2>
-        <ul>
-          <li><a href="#">back to the site</a></li>
-        </ul>
       </div>
       <div class="block_content">
-        <div class="message info"><p>Welcome to the 0-One GeoCMS.</p></div>
+
 
         <%= form_for @user_session do |f| %>
             <% if f.object.errors.any? %>
@@ -36,7 +32,6 @@
       <%= f.password_field :password, :class => "text" %><br />
       <br />
       <%= f.submit "Login", :class => "submit" %>
-      <%= f.check_box :remember_me, :class => "checkbox" %> <%= f.label :remember_me %>
            <br />
     <% end %>
         <br/>

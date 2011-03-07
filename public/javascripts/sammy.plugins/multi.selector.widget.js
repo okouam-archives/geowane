@@ -15,6 +15,10 @@
 
     this.helpers({
 
+      hasSelection: function() {
+        return table.find("td.selector input:checked").length > 0;
+      },
+
       getSelected: function() {
         return table.find("td.selector input:checked").map(function(i, e) {
           return $(e).parents("tr").attr("data-id");
@@ -23,7 +27,7 @@
 
       showSelectionError: function() {
         alert("Please select one or more locations.");
-        return this.redirect('#');
+        return this.redirect('#/');
       }
 
     });

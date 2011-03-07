@@ -8,16 +8,16 @@
     var template = $("#" + name);
 
     this.helpers({
-      showStatusWidget: function(callback) {
+      showStatusWidget: function(context) {
         jQuery.facebox(template.html());
-        var overlay = $("#facebox .content");
-        overlay.addClass(name).addClass("widget");
-        overlay.find("a.cancel").click(function() {
-          $(document).trigger('close.facebox');
+        var facebox = $("#facebox .content");
+        facebox.addClass(name).addClass("widget");
+        facebox.find("a.cancel").click(function() {
+          context.redirect("#/");
         });
-        overlay.find("a.accept").click(function() {
-          $(".status select").val(overlay.find("select").val());
-          callback();
+        facebox.find("a.accept").click(function() {
+          $(".status select").val(facebox.find("select").val());
+          context.redirect("#/");
         });
       }
     });

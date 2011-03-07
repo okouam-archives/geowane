@@ -14,24 +14,24 @@
 
     this.helpers({
 
-      showCategoryWidget: function(actionText, serverCall, callback, items, category_id_finder) {
+      showCategoryWidget: function(actionText, serverCall, callback, context) {
         jQuery.facebox(template.html());
         var overlay = $("#facebox .content");
         overlay.addClass(name).addClass("widget");
         overlay.find("a.cancel").click(function() {
-          $(document).trigger('close.facebox');
+          context.redirect("#/");
         });
-        overlay.find("a.accept").text(actionText).click(function() {
+        overlay.find("a.accept").text(actionText + " Category").click(function() {
           $.ajax({
             url: "/locations",
             type: "PUT",
-            data: {locations: items, call: serverCall, category: category_id_finder().id},
+            data: {locations: context.getSelected(), call: serverCall, category: context.getSelectedCategory().id},
             success: callback,
             failure: function() {
               alert("The locations failed to be updated. Please contact the system administrator.");
             }
           });
-          $(document).trigger('close.facebox');
+          context.redirect("#/");
         });
       },
 
@@ -44,7 +44,7 @@
       },
 
       addTag: function(item) {
-        var template = $(JST.tag(item));
+        var template = $(JST['client.rendering/tag_template'](item));
         var wrapper = getTagWrapper(item.location_id);
         template.appendTo(wrapper).find("a.tag_delete").bind("ajax:complete", function() {
           $(this).parent().remove();
