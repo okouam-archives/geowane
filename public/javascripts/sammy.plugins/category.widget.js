@@ -44,7 +44,7 @@
       },
 
       addTag: function(item) {
-        var template = $(JST['client.rendering/tag_template'](item));
+        var template = $(JST['tag_template'](item));
         var wrapper = getTagWrapper(item.location_id);
         template.appendTo(wrapper).find("a.tag_delete").bind("ajax:complete", function() {
           $(this).parent().remove();
