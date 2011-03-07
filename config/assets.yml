@@ -8,6 +8,9 @@ javascripts:
     - public/javascripts/rails.js
     - public/javascripts/helpers.js
     - public/javascripts/sammy-latest.min.js
+    - public/javascripts/js-model-0.10.0.min.js
+    - public/javascripts/sammy.models/*.js
     - public/javascripts/sammy.plugins/*.js
+
+  templates:
     - app/views/**/*.jst
-package_assets: always

@@ -45,9 +45,6 @@
     %a.accept{:href=>"#"} Accept
     %a.cancel{:href=>"#"} Cancel
 
-  %script#comments-cache
-    = raw "var comments_cache = #{@comments_cache}"
-
   %script#status-widget{:type=>"text/html"}
     = select_tag "status_switcher", options_for_select(workflow_actions(current_user, nil).insert(0, "")), :class => "styled_select"
     %a.accept{:href=>"#"} Accept
@@ -56,42 +53,47 @@
 :javascript
   (function($) {
 
+    _.each(#{@comments_cache}, function(value) {
+      Comment.add(new Comment(value));
+    })
+
+    Comment.bind("add", function(new_comment) {
+      var counter = $('tr[data-id=' + new_comment.attr("location_id") + '] a').not("a.tag_delete");
+      counter.text(parseInt(counter.text()) + 1);
+    })
+
     var app = Sammy('.collection_edit', function() {
 
       this.use(Sammy.StatusWidget, "status-widget");
       this.use(Sammy.CategoryWidget, "category-widget");
       this.use(Sammy.MultiSelectorWidget, ".list.updates");
+      this.use(Sammy.FaceboxWidget);
 
       this.get("#/", function() {
-        $(document).trigger('close.facebox');
+        this.closeFacebox();
       })
 
       this.get("#/comments/:location_id", function(context) {
-        var location_id = this.params['location_id'];
-        var comments = _.select(comments_cache, function(x) {return x["location_id"] == parseInt(location_id)});
-        var output = JST['client.rendering/comment_widget']({comments: comments});
-        jQuery.facebox({domElement: $(output)});
-        var overlay = $("#facebox .content");
-        overlay
-          .addClass("comments-widget").addClass("widget")
-          .append($("#comments-widget").html());
+        var location_id = context.params['location_id'];
+        var comments = Comment.find_by_location_id(location_id).map(function() {
+          return this.to_hash();
+        });
+        var output = JST['comment_widget']({comments: comments});
+        var overlay = context.openFaceboxWidget({domElement: $(output)});
+        overlay.append($("#comments-widget").html());
         overlay.find("a.accept").click(function() {
-            //var comment = $(".comments.new textarea").val();
             var new_comment = "TESTING";
             $.ajax({
               type: 'POST',
+              dataType: 'json',
               url: "/locations/" + location_id + "/comments",
               data: {"comment[comment]": new_comment},
               success: function(data) {
-                var counter = $('div[data-location-id=' + location_id + "]");
-                var old_count = parseInt(counter.html());
-                counter.text(old_count + 1);
+                new Comment(data).save();
+                context.redirect("#/");
               }
             });
           });
-        overlay.find("a.cancel").click(function() {
-          context.redirect("#/");
-        });
       });
 
       this.get('#/category/add', function(context) {

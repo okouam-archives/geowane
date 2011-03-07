@@ -12,7 +12,7 @@ class CommentsController < ApplicationController
   end
 
   create.wants.html do
-    head :ok
+    render :json => {created_at: object.created_at, location_id: object.commentable_id, text: object.comment, user: current_user.login}
   end
 
 end

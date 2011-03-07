@@ -1,5 +1,3 @@
-// Requires jQuery.Templates
-
 (function($) {
 
   Sammy = Sammy || {};
@@ -12,31 +10,28 @@
       return $("tr[data-id=" + location_id + "] span.list");
     };
 
+    var onFailure = function() {
+      alert("The locations failed to be updated. Please contact the system administrator.");
+    };
+
     this.helpers({
 
-      showCategoryWidget: function(actionText, serverCall, callback, context) {
-        jQuery.facebox(template.html());
-        var overlay = $("#facebox .content");
-        overlay.addClass(name).addClass("widget");
-        overlay.find("a.cancel").click(function() {
-          context.redirect("#/");
-        });
+      showCategoryWidget: function(actionText, serverCall, onSuccess, context) {
+        var overlay = context.openFaceboxWidget(template.html());
         overlay.find("a.accept").text(actionText + " Category").click(function() {
           $.ajax({
             url: "/locations",
             type: "PUT",
-            data: {locations: context.getSelected(), call: serverCall, category: context.getSelectedCategory().id},
-            success: callback,
-            failure: function() {
-              alert("The locations failed to be updated. Please contact the system administrator.");
-            }
+            data: {locations: context.getSelected(), call: serverCall, category: context.getSelectedCategory().id()},
+            success: onSuccess,
+            failure: onFailure
           });
           context.redirect("#/");
         });
       },
 
       getSelectedCategory: function() {
-        return {id: $("#category_id").val(), name: "NAME"};
+        return new Category({id: $("#category_id").val()});
       },
 
       removeTag: function(item) {
