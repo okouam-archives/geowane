@@ -3,7 +3,6 @@ $(function () {
 	// Preload images
 	$.preloadCssImages();
 	
-	
 	// Style file input
 	$("input[type=file]").filestyle({ 
 	    image: "/images/admin/upload.gif",
@@ -56,8 +55,7 @@ $(function () {
 		$(activeTab).show();
 		return false;
 	});
-	
-	
+
 	// Image actions menu
 	$('ul.imglist li').hover(
 		function() { $(this).find('ul').css('display', 'none').fadeIn('fast').css('display', 'block'); },
