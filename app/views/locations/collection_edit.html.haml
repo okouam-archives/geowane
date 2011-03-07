@@ -34,9 +34,7 @@
             %td.tags              
               %span.list
                 = render :partial => "tags/collection", :locals => {:items => location.tags.map {|c| {:name => c.category.french, :delete_link => location_tag_url(c.location_id, c.id)}}}
-              = link_to "(+)", new_location_tag_url(location), :rel => "facebox"
             %td.comments
-              = link_to "(+)", "#/comments/#{location.id}"
               = link_to location.comments.count, "#/comments/#{location.id}"
 
       %div{:style=>"text-align: right; margin-right: 15px; margin-bottom: 20px"}
@@ -71,9 +69,7 @@
       this.get("#/comments/:location_id", function(context) {
         var location_id = this.params['location_id'];
         var comments = _.select(comments_cache, function(x) {return x["location_id"] == parseInt(location_id)});
-        context.log(comments);
         var output = JST['client.rendering/comment_widget']({comments: comments});
-        context.log(output);
         jQuery.facebox({domElement: $(output)});
         var overlay = $("#facebox .content");
         overlay
@@ -99,14 +95,14 @@
       });
 
       this.get('#/category/add', function(context) {
-        if (!context.hasSelection) return this.showSelectionError("#");
+        if (!context.hasSelection()) return this.showSelectionError("#");
         this.showCategoryWidget("Add", "add_tag", function(data) {
           $.each(data, function(index, item) {context.addTag(item)})
         }, context);
       });
 
       this.get('#/category/remove', function(context) {
-        if (!context.hasSelection) return this.showSelectionError("#");
+        if (!context.hasSelection()) return this.showSelectionError("#");
         this.showCategoryWidget("Remove", "remove_tag", function(data) {
           $.each(data, function(index, item) {context.removeTag(item)})
         }, context);

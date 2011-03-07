@@ -10,3 +10,4 @@ javascripts:
     - public/javascripts/sammy-latest.min.js
     - public/javascripts/sammy.plugins/*.js
     - app/views/**/*.jst
+package_assets: always
