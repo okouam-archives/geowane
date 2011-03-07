@@ -14,15 +14,17 @@ alpha:
   <<: *development
 
 beta:
-  <<: *production
+  <<: *development
+  database: cms_production
 
-test: &test
+test:
   <<: *development
   database: cms_test
 
-production: &production
+production:
   <<: *development
   database: cms_production
 
 cucumber:
-  <<: *test
+  <<: *development
+  database: cms_test
