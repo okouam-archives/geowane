@@ -3,8 +3,10 @@ javascripts:
     - public/javascripts/jquery-1.5.js
     - public/javascripts/jquery-ui-1.8rc3.custom.min.js
     - public/javascripts/jquery.plugins/*.js
-    - public/javascripts/theme/jquery.data_input.pack.js
-    - public/javascripts/theme/*.js
+    - public/javascripts/theme/jquery.date_input.pack.js
+    - public/javascripts/theme/custom.js
+    - public/javascripts/theme/facebox.js
+    - public/javascripts/theme/excanvas.js
     - public/javascripts/rails.js
     - public/javascripts/helpers.js
     - public/javascripts/sammy-latest.min.js
@@ -14,3 +16,8 @@ javascripts:
 
   templates:
     - app/views/**/*.jst
+
+  charting:
+    - public/javascripts/charting/highcharts.js
+    - public/javascripts/charting/highslide-full.min.js
+    - public/javascripts/charting/highslide.config.js
