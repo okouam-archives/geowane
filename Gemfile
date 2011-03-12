@@ -31,6 +31,7 @@ gem "enumerated_attribute"
 gem "wirble"
 gem "hirb"
 gem 'diff-lcs'
+gem 'logglier'
 
 group :test do
   gem "faker"
