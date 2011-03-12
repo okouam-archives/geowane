@@ -3,21 +3,20 @@
 
   Sammy = Sammy || {};
 
-  Sammy.StatusWidget = function(app, name) {
+  Sammy.StatusWidget = function(app, renderData) {
 
-    var template = $("#" + name);
+    var widget;
 
     this.helpers({
+
       showStatusWidget: function(context) {
-        jQuery.facebox(template.html());
-        var facebox = $("#facebox .content");
-        facebox.addClass(name).addClass("widget");
-        facebox.find("a.cancel").click(function() {
-          context.redirect("#/");
-        });
-        facebox.find("a.accept").click(function() {
-          $(".status select").val(facebox.find("select").val());
-          context.redirect("#/");
+        var html = JST['status_widget']({data: renderData});
+        widget = context.openFaceboxWidget(html);
+      },
+
+      changeStatus: function(context, locations) {
+        _.each(locations, function(location_id) {
+          context.getRow(location_id).find(".status select").val(widget.find("select").val());
         });
       }
     });

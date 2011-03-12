@@ -15,7 +15,7 @@ alpha:
 
 beta:
   <<: *development
-  database: cms_production
+  database: cms_beta
 
 test:
   <<: *development

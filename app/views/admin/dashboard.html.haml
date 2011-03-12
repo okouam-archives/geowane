@@ -5,54 +5,63 @@
     %br
     .block_head
       %h2 Dashboard
+    .block_sub
       %ul
-        %li.nobg= link_to "Back", :back
+        %li= link_to "Workflow", "#/tabs/workflow"
+        %li= link_to "Categorization", "#/tabs/categorization"
+        %li= link_to "Collectors", "#/tabs/collectors"
+        .clear
     .block_content
+      #workflow
+        = high_chart("workflow_chart", @workflow_chart) do |c|
+          = "options.tooltip.formatter = function() {return this.series.name +': '+ this.y}"
+      #categorization
+        = high_chart("categorization_chart", @categorization_chart) do |c|
+          = "options.tooltip.formatter = function() {return this.series.name +': '+ this.y}"
+      #collectors
+        = high_chart("collector_chart", @collector_chart) do |c|
+          = "options.tooltip.formatter = function() {return this.series.name +': '+ this.y}"
+      %br
+      %br
 
-      %h3 Links
-      %ul
-        %li{:style=>"font-weight: bold"}
-          = link_to "GeoCMS Technical Support", "http://codeifier.lighthouseapp.com/"
-        %li{:style=>"font-weight: bold"}
-          = link_to "GeoCMS Wiki", "http://wiki.0-one.net/"
+%script{:src=>"http://www.highcharts.com/js/highcharts.js", :type=>"text/javascript"}
+%script{:src=>"http://www.highcharts.com/highslide/highslide-full.min.js", :type=>"text/javascript"}
+%script{:src=>"http://www.highcharts.com/highslide/highslide.config.js", :type=>"text/javascript"}
 
-      %h3 Database Statistics
-      %ul
-        %li
-          Number of Points of Interest:
-          = number_with_delimiter(@location_count)
-        %li
-          Number of Tags (POI/Category Mapping):
-          = number_with_delimiter(@tag_count)
-        %li
-          Number of Untagged Points of Interest:
-          = number_with_delimiter(@untagged_count)
-        %li
-          Number of Level 3 Administrative Units:
-          = number_with_delimiter(@level_3_count)
-        %li
-          Number of Level 2 Administrative Units:
-          = number_with_delimiter(@level_2_count)
-        %li
-          Number of Level 1 Administrative Units:
-          = number_with_delimiter(@level_1_count)
-        %li
-          Number of Level 0 Administrative Units:
-          = number_with_delimiter(@level_0_count)
-      %h3 Workflow Statistics
-      %ul
-        %li
-          Number of New Points of Interest:
-          = number_with_delimiter(@new_locations)
-        %li
-          Number of Audited Points of Interest:
-          = number_with_delimiter(@audited_locations)
-        %li
-          Number of Invalid Points of Interest::
-          = number_with_delimiter(@invalid_locations)
-        %li
-          Number of Corrected Points of Interest:
-          = number_with_delimiter(@corrected_locations)
-        %li
-          Number of Field Checked Points of Interest:
-          = number_with_delimiter(@field_checked_locations)
+
+:javascript
+  (function($) {
+
+    var app = Sammy(function() {
+
+      this.selected_locations = [];
+
+      this.get("#/", function() {
+        this.redirect("#/tabs/workflow")
+      })
+
+      this.get('#/tabs/workflow', function(context) {
+        $("#workflow").show();
+        $("#categorization").hide();
+        $("#collectors").hide();
+      });
+
+      this.get('#/tabs/categorization', function(context) {
+        $("#workflow").hide();
+        $("#categorization").show();
+        $("#collectors").hide();
+      });
+
+      this.get('#/tabs/collectors', function(context) {
+        $("#workflow").hide();
+        $("#categorization").hide();
+        $("#collectors").show();
+      });
+
+    });
+
+    $(function() {
+      app.run('#/');
+    });
+
+  })(jQuery);

@@ -1,0 +1,10 @@
+<div>
+  <select class="styled_select">
+  <% for (var i = 0; i < data.length; i++) { %>
+    <option value="<%= data[i][1] %>"><%= data[i][0] %></option>
+  <% } %>
+  </select>
+  <a class="accept" href="#/status/change/accept">Accept</a>
+  <a class="cancel" href="#/cancel">Cancel</a>
+</div>
+

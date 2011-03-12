@@ -63,6 +63,7 @@ class LocationsController < ApplicationController
       @comments_cache = @locations.map do |loc|
         loc.comments.map {|x| {location_id: x.commentable_id, created_at: x.created_at, text: x.comment, user: x.user.login}}
       end.reject{|x| x.empty?}.flatten.to_json
+      @locations_cache = @locations.map {|location| location.json_object}.to_json
     end
   end
 
@@ -75,7 +76,7 @@ class LocationsController < ApplicationController
       end
       redirect_to "/locations"
     else
-      collection = LocationCollection.new(params[:locations].values)
+      collection = LocationCollection.new(params[:locations])
       render :json => collection.send(params[:call], params[:category]).to_json
     end
   end

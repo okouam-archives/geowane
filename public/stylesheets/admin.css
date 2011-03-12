@@ -27,8 +27,18 @@
 .locations.collection_edit .widget a {float: right; margin-left: 20px; margin-top: 5px}
 .locations.collection_edit .widget textarea {border: 1px solid #ccc; width: 99%; margin-bottom: 5px}
 
-/* .locations.edit */
+/* .locations */
 
+.block_sub {padding-top: 5px}
+.block_sub a {margin-right: 5px}
+.block_sub li {margin-bottom: 5px}
+.locations a.tag_delete {position: relative; top: 3px}
+.block_sub  .block_content {padding-bottom: 30px;}
+.block_sub  ul {margin-left: -30px}
+.block_sub  ul li:first-child {margin-left: 30px}
+.block_sub  ul li {float: left; list-style-type: none; font-weight: bold; background-image: none; margin-right: 20px}
+
+/* .locations.edit */
 
 .locations.edit #history-tab {margin-top: 10px}
 .locations.edit #history-tab p {padding-bottom: 3px}
@@ -40,20 +50,12 @@
 .locations.edit .right-panel {margin-top: 7px; width: 450px; float: right}
 .locations.edit #map {background-color: #6699cc; border: 1px solid #666666; margin-top: 7px; width: 450px; height: 330px}
 
-.locations .editor .block_sub {padding-top: 5px}
-.locations .editor .block_sub a {margin-right: 5px}
-.locations .editor .block_sub li {margin-bottom: 5px}
 .locations .editor fieldset {border-width: 0}
 .locations .editor fieldset ol {padding-left: 0}
 .locations .editor .submit input {padding: 2px; background-color: #444; margin-right: 3px; margin-top: 3px; color: white; font-weight: bold; border: 1px solid #222}
 .locations .editor .submit input:hover {cursor: pointer; color: #008EE8}
-.locations .editor #edit-location-tabs .block_content {padding-bottom: 30px;}
-.locations .editor #edit-location-tabs ul {margin-left: -30px}
-.locations .editor #edit-location-tabs ul li:first-child {margin-left: 30px}
-.locations .editor #edit-location-tabs ul li {float: left; list-style-type: none; font-weight: bold; background-image: none; margin-right: 20px}
 .locations .editor .ui-tabs-hide {display: none}
 .locations .editor .tags .list span {margin-right: 5px}
-.locations a.tag_delete {position: relative; top: 3px}
 .locations .editor .map-instructions {font-style: italic; font-size: 10px; text-align: center}
 .locations .editor .right-panel table td, .locations.editor .right-panel table th {border-bottom-width: 0 ! important}
 .locations .editor .right-panel table tr {background-color: transparent ! important}

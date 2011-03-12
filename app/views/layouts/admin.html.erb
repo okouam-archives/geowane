@@ -45,6 +45,16 @@
                             <% end %>
                         </ul>
                     </li>
+          	<li><%= link_to "Support", "#"%>
+                           <ul>
+
+                                <li><%= link_to "Wiki", "#" %></li>
+                                <li><%= link_to "Tickets", "#" %></li>
+                                <li><%= link_to "Logs", "#" %></li>
+                             <li><%= link_to "Errors", "#" %></li>
+
+                        </ul>
+          </li>
 				</ul>
 				<p class="user">Hello, <a href="#"><%= @current_user.login %></a> | <%= link_to "Logout", user_sessions_path, :method => :delete, :confirm => "Are you sure you want to logout?" %></p>
 			</div>

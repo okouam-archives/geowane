@@ -2,52 +2,52 @@
 
   Sammy = Sammy || {};
 
-  Sammy.CategoryWidget = function(app, name) {
-
-    var template = $("#" + name);
-
-    var getTagWrapper = function(location_id) {
-      return $("tr[data-id=" + location_id + "] span.list");
+    var getSelected = function(widget) {
+      return widget.find("select").val();
     };
 
-    var onFailure = function() {
-      alert("The locations failed to be updated. Please contact the system administrator.");
-    };
+  Sammy.CategoryWidget = function(app, renderData) {
 
-    this.helpers({
+    var widget;
 
-      showCategoryWidget: function(actionText, serverCall, onSuccess, context) {
-        var overlay = context.openFaceboxWidget(template.html());
-        overlay.find("a.accept").text(actionText + " Category").click(function() {
-          $.ajax({
-            url: "/locations",
-            type: "PUT",
-            data: {locations: context.getSelected(), call: serverCall, category: context.getSelectedCategory().id()},
-            success: onSuccess,
-            failure: onFailure
-          });
-          context.redirect("#/");
+    app.helpers({
+
+      showCategoryWidget: function(context, url, text) {
+        var html = JST['category_widget']({data: renderData, url: url, text: text});
+        widget = context.openFaceboxWidget(html);
+      },
+
+      addCategory: function(context, locations) {
+        $.ajax({
+          url: "/locations",
+          type: "PUT",
+          data: {locations: locations, call: "add_tag", category: getSelected(widget)},
+          success: function(updated) {
+            _.each(updated, function(item) {
+              var html = $(JST['tag_template'](item));
+              var id = item.location_id;
+              var wrapper = context.getRow(id).find("span.list");
+              html.appendTo(wrapper).find("a.tag_delete").bind("ajax:complete", function() {
+                $(this).parent().remove();
+              });
+            });
+          }
         });
       },
 
-      getSelectedCategory: function() {
-        return new Category({id: $("#category_id").val()});
-      },
-
-      removeTag: function(item) {
-        getTagWrapper(item.location_id).find("a[href$='" + item.tag_id + "']").parent().remove();
-      },
-
-      addTag: function(item) {
-        var template = $(JST['tag_template'](item));
-        var wrapper = getTagWrapper(item.location_id);
-        template.appendTo(wrapper).find("a.tag_delete").bind("ajax:complete", function() {
-          $(this).parent().remove();
+      removeCategory: function(context, locations) {
+        $.ajax({
+          url: "/locations",
+          type: "PUT",
+          data: {locations: locations, call: "remove_tag", category: getSelected(widget)},
+          success: function(updated) {
+            _.each(updated, function(item) {
+              context.getRow(item.location_id).find("span.list a[href$='" + item.tag_id + "']").parent().remove();
+            });
+          }
         });
       }
-
     });
-
   };
 
 })(jQuery);

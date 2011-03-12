@@ -8,50 +8,51 @@
       %li.nobg= link_to "Change Status", "#/status/change"
     %span
       For selected locations only
+  .block_sub
+    %ul
+      %li= link_to "Attributes", "#/tabs/attributes"
+      %li= link_to "Map", "#/tabs/map"
+      .clear
   .block_content
-    %table.layout
-    = form_for "locations", :url => "/locations", :html=>{:method=>:put} do |form|
-      %table.list.updates
-        %thead
-          %tr
-            %th
-              %input{:type=>"checkbox"}
-            %th Name
-            %th Long Name
-            %th Status
-            %th Categories
-            %th Comments
-        %tbody 
-        - @locations.each_with_index do |location, i|
-          %tr{"data-id"=>location.id}
-            %td.selector
-              %input{:type=>"checkbox"}
-            %td.name= form.text_field "[#{i}][name]", :value => location.name
-            %td.long_name= form.text_field "[#{i}][long_name]", :value => location.long_name
-            %td.status
-              =select_tag "locations[#{i}][status]", options_for_select(workflow_actions(current_user, location), location.status)
-              =form.hidden_field "[#{i}][id]", :value => location.id
-            %td.tags              
-              %span.list
-                = render :partial => "tags/collection", :locals => {:items => location.tags.map {|c| {:name => c.category.french, :delete_link => location_tag_url(c.location_id, c.id)}}}
-            %td.comments
-              = link_to location.comments.count, "#/comments/#{location.id}"
-
+    #attributes-tab
+      %table.layout
+      = form_for "locations", :url => "/locations", :html=>{:method=>:put} do |form|
+        %table.list.updates
+          %thead
+            %tr
+              %th
+                %input{:type=>"checkbox"}
+              %th Name
+              %th Long Name
+              %th Status
+              %th Categories
+              %th Comments
+          %tbody
+          - @locations.each_with_index do |location, i|
+            %tr{"data-id"=>location.id}
+              %td.selector
+                %input{:type=>"checkbox"}
+              %td.name= form.text_field "[#{i}][name]", :value => location.name
+              %td.long_name= form.text_field "[#{i}][long_name]", :value => location.long_name
+              %td.status
+                =select_tag "locations[#{i}][status]", options_for_select(workflow_actions(current_user, location), location.status)
+                =form.hidden_field "[#{i}][id]", :value => location.id
+              %td.tags
+                %span.list
+                  = render :partial => "tags/collection", :locals => {:items => location.tags.map {|c| {:name => c.category.french, :delete_link => location_tag_url(c.location_id, c.id)}}}
+              %td.comments
+                = link_to location.comments.count, "#/comments/#{location.id}"
       %div{:style=>"text-align: right; margin-right: 15px; margin-bottom: 20px"}
         = submit_tag "Confirm Changes", :class => "button mid", :style => "position: relative; left: 20px"
+    #map-tab
 
-  %script#category-widget{:type=>"text/html"}
-    = select_tag("category_id", options_for_select(@categories), :class => "styled_select")
-    %a.accept{:href=>"#"} Accept
-    %a.cancel{:href=>"#"} Cancel
-
-  %script#status-widget{:type=>"text/html"}
-    = select_tag "status_switcher", options_for_select(workflow_actions(current_user, nil).insert(0, "")), :class => "styled_select"
-    %a.accept{:href=>"#"} Accept
-    %a.cancel{:href=>"#"} Cancel
 
 :javascript
   (function($) {
+
+    _.each(#{@locations_cache}, function(value) {
+      Location.add(new Location(value));
+    })
 
     _.each(#{@comments_cache}, function(value) {
       Comment.add(new Comment(value));
@@ -62,57 +63,80 @@
       counter.text(parseInt(counter.text()) + 1);
     })
 
-    var app = Sammy('.collection_edit', function() {
+    var app = Sammy(function() {
 
-      this.use(Sammy.StatusWidget, "status-widget");
-      this.use(Sammy.CategoryWidget, "category-widget");
-      this.use(Sammy.MultiSelectorWidget, ".list.updates");
+      this.selected_locations = [];
+
+      this.use(Sammy.StatusWidget, #{workflow_actions(current_user, nil)});
+      this.use(Sammy.CategoryWidget, #{@categories});
+      this.use(Sammy.MultiSelectorWidget, $("table.list.updates"));
       this.use(Sammy.FaceboxWidget);
 
       this.get("#/", function() {
         this.closeFacebox();
       })
 
+      this.get("#/cancel", function(context) {
+        context.redirect("#/");
+      })
+
+      this.get("#/comments/:location_id/accept", function(context) {
+        var new_comment = "TESTING";
+        $.ajax({
+          type: 'POST',
+          dataType: 'json',
+          url: "/locations/" + location_id + "/comments",
+          data: {"comment[comment]": new_comment},
+          success: function(data) {
+            new Comment(data).save();
+            context.redirect("#/");
+          }
+        });
+      });
+
       this.get("#/comments/:location_id", function(context) {
         var location_id = context.params['location_id'];
-        var comments = Comment.find_by_location_id(location_id).map(function() {
-          return this.to_hash();
-        });
-        var output = JST['comment_widget']({comments: comments});
-        var overlay = context.openFaceboxWidget({domElement: $(output)});
-        overlay.append($("#comments-widget").html());
-        overlay.find("a.accept").click(function() {
-            var new_comment = "TESTING";
-            $.ajax({
-              type: 'POST',
-              dataType: 'json',
-              url: "/locations/" + location_id + "/comments",
-              data: {"comment[comment]": new_comment},
-              success: function(data) {
-                new Comment(data).save();
-                context.redirect("#/");
-              }
-            });
-          });
+        this.showCommentWidget(context, location_id);
+      });
+
+      this.get('#/tabs/attributes', function(context) {
+        $("#attributes-tab").show();
+        $("#map-tab").hide();
+      });
+
+      this.get('#/tabs/map', function(context) {
+        $("#attributes-tab").hide();
+        $("#map-tab").show();
       });
 
       this.get('#/category/add', function(context) {
-        if (!context.hasSelection()) return this.showSelectionError("#");
-        this.showCategoryWidget("Add", "add_tag", function(data) {
-          $.each(data, function(index, item) {context.addTag(item)})
-        }, context);
+        if (_.isEmpty(context.app.selected_locations)) return this.showSelectionError("#");
+        this.showCategoryWidget(context, "#/category/add/accept", "Add Category", "add_tag");
       });
 
       this.get('#/category/remove', function(context) {
-        if (!context.hasSelection()) return this.showSelectionError("#");
-        this.showCategoryWidget("Remove", "remove_tag", function(data) {
-          $.each(data, function(index, item) {context.removeTag(item)})
-        }, context);
+        if (_.isEmpty(context.app.selected_locations)) return this.showSelectionError("#");
+        this.showCategoryWidget(context, "#/category/remove/accept", "Remove Category", "remove_tag");
       });
 
       this.get('#/status/change', function(context) {
-        if (!context.hasSelection) return this.showSelectionError("#");
+        if (_.isEmpty(context.app.selected_locations)) return this.showSelectionError("#");
         this.showStatusWidget(context);
+      });
+
+      this.get('#/status/change/accept', function(context) {
+        this.changeStatus(context, context.app.selected_locations);
+        context.redirect("#/");
+      });
+
+      this.get('#/category/add/accept', function(context) {
+        this.addCategory(context, context.app.selected_locations);
+        context.redirect("#/");
+      });
+
+      this.get('#/category/remove/accept', function(context) {
+        this.removeCategory(context, context.app.selected_locations);
+        context.redirect("#/");
       });
 
     });
