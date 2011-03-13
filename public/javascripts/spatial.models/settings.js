@@ -1,59 +1,70 @@
-Spatial = Spatial || {};
-Spatial.Models = Spatial.Models || {};
+(function(window) {
 
-Spatial.Models.Settings = Class.extend({
+  window.Spatial = window.Spatial || {};
 
-  element: "map",
+  window.Spatial.Models = window.Spatial.Models || {};
 
-  iconPath: "/images/",
+  window.Spatial.Models.Settings = Class.extend({
 
-  urls: _.map(["http://geoserver1", "http://geoserver2", "http://geoserver3"], function(prefix) {
-    return prefix + ".gowane.com/tilecache.py?";
-  }),
+    element: "map",
 
-  resolutions: [
-          0.0125,
-          0.00625,
-          0.003125,
-          0.0015625,
-          0.00078125,
-          0.000390625,
-          0.0001953125,
-          0.00009765625,
-          0.000048828125,
-          0.0000244140625,
-          0.00001220703125,
-          0.00000610351563
-        ],
+    iconPath: "/images/",
 
-  mapName: "geocms",
+    urls: ["http://xkcd.codeifier.com/cgi-bin/mapserv?map=/var/www/mapserver/mapfiles/geocms.map"],
 
-  mapOptions: {buffer: 0, maxExtent: new OpenLayers.Bounds(-13, 2, -1, 15), restrictedExtent: new OpenLayers.Bounds(-9, 4, -2, 11)},
+    layers: ["road-labels", "countries", "water", "roads-other", "roads-type-5", "roads-type-4", "roads-type-3",
+        "roads-type-2", "roads-type-1"],
 
-  tileSize: 256,
+    resolutions: [
+        0.05,
+        0.025,
+        0.0125,
+        0.00625,
+        0.003125,
+        0.0015625,
+        0.00078125,
+        0.000390625,
+        0.0001953125,
+        0.00009765625,
+        0.000048828125,
+        0.0000244140625,
+        0.0000122070313,
+        0.0000061035156,
+    ],
 
-  format: 'aggpng24',
+    mapName: "geocms",
 
-  imageType: 'png',
+    mapOptions: {
+            bounds: 0,
+            maxExtent: new OpenLayers.Bounds(-25, -5, 15, 25),
+            restrictedExtent: new OpenLayers.Bounds(-20, 0, 10, 20)
+    },
 
-  isTransparent: 'true',
+    tileSize: 256,
 
-  layers: ["kubudum"],
+    format: 'aggpng24',
 
-  reloadAttempts: 3,
+    imageType: 'png',
 
-  nativeImagesPath: "/images/OpenLayers/",
+    isTransparent: 'true',
 
-  roadStyle: {fill: true, stroke: true, fillColor: "#2356d9", strokeOpacity: 0.7, pointRadius: 4, strokeColor: "#2356d9", strokeWidth: 5},
+    reloadAttempts: 3,
 
-  init: function(options) {
-    $.extend(this, options);
-    OpenLayers.ImgPath = this.nativeImagesPath;
-    OpenLayers.IMAGE_RELOAD_ATTEMPTS = this.reloadAttempts;
-    if (options && options.minZoomLevel) {
-      this.options.resolutions = this.resolutions.splice(options.minZoomLevel - 1);
+    nativeImagesPath: "/images/OpenLayers/",
+
+    roadStyle: {fill: true, stroke: true, fillColor: "#2356d9", strokeOpacity: 0.7, pointRadius: 4, strokeColor: "#2356d9", strokeWidth: 5},
+
+    init: function(options) {
+      $.extend(this, options);
+      OpenLayers.ImgPath = this.nativeImagesPath;
+      OpenLayers.IMAGE_RELOAD_ATTEMPTS = this.reloadAttempts;
+      if (options && options.minZoomLevel) {
+        this.options.resolutions = this.resolutions.splice(options.minZoomLevel - 1);
+      }
     }
-  }
 
-});
+  });
+
+})(window);
+
 

@@ -1,0 +1,57 @@
+!!! XML
+!!!
+%html
+  %head
+    %title= "GeoCMS - #{h yield(:title)}"
+    = csrf_meta_tag
+    = stylesheet_link_tag 'admin'
+    = include_javascripts :global
+    = include_javascripts :templates
+  %body{class: "#{controller.controller_name} #{controller.action_name}"}
+    #hld
+      .wrapper
+        #header
+          %h1= link_to "Gowane", dashboard_path
+          %ul#nav
+            %li
+              = link_to "Geospatial Database", dashboard_path
+              %ul
+                %li= link_to "Search", new_search_path
+                %li= link_to "Points of Interest", locations_path(:s => :reset)
+                %li= link_to "Categories", categories_path(:page => 1)
+                %li= link_to "Collectors", counters_path
+                %li= link_to "Administrative Units", stats_path
+                %li= link_to "Cities", cities_path
+                %li= link_to "Entire Map", map_path
+            %li
+              = link_to "Data Management", "#"
+              %ul
+                - unless current_user.has_role?("collector")
+                  %li= link_to "Import Data", imports_path
+                  %li= link_to "Export Data", exports_path
+                  %li= link_to "Search the Web", exports_path
+            %li
+              = link_to "Administration", "#"
+              %ul
+                %li= link_to "Your Account", account_path
+                - if current_user.has_role?("administrator")
+                  %li= link_to "Users", users_path
+            %li
+              = link_to "Support", "#"
+              %ul
+                %li= link_to "Wiki", "#"
+                %li= link_to "Tickets", "#"
+                %li= link_to "Logs", "#"
+                %li= link_to "Exceptions", "#"
+          %p.user
+            Hello,
+            = link_to @current_user.login, "#"
+            |
+            = link_to "Logout", user_sessions_path, :method => :delete, :confirm => "Are you sure you want to logout?"
+        = yield
+        #footer
+          %p.left
+            = link_to "Gowane @ 0-One", "http://www.0-one.net"
+          %p.right
+            Powered by
+            = link_to "Codeifier Labs", "#"

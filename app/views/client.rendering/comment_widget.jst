@@ -4,7 +4,12 @@
     <p><%= comments[i].text %></p>
   <% } %>
   <textarea />
-  <a class="accept" href="#">Accept</a>
+  <a class="accept" href="#/comments/<%= location_id %>/accept">Accept</a>
   <a class="cancel" href="#/cancel">Cancel</a>
+  <div>
+    <h3>Preset Comments</h3>
+    <p>Invalid location</p>
+    <p>Duplicate name</p>
+  </div>
 </div>
 

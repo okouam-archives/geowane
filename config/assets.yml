@@ -14,6 +14,10 @@ javascripts:
     - public/javascripts/sammy.models/*.js
     - public/javascripts/sammy.plugins/*.js
 
+  mapping:
+    - public/javascripts/OpenLayers-2.8/build/OpenLayers.js
+    - public/javascripts/spatial.models/*.js
+
   templates:
     - app/views/**/*.jst
 

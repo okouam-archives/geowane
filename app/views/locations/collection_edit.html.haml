@@ -1,4 +1,7 @@
 = content_for :title, "Edit Selected Locations"
+
+= include_javascripts :mapping
+
 .block
   .block_head
     %h2 Update Locations
@@ -45,7 +48,10 @@
       %div{:style=>"text-align: right; margin-right: 15px; margin-bottom: 20px"}
         = submit_tag "Confirm Changes", :class => "button mid", :style => "position: relative; left: 20px"
     #map-tab
+      #map
 
+:css
+  #map {width: 100%; height: 500px; border: 1px solid #ccc; margin-bottom: 20px; margin-top: 10px; background-color: #6699cc}
 
 :javascript
   (function($) {
@@ -53,6 +59,11 @@
     _.each(#{@locations_cache}, function(value) {
       Location.add(new Location(value));
     })
+
+    var settings = new Spatial.Models.Settings();
+    var map = new Spatial.Models.Map(settings);
+    var layer = new Spatial.Models.InteractiveLayer(map);
+    layer.load(Location.all());
 
     _.each(#{@comments_cache}, function(value) {
       Comment.add(new Comment(value));
@@ -71,9 +82,11 @@
       this.use(Sammy.CategoryWidget, #{@categories});
       this.use(Sammy.MultiSelectorWidget, $("table.list.updates"));
       this.use(Sammy.FaceboxWidget);
+      this.use(Sammy.CommentWidget);
 
-      this.get("#/", function() {
+      this.get("#/", function(context) {
         this.closeFacebox();
+        context.redirect("#/tabs/attributes");
       })
 
       this.get("#/cancel", function(context) {
@@ -81,17 +94,8 @@
       })
 
       this.get("#/comments/:location_id/accept", function(context) {
-        var new_comment = "TESTING";
-        $.ajax({
-          type: 'POST',
-          dataType: 'json',
-          url: "/locations/" + location_id + "/comments",
-          data: {"comment[comment]": new_comment},
-          success: function(data) {
-            new Comment(data).save();
-            context.redirect("#/");
-          }
-        });
+        var location_id = context.params['location_id'];
+        this.acceptComment(context, location_id);
       });
 
       this.get("#/comments/:location_id", function(context) {
