@@ -6,17 +6,26 @@
 
   window.Spatial.Models.InteractiveLayer = Class.extend({
 
-    init: function(map, id) {
+    init: function(map, id, options) {
       this.layer = new OpenLayers.Layer.Vector(id, {"reportError": true });
+      var controls = [];
 
-      var selectControl = new OpenLayers.Control.SelectFeature(this.layer, { multiple: false, hover: true });
+      if (options.showPopups){
+        var selectControl = new OpenLayers.Control.SelectFeature(this.layer, { multiple: false, hover: true });
+        controls.push(selectControl);
+      }
 
       var dragControl = new OpenLayers.Control.DragFeature(this.layer);
-      dragControl.onStart = function() {document.body.style.cursor = 'pointer';};
-      dragControl.onComplete = this.onDragFeatureComplete.bind(this);
+      dragControl.onStart = function() {
+        document.body.style.cursor = 'pointer';
+      };
       dragControl.documentDrag = true;
+      dragControl.onComplete = options.persistor ? options.persistor : function() {
+        document.body.style.cursor = 'auto';
+      };
+      controls.push(dragControl);
 
-      _.each([dragControl, selectControl], function(control) {
+      _.each(controls, function(control) {
         map.instance.addControl(control);
         control.activate();
       });
@@ -39,11 +48,6 @@
         return feature.createOpenLayersFeature();
       });
       this.layer.addFeatures(features, {silent: false});
-    },
-
-    onDragFeatureComplete: function(feature, pixel) {
-      document.body.style.cursor = 'auto';
-      if (this.opts.observer.onDragComplete) this.opts.observer.onDragComplete(feature, this.instance.getLonLatFromPixel(pixel));
     }
 
   });

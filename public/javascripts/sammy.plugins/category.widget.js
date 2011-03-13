@@ -17,7 +17,7 @@
         widget = context.openFaceboxWidget(html);
       },
 
-      addCategory: function(context, locations) {
+      addCategory: function(context, locations, target) {
         $.ajax({
           url: "/locations",
           type: "PUT",
@@ -26,7 +26,7 @@
             _.each(updated, function(item) {
               var html = $(JST['tag_template'](item));
               var id = item.location_id;
-              var wrapper = context.getRow(id).find("span.list");
+              var wrapper = target(id);
               html.appendTo(wrapper).find("a.tag_delete").bind("ajax:complete", function() {
                 $(this).parent().remove();
               });

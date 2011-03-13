@@ -29,7 +29,6 @@
                 - unless current_user.has_role?("collector")
                   %li= link_to "Import Data", imports_path
                   %li= link_to "Export Data", exports_path
-                  %li= link_to "Search the Web", exports_path
             %li
               = link_to "Administration", "#"
               %ul
@@ -39,10 +38,10 @@
             %li
               = link_to "Support", "#"
               %ul
-                %li= link_to "Wiki", "#"
-                %li= link_to "Tickets", "#"
+                %li= link_to "Wiki", "http://wiki.0-one.net"
+                %li= link_to "Tickets", "https://codeifier.lighthouseapp.com/"
                 %li= link_to "Logs", "#"
-                %li= link_to "Exceptions", "#"
+                %li= link_to "Exceptions", "http://codeifier.hoptoadapp.com/"
           %p.user
             Hello,
             = link_to @current_user.login, "#"

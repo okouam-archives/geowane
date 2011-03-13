@@ -87,6 +87,10 @@ class LocationsController < ApplicationController
     render :json => all_locations.map {|feature| feature.json_object}
   end
 
+  edit.before do
+    @categories = ["", ""] + Category.order("french").map{|c| [c.french, c.id]}
+  end
+
   show.wants.js do
     render :json => object.json_object
   end

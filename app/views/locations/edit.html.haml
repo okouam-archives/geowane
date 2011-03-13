@@ -1,5 +1,6 @@
 = content_for :title, "Edit Location"
-= render :partial => "shared/mapping_scripts"
+
+= include_javascripts :mapping
 
 .block.editor
   .block_head
@@ -8,38 +9,99 @@
       %li.nobg= link_to "Back", locations_path
       %li.nobg= link_to "Previous POI", previous_location_path(@location)
       %li.nobg= link_to "Next POI", next_location_path(@location)
-      %li.nobg= link_to "Web Search", "#"
       %li.nobg= link_to "Save", "#", :class => "save"
-  = semantic_form_for @location do |form|
-    #edit-location-tabs
-      .block_sub
-        %ul
-          %li= link_to "Feature", "#feature-tab"
-          %li= link_to "Information", "#information-tab"
-          %li= link_to "Coordinates", "#classification-tab"
-          %li= link_to "History", "#history-tab"
-        .clear
-    .block_content
+  #edit-location-tabs
+    .block_sub
+      %ul
+        %li= link_to "Feature", "#/tabs/feature"
+        %li= link_to "Information", "#/tabs/information"
+        %li= link_to "Coordinates", "#/tabs/classification"
+        %li= link_to "History", "#/tabs/history"
+        %li= link_to "Web Search", "#/tabs/web-search"
+      .clear
+  .block_content
+    = semantic_form_for @location do |form|
       .editor-content
         = render :partial => "locations/form/feature", :locals => {:form => form, :form_data => @form_data}
         = render :partial => "locations/form/information", :locals => {:form => form}
         = render :partial => "locations/form/classification", :locals => {:form => form}
         = render :partial => "locations/form/history", :locals => {:form => form, :location => @location}
+        #web-search-tab
         .clear
+    %br
+    %br
 
 :javascript
   $(document).ready(function() {
-    var options = {
-      commentsContainer: $("li.comments .list"),
-      commentsFetchUrl: "#{location_comments_url(object)}",
-      locationId: '#{@location.id}',
-      tagsContainer: $("li.tags .list"),
-      tagsFetchUrl: '#{location_tags_url(object)}'
-    };
-    var editor = new LocationEditor(options);
 
-    var app = Sammy('.locations.edit', function() {
+    Comment.bind("add", function(new_comment) {
+      var output = JST['comment_template']({comment: new_comment.to_hash()});
+      $(output).appendTo($(".comments .list"));
+    })
 
+    var settings = new Spatial.Models.Settings();
+    var map = new Spatial.Models.Map(settings);
+    var layer = new Spatial.Models.InteractiveLayer(map, "selection", {
+      persistor: function(feature, pixel) {
+        document.body.style.cursor = 'auto';
+        var coordinates = feature.layer.map.getLonLatFromPixel(pixel);
+        $("#location_latitude").val(coordinates.lat);
+        $("#location_longitude").val(coordinates.lon);
+      },
+      showPopups: false
+    });
+
+    var poi = #{object.json_object.to_json};
+    layer.load([new Location(poi)]);
+
+    var app = Sammy(function() {
+
+      this.selected_locations = [#{object.id}];
+
+      this.use(Sammy.FaceboxWidget);
+      this.use(Sammy.CommentWidget);
+      this.use(Sammy.CategoryWidget, #{@categories});
+      this.use(Sammy.TabWidget, $(".block_sub li a"));
+
+      this.get("#/", function(context) {
+        this.closeFacebox();
+        context.redirect("#/tabs/feature");
+      })
+
+      this.get("#/cancel", function(context) {
+        context.redirect("#/");
+      })
+
+      this.get("#/comments/:location_id/accept", function(context) {
+        var location_id = context.params['location_id'];
+        this.acceptComment(context, location_id);
+      });
+
+      this.get('#/tabs/:view', function(context) {
+        this.showTab(context.params["view"])
+      });
+
+      this.get("#/comments/:location_id", function(context) {
+        var location_id = context.params['location_id'];
+        this.showCommentWidget(context, location_id);
+      });
+
+      this.get('#/category/add', function(context) {
+        this.showCategoryWidget(context, "#/category/add/accept", "Add Category", "add_tag");
+      });
+
+      this.get('#/category/add/accept', function(context) {
+        var target = function(id) {
+          return $(".tags .list");
+        };
+        this.addCategory(context, context.app.selected_locations, target);
+        context.redirect("#/");
+      });
+
+    });
+
+    $(function() {
+      app.run('#/');
     });
 
   });

@@ -13,7 +13,12 @@
           return this.to_hash();
         });
         var output = JST['comment_widget']({comments: comments, location_id: location_id});
-        widget = context.openFaceboxWidget(output);
+        widget = context.openFaceboxWidget(output, "comment_widget");
+        widget.find("table a").click(function() {
+          var textarea = widget.find("textarea");
+          textarea.val($(this).text());
+          return false;
+        });
       },
 
       acceptComment: function(context, location_id) {

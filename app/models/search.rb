@@ -5,6 +5,8 @@ class Search
   attr_accessor :modified_by, :name, :added_by, :category_missing, :category_present, :category_id, :commune_id
   attr_accessor :city_id, :region_id, :country_id, :confirmed_by, :audited_by, :added_on_before, :added_on_after
   attr_accessor :status, :city_level_0, :city_id, :location_level_0, :location_level_1, :location_level_2, :location_level_3
+  attr_accessor :field_checked_by, :invalidated_by, :corrected_by
+  attr_accessor :street_name, :radius, :location_name
 
   def initialize(attributes)
     

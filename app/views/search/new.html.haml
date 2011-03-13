@@ -10,21 +10,24 @@
           %h2 Categorization
           = form.input :name, :required => false, :label => "Location Name"
           = form.input :category_id, :as => :select, :collection => @all_categories, :required => false, :label => "Category"
-          %h2 Characteristics
           = form.input :category_missing, :as => :boolean, :required => false, :label => " Category Missing"
           = form.input :category_present, :as => :boolean, :required => false, :label => " Category Present"
         .filter_group
-          %h2 Administrative Unit
+          %h2 Boundaries
           = form.input :location_level_0, :as => :select, :collection => @all_level_0, :required => false, :label => "Level 0"
           = form.input :location_level_1, :as => :select, :collection => @all_level_1, :required => false, :label => "Level 1"
           = form.input :location_level_2, :as => :select, :collection => @all_level_2, :required => false, :label => "Level 2"
           = form.input :location_level_3, :as => :select, :collection => @all_level_3, :required => false, :label => "Level 3"
           %h2 Localization (city)
           = form.input :city_id, :as => :select, :collection => @all_cities, :required => false, :label => "City"
+          = form.input :radius
+          = form.input :street_name
         .filter_group
           %h2 Auditing
           = form.input :added_by, :as => :select, :collection => @all_users, :label => "Added By", :required => false
-          = form.input :confirmed_by, :as => :select, :label => "Field Checked By", :collection => @all_users, :required => false
+          = form.input :corrected_by, :as => :select, :label => "Corrected By", :collection => @all_users, :required => false
+          = form.input :invalidated_by, :as => :select, :label => "Invalidated By", :collection => @all_users, :required => false
+          = form.input :field_checked_by, :as => :select, :label => "Field Checked By", :collection => @all_users, :required => false
           = form.input :audited_by, :as => :select, :label => "Audited By", :collection => @all_users, :required => false
           = form.input :modified_by, :as => :select, :label => "Modified By", :collection => @all_users, :required => false
         .filter_group

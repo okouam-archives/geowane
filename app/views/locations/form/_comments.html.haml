@@ -1,6 +1,6 @@
 %li.comments
   %label 
     Comments
-    = link_to "(+)", new_location_comment_url(object), :rel => "facebox"
+    = link_to "(+)", "#/comments/#{object.id}"
   .list
-
+    = render :partial => "comments/collection", :locals => {:items => object.comments, :id => object.id}

@@ -62,7 +62,18 @@
 
     var settings = new Spatial.Models.Settings();
     var map = new Spatial.Models.Map(settings);
-    var layer = new Spatial.Models.InteractiveLayer(map);
+    var layer = new Spatial.Models.InteractiveLayer(map, "selection", {
+      persistor: function(feature, pixel) {
+        document.body.style.cursor = 'auto';
+        if (confirm("Do you wish to save the new coordinates for this location?")) {
+          var coordinates = feature.layer.map.getLonLatFromPixel(pixel);
+          feature.poi.attributes.longitude = coordinates.lon;
+          feature.poi.attributes.latitude = coordinates.lat;
+          feature.poi.save_coordinates();
+        }
+      },
+      showPopups: true
+    });
     layer.load(Location.all());
 
     _.each(#{@comments_cache}, function(value) {
@@ -82,6 +93,7 @@
       this.use(Sammy.CategoryWidget, #{@categories});
       this.use(Sammy.MultiSelectorWidget, $("table.list.updates"));
       this.use(Sammy.FaceboxWidget);
+      this.use(Sammy.TabWidget, $(".block_sub li a"));
       this.use(Sammy.CommentWidget);
 
       this.get("#/", function(context) {
@@ -103,14 +115,8 @@
         this.showCommentWidget(context, location_id);
       });
 
-      this.get('#/tabs/attributes', function(context) {
-        $("#attributes-tab").show();
-        $("#map-tab").hide();
-      });
-
-      this.get('#/tabs/map', function(context) {
-        $("#attributes-tab").hide();
-        $("#map-tab").show();
+      this.get('#/tabs/:name', function(context) {
+        this.showTab(context.params["name"]);
       });
 
       this.get('#/category/add', function(context) {
@@ -134,7 +140,10 @@
       });
 
       this.get('#/category/add/accept', function(context) {
-        this.addCategory(context, context.app.selected_locations);
+        var target = function(id) {
+          return context.getRow(id).find("span.list");
+        };
+        this.addCategory(context, context.app.selected_locations, target);
         context.redirect("#/");
       });
 

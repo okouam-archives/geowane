@@ -23,9 +23,9 @@
 .locations.collection_edit td.status select {width: 130px; font-size: 10px; padding: 4px}
 .locations.collection_edit td.remove-tag-action * {position: relative; left: -20px}
 
-.locations.collection_edit .widget select {width: 650px}
-.locations.collection_edit .widget a {float: right; margin-left: 20px; margin-top: 5px}
-.locations.collection_edit .widget textarea {border: 1px solid #ccc; width: 99%; margin-bottom: 5px}
+.widget select {width: 650px}
+.widget a.action {float: right; margin-left: 20px; margin-top: 5px}
+.widget.comment_widget textarea {border: 1px solid #ccc; width: 99%; margin-bottom: 5px}
 
 /* .locations */
 
@@ -60,7 +60,6 @@
 .locations .editor .right-panel table td, .locations.editor .right-panel table th {border-bottom-width: 0 ! important}
 .locations .editor .right-panel table tr {background-color: transparent ! important}
 .locations .editor .right-panel table {width: 100%; margin-top: -15px}
-.locations .editor .editor-content {margin-bottom: 30px}
 
 /* .locations.index */
 

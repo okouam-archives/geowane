@@ -19,30 +19,18 @@ Spatial.Models.Feature = Class.extend({
   },
 
   showPopup: function(vector) {
-    console.debug(vector);
-    var attributes = this.poi;
-    if (!attributes.label) return;
-    var coordinates = vector.layer.map.geometry.getBounds().getCenterLonLat();
-    var resolution = map.instance.getResolution();
-    var newCoordinates = new OpenLayers.LonLat(coordinates.lon + resolution * - 75, coordinates.lat + resolution * 70);
-    var size = new OpenLayers.Size(200, 20);
-    var contents = "<b>" + attributes.label + "</b>";
-    if (attributes.category) {
-      contents = contents + "<br/>" + attributes.category;
-    }
-    vector.popup = new OpenLayers.Popup(attributes.label, newCoordinates, size, contents);
-    vector.popup.feature = vector;
+    var coordinates = vector.geometry.getBounds().getCenterLonLat();
+    var contents = "<b>" + this.poi.attributes.label + "</b>";
+    vector.popup = new OpenLayers.Popup(null, coordinates, null, contents);
+    vector.popup.autoSize = true;
     vector.layer.map.addPopup(vector.popup);
-    vector.popup.updateSize();
   },
 
   hidePopup: function(vector) {
-    console.debug(vector);
     if (vector.popup) {
-      vector.popup.feature = null;
-      vector.layer.map.removePopup(feature.popup);
+      vector.layer.map.removePopup(vector.popup);
       vector.popup.destroy();
-      vector.popup = null;
+      delete vector.popup;
     }
   }
 });

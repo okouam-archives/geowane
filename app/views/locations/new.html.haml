@@ -1,5 +1,6 @@
 = content_for :title, "New Location"
-= render :partial => "shared/mapping_scripts"
+
+= include_javascripts :mapping
 
 .block.editor
   .block_head
@@ -28,6 +29,6 @@
 
 :javascript
   $(document).ready(function() {
-    var editor = new LocationEditor({});
+    //var editor = new LocationEditor({});
   });
   
