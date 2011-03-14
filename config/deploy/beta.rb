@@ -1,1 +1,1 @@
-set :deploy_to, "/home/opt/Rails/apps/geocms/beta"
+set :deploy_to, "/home/deployment/apps/geocms/beta"

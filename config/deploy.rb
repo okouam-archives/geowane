@@ -10,13 +10,13 @@ set :stages, ["beta", "production"]
 
 set :default_stage, "beta"
 set :deploy_via, :remote_cache
-set :user, "okouam"
+set :user, "deployment"
 set :ssh_options, { :forward_agent => true }
-set :deploy_to, "/home/opt/Rails/apps/geocms/beta"
+set :deploy_to, "/home/deployment/apps/geocms/beta"
 set :rake, "/var/lib/gems/1.8/bin/rake"
-role :web, "xkcd.codeifier.com"
-role :app, "xkcd.codeifier.com"
-role :db,  "xkcd.codeifier.com", :primary => true
+role :web, "galileo.codeifier.com"
+role :app, "galileo.codeifier.com"
+role :db,  "galileo.codeifier.com", :primary => true
 
 default_run_options[:pty] = true
 
