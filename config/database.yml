@@ -10,12 +10,11 @@ development: &development
   min_messages: warning
   template: template_postgis
 
-alpha:
-  <<: *development
-
 beta:
   <<: *development
   database: cms_beta
+  username: deployment
+  password: FireDrake[1981]
 
 test:
   <<: *development
@@ -24,6 +23,8 @@ test:
 production:
   <<: *development
   database: cms_production
+  username: deployment
+  password: FireDrake[1981]
 
 cucumber:
   <<: *development
