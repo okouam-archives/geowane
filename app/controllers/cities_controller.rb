@@ -12,10 +12,10 @@ class CitiesController < ApplicationController
       SUM(CASE WHEN status = 'audited' THEN 1 ELSE 0 END) as audited_locations,
       SUM(CASE WHEN status = 'field_checked' THEN 1 ELSE 0 END) as field_checked_locations,
       count(categorized) as categorized_locations,
-      count(*) as total_locations
+      count(locations.id) as total_locations
     FROM
       locations
-      JOIN cities ON locations.city_id = cities.id
+      RIGHT JOIN cities ON locations.city_id = cities.id
       LEFT JOIN (SELECT location_id as categorized FROM tags GROUP BY location_id) t ON t.categorized = locations.id
     GROUP BY
       cities.name, cities.id
