@@ -74,7 +74,11 @@ class LocationsController < ApplicationController
         location.update_attributes(attributes)
         location.save!
       end
-      redirect_to "/locations"
+      if request.xhr?
+        head :status => 200
+      else
+        redirect_to "/locations"
+      end
     else
       collection = LocationCollection.new(params[:locations])
       render :json => collection.send(params[:call], params[:category]).to_json

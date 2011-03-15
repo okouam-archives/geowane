@@ -10,7 +10,7 @@
 
     iconPath: "/images/",
 
-    urls: ["http://xkcd.codeifier.com/cgi-bin/mapserv?map=/var/www/mapserver/mapfiles/geocms.map"],
+    urls: ["http://galileo.codeifier.com/cgi-bin/mapserv?map=/home/deployment/mapserver/mapfiles/geocms.map"],
 
     layers: ["road-labels", "countries", "water", "roads-other", "roads-type-5", "roads-type-4", "roads-type-3",
         "roads-type-2", "roads-type-1"],

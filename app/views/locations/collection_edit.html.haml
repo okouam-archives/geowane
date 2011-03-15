@@ -67,9 +67,9 @@
         document.body.style.cursor = 'auto';
         if (confirm("Do you wish to save the new coordinates for this location?")) {
           var coordinates = feature.layer.map.getLonLatFromPixel(pixel);
-          feature.poi.attributes.longitude = coordinates.lon;
-          feature.poi.attributes.latitude = coordinates.lat;
-          feature.poi.save_coordinates();
+          feature.attributes.poi.attributes.longitude = coordinates.lon;
+          feature.attributes.poi.attributes.latitude = coordinates.lat;
+          feature.attributes.poi.save_coordinates();
         }
       },
       showPopups: true
