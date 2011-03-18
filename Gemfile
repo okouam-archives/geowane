@@ -32,6 +32,7 @@ gem "wirble"
 gem "hirb"
 gem 'diff-lcs'
 gem 'logglier'
+gem 'gowane_core', :path => "/home/okouam/Work/gowane_core"
 
 group :test do
   gem "faker"
