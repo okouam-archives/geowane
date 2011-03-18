@@ -2,8 +2,8 @@ require 'capistrano/ext/multistage'
 require File.dirname(__FILE__) + '/boot'
 require 'hoptoad_notifier/capistrano'
 
-set :application, "geocms"
-set :repository,  "git@github.com:okouam/geocms.git"
+set :application, "gowane"
+set :repository,  "git@github.com:okouam/gowane.git"
 set :scm, :git
 set :branch, :master
 set :stages, ["beta", "production"]
@@ -12,7 +12,7 @@ set :default_stage, "beta"
 set :deploy_via, :remote_cache
 set :user, "deployment"
 set :ssh_options, { :forward_agent => true }
-set :deploy_to, "/home/deployment/apps/geocms/beta"
+set :deploy_to, "/home/deployment/apps/gowane/beta"
 set :rake, "/var/lib/gems/1.8/bin/rake"
 role :web, "galileo.codeifier.com"
 role :app, "galileo.codeifier.com"
