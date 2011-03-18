@@ -9,7 +9,7 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(:default, Rails.env) if defined?(Bundler)
 
-module GeoCms
+module Gowane
   class Application < Rails::Application
 
     config.autoload_paths += %W(#{Rails.root}/app/lib)

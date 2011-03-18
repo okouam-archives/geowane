@@ -1,4 +1,4 @@
-GeoCms::Application.routes.draw do
+Gowane::Application.routes.draw do
 
   match'/locations' => 'locations#collection_delete', :via => :delete 
   match'/locations/edit' => 'locations#collection_edit', :via => [:get, :post] 

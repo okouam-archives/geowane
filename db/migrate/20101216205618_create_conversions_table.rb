@@ -1,4 +1,5 @@
-class CreateConversions < ActiveRecord::Migration
+class CreateConversionsTable < ActiveRecord::Migration
+
   def self.up
     create_table :conversions, :force => true do |t|
       t.string :input_file_name
@@ -18,4 +19,5 @@ class CreateConversions < ActiveRecord::Migration
   def self.down
     drop_table :conversions
   end
+
 end

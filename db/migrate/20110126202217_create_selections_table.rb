@@ -1,4 +1,5 @@
-class CreateSelections < ActiveRecord::Migration
+class CreateSelectionsTable < ActiveRecord::Migration
+
   def self.up
     create_table :selections do |t|
       t.string :name, :null => false
@@ -16,4 +17,5 @@ class CreateSelections < ActiveRecord::Migration
   def self.down
     drop_table :selections
   end
+
 end
