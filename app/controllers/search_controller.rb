@@ -5,10 +5,10 @@ class SearchController < ApplicationController
   new_action.before do
     @all_users = User.dropdown_items
     @all_cities = City.dropdown_items
-    @all_level_3 = AdministrativeUnit.dropdown_items(3)
-    @all_level_2 = AdministrativeUnit.dropdown_items(2)
-    @all_level_1 = AdministrativeUnit.dropdown_items(1)
-    @all_level_0 = AdministrativeUnit.dropdown_items(0)
+    @all_level_3 = Boundary.dropdown_items(3)
+    @all_level_2 = Boundary.dropdown_items(2)
+    @all_level_1 = Boundary.dropdown_items(1)
+    @all_level_0 = Boundary.dropdown_items(0)
     @all_categories = Category.dropdown_items
   end
 
