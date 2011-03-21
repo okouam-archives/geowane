@@ -30,9 +30,10 @@ gem "columnize"
 gem "enumerated_attribute"
 gem "wirble"
 gem "hirb"
+gem "foreigner"
 gem 'diff-lcs'
 gem 'logglier'
-gem 'gowane_core', :path => "/home/okouam/Work/gowane_core"
+gem "gowane_core", :git => 'git@github.com:okouam/gowane_core.git'
 
 group :test do
   gem "faker"
