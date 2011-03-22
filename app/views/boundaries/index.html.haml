@@ -5,7 +5,7 @@
     %h2 Administrative Units
     %ul
       - [0, 1, 2, 3].each do |depth|
-        %li.nobg= link_to "Level #{depth}", "/stats?depth=#{depth}"
+        %li.nobg= link_to "Level #{depth}", "/boundaries?depth=#{depth}"
   .block_content
     %table{:cellspacing => "0", :cellpadding => "0", :style => "width: 100%; margin-left: 0px"}
       %thead
@@ -57,6 +57,6 @@
               %td= row.level_2
             - if @depth >= 3
               %td= row.level_3
-            = render :partial => "list_stats", :locals => {:area => row, :prefix => "/locations?#{administrative_unit_finder(@depth, row)}"}
+            = render :partial => "list_boundaries", :locals => {:area => row, :prefix => "/locations?#{administrative_unit_finder(@depth, row)}"}
     %br
 
