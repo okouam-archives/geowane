@@ -20,9 +20,8 @@
                 %li= link_to "Points of Interest", locations_path(:s => :reset)
                 %li= link_to "Categories", categories_path(:page => 1)
                 %li= link_to "Collectors", counters_path
-                %li= link_to "Administrative Units", stats_path
+                %li= link_to "Boundaries", boundaries_path
                 %li= link_to "Cities", cities_path
-                %li= link_to "Entire Map", map_path
             %li
               = link_to "Data Management", "#"
               %ul
@@ -50,7 +49,7 @@
         = yield
         #footer
           %p.left
-            = link_to "Gowane @ 0-One", "http://www.0-one.net"
+            = link_to "GeoCMS @ 0-One", "http://www.0-one.net"
           %p.right
             Powered by
             = link_to "Codeifier Labs", "#"

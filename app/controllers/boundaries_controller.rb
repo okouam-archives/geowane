@@ -1,4 +1,4 @@
-class StatsController < ApplicationController
+class BoundariesController < ApplicationController
 
   def index
     @depth = params[:depth].to_i
@@ -25,7 +25,7 @@ FROM
   locations.id) AS L ON locations.id = L.id
 #{z(@depth)} GROUP BY #{y(@depth)} ORDER BY #{h(@depth)}
 }
-    @collection = AdministrativeUnit.find_by_sql(sql)
+    @collection = Boundary.find_by_sql(sql)
   end
 
   private

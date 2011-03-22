@@ -3,9 +3,6 @@ Gowane::Application.routes.draw do
   match'/locations' => 'locations#collection_delete', :via => :delete 
   match'/locations/edit' => 'locations#collection_edit', :via => [:get, :post] 
   match'/locations' => 'locations#collection_update', :via => :put 
-  match'/stats' => 'stats#index', :via => :get
-
-  resource :network, :controller => "network"
 
   resources :locations do
     resources :comments, :tags
@@ -26,10 +23,8 @@ Gowane::Application.routes.draw do
   resource :search, :controller => "search"
   resource :account, :controller => "account"
 
-  resource :map, :controller => "map"
-
   resource :user_sessions
-  resources :users, :communes, :cities, :regions, :countries, :counters, :conversions, :reports
+  resources :users, :cities, :counters, :conversions, :boundaries
 
   resources :exports do
     collection do
