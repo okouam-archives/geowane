@@ -20,7 +20,7 @@ class ExportsController < ApplicationController
   end
 
   def selection
-    @all_countries = AdministrativeUnit.dropdown_items(0)
+    @all_countries = Boundary.dropdown_items(0)
     @all_categories = Category.dropdown_items
     @all_users = User.dropdown_items
     @all_statuses = Location.new.enums(:status).select_options
@@ -33,8 +33,7 @@ class ExportsController < ApplicationController
       users = params[:s][:user_id].delete_if {|c| c.blank?}
       categories = params[:s][:category_id].delete_if {|c| c.blank?}
       include_uncategorized = params[:include_uncategorized]
-      query = Location
-      query = query.where("user_id IN (" + users.join(",") + ")") if users.count > 0
+      query = Location.where("user_id IN (" + users.join(",") + ")") if users.count > 0
       if categories.count > 0 || include_uncategorized
         if include_uncategorized.nil? && categories.count > 0
           query = query.where("locations.id IN (SELECT location_id FROM tags WHERE category_id IN (" + categories.join(",") + "))")
