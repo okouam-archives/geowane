@@ -28,12 +28,16 @@ class ExportsController < ApplicationController
 
   def prepare    
     if params[:s]
-      countries = params[:s][:country_id].delete_if {|c| c.blank?}
-      statuses = params[:s][:status].delete_if {|c| c.blank?}
-      users = params[:s][:user_id].delete_if {|c| c.blank?}
-      categories = params[:s][:category_id].delete_if {|c| c.blank?}
+      countries = params[:s][:country_id].reject{|x| x.blank?}
+      statuses = params[:s][:status].reject{|x| x.blank?}
+      users = params[:s][:user_id].reject{|x| x.blank?}
+      categories = params[:s][:category_id].reject{|x| x.blank?}
       include_uncategorized = params[:include_uncategorized]
-      query = Location.where("user_id IN (" + users.join(",") + ")") if users.count > 0
+      query = Location
+        .select("id")
+        .where("status IN ('#{statuses.join("','")}')")
+        .where("level_0 IN (#{countries.join(",")})")
+        .where("user_id IN (#{users.join(",")})")
       if categories.count > 0 || include_uncategorized
         if include_uncategorized.nil? && categories.count > 0
           query = query.where("locations.id IN (SELECT location_id FROM tags WHERE category_id IN (" + categories.join(",") + "))")
@@ -43,8 +47,6 @@ class ExportsController < ApplicationController
           query = query.where("locations.id NOT IN (SELECT location_id FROM tags)")
         end
       end
-      query = query.where("status IN ('" + statuses.join("','") +"')")
-      query = query.where("level_0 IN (" + countries.join(",") +")") if countries.count > 0
       session[:locations] = query.all.map{|c| c.id}
     else
       session[:locations] = params[:locations]

@@ -3,15 +3,15 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe Search do
 
   before(:all) do
-    @john = Factory(:valid_administrator)
-    @richard = Factory(:valid_administrator)
-    @carl = Factory(:valid_administrator)
-    @tom = Factory(:valid_administrator)
+    @john = Factory(:administrator)
+    @richard = Factory(:administrator)
+    @carl = Factory(:administrator)
+    @tom = Factory(:administrator)
   end
 
   before(:each) do
-    @a = Factory(:valid_location, :user => @john)
-    @b = Factory(:valid_location, :user => @richard)
+    @a = Factory(:location, :user => @john)
+    @b = Factory(:location, :user => @richard)
   end
 
   describe "when criteria are provided" do
@@ -52,7 +52,7 @@ describe Search do
     describe "and searching by 'Category Missing'" do
 
       it "returns the correct results" do
-        @a.tags << Factory(:valid_tag, :location => @a)
+        @a.tags << Factory(:tag, :location => @a)
         @a.save!
         sql = Search.create(:category_missing => "1")
         results = Location.find_by_sql(sql)
@@ -65,7 +65,7 @@ describe Search do
     describe "and searching by 'Category Present'" do
 
       it "returns the correct results" do
-        @a.tags << Factory(:valid_tag, :location => @a)
+        @a.tags << Factory(:tag, :location => @a)
         @a.save!
         sql = Search.create(:category_present => "1")
         results = Location.find_by_sql(sql)

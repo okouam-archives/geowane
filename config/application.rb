@@ -14,7 +14,7 @@ module Gowane
 
     config.autoload_paths += %W(#{Rails.root}/app/lib)
     config.time_zone = 'UTC'
-    config.i18n.default_locale = :fr
+    config.i18n.default_locale = :en
 
     # Only load the sammy.plugins named here, in the order given (default is alphabetical).
     # :all can be used as a placeholder for all sammy.plugins not explicitly named.

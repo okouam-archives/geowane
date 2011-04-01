@@ -39,8 +39,9 @@
               %ul
                 %li= link_to "Wiki", "http://wiki.0-one.net"
                 %li= link_to "Tickets", "https://codeifier.lighthouseapp.com/"
-                %li= link_to "Logs", "#"
-                %li= link_to "Exceptions", "http://codeifier.hoptoadapp.com/"
+                - if current_user.has_role?("administrator")
+                  %li= link_to "Logs", "#"
+                  %li= link_to "Exceptions", "http://codeifier.hoptoadapp.com/"
           %p.user
             Hello,
             = link_to @current_user.login, "#"

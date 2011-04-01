@@ -1,12 +1,12 @@
-# This file is copied to spec/ when you run 'rails generate rspec:install'
+
 ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'aegis/spec/matchers'
 require 'database_cleaner'
+require 'factory_girl'
+require 'gowane_core/spec/factories_helper'
 
-# Requires supporting ruby files with custom matchers and macros, etc,
-# in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
 RSpec.configure do |config|
@@ -38,12 +38,12 @@ def user_session(stubs = {}, user_stubs = {})
 end
 
 def login_as_collector(session_stubs = {})
-  @current_user = Factory(:valid_collector)
+  @current_user = Factory(:collector)
   login(session_stubs)
 end
 
 def login_as(role, session_stubs = {})
-  blueprint = ("valid_" + role).to_sym
+  blueprint = (role).to_sym
   @current_user = Factory(blueprint)
   login(session_stubs)
 end

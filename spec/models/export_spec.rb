@@ -5,7 +5,7 @@ describe Export do
   describe "when exporting locations" do
 
     before(:all) do
-      10.times { Factory(:valid_location) }
+      10.times { Factory(:location) }
     end
 
     it "saves the count of locations exported" do

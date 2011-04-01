@@ -5,44 +5,199 @@
     %h2 Export Selection
   .block_content
     = semantic_form_for :s, :url => "/exports/prepare" do |form|
-      .filter_group{:style=>"width: 170px"}
-        <input type="checkbox" id="all_countries">
-        All Countries
-        = form.input :country_id, :as => :check_boxes, :collection => @all_countries, :required => false, :label => "Countries", :wrapper_html => {:class => "selector"}
-      .filter_group{:style=>"width: 350px"}
-        %span{:style=>"margin-right: 20px"}
-          <input type="checkbox" id="all_categories">
-          All Categories
-        <input type="checkbox" name="include_uncategorized" id="include_uncategorized">
-        Uncategorized
-        = form.input :category_id, :as => :check_boxes, :collection => @all_categories, :required => false, :label => "Categories"
-      .filter_group
-        <input type="checkbox" id="all_users">
-        All Users
-        = form.input :user_id, :as => :check_boxes, :label => "Users", :collection => @all_users, :required => false
-      .filter_group
-        = form.input :status, :as => :check_boxes, :collection => @all_statuses, :required => false, :label => "Statuses"
+      .tabs
+        %ul
+          %li.countries
+            %a{:href=>"#/tab/countries"}
+              Countries
+              = image_tag("/images/tick.png", :style => "float: right; margin-right: 10px")
+          %li.categories
+            %a{:href=>"#/tab/categories"}
+              Categories
+              = image_tag("/images/tick.png", :style => "float: right; margin-right: 10px")
+          %li.users
+            %a{:href=>"#/tab/users"}
+              Users
+              = image_tag("/images/tick.png", :style => "float: right; margin-right: 10px")
+          %li.statuses
+            %a{:href=>"#/tab/statuses"}
+              States
+              = image_tag("/images/tick.png", :style => "float: right; margin-right: 10px")
+      .panes
+        #countries-tab.tab
+          %span
+            <input type="checkbox" id="all_countries" name="all_countries"">
+            All Countries
+          %hr
+          = form.input :country_id, :as => :check_boxes, :collection => @all_countries, :required => false, :label => "Individual Countries", :wrapper_html => {:class => "selector"}
+          .clear
+        #categories-tab.tab
+          %span
+            <input type="checkbox" id="all_categories" name="all_categories">
+            All Categories
+          %span
+            <input type="checkbox" name="include_uncategorized" id="include_uncategorized">
+            Uncategorized
+          %hr
+          = form.input :category_id, :as => :check_boxes, :collection => @all_categories, :required => false, :label => "Individual Categories"
+          .clear
+        #users-tab.tab
+          %span
+            <input type="checkbox" id="all_users" name="all_users">
+            All Users
+          %hr
+          = form.input :user_id, :as => :check_boxes, :label => "Individual Users", :collection => @all_users, :required => false
+        #statuses-tab.tab
+          %span
+            <input type="checkbox" id="all_statuses" name="all_statuses"">
+            All States
+          %hr
+          = form.input :status, :as => :check_boxes, :collection => @all_statuses, :required => false, :label => "Individual States"
       .clear
-      %input{:class=>"button long", :style=>"float: right; margin-bottom: 20px", :type=>"submit", :value=>"Export"}
-  :css
-
-    form {margin: 30px}
-    select {width: 182px ! important}
-    div.filter_group {float: left; width: 270px; margin-right: 20px}
-    legend {margin-bottom: 10px; padding-top: 10px}
-    fieldset ol * {border-width: 0; font-weight: normal ! important}
-    fieldset {border: 0 ! important}
-    #search-parameters label input {width: auto}
+      #validation-errors
+      %input{:class=>"button long", :style=>"float: right; margin-top: 20px; margin-right: 62px; margin-bottom: 20px", :type=>"submit", :value=>"Export"}
 
   :javascript 
     $(document).ready(function() {
+
+      var panels = {
+        country: {
+          icon: $(".tabs ul li.countries img"),
+          predicate: function() {
+            return $("#s_country_id_input input:checked").size() > 0;
+          }
+        },
+        status: {
+          icon: $(".tabs ul li.statuses img"),
+          predicate: function() {
+            return $("#s_status_input input:checked").size() > 0;
+          }
+        },
+        user: {
+          icon: $(".tabs ul li.users img"),
+          predicate: function() {
+            return $("#s_user_id_input input:checked").size() > 0;
+          }
+        },
+        category: {
+          icon: $(".tabs ul li.categories img"),
+          predicate: function() {
+            return $("#s_category_id_input input:checked").size() > 0 || $("#include_uncategorized:checked").size() > 0;
+          }
+        }
+      }
+
+      $.validator.addMethod("hasCountrySelection", function(value, element) {
+        return panels.country.predicate();
+      }, "Please select one or more countries.");
+
+      $.validator.addMethod("hasCategorySelection", function(value, element) {
+        return panels.category.predicate();
+      }, "Please select one or more categories.");
+
+      $.validator.addMethod("hasUserSelection", function(value, element) {
+        return panels.user.predicate();
+      }, "Please select one or more users.");
+
+      $.validator.addMethod("hasStatusSelection", function(value, element) {
+        return panels.status.predicate();
+      }, "Please select one or more states.");
+
+      $("form").validate({
+        rules: {
+          "s[country_id][]": { hasCountrySelection: "" },
+          "s[category_id][]": { hasCategorySelection: "" },
+          "s[user_id][]": { hasUserSelection: "" },
+          "s[status][]": { hasStatusSelection: "" }
+        },
+        errorLabelContainer: "#validation-errors"
+      });
+
+      $("#s_country_id_input input").click(function() {
+        if (!$(this).attr("checked")) $("#all_countries").attr('checked', false);
+        $(document).trigger('country-update');
+      })
+
       $("#all_countries").click(function() {
         if ($(this).attr("checked")) $("#s_country_id_input input").attr('checked', true);
+        $(document).trigger('country-update');
       });
+
+      $("#s_category_id_input input").click(function() {
+        if (!$(this).attr("checked")) $("#all_categories").attr('checked', false);
+        $(document).trigger('category-update');
+      })
+
       $("#all_categories").click(function() {
         if ($(this).attr("checked")) $("#s_category_id_input input").attr('checked', true);
+        $(document).trigger('category-update');
       });
+
+      $("#s_user_id_input input").click(function() {
+        if (!$(this).attr("checked")) $("#all_users").attr('checked', false);
+        $(document).trigger('user-update');
+      })
+
       $("#all_users").click(function() {
         if ($(this).attr("checked")) $("#s_user_id_input input").attr('checked', true);
+        $(document).trigger('user-update');
       });
+
+      $("#s_status_input input").click(function() {
+        if (!$(this).attr("checked")) $("#all_statuses").attr('checked', false);
+        $(document).trigger('status-update');
+      })
+
+      $("#all_statuses").click(function() {
+        if ($(this).attr("checked")) $("#s_status_input input").attr('checked', true);
+        $(document).trigger('status-update');
+      });
+
+      $("#include_uncategorized").click(function() {
+        $(document).trigger('category-update');
+      });
+
+      var notifyChange = function(group) {
+        if (group.predicate()) {
+          group.icon.show();
+        } else {
+          group.icon.hide();
+        }
+      }
+
+      $(document).bind('country-update', function() {
+        notifyChange(panels.country);
+      });
+
+      $(document).bind('category-update', function() {
+        notifyChange(panels.category);
+      });
+
+      $(document).bind('user-update', function() {
+        notifyChange(panels.user);
+      });
+
+      $(document).bind('status-update', function() {
+        notifyChange(panels.status);
+      });
+
+      $(document).trigger('user-update');
+      $(document).trigger('country-update');
+      $(document).trigger('category-update');
+      $(document).trigger('status-update');
+
+      var app = Sammy(function() {
+        this.use(Sammy.TabWidget, $(".tabs li a"));
+        this.get("#/", function(context) {
+          context.redirect("#/tab/countries");
+        })
+        this.get('#/tab/:name', function(context) {
+          this.showTab(context.params["name"]);
+        });
+      });
+
+      $(function() {
+        app.run('#/');
+      });
+
     });

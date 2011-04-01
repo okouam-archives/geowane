@@ -95,6 +95,31 @@
 #search-parameters input .button { width: auto; }
 #search-parameters select { padding: 5px; width: 206px; }
 
+/* .exports.selection */
+
+.exports.selection .tabs {float: left}
+.exports.selection .tabs ul {padding-left: 0}
+.exports.selection .tabs li {background-image: none ! important; margin-bottom: 0 ! important}
+.exports.selection .tabs li a {border-bottom: 1px solid #ddd; padding: 10px; width: 100px; display: inline-block; color: #999}
+.exports.selection .tabs li a.selected {color: #434343}
+.exports.selection .tabs li a:hover {color: #777}
+
+.exports.selection span {margin-right: 20px}
+.exports.selection hr {margin-top: 10px; margin-bottom: 0}
+.exports.selection form {margin: 30px}
+.exports.selection select {width: 182px ! important}
+.exports.selection legend {margin-bottom: 10px; padding-top: 10px}
+
+.exports.selection .tab {float: left; width: 620px; margin-right: 20px; border: 1px solid #ccc; padding: 20px}
+.exports.selection .tab li {float: left; min-width: 300px; display: inline}
+
+.exports.selection #validation-errors {margin-left: 155px; color: red ! important; margin-top: 10px}
+.exports.selection .error {color: red; font-weight: normal}
+
+.exports.selection fieldset ol * {border-width: 0; font-weight: normal ! important}
+.exports.selection fieldset ol * {border-width: 0; font-weight: normal ! important}
+.exports.selection fieldset {border: 0 ! important}
+
 /* Others */
 
 .block_sub {background-color: #777; padding-left: 30px; color: white; line-height: 16px; width: 952px; left: -10px; position: relative}
