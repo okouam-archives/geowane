@@ -17,9 +17,9 @@ body {
 	font-family: "Lucida Grande", Verdana, sans-serif;
 	font-size: 12px;
 	color: #666;
-	line-height: 20px;
+	line-height: 1.4em;
 	}
- 
+
 :focus { -moz-outline-style: none; }
 	
 p { padding-bottom: 15px; }
@@ -519,7 +519,7 @@ a:hover {
 
 .block form label {
 	font-family: "Lucida Grande", Verdana, sans-serif;
-	font-size: 12px;
+	font-size: 11px;
 	font-weight: bold;
 	color: #555;
 	margin-right: 10px;
@@ -531,9 +531,8 @@ a:hover {
 	background: #fefefe;
 	border: 1px solid #bbb;
 	font-family: "Lucida Grande", Verdana, sans-serif;
-	font-size: 14px;
 	color: #333;
-	padding: 7px;
+	padding: 2px;
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
 	border-radius: 3px;
@@ -546,9 +545,9 @@ a:hover {
 	background: #fefefe;
 	border: 1px solid #bbb;
 	font-family: "Lucida Grande", Verdana, sans-serif;
-	font-size: 14px;
+	font-size: 12px;
 	color: #333;
-	padding: 7px;
+	padding: 4px;
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
 	border-radius: 3px;
@@ -574,8 +573,6 @@ a:hover {
 	border-radius: 3px;
 	outline: none;
 	}
-	
-.block form textarea.wysiwyg { width: 918px; padding: 0; }
 	
 .block form input.radio,
 .block form input.checkbox {
@@ -715,23 +712,19 @@ a:hover {
 
 .block.small.center.login { margin-top: 100px; }
 
-
 /* Image list */
 
 .block .block_content .imglist {
 	overflow: hidden;
 	margin: 0;
-	padding: 0;
-	padding-bottom: 10px;
-	}
+  padding: 0 0 10px;
+}
 
 .block .block_content .imglist ul {
 	padding: 0;
 	}
 
 .block .block_content .imglist li {
-	padding: 0;
-	margin: 0;
 	background: 0;
 	width: 100px;
 	height: 100px;
@@ -861,8 +854,6 @@ a:hover {
 	text-transform: none;
 	background: url(/images/admin/tiny.gif) top center no-repeat;
 	}
-
-
 
 .block input.button.tiny:hover { background: url(/images/admin/tiny_.gif) top center no-repeat; }
 

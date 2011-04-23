@@ -2,5 +2,5 @@
   %label 
     Comments
     = link_to "(+)", "#/comments/#{object.id}"
-  .list
+  .list{:style=>"margin-top: 10px"}
     = render :partial => "comments/collection", :locals => {:items => object.comments, :id => object.id}

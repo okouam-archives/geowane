@@ -15,8 +15,11 @@ javascripts:
     - public/javascripts/sammy.plugins/*.js
 
   mapping:
-    - public/javascripts/OpenLayers-2.8/build/OpenLayers.js
+    - public/javascripts/OpenLayers-2.10/OpenLayers.js
     - public/javascripts/spatial.models/*.js
+    - public/javascripts/ext-jquery-adapter.js
+    - public/javascripts/ext-all.js
+    - public/javascripts/GeoExt.js
 
   templates:
     - app/views/**/*.jst

@@ -1,6 +1,7 @@
 = content_for :title, "Edit Location"
 
 = include_javascripts :mapping
+= stylesheet_link_tag 'ext-all.css'
 
 .block.editor
   .block_head
@@ -15,18 +16,17 @@
       %ul
         %li= link_to "Feature", "#/tabs/feature"
         %li= link_to "Information", "#/tabs/information"
-        %li= link_to "Coordinates", "#/tabs/classification"
         %li= link_to "History", "#/tabs/history"
-        %li= link_to "Web Search", "#/tabs/web-search"
       .clear
   .block_content
+    %br
+    #mappanel
+    %br
     = semantic_form_for @location do |form|
       .editor-content
         = render :partial => "locations/form/feature", :locals => {:form => form, :form_data => @form_data}
         = render :partial => "locations/form/information", :locals => {:form => form}
-        = render :partial => "locations/form/classification", :locals => {:form => form}
         = render :partial => "locations/form/history", :locals => {:form => form, :location => @location}
-        #web-search-tab
         .clear
     %br
     %br
@@ -39,20 +39,59 @@
       $(output).appendTo($(".comments .list"));
     })
 
-    var settings = new Spatial.Models.Settings();
-    var map = new Spatial.Models.Map(settings);
-    var layer = new Spatial.Models.InteractiveLayer(map, "selection", {
-      persistor: function(feature, pixel) {
-        document.body.style.cursor = 'auto';
-        var coordinates = feature.layer.map.getLonLatFromPixel(pixel);
-        $("#location_latitude").val(coordinates.lat);
-        $("#location_longitude").val(coordinates.lon);
-      },
-      showPopups: false
-    });
+    Ext.onReady(function() {
+      var settings = new Spatial.Models.Settings();
+      var map = new Spatial.Models.Map(settings);
 
-    var poi = #{object.json_object.to_json};
-    layer.load([new Location(poi)]);
+      var mapPanel = new GeoExt.MapPanel({
+        region: "center",
+        height: 200,
+        width: 400,
+        map: map.instance
+      });
+
+      var vecLayer = new OpenLayers.Layer.Vector("vector", {
+        strategies: [new OpenLayers.Strategy.Fixed()],
+         protocol: new OpenLayers.Protocol.HTTP({
+            url: "/locations/#{object.id}",
+            headers: {'Content-Type': 'application/json'},
+            format: new OpenLayers.Format.GeoJSON()
+         })
+      });
+      map.instance.addLayer(vecLayer);
+
+      var jsonStore = new Ext.data.SimpleStore({
+        fields: ["property", "value"],
+        data: #{@props}
+      });
+
+      var gridPanel = new Ext.grid.GridPanel({
+        title: "Geospatial Properties",
+        store: jsonStore,
+        autoExpandColumn: "value",
+        colModel: new Ext.grid.ColumnModel({
+           columns: [
+            {id: 'property', header: 'Property', width: 200, sortable: true, dataIndex: 'property'},
+            {id: 'value', header: 'Value', width: 200, sortable: true, dataIndex: 'value'}
+          ]
+        }),
+        viewConfig: {
+          forceFit: true
+        },
+        sm: new Ext.grid.RowSelectionModel({singleSelect:true}),
+        region: "east",
+        width: 420
+      });
+
+      var mainPanel = new Ext.Panel({
+          renderTo: "mappanel",
+          layout: "border",
+          height: 200,
+          width: 920,
+          items: [mapPanel, gridPanel]
+        });
+
+      });
 
     var app = Sammy(function() {
 

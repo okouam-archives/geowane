@@ -1,5 +1,8 @@
 = content_for :title, "Points of Interest"
 
+= include_javascripts :mapping
+= stylesheet_link_tag 'ext-all.css'
+
 .block
   .block_head
     %h2 Points of Interest
@@ -12,8 +15,11 @@
           %li.nobg.collection_delete= link_to "Delete Selection", "#"
         %li.nobg.export= link_to "Export Selection", "#"
   .block_content
+    %br
+    #mappanel
+    %br
     = semantic_form_for :locations, :url => new_export_path do
-      %table.main{:cellspacing => "0", :cellpadding => "0", :style => "width: 100%; margin-left: 0px"}
+      %table.main{:cellspacing => "0", :cellpadding => "0", :style => "margin-left: 0px"}
         %tbody
           %tr
             %th
@@ -45,7 +51,7 @@
               %td= location.username
               %td= location.created_at.strftime("%d-%m-%Y")
               %td= location.updated_at.strftime("%d-%m-%Y")
-              %td= location.status.to_s.humanize.upcase 
+              %td= location.status.to_s.humanize.upcase
     %br
       %div
         = render :partial => "shared/paging", :locals => {:collection => @locations}
@@ -91,4 +97,64 @@
       $("form").submit();
       return false;
     });
+
+    Ext.onReady(function() {
+      var settings = new Spatial.Models.Settings();
+      var map = new Spatial.Models.Map(settings);
+
+      var mapPanel = new GeoExt.MapPanel({
+          region: "center",
+          height: 200,
+          width: 400,
+          map: map.instance
+      });
+
+      var vecLayer = new OpenLayers.Layer.Vector("vector");
+      map.instance.addLayer(vecLayer);
+
+      var featureStore = new GeoExt.data.FeatureStore({
+        layer: vecLayer,
+        fields: [
+            {name: 'name', type: 'string'}
+        ],
+        proxy: new GeoExt.data.ProtocolProxy({
+            protocol: new OpenLayers.Protocol.HTTP({
+                url: "locations.json",
+                format: new OpenLayers.Format.GeoJSON()
+            })
+        }),
+        autoLoad: true
+      });
+
+      var gridPanel = new Ext.grid.GridPanel({
+        title: "Points of Interest",
+        region: "east",
+        store: featureStore,
+        autoExpandColumn: "name",
+        width: 420,
+        columns: [{
+          header: "Name",
+          dataIndex: "name",
+          resizable: false,
+          id: "name"
+        }],
+        sm: new GeoExt.grid.FeatureSelectionModel()
+      });
+
+      var mainPanel = new Ext.Panel({
+        renderTo: "mappanel",
+        layout: "border",
+        height: 200,
+        width: 920,
+        items: [mapPanel, gridPanel]
+      });
+
+      vecLayer.events.register('featureselected', null, function(e) {
+        var feature = e.feature;
+        feature.layer.map.moveTo(feature.geometry.bounds.getCenterLonLat());
+      });
+
+    });
+
   });
+

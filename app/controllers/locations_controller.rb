@@ -21,6 +21,13 @@ class LocationsController < ApplicationController
     @per_page ||= 10
     @locations =  Location.paginate_by_sql(search_query, :page => page, :per_page => @per_page)
     session[:current_search] = {:query => search_query, :page => page, :per_page => @per_page}
+    respond_to do |format|
+      format.html
+      format.json do
+        render :json => create_json(@locations)
+      end
+    end
+
   end
 
   def next
@@ -59,11 +66,18 @@ class LocationsController < ApplicationController
       redirect_to "/locations/edit"
     else
       @locations = Location.includes(:comments, :tags, :user).find(session[:collection], :order => "name")
-      @categories = ["", ""] + Category.order("french").map{|c| [c.french, c.id]}
-      @comments_cache = @locations.map do |loc|
-        loc.comments.map {|x| {location_id: x.commentable_id, created_at: x.created_at, text: x.comment, user: x.user.login}}
-      end.reject{|x| x.empty?}.flatten.to_json
-      @locations_cache = @locations.map {|location| location.json_object}.to_json
+      respond_to do |format|
+        format.html do
+          @categories = ["", ""] + Category.order("french").map{|c| [c.french, c.id]}
+          @comments_cache = @locations.map do |loc|
+            loc.comments.map {|x| {location_id: x.commentable_id, created_at: x.created_at, text: x.comment, user: x.user.login}}
+          end.reject{|x| x.empty?}.flatten.to_json
+          @locations_cache = @locations.map {|location| location.json_object}.to_json
+        end
+        format.json do
+          render :json => create_json(@locations)
+        end
+      end
     end
   end
 
@@ -93,6 +107,12 @@ class LocationsController < ApplicationController
 
   edit.before do
     @categories = ["", ""] + Category.order("french").map{|c| [c.french, c.id]}
+    props = [0,1,2,3].inject([]) do |union, n|
+      boundary = object.administrative_unit(n)
+      boundary ? union << [boundary.classification, boundary.name] : union
+    end
+    props = props + [["Longitude", object.longitude], ["Latitude", object.latitude]]
+    @props = props.to_json
   end
 
   show.wants.js do
@@ -117,5 +137,24 @@ class LocationsController < ApplicationController
   def assign_form_data
     @form_data = {"categories" => Category.order("french")}
   end
+
+  def show
+    require 'rgeo/geo_json'
+    factory = RGeo::Geographic.spherical_factory
+    geom = factory.point(object.longitude, object.latitude)
+    render :json => {"geometry" => RGeo::GeoJSON.encode(geom), "type" => "Feature", "id" => object.id, "properties" => object.attributes}
+  end
+
+  def create_json(locations)
+    require 'rgeo/geo_json'
+    factory = RGeo::Geographic.spherical_factory
+    collection = {"type" => "FeatureCollection"}
+    collection["features"] = locations.map do |location|
+      geom = factory.point(location.longitude, location.latitude)
+      {"geometry" => RGeo::GeoJSON.encode(geom), "type" => "Feature", "id" => location.id, "properties" => location.attributes}
+    end
+    collection
+  end
+
 
 end

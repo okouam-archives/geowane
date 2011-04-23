@@ -1,7 +1,6 @@
 @import url(admin/style.css);
-@import url(admin/jquery.wysiwyg.css);
 @import url(admin/facebox.css);
-@import url(admin/visualize.css);
+@import url(admin/titillium.css);
 @import url(admin/date_input.css);
 @import url(admin/formtastic.css);
 
@@ -47,8 +46,7 @@
 .locations.edit .general_info {width: 400px; float: left}
 .locations.edit .ajax-action {margin-top: 3px}
 .locations.edit .ajax-action img {position: relative; top: 3px}
-.locations.edit .right-panel {margin-top: 7px; width: 450px; float: right}
-.locations.edit #map {background-color: #6699cc; border: 1px solid #666666; margin-top: 7px; width: 450px; height: 330px}
+.locations.edit .right-panel {margin-top: 7px; width: 4170px; float: right}
 
 .locations .editor fieldset {border-width: 0}
 .locations .editor fieldset ol {padding-left: 0}
@@ -65,7 +63,6 @@
 
 .locations.index .block_sub span {font-weight: bold; margin-right: 20px}
 .locations.index table.main td.name img {position: relative; top: 3px; margin-right: 3px} 
-.locations.index table.main th.city {}
 .locations.index table.main th.added_by {width: 80px}
 .locations.index table.main th.date_added {width: 80px}
 .locations.index table.main th.tags {width: 120px}
@@ -101,7 +98,7 @@
 .exports.selection .tabs ul {padding-left: 0}
 .exports.selection .tabs li {background-image: none ! important; margin-bottom: 0 ! important}
 .exports.selection .tabs li a {border-bottom: 1px solid #ddd; padding: 10px; width: 100px; display: inline-block; color: #999}
-.exports.selection .tabs li a.selected {color: #434343}
+.exports.selection .tabs li a.selected-tab {color: #434343}
 .exports.selection .tabs li a:hover {color: #777}
 
 .exports.selection span {margin-right: 20px}
@@ -123,38 +120,22 @@
 /* Others */
 
 .block_sub {background-color: #777; padding-left: 30px; color: white; line-height: 16px; width: 952px; left: -10px; position: relative}
-.block_sub a {color: white}
+.block_sub a {color: white; font-size: 11px}
 .block_sub a:hover {color: orange}
 .change_status #location_status {padding: 1px; width: 200px; font-size: 10px}
 .block_content {width: 920px}
 .block .block_content ol {padding-bottom: 0}
 .styled_select {-moz-border-radius:3px 3px 3px 3px; background:none repeat scroll 0 0 #FEFEFE; border:1px solid #BBBBBB; color:#333333; font-family:"Lucida Grande",Verdana,sans-serif; font-size:14px; outline:medium none; padding:7px; vertical-align:middle; width:410px }
 .block table.layout tr td, .block table.layout tr th { border-bottom-width: 0; line-height:normal; padding:10px; text-align:left; background-color: white ! important}
+.block form li { list-style-type: none; margin-bottom: 10px}
+.block form .commit {margin-top: 20px}
+.block form label {display: block; margin-bottom: 2px}
 
-.olControlScaleLineTop {
-  border: 1px solid white;
-  clear: both;
-  float: right;
-  text-align: center;
-  border-top: medium none; }
+.block_content ul.block_tabs {padding-bottom: 0}
+.block_content ul.block_tabs li {float: left; background: none; padding: 5px 10px 5px 10px; font-variant: small-caps; border: 1px solid #ccc; border-bottom-color: white; margin-bottom: -1px}
 
-.olControlScaleLineBottom {
-  border: 1px solid white;
-  clear: both;
-  float: right;
-  text-align: center;
-  border-bottom: medium none;
-  margin-top: -1px; }
+/* GeoExt */
 
-.olControlScaleLine {
-  bottom: 25px;
-  float: right;
-  font-size: xx-small;
-  right: 10px; }
-
-.olPopup {
-  padding: 7px;
-  border: 1px solid #434343 !important;
-  text-align: center !important;
-  color: #434343 !important; }
-
+#mappanel .x-panel-bwrap {overflow: visible}
+#mappanel table {margin-bottom: 0}
+#mappanel table tr td, #mappanel table tr th {padding: 0; border-bottom : inherit}

@@ -17,7 +17,7 @@
 
       showTab: function(name) {
         _.each(anchors, function(anchor) {
-          if ($(anchor).hasClass("selected")) $(anchor).removeClass("selected");
+          if ($(anchor).hasClass("selected-tab")) $(anchor).removeClass("selected-tab");
         });
 
         _.each(tabs, function(item) {
@@ -27,7 +27,7 @@
         var link = _.select(links, function(candidate) {
           return $(candidate).attr("href") == "#/tab/" + name;
         });
-        $(link).addClass("selected");
+        $(link).addClass("selected-tab");
 
         var active = _.select(tabs, function(item) {
           return item.attr("id") == name + "-tab";

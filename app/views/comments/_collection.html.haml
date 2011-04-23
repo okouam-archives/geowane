@@ -1,5 +1,15 @@
 %div{"data-parent" => id, :id => "comments_for_" + id.to_s}
   - items.each do |item|
     - if item.persisted?
-      %h4= "#{item.user.login} | #{item.created_at.strftime("%e %B %Y")} @ #{item.created_at.strftime("%H:%M %p")}"
-      %p= item.comment
+      .audit
+        .author{:style=>"float: left"}
+          = image_tag("http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(item.user.login)}?d=identicon&s=50", :style => "float: left; border: 1px solid #777")
+        .details{:style=>"margin-left: 10px; float: left; width: 330px; position: relative; top: -4px"}
+          %span{:style=>"font-size: 10px"}
+            #{item.created_at.to_s(:short)}
+          %br
+          %span{:style=>"font-size: 11px; position: relative; top: -4px"}
+            #{item.user.login}
+          %p= item.comment
+      .clear
+

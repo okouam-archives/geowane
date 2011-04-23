@@ -27,8 +27,8 @@
 
     setupControls: function() {
       this.instance.removeControl(this.instance.getControlsByClass("OpenLayers.Control.PanZoom")[0]);
-      this.instance.addControl(new OpenLayers.Control.ScaleLine());
-      this.instance.addControl(new OpenLayers.Control.PanZoomBar());
+      //this.instance.addControl(new OpenLayers.Control.ScaleLine());
+      //this.instance.addControl(new OpenLayers.Control.PanZoomBar());
     }
 
   });

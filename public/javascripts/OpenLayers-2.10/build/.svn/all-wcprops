@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/!svn/ver/11846/trunk/openlayers/build
+END
+full.cfg
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/!svn/ver/11008/trunk/openlayers/build/full.cfg
+END
+license.txt
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/!svn/ver/10995/trunk/openlayers/build/license.txt
+END
+tests.cfg
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/!svn/ver/11168/trunk/openlayers/build/tests.cfg
+END
+library.cfg
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/!svn/ver/11053/trunk/openlayers/build/library.cfg
+END
+mobile.cfg
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/!svn/ver/11846/trunk/openlayers/build/mobile.cfg
+END
+build.py
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/!svn/ver/11494/trunk/openlayers/build/build.py
+END
+README.txt
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/!svn/ver/11448/trunk/openlayers/build/README.txt
+END
+lite.cfg
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/!svn/ver/11008/trunk/openlayers/build/lite.cfg
+END
+buildUncompressed.py
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/!svn/ver/6156/trunk/openlayers/build/buildUncompressed.py
+END
