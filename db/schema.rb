@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110318204858) do
+ActiveRecord::Schema.define(:version => 20110424022144) do
 
   create_table "administrative_units", :force => true do |t|
     t.string   "name",                          :null => false
@@ -251,6 +251,18 @@ ActiveRecord::Schema.define(:version => 20110318204858) do
     t.integer "user_id"
     t.integer "role_id"
   end
+
+  create_table "searches", :force => true do |t|
+    t.string   "sql"
+    t.integer  "page"
+    t.integer  "per_page"
+    t.string   "persistence_token"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "searches", ["persistence_token"], :name => "idx_searches_persistence_token"
 
   create_table "selections", :force => true do |t|
     t.string   "name",        :null => false

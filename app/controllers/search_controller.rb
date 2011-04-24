@@ -13,7 +13,7 @@ class SearchController < ApplicationController
   end
 
   def create
-    criteria = params[:search].delete_if {|key, value| value.blank? || (["category_missing", "category_present"].include?(key) && value == "0")}
+    criteria = params[:search_criteria].delete_if {|key, value| value.blank? || (["category_missing", "category_present"].include?(key) && value == "0")}
     redirect_to locations_path(:s => criteria)
   end
 

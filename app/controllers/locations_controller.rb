@@ -3,52 +3,50 @@ class LocationsController < ApplicationController
   resource_controller
   layout "admin"
   before_filter :assign_form_data, :only => [:create, :edit]
+  respond_to :html, :json
 
   def index
+    search = nil
     page = params[:page]
     @per_page = params[:per_page]
     if params[:s].nil? && session[:current_search]
-      page ||= session[:current_search][:page]
-      @per_page ||= session[:current_search][:per_page]
-      search_query = session[:current_search][:query]
+      search = Search.find_by_persistence_token(session[:current_search])
+      page ||= search.page
+      @per_page ||= search.per_page
+      sql = search.sql
     else
-      if params[:s].is_a?(Hash)
-        search_query = Search.create params[:s], params[:sort]
-      else
-        search_query = Search.create nil, params[:sort]
-      end
+      criteria = params[:s].is_a?(Hash) ? params[:s] : nil
+      sql = SearchCriteria.create_sql criteria, params[:sort]
     end
     @per_page ||= 10
-    @locations =  Location.paginate_by_sql(search_query, :page => page, :per_page => @per_page)
-    session[:current_search] = {:query => search_query, :page => page, :per_page => @per_page}
+
+    search ||= Search.new(:user => current_user)
+    search.update_attributes(:user => current_user, :sql => sql, :page => page, :per_page => @per_page)
+    search.save!
+
+    session[:current_search] = search.persistence_token
+
     respond_to do |format|
-      format.html
+      format.html do
+        @locations = search.execute
+      end
       format.json do
-        render :json => create_json(@locations)
+        render :json => search.execute.to_a.to_geojson
       end
     end
 
   end
 
   def next
-    current_search = session[:current_search]
-    query = current_search ? current_search[:query] : nil
-    if query
-      next_location = Search.find_next(query, params[:id])
-      redirect_to edit_location_path(next_location)
-    else
-      redirect_to locations_path
-    end
+    search = Search.find_by_persistence_token(session[:current_search])
+    url = search ? edit_location_path(search.next(params[:id])) : locations_path
+    redirect_to url
   end
 
   def previous
-    current_search = session[:current_search][:query]
-    if current_search
-      previous_location = Search.find_previous(current_search, params[:id])
-      redirect_to edit_location_path(previous_location)
-    else
-      redirect_to locations_path
-    end
+    search = Search.find_by_persistence_token(session[:current_search])
+    url = search ? edit_location_path(search.previous(params[:id])) : locations_path
+    redirect_to url
   end
 
   def collection_delete
@@ -67,15 +65,15 @@ class LocationsController < ApplicationController
     else
       @locations = Location.includes(:comments, :tags, :user).find(session[:collection], :order => "name")
       respond_to do |format|
+        format.json do
+          render :json => @locations.to_geojson
+        end
         format.html do
           @categories = ["", ""] + Category.order("french").map{|c| [c.french, c.id]}
           @comments_cache = @locations.map do |loc|
             loc.comments.map {|x| {location_id: x.commentable_id, created_at: x.created_at, text: x.comment, user: x.user.login}}
           end.reject{|x| x.empty?}.flatten.to_json
           @locations_cache = @locations.map {|location| location.json_object}.to_json
-        end
-        format.json do
-          render :json => create_json(@locations)
         end
       end
     end
@@ -115,10 +113,6 @@ class LocationsController < ApplicationController
     @props = props.to_json
   end
 
-  show.wants.js do
-    render :json => object.json_object
-  end
-
   update do
     wants.html do
       redirect_to edit_location_path(object)
@@ -137,24 +131,5 @@ class LocationsController < ApplicationController
   def assign_form_data
     @form_data = {"categories" => Category.order("french")}
   end
-
-  def show
-    require 'rgeo/geo_json'
-    factory = RGeo::Geographic.spherical_factory
-    geom = factory.point(object.longitude, object.latitude)
-    render :json => {"geometry" => RGeo::GeoJSON.encode(geom), "type" => "Feature", "id" => object.id, "properties" => object.attributes}
-  end
-
-  def create_json(locations)
-    require 'rgeo/geo_json'
-    factory = RGeo::Geographic.spherical_factory
-    collection = {"type" => "FeatureCollection"}
-    collection["features"] = locations.map do |location|
-      geom = factory.point(location.longitude, location.latitude)
-      {"geometry" => RGeo::GeoJSON.encode(geom), "type" => "Feature", "id" => location.id, "properties" => location.attributes}
-    end
-    collection
-  end
-
 
 end

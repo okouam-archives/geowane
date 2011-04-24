@@ -42,23 +42,41 @@
     Ext.onReady(function() {
       var settings = new Spatial.Models.Settings();
       var map = new Spatial.Models.Map(settings);
+      var saveStrategy = new OpenLayers.Strategy.Save();
 
       var mapPanel = new GeoExt.MapPanel({
         region: "center",
         height: 200,
         width: 400,
-        map: map.instance
+        map: map.instance,
+        bbar: [
+          {
+            text: "Save",
+            handler: function() {
+              saveStrategy.save();
+            }
+          }
+        ]
       });
 
       var vecLayer = new OpenLayers.Layer.Vector("vector", {
         strategies: [new OpenLayers.Strategy.Fixed()],
          protocol: new OpenLayers.Protocol.HTTP({
-            url: "/locations/#{object.id}",
-            headers: {'Content-Type': 'application/json'},
+            url: "/features/#{object.id}",
+            headers: {"Accept": "application/json", "Content-Type": "application.json"},
             format: new OpenLayers.Format.GeoJSON()
          })
       });
       map.instance.addLayer(vecLayer);
+
+
+      var modifyControl = new OpenLayers.Control.ModifyFeature(vecLayer);
+      modifyControl.dragComplete = function(e) {
+        e.state = OpenLayers.State.UPDATE;
+      }
+      mapPanel.map.addControl(modifyControl);
+      modifyControl.activate();
+
 
       var jsonStore = new Ext.data.SimpleStore({
         fields: ["property", "value"],

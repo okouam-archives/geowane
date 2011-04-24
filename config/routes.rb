@@ -24,7 +24,7 @@ Gowane::Application.routes.draw do
   resource :account, :controller => "account"
 
   resource :user_sessions
-  resources :users, :cities, :counters, :conversions, :boundaries
+  resources :users, :cities, :counters, :conversions, :boundaries, :features
 
   resources :exports do
     collection do

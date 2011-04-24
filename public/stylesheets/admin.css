@@ -46,7 +46,7 @@
 .locations.edit .general_info {width: 400px; float: left}
 .locations.edit .ajax-action {margin-top: 3px}
 .locations.edit .ajax-action img {position: relative; top: 3px}
-.locations.edit .right-panel {margin-top: 7px; width: 4170px; float: right}
+.locations.edit .right-panel {margin-top: 7px; width: 417px; float: right}
 
 .locations .editor fieldset {border-width: 0}
 .locations .editor fieldset ol {padding-left: 0}
@@ -77,7 +77,7 @@
 .index table td.edit, .index table td.delete, .index table td.history {width: 22px; }
 .index .block_head .back {padding-right: 10px}
 .index table td, .index table th {font-size: 11px}
-.index .checked {width: 60px; text-align: right; border-right: 1px solid #ccc; padding-right: 10px; padding-left: 3px}
+.index .checked {width: 60px; text-align: right; padding-right: 10px; padding-left: 3px}
 .index .corrected {width: 70px; text-align: right; padding-left: 3px; padding-right: 5px}
 .index .total_POI, .index .audited, .index .invalid, .index .new {width: 44px; text-align: right; padding-left: 5px; padding-right: 5px}
 .index .new {padding-right: 12px}

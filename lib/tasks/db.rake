@@ -35,7 +35,7 @@ namespace :gowane do
         "/home/okouam/Dropbox/0-One/Operations/Technical/Mapping/Shapefiles/Senegal"]
       ActiveRecord::Base.connection.execute("TRUNCATE features")
       folders.each do |folder|
-        puts "#{Feature.import(folder)} features were imported from the files in '#{folder}'"
+        puts "#{Loader.import(folder)} features were imported from the files in '#{folder}'"
       end
     end   
 

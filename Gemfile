@@ -9,7 +9,6 @@ gem 'spatial_adapter'
 gem 'aegis', :require => 'aegis'
 gem "rails"
 gem "dbf"
-gem 'mapfish'
 gem "rgeo"
 gem "activerecord-postgis-adapter"
 gem "rgeo-activerecord"
@@ -33,7 +32,7 @@ gem "wirble"
 gem "hirb"
 gem "foreigner"
 gem 'diff-lcs'
-gem 'logglier'
+gem 'uuidtools'
 #gem "gowane_core", :path => "/home/okouam/Work/gowane_core"
 gem "gowane_core", :git => 'git@github.com:okouam/gowane_core.git'
 

@@ -43,8 +43,8 @@
                 = render :partial => "tags/collection", :locals => {:items => location.tags.map {|c| {:name => c.category.french, :delete_link => location_tag_url(c.location_id, c.id)}}}
             %td.comments
               = link_to location.comments.count, "#/comments/#{location.id}"
-    %div{:style=>"text-align: right; margin-right: 15px; margin-bottom: 20px"}
-      = submit_tag "Confirm Changes", :class => "button mid", :style => "position: relative; left: 20px"
+      %div{:style=>"text-align: right; margin-right: 15px; margin-bottom: 20px"}
+        = submit_tag "Confirm Changes", :class => "button mid", :style => "position: relative; left: 20px"
 
 :javascript
   var featureStore, saveStrategy;
@@ -59,23 +59,14 @@
       var settings = new Spatial.Models.Settings();
       var map = new Spatial.Models.Map(settings);
 
-      var mapPanel = new GeoExt.MapPanel({
-          region: "center",
-          height: 200,
-          width: 400,
-          map: map.instance
-      });
-
-      saveStrategy = new OpenLayers.Strategy.Save({
-          onCommit: function() {
-              saveStrategy.layer.refresh();
-          }
-      });
+      saveStrategy = new OpenLayers.Strategy.Save();
 
       var vecLayer = new OpenLayers.Layer.Vector("vector", {
         strategies: [new OpenLayers.Strategy.Fixed(), saveStrategy],
          protocol: new OpenLayers.Protocol.HTTP({
-          url: "/locations/edit.json",
+          url: "/features",
+          headers: {"Accept": "application/json", "Content-Type": "application.json"},
+          params: {"source": "selection"},
           format: new OpenLayers.Format.GeoJSON()
          })
       });
@@ -90,12 +81,32 @@
         ]
       });
 
+      var mapPanel = new GeoExt.MapPanel({
+          region: "center",
+          height: 200,
+          width: 400,
+          map: map.instance,
+          bbar: [
+             {  text: "Save",
+                handler: function() {
+                    featureStore.commitChanges();
+                    saveStrategy.save();
+                }
+            }
+        ]
+      });
+
       var modifyControl = new OpenLayers.Control.ModifyFeature(vecLayer);
+      modifyControl.dragComplete = function(e) {
+        record = featureStore.getRecordFromFeature(e);
+        record.set('longitude', e.geometry.x);
+        record.set('latitude', e.geometry.y);
+        e.state = OpenLayers.State.UPDATE;
+      }
       mapPanel.map.addControl(modifyControl);
       modifyControl.activate();
 
-      var gridPanel = new Ext.grid.EditorGridPanel ({
-        title: "Points of Interest",
+      var gridPanel = new Ext.grid.GridPanel ({
         region: "east",
         store: featureStore,
         autoExpandColumn: "name",
@@ -122,14 +133,6 @@
             id: "latitude"
           }],
         }),
-        listeners: {
-          afteredit: function(e) {
-            var feature = e.record.get("feature");
-            if(feature.state !== OpenLayers.State.INSERT) {
-                feature.state = OpenLayers.State.UPDATE;
-            }
-          }
-        },
         sm: new GeoExt.grid.FeatureSelectionModel({
             selectControl: modifyControl.selectControl,
             singleSelect: true
@@ -139,7 +142,7 @@
       var mainPanel = new Ext.Panel({
         renderTo: "mappanel",
         layout: "border",
-        height: 200,
+        height: 250,
         width: 920,
         items: [mapPanel, gridPanel]
       });

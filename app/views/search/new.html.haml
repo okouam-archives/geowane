@@ -4,7 +4,7 @@
   .block_head
     %h2 New Search
   .block_content
-    = semantic_form_for object, :url => "/search" do |form|
+    = semantic_form_for SearchCriteria.new, :url => "/search" do |form|
       #search-parameters
         .filter_group
           %h2 Categorization

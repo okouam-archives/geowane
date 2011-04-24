@@ -2,7 +2,7 @@
 
 require "iconv"
 
-class Feature
+class Loader
 
   def self.import(directory)
     raise "#{directory} could not be found" unless File.directory?(directory)

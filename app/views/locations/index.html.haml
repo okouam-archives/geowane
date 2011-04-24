@@ -119,7 +119,9 @@
         ],
         proxy: new GeoExt.data.ProtocolProxy({
             protocol: new OpenLayers.Protocol.HTTP({
-                url: "locations.json",
+                url: "features",
+                headers: {"Accept": "application/json"},
+                params: {"source": "search"},
                 format: new OpenLayers.Format.GeoJSON()
             })
         }),
