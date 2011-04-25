@@ -10,6 +10,13 @@ class LocationCollection
     end
   end
 
+  def destroy_all(user)
+    @items.each do |location|
+      user.may_destroy_location!(location)
+      location.destroy
+    end
+  end
+
   def remove_tag(category)
     id = (category.is_a? Category) ? category.id : category
     @items.map do |location|

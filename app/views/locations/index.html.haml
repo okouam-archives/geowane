@@ -54,7 +54,7 @@
               %td= location.status.to_s.humanize.upcase
     %br
       %div
-        = render :partial => "shared/paging", :locals => {:collection => @locations}
+        = render :partial => "shared/paging", :locals => {:collection => @locations, :page_size => @search.per_page}
     %div.clear
     %span{:style=>"float: right; margin-bottom: 20px"}
       = page_entries_info @locations

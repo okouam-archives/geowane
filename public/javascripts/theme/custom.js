@@ -29,6 +29,7 @@ $(function () {
   $('.block table tr:odd').css('background-color', '#fbfbfb');
   $('.block form input[type=file]').addClass('file');
 
+
   $('a[rel*=facebox]').facebox();
   $(".close-facebox").live('click', function() {
     $(document).trigger('close.facebox');

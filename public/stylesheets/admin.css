@@ -88,9 +88,9 @@
 /* #search-parameters */
 
 #search-parameters { padding: 20px; display: block; margin-bottom: 10px; }
-#search-parameters input { padding: 5px; width: 195px; }
+#search-parameters input[type="text"] { width: 190px; padding: 3px }
 #search-parameters input .button { width: auto; }
-#search-parameters select { padding: 5px; width: 206px; }
+#search-parameters select { width: 190px; }
 
 /* .exports.selection */
 
@@ -125,7 +125,6 @@
 .change_status #location_status {padding: 1px; width: 200px; font-size: 10px}
 .block_content {width: 920px}
 .block .block_content ol {padding-bottom: 0}
-.styled_select {-moz-border-radius:3px 3px 3px 3px; background:none repeat scroll 0 0 #FEFEFE; border:1px solid #BBBBBB; color:#333333; font-family:"Lucida Grande",Verdana,sans-serif; font-size:14px; outline:medium none; padding:7px; vertical-align:middle; width:410px }
 .block table.layout tr td, .block table.layout tr th { border-bottom-width: 0; line-height:normal; padding:10px; text-align:left; background-color: white ! important}
 .block form li { list-style-type: none; margin-bottom: 10px}
 .block form .commit {margin-top: 20px}

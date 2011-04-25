@@ -1,9 +1,19 @@
 = content_for :title, "New Search"
 
+= include_javascripts :mapping
+= stylesheet_link_tag 'ext-all.css'
+
 .block
   .block_head
     %h2 New Search
   .block_content
+    %br
+    %input#draw{:type=>"checkbox"}
+    Check to select bounds for the search
+    %br
+    %br
+    #mappanel
+    %br
     = semantic_form_for SearchCriteria.new, :url => "/search" do |form|
       #search-parameters
         .filter_group
@@ -21,7 +31,7 @@
           %h2 Localization (city)
           = form.input :city_id, :as => :select, :collection => @all_cities, :required => false, :label => "City"
           = form.input :radius
-          = form.input :street_name
+          = form.input :bbox, :as => :hidden
         .filter_group
           %h2 Auditing
           = form.input :added_by, :as => :select, :collection => @all_users, :label => "Added By", :required => false
@@ -32,17 +42,50 @@
           = form.input :modified_by, :as => :select, :label => "Modified By", :collection => @all_users, :required => false
         .filter_group
           %h2 Workflow
-          = form.input :added_on_before, :required => false, :label => "Added Before", :input_html => { :class => 'date_input' }
-          = form.input :added_on_after, :required => false, :label => "Added After", :input_html => { :class => 'date_input' }
+          = form.input :added_on_before, :required => false, :label => "Added Before", :input_html => { :class => 'date_picker' }
+          = form.input :added_on_after, :required => false, :label => "Added After", :input_html => { :class => 'date_picker' }
           = form.input :status, :as => :select, :collection => Location.new.enums(:status).select_options.map {|x| [x[0].upcase, x[1]]}   , :required => false
         .clear
         %input{:class=>"button long", :style=>"float: right; margin-bottom: 20px", :type=>"submit", :value=>"Search"}
 
   :css
-    input {width: 170px ! important}
-    select {width: 182px ! important}
     div.filter_group {float: left; width: 220px}
+
   :javascript
     $(document).ready(function() {
-      $($.date_input.initialize);
+
+      Ext.onReady(function() {
+
+        var settings = new Spatial.Models.Settings();
+        var map = new Spatial.Models.Map(settings);
+
+        var vecLayer = new OpenLayers.Layer.Vector("vector");
+        map.instance.addLayer(vecLayer);
+
+        var mapPanel = new GeoExt.MapPanel({
+            renderTo: "mappanel",
+            height: 200,
+            width: 920,
+            map: map.instance
+        });
+
+        var draw = new OpenLayers.Control.DrawFeature(vecLayer, OpenLayers.Handler.Polygon);
+        map.instance.addControl(draw);
+
+        $("#draw").click(function() {
+          if ($(this).attr("checked")) draw.activate();
+          else draw.deactivate();
+        });
+
+        $("input[type='submit']").click(function() {
+          if (vecLayer.features.length > 0) {
+            var searchBox = vecLayer.features[0].geometry.bounds.toBBOX();
+            $("#search_criteria_bbox").val(searchBox);
+          }
+          return true;
+        });
+
+      });
+
     });
+

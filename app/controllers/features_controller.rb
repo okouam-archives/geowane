@@ -6,7 +6,7 @@ class FeaturesController < ApplicationController
   def index
     case params[:source]
       when "search"
-        search = Search.find_by_persistence_token(session[:current_search])
+        search = Search.find_by_persistence_token(session[:search_token])
         locations = Location.find(search.execute.map{|x| x.id})
       when "selection"
         locations = Location.find(session[:collection], :order => "name")

@@ -6,7 +6,7 @@ class SearchCriteria
   attr_accessor :city_id, :region_id, :country_id, :confirmed_by, :audited_by, :added_on_before, :added_on_after
   attr_accessor :status, :city_level_0, :city_id, :location_level_0, :location_level_1, :location_level_2, :location_level_3
   attr_accessor :field_checked_by, :invalidated_by, :corrected_by
-  attr_accessor :street_name, :radius, :location_name
+  attr_accessor :street_name, :radius, :location_name, :bbox
 
   def initialize(attributes = nil)
     
@@ -17,6 +17,8 @@ class SearchCriteria
   end
 
   def self.create_sql(params = nil, sort = nil)
+
+    params = nil unless params.is_a?(Hash)
 
     query = {sort: sort ? " ORDER BY #{sort} ASC" : " ORDER BY locations.name ASC"}
 
@@ -48,9 +50,12 @@ class SearchCriteria
     query = filter_on_change(query, params[:confirmed_by], params[:audited_by], params[:modified_by])
 
     administrative_unit_id = find_most_selective_level(params)
+
     query = filter_on_administrative_unit(query, administrative_unit_id)
 
     query = filter_on_city(query, params[:city_id])
+
+    query = filter_on_bbox(query, params[:bbox])
 
     query = filter_on_creation_after_date(query, params[:added_on_after])
 
@@ -63,6 +68,15 @@ class SearchCriteria
   end
 
   private
+
+  def self.filter_on_bbox(query, bbox)
+    coords = bbox.split(",")
+     query.tap do |o|
+      unless bbox.blank?
+        o[:where] = "#{o[:where]} AND ST_Intersects(SetSRID('BOX(#{coords[0]} #{coords[1]},#{coords[2]} #{coords[3]})'::box2d::geometry, 4326), locations.feature)"
+      end
+    end
+  end
 
   def self.find_most_selective_level(criteria)
     level_id = criteria[:location_level_4]
