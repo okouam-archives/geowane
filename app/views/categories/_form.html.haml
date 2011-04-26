@@ -14,6 +14,7 @@
   = form.input :level, :as => :select, :collection => [0, 1, 2, 3, 4]
   = form.input :end_level, :as => :select, :collection => [0, 1, 2, 3, 4]
   = form.input :icon, :as => :hidden
+  = form.input :website
   - if object.persisted? && object.icon
     %label
       Icon

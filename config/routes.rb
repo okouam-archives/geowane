@@ -16,15 +16,21 @@ Gowane::Application.routes.draw do
       get :export
     end
     member do
-      get :locations, :save_icon, :change_icon
+      get :save_icon, :change_icon
     end
   end               
 
   resource :search, :controller => "search"
+
   resource :account, :controller => "account"
 
   resource :user_sessions
+
   resources :users, :cities, :counters, :conversions, :boundaries, :features
+
+  resources :partners do
+    resources :mappings
+  end
 
   resources :exports do
     collection do

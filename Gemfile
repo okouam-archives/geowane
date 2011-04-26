@@ -33,7 +33,7 @@ gem "hirb"
 gem "foreigner"
 gem 'diff-lcs'
 gem 'uuidtools'
-#gem "gowane_core", :path => "/home/okouam/Work/gowane_core"
+gem "nested_form"
 gem "gowane_core", :git => 'git@github.com:okouam/gowane_core.git'
 
 group :test do

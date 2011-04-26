@@ -1,0 +1,30 @@
+= content_for :title, "Edit Partner"
+
+%div.block
+  %div.block_head
+    %h2
+      Edit
+      = object.name
+      Mappings
+    %ul
+      %li.nobg= link_to "Back", partners_path
+  %div.block_content
+    %span{:style=>"width: 430px; display: inline-block"} Category
+    %span{:style=>"width: 220px; display: inline-block"} French
+    English
+    = nested_form_for object, :html => { :enctype => "multipart/form-data"} do |f|
+      %div
+        = f.fields_for :mappings do |mapping|
+          %div{:style=>"margin-top: 10px"}
+            = mapping.select :category_id, Category.dropdown_items
+            = mapping.text_field :french, :style => "margin-left: 20px; width: 190px"
+            = mapping.text_field :english, :style => "margin-left: 20px; margin-right: 10px; width: 190px"
+            = mapping.link_to_remove "remove"
+      = f.link_to_add "Add a mapping", :mappings, :style => "margin-left: 5px; position: relative; top: 15px"
+      %div{:style=>"text-align: right; margin-bottom: 30px"}
+
+        = f.submit :class => "submit long", :style => "margin-right: 0"
+
+
+:css
+  .fields input {padding: 3px; position: relative; top: 1px; border: 1px solid #ccc}

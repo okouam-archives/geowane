@@ -48,13 +48,6 @@ class CategoriesController < ApplicationController
     send_data CategoryStats.to_csv, :filename => "categories.csv"
   end
 
-  def locations
-    bounds = params[:bounds].map {|corner| corner.to_f}
-    all_locations = Location.within_bounds_for_category(params[:id], bounds[0], bounds[1], bounds[2], bounds[3])
-    subset = all_locations.paginate(:page => 1, :per_page => 20)
-    render :json =>{:categories => subset.map{|location| location.json_object}, "total_entries" => subset.total_entries}
-  end
-
   create.wants.html do
     redirect_to categories_path
   end

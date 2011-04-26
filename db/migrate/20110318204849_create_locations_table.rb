@@ -6,16 +6,9 @@ class CreateLocationsTable < ActiveRecord::Migration
         t.string :name
         t.decimal :longitude
         t.decimal :latitude
-        t.string :email
-        t.string :telephone
         t.enum :status
         t.references :city, :foreign_key => true, :dependent => :restrict
         t.references :user, :foreign_key => true, :dependent => :restrict
-        t.string :fax
-        t.string :website
-        t.string :postal_address
-        t.string :opening_hours
-        t.integer :user_rating
         t.references :import, :foreign_key => true, :dependent => :restrict
         t.string :long_name
         t.geometry :feature, :srid => 4326
@@ -24,6 +17,7 @@ class CreateLocationsTable < ActiveRecord::Migration
         t.integer :level_2
         t.integer :level_3
         t.integer :level_4
+        t.text :extensions
         t.timestamps
       end
       add_index :locations, ["feature"], :name => "idx_locations_feature", :spatial => true

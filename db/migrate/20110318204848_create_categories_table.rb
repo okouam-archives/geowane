@@ -26,6 +26,7 @@ class CreateCategoriesTable < ActiveRecord::Migration
         t.string :garmin_english
         t.string :sygic_french
         t.string :sygic_english
+        t.text :extensions
         t.string :sygic_code
         t.integer :level, :default => 0, :null => false
         t.integer :end_level, :default => 0, :null => false

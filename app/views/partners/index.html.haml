@@ -1,0 +1,25 @@
+= content_for :title, "Partners"
+
+.block
+  .block_head
+    %h2 Partners
+    %ul
+      %li.nobg.back
+        = link_to "New Partner", new_partner_path
+      %li.nobg.back
+        = link_to "Delete Selection", :confirm => 'Are you sure?', :method => :delete
+  .block_content
+    %table.list
+      %tbody
+        %tr
+          %th
+          %th Name
+          %th{:style=>"width: 100px"} Mappings
+        - @partners.each do |partner|
+          %tr
+            %td{:style=>"width: 20px"}
+              %input{:type=>"checkbox"}
+            %td= link_to partner.name, edit_partner_path(partner)
+            %td= partner.mappings.count
+
+

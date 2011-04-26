@@ -50,7 +50,7 @@
               %td.checked= linked_figure(category.field_checked_locations, "/locations?s[category_id]=#{category.id}&s[status]=field+checked")
     %br
       %div
-        = render :partial => "shared/paging", :locals => {:collection => @categories}
+        = render :partial => "shared/paging", :locals => {:collection => @categories, :page_size => @per_page}
     %div.clear
     %span{:style=>"float: right; margin-bottom: 20px"}
       = page_entries_info @categories

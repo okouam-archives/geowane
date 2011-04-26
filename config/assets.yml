@@ -13,6 +13,7 @@ javascripts:
     - public/javascripts/js-model-0.10.0.min.js
     - public/javascripts/sammy.models/*.js
     - public/javascripts/sammy.plugins/*.js
+    - public/javascripts/nested_form.js
 
   mapping:
     - public/javascripts/OpenLayers-2.10/OpenLayers.js

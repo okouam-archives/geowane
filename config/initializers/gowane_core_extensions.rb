@@ -8,3 +8,8 @@ if defined? ActiveRecord
   end
 end
 
+if defined? ActiveRecord
+  ActiveRecord::Base.send :include, GowaneCoreExtensions::ActiveRecord::HasSerializedAssociation
+end
+
+
