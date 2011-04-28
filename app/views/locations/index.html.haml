@@ -60,6 +60,9 @@
       = page_entries_info @locations
 
 :javascript
+  var settings = new Spatial.Models.Settings();
+  var map = new Spatial.Models.Map(settings);
+
   $(document).ready(function() {
 
     $("th a").click(function() {
@@ -99,8 +102,6 @@
     });
 
     Ext.onReady(function() {
-      var settings = new Spatial.Models.Settings();
-      var map = new Spatial.Models.Map(settings);
 
       var mapPanel = new GeoExt.MapPanel({
           region: "center",
@@ -111,6 +112,12 @@
 
       var vecLayer = new OpenLayers.Layer.Vector("vector");
       map.instance.addLayer(vecLayer);
+      var style = new OpenLayers.Style({'fillColor': '#66C17B', 'fillOpacity': 0.6, 'pointRadius': 6, 'strokeWidth': 1, 'strokeColor': '#000'});
+      var style_map = new OpenLayers.StyleMap({'default': style});
+      vecLayer.styleMap = style_map;
+      vecLayer.events.register('featuresadded', this, function(features) {
+        map.instance.zoomToExtent(vecLayer.getDataExtent());
+      });
 
       var featureStore = new GeoExt.data.FeatureStore({
         layer: vecLayer,

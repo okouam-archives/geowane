@@ -70,9 +70,9 @@ class SearchCriteria
   private
 
   def self.filter_on_bbox(query, bbox)
-    coords = bbox.split(",")
      query.tap do |o|
       unless bbox.blank?
+        coords = bbox.split(",")
         o[:where] = "#{o[:where]} AND ST_Intersects(SetSRID('BOX(#{coords[0]} #{coords[1]},#{coords[2]} #{coords[3]})'::box2d::geometry, 4326), locations.feature)"
       end
     end
