@@ -10,7 +10,7 @@
 
     iconPath: "/images/",
 
-    urls: ["http://galileo.codeifier.com/cgi-bin/mapserv?map=/home/deployment/mapserver/mapfiles/geocms.map"],
+    urls: ["http://galileo.codeifier.com/cgi-bin/mapserv?map=/home/deployment/mapserver/mapfiles/geocms-mercator.map"],
 
     layers: ["road-labels", "countries", "water", "roads-other", "roads-type-5", "roads-type-4", "roads-type-3",
         "roads-type-2", "roads-type-1"],
@@ -40,8 +40,6 @@
             restrictedExtent: new OpenLayers.Bounds(-20, 0, 10, 20)
     },
 
-    tileSize: 256,
-
     format: 'aggpng24',
 
     imageType: 'png',
@@ -51,8 +49,6 @@
     reloadAttempts: 3,
 
     nativeImagesPath: "/images/OpenLayers/",
-
-    roadStyle: {fill: true, stroke: true, fillColor: "#2356d9", strokeOpacity: 0.7, pointRadius: 4, strokeColor: "#2356d9", strokeWidth: 5},
 
     init: function(options) {
       $.extend(this, options);

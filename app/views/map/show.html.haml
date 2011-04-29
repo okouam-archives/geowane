@@ -1,0 +1,216 @@
+= content_for :title, "Map"
+
+= include_javascripts :mapping
+
+%script{:src=>"http://maps.google.com/maps/api/js?v=3.2&sensor=false"}
+%script{:src=>"http://api.maps.yahoo.com/ajaxymap?v=3.0&appid=euzuro-openlayers"}
+%script{:src=>"http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=.2&mkt=en-us"}
+
+= stylesheet_link_tag 'ext-all.css'
+
+.block.editor
+  .block_head
+    %h2 Map
+  .block_content
+    %br
+    #mappanel{:style=>"float: left; width: 620px; margin-bottom: 20px"}
+
+:javascript
+  var settings = new Spatial.Models.Settings();
+  var map;
+
+  Ext.onReady(function() {
+
+    map = new OpenLayers.Map("map", {
+      units: 'm',
+      projection: new OpenLayers.Projection('EPSG:900913'),
+      maxResolution: 156543.0339,
+      maxExtent: new OpenLayers.Bounds(
+        -128 * 156543.0339,
+        -128 * 156543.0339,
+        128 * 156543.0339,
+        128 * 156543.0339
+      ),
+      restrictedExtent: new OpenLayers.Bounds(-3896182.1777645745, -557305.2572745769, 447343.46125802, 	2357752.286835),
+      displayProjection: new OpenLayers.Projection('EPSG:4326')
+    });
+
+    var render_options = {
+      map_imagetype: settings.imageType,
+      format: settings.format,
+      layers: settings.layers,
+      isBaseLayer: false
+    };
+
+    var o1 = new OpenLayers.Layer.WMS("0-One", settings.urls, render_options);
+    var yahoo = new OpenLayers.Layer.Yahoo("Yahoo", {sphericalMercator: true});
+    var google = new OpenLayers.Layer.Google("Google", {sphericalMercator: true});
+    var osm = new OpenLayers.Layer.OSM("Open Street Map");
+    map.addLayers([o1, google, osm, yahoo]);
+
+    osm = osm.clone(); osm.isBaseLayer = false;  osm.opacity = 0.4;
+    o1 = o1.clone(); o1.isBaseLayer = false;  o1.opacity = 0.4;
+    map.addLayers([o1, osm]);
+
+    var showCategory = function(id) {
+      var layer = createFeatureLayer(id);
+      var style = addStyle(layer);
+      map.addLayer(layer);
+      setupPopups(layer, map);
+    };
+
+    var mapPanel = new GeoExt.MapPanel({
+      height: 500,
+      columnWidth: .55,
+      map: map
+    });
+
+    var layerList = new GeoExt.tree.LayerContainer({
+        loader: new GeoExt.tree.LayerLoader({
+          store: mapPanel.layers,
+          filter: function(record) {
+            return record.get("layer").isBaseLayer;
+          }
+        }),
+        leaf: false,
+        expanded: true
+    });
+
+     var layerList2 = new GeoExt.tree.LayerContainer({
+        leaf: false,
+        expanded: true,
+        loader: new GeoExt.tree.LayerLoader({
+          store: mapPanel.layers,
+          filter: function(record) {
+            var layer = record.get("layer");
+            return !layer.isBaseLayer && layer.name != "vector";
+          }
+        })
+    });
+
+    var layerTree = new Ext.tree.TreePanel({
+        title: 'Base Layer',
+        root: layerList,
+        flex: 1
+    });
+
+    var layerTree2 = new Ext.tree.TreePanel({
+        title: 'Overlay',
+        root: layerList2,
+        flex: 1
+    });
+
+    var store = new Ext.data.ArrayStore({
+      idIndex: 0,
+      fields: ["category", "name"],
+      data: #{Category.all.map{|x| [x.id, x.french]}.to_json}
+    })
+
+    var categoryPanel = new Ext.grid.GridPanel({
+      store: store,
+      height: 500,
+      title: "Categories",
+      autoExpandColumn: "name",
+      columnWidth: .25,
+      viewConfig: {forceFit: true},
+      sm: new Ext.grid.RowSelectionModel({singleSelect: true}),
+      cm: new Ext.grid.ColumnModel({columns:[{header: "Name", dataIndex: "name"}]})
+    });
+
+    categoryPanel.getSelectionModel().on('rowselect', function(sm, rowIdx, r) {
+      showCategory(r.id);
+    });
+
+    var layerSelectorPanel = new Ext.Panel({
+      layout: "vbox",
+      height: 500,
+      columnWidth: .20,
+      layoutConfig: {
+          align : 'stretch',
+          pack  : 'start',
+      },
+      items: [layerTree, layerTree2]
+    });
+
+    var mainPanel = new Ext.Panel({
+      renderTo: "mappanel",
+      layout: "column",
+      height: 500,
+      width: 920,
+      items: [layerSelectorPanel, mapPanel, categoryPanel]
+    });
+
+    map.zoomMaxToExtent();
+
+    // Helpers
+
+    var addStyle = function(layer) {
+      var options = {
+        'fillColor': '#66C17B',
+        'fillOpacity': 0.6,
+        'pointRadius': 6,
+        'strokeWidth': 1,
+        'strokeColor': '#000'
+      };
+      var style = new OpenLayers.Style(options);
+      var style_map = new OpenLayers.StyleMap({'default': style});
+      layer.styleMap = style_map;
+      return style;
+    };
+
+    var createFeatureLayer = function(id) {
+
+      var current = map.getLayersByName("vector");
+      if (current.length > 0) {
+        try {
+          current[0].destroy();
+        } catch(e) {
+          // do nothing
+        }
+      }
+      return new OpenLayers.Layer.Vector("vector", {
+        strategies: [new OpenLayers.Strategy.Fixed()],
+        protocol: new OpenLayers.Protocol.HTTP({
+          url: "/categories/" + id,
+          format: new OpenLayers.Format.GeoJSON({
+            internalProjection: new OpenLayers.Projection("EPSG:900913"),
+            externalProjection: new OpenLayers.Projection("EPSG:4326")
+          }),
+          headers: {"Accept": "application/json"},
+        })
+      });
+    };
+
+    var setupPopups = function(layer) {
+
+      layer.events.register('featuresadded', this, function(features) {
+        layer.map.zoomToExtent(layer.getDataExtent());
+      });
+
+      layer.events.register('featureselected', this, function(e) {
+        var name = e.feature.attributes.name;
+        var lonlat = e.feature.geometry.bounds.getCenterLonLat();
+        var popup = new OpenLayers.Popup("info", lonlat, new OpenLayers.Size(200, 200), name, true);
+        layer.map.addPopup(popup);
+        popup.updateSize();
+      });
+
+      layer.events.register('featureunselected', this, function(e) {
+        for(var i = 0; i < layer.map.popups.length; i++) {
+          layer.map.popups[i].destroy();
+        }
+      });
+
+      var control = new OpenLayers.Control.SelectFeature(layer, {
+        hover: true, multiple: false
+      });
+      layer.map.addControl(control);
+      control.activate();
+    }
+
+  });
+
+:css
+  .olPopup {border: 1px solid #ccc ! important}
+  .olPopupCloseBox {display: none}
+

@@ -48,6 +48,10 @@ class CategoriesController < ApplicationController
     send_data CategoryStats.to_csv, :filename => "categories.csv"
   end
 
+  def show
+    render :json => object.locations.to_geojson(:only => ["name"])
+  end
+
   create.wants.html do
     redirect_to categories_path
   end

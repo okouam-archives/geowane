@@ -45,10 +45,4 @@ class FeaturesController < ApplicationController
 
   end
 
-  def destroy
-    @city = City.find(params[:id])
-    @city.destroy
-    head :no_content
-  end
-
 end

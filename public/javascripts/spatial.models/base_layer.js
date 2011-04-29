@@ -13,8 +13,6 @@
       var render_options = {
         map_imagetype: settings.imageType,
         format: settings.format,
-        transparent: settings.isTransparent,
-        tileSize: settings.tileSize,
         buffer: 0,
         layers: settings.layers
       };
