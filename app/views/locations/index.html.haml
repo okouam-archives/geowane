@@ -103,15 +103,32 @@
 
     Ext.onReady(function() {
 
+      var vecLayer = new OpenLayers.Layer.Vector("vector");
+      map.instance.addLayer(vecLayer);
+
       var mapPanel = new GeoExt.MapPanel({
           region: "center",
           height: 200,
           width: 400,
-          map: map.instance
+          map: map.instance,
+          bbar: [
+             {  text: "Edit",
+                handler: function() {
+                  var selected = vecLayer.selectedFeatures;
+                  if (selected.length < 1) return;
+                  if (selected.length == 1) {
+                    $("input[value=" + selected[0].fid + "]").parents("tr").find("td.name a").click();
+                  } else {
+                    $("input[name='locations[]']").attr("checked", false);
+                    for(i = 0; i < selected.length; i++) {
+                      $("input[value=" + selected[i].fid + "]").attr("checked", true);
+                    }
+                    $("li.collection_edit a").click();
+                  }
+                }
+            }]
       });
 
-      var vecLayer = new OpenLayers.Layer.Vector("vector");
-      map.instance.addLayer(vecLayer);
       var style = new OpenLayers.Style({'fillColor': '#66C17B', 'fillOpacity': 0.6, 'pointRadius': 6, 'strokeWidth': 1, 'strokeColor': '#000'});
       var style_map = new OpenLayers.StyleMap({'default': style});
       vecLayer.styleMap = style_map;

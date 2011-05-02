@@ -35,6 +35,7 @@
     mapName: "geocms",
 
     mapOptions: {
+            controls: [new OpenLayers.Control.Navigation()],
             bounds: 0,
             maxExtent: new OpenLayers.Bounds(-25, -5, 15, 25),
             restrictedExtent: new OpenLayers.Bounds(-20, 0, 10, 20)
