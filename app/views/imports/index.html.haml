@@ -23,7 +23,7 @@
               %td= import.created_at.strftime("%d-%m-%Y")
       %br
         %div
-          = render :partial => "shared/paging", :locals => {:collection => @imports}
+          = render :partial => "shared/paging", :locals => {:collection => @imports, :page_size => @per_page}
     - else
       %p
         %br

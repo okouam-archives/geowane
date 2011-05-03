@@ -23,7 +23,7 @@
               %td= export.locations_count
       %br
         %div
-          = render :partial => "shared/paging", :locals => {:collection => @exports}
+          = render :partial => "shared/paging", :locals => {:collection => @exports, :page_size => @per_page}
     - else
       %p
         %br
