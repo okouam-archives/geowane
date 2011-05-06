@@ -1,6 +1,6 @@
 development: &development
   adapter: postgresql
-  database: cms_development
+  database: geocms_development
   host: localhost
   pool: 5
   username: o1
@@ -12,13 +12,13 @@ development: &development
 
 beta:
   <<: *development
-  database: cms_beta
+  database: geocms_beta
   username: deployment
   password: FireDrake[1981]
 
 test:
   <<: *development
-  database: cms_test
+  database: geocms_test
 
 production:
   <<: *development
@@ -28,4 +28,4 @@ production:
 
 cucumber:
   <<: *development
-  database: cms_test
+  database: geocms_test

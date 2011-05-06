@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110424022144) do
+ActiveRecord::Schema.define(:version => 20110506144307) do
 
   create_table "administrative_units", :force => true do |t|
     t.string   "name",                          :null => false
@@ -94,6 +94,18 @@ ActiveRecord::Schema.define(:version => 20110424022144) do
   add_index "comments", ["commentable_type"], :name => "index_comments_on_commentable_type"
   add_index "comments", ["user_id"], :name => "index_comments_on_user_id"
 
+  create_table "communes", :force => true do |t|
+    t.string   "name"
+    t.geometry "feature",                 :limit => nil
+    t.integer  "uncategorized_locations"
+    t.integer  "total_locations"
+    t.integer  "new_locations"
+    t.integer  "invalid_locations"
+    t.integer  "corrected_locations"
+    t.integer  "audited_locations"
+    t.integer  "field_checked_locations"
+  end
+
   create_table "conversions", :force => true do |t|
     t.string   "input_file_name"
     t.string   "input_content_type"
@@ -111,6 +123,20 @@ ActiveRecord::Schema.define(:version => 20110424022144) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "countries", :force => true do |t|
+    t.string   "name"
+    t.geometry "feature",                 :limit => nil, :srid => 4326
+    t.integer  "uncategorized_locations"
+    t.integer  "total_locations"
+    t.integer  "new_locations"
+    t.integer  "invalid_locations"
+    t.integer  "corrected_locations"
+    t.integer  "audited_locations"
+    t.integer  "field_checked_locations"
+  end
+
+  add_index "countries", ["feature"], :name => "idx_countries_feature", :spatial => true
 
   create_table "exports", :force => true do |t|
     t.integer  "locations_count"
@@ -143,6 +169,250 @@ ActiveRecord::Schema.define(:version => 20110424022144) do
 
   add_index "features", ["geom"], :name => "idx_features_geom", :spatial => true
 
+  create_table "geocms_osm_line", :id => false, :force => true do |t|
+    t.integer  "osm_id"
+    t.text     "access"
+    t.text     "addr:flats"
+    t.text     "addr:housenumber"
+    t.text     "addr:interpolation"
+    t.text     "admin_level"
+    t.text     "aerialway"
+    t.text     "aeroway"
+    t.text     "amenity"
+    t.text     "area"
+    t.text     "barrier"
+    t.text     "bicycle"
+    t.text     "bridge"
+    t.text     "boundary"
+    t.text     "building"
+    t.text     "construction"
+    t.text     "cutting"
+    t.text     "disused"
+    t.text     "embankment"
+    t.text     "foot"
+    t.text     "highway"
+    t.text     "historic"
+    t.text     "horse"
+    t.text     "junction"
+    t.text     "landuse"
+    t.text     "layer"
+    t.text     "learning"
+    t.text     "leisure"
+    t.text     "lock"
+    t.text     "man_made"
+    t.text     "military"
+    t.text     "motorcar"
+    t.text     "name"
+    t.text     "natural"
+    t.text     "oneway"
+    t.text     "operator"
+    t.text     "power"
+    t.text     "power_source"
+    t.text     "place"
+    t.text     "railway"
+    t.text     "ref"
+    t.text     "religion"
+    t.text     "residence"
+    t.text     "route"
+    t.text     "service"
+    t.text     "shop"
+    t.text     "sport"
+    t.text     "tourism"
+    t.text     "tracktype"
+    t.text     "tunnel"
+    t.text     "waterway"
+    t.text     "width"
+    t.text     "wood"
+    t.integer  "z_order"
+    t.float    "way_area"
+    t.geometry "way",                :limit => nil
+  end
+
+  add_index "geocms_osm_line", ["way"], :name => "geocms_osm_line_index", :spatial => true
+
+  create_table "geocms_osm_point", :id => false, :force => true do |t|
+    t.integer  "osm_id"
+    t.text     "access"
+    t.text     "addr:flats"
+    t.text     "addr:housenumber"
+    t.text     "addr:interpolation"
+    t.text     "admin_level"
+    t.text     "aerialway"
+    t.text     "aeroway"
+    t.text     "amenity"
+    t.text     "area"
+    t.text     "barrier"
+    t.text     "bicycle"
+    t.text     "bridge"
+    t.text     "boundary"
+    t.text     "building"
+    t.text     "construction"
+    t.text     "cutting"
+    t.text     "disused"
+    t.text     "embankment"
+    t.text     "foot"
+    t.text     "highway"
+    t.text     "historic"
+    t.text     "horse"
+    t.text     "junction"
+    t.text     "landuse"
+    t.text     "layer"
+    t.text     "learning"
+    t.text     "leisure"
+    t.text     "lock"
+    t.text     "man_made"
+    t.text     "military"
+    t.text     "motorcar"
+    t.text     "name"
+    t.text     "natural"
+    t.text     "oneway"
+    t.text     "operator"
+    t.text     "power"
+    t.text     "power_source"
+    t.text     "place"
+    t.text     "railway"
+    t.text     "ref"
+    t.text     "religion"
+    t.text     "residence"
+    t.text     "route"
+    t.text     "service"
+    t.text     "shop"
+    t.text     "sport"
+    t.text     "tourism"
+    t.text     "tracktype"
+    t.text     "tunnel"
+    t.text     "waterway"
+    t.text     "width"
+    t.text     "wood"
+    t.integer  "z_order"
+    t.float    "way_area"
+    t.geometry "way",                :limit => nil
+  end
+
+  add_index "geocms_osm_point", ["way"], :name => "geocms_osm_point_index", :spatial => true
+
+  create_table "geocms_osm_polygon", :id => false, :force => true do |t|
+    t.integer  "osm_id"
+    t.text     "access"
+    t.text     "addr:flats"
+    t.text     "addr:housenumber"
+    t.text     "addr:interpolation"
+    t.text     "admin_level"
+    t.text     "aerialway"
+    t.text     "aeroway"
+    t.text     "amenity"
+    t.text     "area"
+    t.text     "barrier"
+    t.text     "bicycle"
+    t.text     "bridge"
+    t.text     "boundary"
+    t.text     "building"
+    t.text     "construction"
+    t.text     "cutting"
+    t.text     "disused"
+    t.text     "embankment"
+    t.text     "foot"
+    t.text     "highway"
+    t.text     "historic"
+    t.text     "horse"
+    t.text     "junction"
+    t.text     "landuse"
+    t.text     "layer"
+    t.text     "learning"
+    t.text     "leisure"
+    t.text     "lock"
+    t.text     "man_made"
+    t.text     "military"
+    t.text     "motorcar"
+    t.text     "name"
+    t.text     "natural"
+    t.text     "oneway"
+    t.text     "operator"
+    t.text     "power"
+    t.text     "power_source"
+    t.text     "place"
+    t.text     "railway"
+    t.text     "ref"
+    t.text     "religion"
+    t.text     "residence"
+    t.text     "route"
+    t.text     "service"
+    t.text     "shop"
+    t.text     "sport"
+    t.text     "tourism"
+    t.text     "tracktype"
+    t.text     "tunnel"
+    t.text     "waterway"
+    t.text     "width"
+    t.text     "wood"
+    t.integer  "z_order"
+    t.float    "way_area"
+    t.geometry "way",                :limit => nil
+  end
+
+  add_index "geocms_osm_polygon", ["way"], :name => "geocms_osm_polygon_index", :spatial => true
+
+  create_table "geocms_osm_roads", :id => false, :force => true do |t|
+    t.integer  "osm_id"
+    t.text     "access"
+    t.text     "addr:flats"
+    t.text     "addr:housenumber"
+    t.text     "addr:interpolation"
+    t.text     "admin_level"
+    t.text     "aerialway"
+    t.text     "aeroway"
+    t.text     "amenity"
+    t.text     "area"
+    t.text     "barrier"
+    t.text     "bicycle"
+    t.text     "bridge"
+    t.text     "boundary"
+    t.text     "building"
+    t.text     "construction"
+    t.text     "cutting"
+    t.text     "disused"
+    t.text     "embankment"
+    t.text     "foot"
+    t.text     "highway"
+    t.text     "historic"
+    t.text     "horse"
+    t.text     "junction"
+    t.text     "landuse"
+    t.text     "layer"
+    t.text     "learning"
+    t.text     "leisure"
+    t.text     "lock"
+    t.text     "man_made"
+    t.text     "military"
+    t.text     "motorcar"
+    t.text     "name"
+    t.text     "natural"
+    t.text     "oneway"
+    t.text     "operator"
+    t.text     "power"
+    t.text     "power_source"
+    t.text     "place"
+    t.text     "railway"
+    t.text     "ref"
+    t.text     "religion"
+    t.text     "residence"
+    t.text     "route"
+    t.text     "service"
+    t.text     "shop"
+    t.text     "sport"
+    t.text     "tourism"
+    t.text     "tracktype"
+    t.text     "tunnel"
+    t.text     "waterway"
+    t.text     "width"
+    t.text     "wood"
+    t.integer  "z_order"
+    t.float    "way_area"
+    t.geometry "way",                :limit => nil
+  end
+
+  add_index "geocms_osm_roads", ["way"], :name => "geocms_osm_roads_index", :spatial => true
+
   create_table "imports", :force => true do |t|
     t.integer  "locations_count",    :default => 0
     t.string   "input_file_name"
@@ -162,6 +432,36 @@ ActiveRecord::Schema.define(:version => 20110424022144) do
     t.integer  "location_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "level0", :force => true do |t|
+    t.integer  "parent_id"
+    t.string   "name",      :limit => 80
+    t.geometry "the_geom",  :limit => nil
+  end
+
+  create_table "level1", :force => true do |t|
+    t.string   "name",      :limit => 80
+    t.integer  "parent_id"
+    t.geometry "the_geom",  :limit => nil
+  end
+
+  create_table "level2", :force => true do |t|
+    t.integer  "parent_id"
+    t.string   "name",      :limit => 80
+    t.geometry "the_geom",  :limit => nil
+  end
+
+  create_table "level3", :force => true do |t|
+    t.integer  "parent_id"
+    t.string   "name",      :limit => 80
+    t.geometry "the_geom",  :limit => nil
+  end
+
+  create_table "level4", :force => true do |t|
+    t.integer  "parent_id"
+    t.string   "name",      :limit => 80
+    t.geometry "the_geom",  :limit => nil
   end
 
   create_table "locations", :force => true do |t|
@@ -199,10 +499,10 @@ ActiveRecord::Schema.define(:version => 20110424022144) do
   create_table "mappings", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "name"
-    t.string   "value"
+    t.string   "french"
     t.integer  "category_id"
     t.integer  "partner_id"
+    t.string   "english",     :limit => 200
   end
 
   create_table "model_changes", :force => true do |t|
@@ -248,12 +548,12 @@ ActiveRecord::Schema.define(:version => 20110424022144) do
   end
 
   create_table "roles_users", :id => false, :force => true do |t|
-    t.integer "user_id"
+    t.integer "user_id", :null => false
     t.integer "role_id"
   end
 
   create_table "searches", :force => true do |t|
-    t.string   "sql"
+    t.text     "sql"
     t.integer  "page"
     t.integer  "per_page"
     t.string   "persistence_token"
@@ -261,8 +561,6 @@ ActiveRecord::Schema.define(:version => 20110424022144) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  add_index "searches", ["persistence_token"], :name => "idx_searches_persistence_token"
 
   create_table "selections", :force => true do |t|
     t.string   "name",        :null => false
@@ -296,6 +594,18 @@ ActiveRecord::Schema.define(:version => 20110424022144) do
   add_index "tags", ["category_id"], :name => "idx_tags_category_id"
   add_index "tags", ["location_id", "category_id", "id"], :name => "idx_tags_locations"
   add_index "tags", ["location_id"], :name => "idx_tags_location_id"
+
+  create_table "topologies", :force => true do |t|
+    t.integer  "location_id"
+    t.integer  "country_id"
+    t.integer  "region_id"
+    t.integer  "commune_id"
+    t.integer  "city_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "topologies", ["location_id"], :name => "idx_location_id", :unique => true
 
   create_table "users", :force => true do |t|
     t.string   "login",                                 :null => false

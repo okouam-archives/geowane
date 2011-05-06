@@ -57,7 +57,7 @@ FROM
   def z(depth)
     sql = []
     for i in 0..depth do
-      sql << "LEFT JOIN administrative_units as level_#{i} ON locations.level_#{i} = level_#{i}.id"
+      sql << "LEFT JOIN boundaries as level_#{i} ON locations.level_#{i} = level_#{i}.id"
     end
     sql.join(" ")
   end

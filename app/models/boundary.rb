@@ -2,10 +2,9 @@ require 'rgeo'
 require 'rgeo/shapefile'
 
 class Boundary < ActiveRecord::Base
-  set_table_name "administrative_units"
 
   def self.dropdown_items(depth)
-    sql = "SELECT id, name FROM administrative_units WHERE level = #{depth} ORDER BY name ASC"
+    sql = "SELECT id, name FROM boundaries WHERE level = #{depth} ORDER BY name ASC"
     Boundary.connection.select_all(sql).map {|rs| [rs["name"], rs["id"]]}
   end
 
@@ -14,10 +13,10 @@ class Boundary < ActiveRecord::Base
       SELECT
         *
       FROM
-        administrative_units
+        boundaries
       WHERE
         level = #{depth}
-        AND ST_WITHIN(ST_SetSRID(ST_POINT(#{longitude}, #{latitude}), 4326), administrative_units.feature)
+        AND ST_WITHIN(ST_SetSRID(ST_POINT(#{longitude}, #{latitude}), 4326), boundaries.feature)
     })
     result.is_a?(Array) ? result.first : result
   end

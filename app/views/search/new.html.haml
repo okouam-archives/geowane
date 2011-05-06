@@ -57,20 +57,22 @@
       Ext.onReady(function() {
 
         var settings = new Spatial.Models.Settings();
-        var map = new Spatial.Models.Map(settings);
+        var map = new OpenLayers.Map("map");
+        var baseLayer = new OpenLayers.Layer.TMS("Base Layer", "http://tilecache/tilecache.py/", {layername: 'geocms', type: 'png'});
+        map.addLayer(baseLayer);
 
-        var vecLayer = new OpenLayers.Layer.Vector("vector");
-        map.instance.addLayer(vecLayer);
+        var featureLayer = new OpenLayers.Layer.Vector("vector");
+        map.addLayer(featureLayer);
 
         var mapPanel = new GeoExt.MapPanel({
             renderTo: "mappanel",
             height: 200,
             width: 920,
-            map: map.instance
+            map: map
         });
 
-        var draw = new OpenLayers.Control.DrawFeature(vecLayer, OpenLayers.Handler.Polygon);
-        map.instance.addControl(draw);
+        var draw = new OpenLayers.Control.DrawFeature(featureLayer, OpenLayers.Handler.Polygon);
+        map.addControl(draw);
 
         $("#draw").click(function() {
           if ($(this).attr("checked")) draw.activate();
@@ -78,7 +80,7 @@
         });
 
         $("input[type='submit']").click(function() {
-          if (vecLayer.features.length > 0) {
+          if (featureLayer.features.length > 0) {
             var searchBox = vecLayer.features[0].geometry.bounds.toBBOX();
             $("#search_criteria_bbox").val(searchBox);
           }
