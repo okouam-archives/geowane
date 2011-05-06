@@ -187,6 +187,7 @@ a:hover {
 #header #nav li.iehover li.iehover a {
 	color: #fff;
 	background: #000;
+  z-index: 99999
 	}
 
 /* 3rd Menu */
