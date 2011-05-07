@@ -7,7 +7,6 @@
   .block_head
     %h2 Points of Interest
     %ul
-      %li.nobg= link_to "New Location", new_location_path
       - unless @locations.empty?
         - if @locations.any? {|l| current_user.may_update_location?(l)}
           %li.nobg.collection_edit= link_to "Edit Selection", "#"

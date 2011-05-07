@@ -86,15 +86,6 @@ class LocationsController < ApplicationController
     end
   end
 
-  create.after do
-    object.user_id = current_user
-    object.save!
-  end
-
-  create.wants.html do
-    redirect_to locations_path
-  end
-
   def assign_form_data
     @form_data = {"categories" => Category.order("french")}
   end
