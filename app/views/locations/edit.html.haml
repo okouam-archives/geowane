@@ -34,6 +34,10 @@
 :javascript
   $(document).ready(function() {
 
+    $(".save").click(function() {
+      $(".block form").submit();
+    });
+
     Comment.bind("add", function(new_comment) {
       var output = JST['comment_template']({comment: new_comment.to_hash()});
       $(output).appendTo($(".comments .list"));
