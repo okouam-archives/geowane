@@ -5,7 +5,6 @@ require 'rspec/rails'
 require 'aegis/spec/matchers'
 require 'database_cleaner'
 require 'factory_girl'
-require 'gowane_core/spec/factories_helper'
 
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
