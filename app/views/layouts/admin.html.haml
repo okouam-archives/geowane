@@ -29,6 +29,7 @@
                 - unless current_user.has_role?("collector")
                   %li= link_to "Import Data", imports_path
                   %li= link_to "Export Data", exports_path
+                  %li= link_to "Field Check Sampling", samples_path
                   %li= link_to "Compare Map Providers", map_path
             %li
               = link_to "Administration", "#"

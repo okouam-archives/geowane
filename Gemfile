@@ -34,17 +34,14 @@ gem "foreigner"
 gem 'diff-lcs'
 gem 'uuidtools'
 gem "nested_form"
-gem "gowane_core", :git => 'git@github.com:okouam/gowane_core.git'
 
 group :test do
   gem "faker"
-  gem 'cucumber-rails'
   gem 'capybara'
   gem 'factory_girl'
   gem 'factory_girl_rails'
   gem 'launchy'
   gem 'rcov'
-  gem 'gherkin'
 end
 
 group :test, :development do

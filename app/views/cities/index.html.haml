@@ -43,3 +43,9 @@
             %td.audited= linked_figure(city.audited_locations || 0, ("/locations?s[city_id]=#{city.id}" ? ("/locations?s[city_id]=#{city.id}&s[status]=audited") : nil))
             %td.checked= linked_figure(city.field_checked_locations || 0, ("/locations?s[city_id]=#{city.id}" ? ("/locations?s[city_id]=#{city.id}&s[status]=field_checked") : nil))
             %td.uncategorized= linked_figure((city.total_locations.to_i - city.categorized_locations.to_i) || 0, ("/locations?s[city_id]=#{city.id}" ? ("/locations?s[city_id]=#{city.id}&s[category_missing]=1") : nil))
+    %br
+      %div
+        = render :partial => "shared/paging", :locals => {:collection => @cities, :page_size => @per_page}
+    %div.clear
+    %span{:style=>"float: right; margin-bottom: 20px"}
+      = page_entries_info @cities

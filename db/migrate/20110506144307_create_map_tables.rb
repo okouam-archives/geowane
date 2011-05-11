@@ -1,7 +1,7 @@
 class CreateMapTables < ActiveRecord::Migration
   def self.up
     execute %{
-      CREATE TABLE osm_line
+      CREATE TABLE planet_osm_line
       (
         osm_id integer,
         "access" text,
@@ -60,8 +60,8 @@ class CreateMapTables < ActiveRecord::Migration
         way_area real,
         way geometry
       );
-      CREATE INDEX osm_line_index ON osm_line USING gist (way);
-      CREATE TABLE osm_point
+      CREATE INDEX planet_osm_line_index ON planet_osm_line USING gist (way);
+      CREATE TABLE planet_osm_point
       (
         osm_id integer,
         "access" text,

@@ -26,7 +26,7 @@ Gowane::Application.routes.draw do
 
   resource :user_sessions
 
-  resources :users, :cities, :counters, :conversions, :boundaries, :features
+  resources :users, :cities, :counters, :conversions, :boundaries, :features, :samples
 
   resources :partners do
     resources :mappings

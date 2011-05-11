@@ -9,28 +9,7 @@ class CategoriesController < ApplicationController
     session[:category_index_per_page] = params[:per_page] || session[:category_index_per_page] || 10
     @per_page = session[:category_index_per_page]
 
-    sql = %{
-      SELECT
-        categories.id,
-        categories.french,
-        categories.english,
-        categories.icon,
-        SUM(CASE WHEN status = 'new' THEN 1 ELSE 0 END) as new_locations,
-        SUM(CASE WHEN status = 'invalid' THEN 1 ELSE 0 END) as invalid_locations,
-        SUM(CASE WHEN status = 'corrected' THEN 1 ELSE 0 END) as corrected_locations,
-        SUM(CASE WHEN status = 'audited' THEN 1 ELSE 0 END) as audited_locations,
-        SUM(CASE WHEN status = 'field_checked' THEN 1 ELSE 0 END) as field_checked_locations,
-        count(locations) as total_locations
-      FROM categories
-        LEFT JOIN tags ON categories.id = tags.category_id
-        LEFT JOIN locations ON locations.id = tags.location_id
-      GROUP BY
-        categories.id,
-        categories.french,
-        categories.english,
-        categories.icon
-      ORDER BY #{@language}
-    }
+    sql = "SELECT * FROM category_workflow_report ORDER BY #{@language}"
     @categories = Category.find_by_sql(sql).paginate(:page => session[:category_index_page], :per_page => @per_page)
   end
 
@@ -45,7 +24,8 @@ class CategoriesController < ApplicationController
   end
 
   def export
-    send_data CategoryStats.to_csv, :filename => "categories.csv"
+    report_name = "category_workflow_partner_report"
+    send_data Report.new(report_name).to_csv, :filename => "#{report_name}.csv"
   end
 
   def show

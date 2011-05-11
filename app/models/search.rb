@@ -5,17 +5,24 @@ class Search < ActiveRecord::Base
   validates_presence_of :user
   before_save :generate_persistence_token
 
-  def self.construct(criteria, sort_order, page, page_size, search_token, user)
-    Search.new(:user => user, :per_page => 10, :page => 1).tap do |search|
+  def self.construct(criteria, sort_order, page = 1, page_size = 10, search_token, user)
+    Search.new(:user => user).tap do |search|
       if criteria.nil? && search_token
+        debugger
         search = Search.find_by_persistence_token(search_token)
       else
         search.sql = SearchCriteria.create_sql criteria, sort_order
       end
-        search.page = page if page
-        search.per_page = page_size if page_size
+      search.per_page = page_size
+      search.page = page
       search.save!
     end
+  end
+
+  def save_to_session(session)
+    session[:search_token] = persistence_token
+    session[:search_page] = page
+    session[:search_page_size] = per_page
   end
 
   def execute

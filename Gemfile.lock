@@ -12,26 +12,6 @@ GIT
     authlogic (2.1.3)
       activesupport
 
-GIT
-  remote: git@github.com:okouam/gowane_core.git
-  revision: bb3333daf6d6ffae7dc1f4f9effee20c1e60fca1
-  specs:
-    gowane_core (0.2.0)
-      GeoRuby
-      acts_as_commentable
-      aegis
-      authlogic
-      enumerated_attribute
-      foreigner
-      nokogiri
-      pg
-      rails
-      rgeo
-      rgeo-shapefile
-      rspec
-      spatial_adapter
-      will_paginate (~> 3.0.pre2)
-
 GEM
   remote: http://rubygems.org/
   specs:
@@ -99,14 +79,6 @@ GEM
     closure-compiler (1.0.0)
     columnize (0.3.2)
     configuration (1.2.0)
-    cucumber (0.10.0)
-      builder (>= 2.1.2)
-      diff-lcs (~> 1.1.2)
-      gherkin (~> 2.3.2)
-      json (~> 1.4.6)
-      term-ansicolor (~> 1.0.5)
-    cucumber-rails (0.3.2)
-      cucumber (>= 0.8.0)
     culerity (0.2.15)
     daemons (1.0.10)
     database_cleaner (0.6.6)
@@ -133,8 +105,6 @@ GEM
       activesupport (>= 2.3.7)
       i18n (~> 0.4)
     gem_plugin (0.2.3)
-    gherkin (2.3.5)
-      json (>= 1.4.6)
     haml (3.0.25)
     highline (1.6.1)
     hirb (0.4.0)
@@ -145,7 +115,6 @@ GEM
     jammit (0.6.0)
       closure-compiler (>= 0.1.0)
       yui-compressor (>= 0.9.1)
-    json (1.4.6)
     json_pure (1.5.1)
     launchy (0.4.0)
       configuration (>= 0.0.5)
@@ -242,7 +211,6 @@ GEM
       activerecord (>= 2.2.2)
     steak (1.1.0)
       rspec (>= 1.3)
-    term-ansicolor (1.0.5)
     thor (0.14.6)
     treetop (1.4.9)
       polyglot (>= 0.3.1)
@@ -267,7 +235,6 @@ DEPENDENCIES
   capistrano-ext
   capybara
   columnize
-  cucumber-rails
   database_cleaner
   dbf
   diff-lcs
@@ -277,8 +244,6 @@ DEPENDENCIES
   faker
   foreigner
   formtastic
-  gherkin
-  gowane_core!
   haml
   hirb
   hoptoad_notifier

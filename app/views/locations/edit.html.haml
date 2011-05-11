@@ -7,7 +7,7 @@
   .block_head
     %h2 Edit Location #{@location.id}
     %ul
-      %li.nobg= link_to "Back", locations_path
+      %li.nobg= link_to "Back", locations_path(:page => session[:search_page], :per_page => session[:search_page_size])
       %li.nobg= link_to "Previous POI", previous_location_path(@location)
       %li.nobg= link_to "Next POI", next_location_path(@location)
       %li.nobg= link_to "Save", "#", :class => "save"
