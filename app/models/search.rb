@@ -8,7 +8,6 @@ class Search < ActiveRecord::Base
   def self.construct(criteria, sort_order, page = 1, page_size = 10, search_token, user)
     Search.new(:user => user).tap do |search|
       if criteria.nil? && search_token
-        debugger
         search = Search.find_by_persistence_token(search_token)
       else
         search.sql = SearchCriteria.create_sql criteria, sort_order
