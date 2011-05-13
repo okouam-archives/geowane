@@ -16,7 +16,7 @@ feature "Navigating site" do
     page.has_title?("GeoCMS - Login").should be_true
   end
 
-  scenario "Committing changes to a POI returns the user to the previous POI selection" do
+  scenario "Committing changes to a POI returns the user to the previous POI selection", :js => true do
 
     somebody = Factory.create(:administrator)
 
@@ -45,7 +45,7 @@ feature "Navigating site" do
 
   end
 
-  scenario "Committing changes to a collection of POI returns the user to the previous POI selection" do
+  scenario "Committing changes to a collection of POI returns the user to the previous POI selection", :js => true do
 
     somebody = Factory.create(:administrator)
 

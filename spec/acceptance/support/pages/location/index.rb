@@ -11,11 +11,15 @@ module Pages
       end
 
       def pick_location(name)
-        puts @session.find("table tr a", name).find("..").inspect
+        @session.find("table tr a", :text => name).find(:xpath, "../../td[1]/input").click
       end
 
       def is_on_page?(num)
         @session.has_css?('.paggination em', text: num.to_s)
+      end
+
+      def edit_selection
+        @session.find('.collection_edit a').click
       end
 
       def item_at_row(num)
