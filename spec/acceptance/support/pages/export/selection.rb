@@ -1,6 +1,6 @@
 module Pages
   module Export
-    class Selection
+    class Selection < Pages::Page
 
       def initialize(session)
         @session = session

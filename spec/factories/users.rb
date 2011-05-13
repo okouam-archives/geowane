@@ -1,5 +1,5 @@
 Factory.define :collector, :class => User do |f|
-  password = Faker::Lorem.sentences(1)
+  password = "password"
   f.login { Faker::Internet.user_name}
   f.email { Faker::Internet.email }
   f.password {password}
@@ -8,7 +8,7 @@ Factory.define :collector, :class => User do |f|
 end
 
 Factory.define :administrator, :class => User do |f|
-  password = Faker::Lorem.sentences(1)
+  password = "password"
   f.login { Faker::Internet.user_name}
   f.email { Faker::Internet.email }
   f.password {password}
@@ -17,7 +17,7 @@ Factory.define :administrator, :class => User do |f|
 end
 
 Factory.define :auditor, :class => User do |f|
-  password = Faker::Lorem.sentences(2)
+  password = "password"
   f.login { Faker::Internet.user_name}
   f.email { Faker::Internet.email }
   f.password {password}

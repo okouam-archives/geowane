@@ -1,6 +1,6 @@
 module Pages
   module Location
-class CollectionEdit
-end
+    class CollectionEdit < Pages::Page
+    end
   end
 end

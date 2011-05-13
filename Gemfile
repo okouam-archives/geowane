@@ -9,6 +9,7 @@ gem 'spatial_adapter'
 gem 'aegis', :require => 'aegis'
 gem "rails"
 gem "dbf"
+gem "capybara-webkit"
 gem "rgeo"
 gem "activerecord-postgis-adapter"
 gem "rgeo-activerecord"

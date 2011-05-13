@@ -5,7 +5,7 @@ require File.dirname(__FILE__) + '/acceptance_helper'
 feature "Exporting data" do
 
   scenario "Collectors are not allowed to export data" do
-    somebody = Factory.create(:collector, password: "XXXX", password_confirmation: "XXXX")
+    somebody = Factory.create(:collector)
     page = Pages::Login.new(Capybara.current_session)
     page.visit
     page.login(somebody)
@@ -14,7 +14,7 @@ feature "Exporting data" do
   end
 
   scenario "Auditors are not allowed to export data" do
-    somebody = Factory.create(:auditor, password: "XXXX", password_confirmation: "XXXX")
+    somebody = Factory.create(:auditor)
     page = Pages::Login.new(Capybara.current_session)
     page.visit
     page.login(somebody)
@@ -23,7 +23,7 @@ feature "Exporting data" do
   end
 
   scenario "Administrators are allowed to export data" do
-    somebody = Factory.create(:administrator, password: "XXXX", password_confirmation: "XXXX")
+    somebody = Factory.create(:administrator)
     page = Pages::Login.new(Capybara.current_session)
     page.visit
     page.login(somebody)
@@ -33,7 +33,7 @@ feature "Exporting data" do
 
   scenario "A subset of the database can be selected for export" do
 
-    somebody = Factory.create(:collector, password: "XXXX", password_confirmation: "XXXX")
+    somebody = Factory.create(:collector)
 
     page = Pages::Login.new(Capybara.current_session)
     page.visit

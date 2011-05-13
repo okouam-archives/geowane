@@ -5,60 +5,6 @@
     %br
     .block_head
       %h2 Dashboard
-    .block_sub
-      %ul
-        %li= link_to "Workflow", "#/tabs/workflow"
-        %li= link_to "Categorization", "#/tabs/categorization"
-        %li= link_to "Collectors", "#/tabs/collectors"
-        .clear
     .block_content
-      #workflow
-        = high_chart("workflow_chart", @workflow_chart) do |c|
-          = "options.tooltip.formatter = function() {return this.series.name +': '+ this.y}"
-      #categorization
-        = high_chart("categorization_chart", @categorization_chart) do |c|
-          = "options.tooltip.formatter = function() {return this.series.name +': '+ this.y}"
-      #collectors
-        = high_chart("collector_chart", @collector_chart) do |c|
-          = "options.tooltip.formatter = function() {return this.series.name +': '+ this.y}"
       %br
       %br
-
-= include_javascripts :charting
-
-:javascript
-  (function($) {
-
-    var app = Sammy(function() {
-
-      this.selected_locations = [];
-
-      this.get("#/", function() {
-        this.redirect("#/tabs/workflow")
-      })
-
-      this.get('#/tabs/workflow', function(context) {
-        $("#workflow").show();
-        $("#categorization").hide();
-        $("#collectors").hide();
-      });
-
-      this.get('#/tabs/categorization', function(context) {
-        $("#workflow").hide();
-        $("#categorization").show();
-        $("#collectors").hide();
-      });
-
-      this.get('#/tabs/collectors', function(context) {
-        $("#workflow").hide();
-        $("#categorization").hide();
-        $("#collectors").show();
-      });
-
-    });
-
-    $(function() {
-      app.run('#/');
-    });
-
-  })(jQuery);

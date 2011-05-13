@@ -24,8 +24,3 @@ javascripts:
 
   templates:
     - app/views/**/*.jst
-
-  charting:
-    - public/javascripts/charting/highcharts.js
-    - public/javascripts/charting/highslide-full.min.js
-    - public/javascripts/charting/highslide.config.js

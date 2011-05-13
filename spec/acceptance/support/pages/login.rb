@@ -1,14 +1,12 @@
 module Pages
-  class Login
+  class Login < Pages::Page
 
-    URL = "/"
+    def url
+      "/"
+    end
 
     def initialize(session)
       @session = session
-    end
-
-    def visit
-      @session.visit URL
     end
 
     def fill_in_username(login)

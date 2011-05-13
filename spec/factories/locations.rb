@@ -1,5 +1,5 @@
 Factory.define :location, :class => Location do |f|
-  f.name {random_token(15)}
+  f.name { Faker::Company.name }
   f.latitude {rand}
   f.longitude {rand}
   f.association :user, :factory => :collector

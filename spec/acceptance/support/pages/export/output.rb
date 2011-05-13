@@ -1,6 +1,6 @@
 module Pages
   module Export
-    class Output
+    class Output < Pages::Page
 
       def initialize(session)
         @session = session

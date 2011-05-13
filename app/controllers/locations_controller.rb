@@ -62,7 +62,7 @@ class LocationsController < ApplicationController
       if request.xhr?
         head :status => 200
       else
-        redirect_to "/locations"
+        redirect_to locations_path
       end
     else
       collection = LocationCollection.new(params[:locations])
@@ -82,7 +82,7 @@ class LocationsController < ApplicationController
 
   update do
     wants.html do
-      redirect_to edit_location_path(object)
+      redirect_to locations_path(:page => session[:search_page], :per_page => session[:search_page_size])
     end
   end
 

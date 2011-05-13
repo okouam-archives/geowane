@@ -5,6 +5,7 @@ require 'rspec/rails'
 require 'aegis/spec/matchers'
 require 'database_cleaner'
 require 'factory_girl'
+require 'capybara/rspec'
 
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
@@ -14,8 +15,7 @@ RSpec.configure do |config|
   config.use_transactional_fixtures = false
 
   config.before(:suite) do
-    DatabaseCleaner.strategy = :transaction
-    DatabaseCleaner.clean_with(:truncation)
+    DatabaseCleaner.strategy = :truncation
   end
 
   config.before(:each) do

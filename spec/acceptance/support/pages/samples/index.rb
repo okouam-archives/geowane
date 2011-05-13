@@ -1,6 +1,6 @@
 module Pages
   module Sample
-    class Index
+    class Index < Pages::Page
     end
   end
 end
