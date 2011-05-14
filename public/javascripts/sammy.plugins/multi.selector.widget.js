@@ -33,6 +33,18 @@
         return this.redirect('#/');
       },
 
+      uncheckAll: function() {
+        master.attr("checked", false);
+        items.attr("checked", false);
+        app.selected_locations = [];
+      },
+
+      select: function(id) {
+        var row = $("tr[data-id=" + id + "]");
+        console.debug(row);
+        row.find(".selector input").attr("checked", true);
+      },
+
       getRow: function(id) {
         return $("tr[data-id=" + id + "]");
       }

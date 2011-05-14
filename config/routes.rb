@@ -11,6 +11,11 @@ Gowane::Application.routes.draw do
     end
   end
 
+  resources :comments do
+    collection do
+      post :collection_create
+    end
+  end
   resources :categories do
     collection do
       get :export

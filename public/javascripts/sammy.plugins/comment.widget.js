@@ -9,10 +9,13 @@
     app.helpers({
 
       showCommentWidget: function(context, location_id) {
-        var comments = Comment.find_by_location_id(location_id).map(function() {
-          return this.to_hash();
-        });
-        var output = JST['comment_widget']({comments: comments, location_id: location_id});
+        var comments = [];
+        if (location_id) {
+          comments = Comment.find_by_location_id(location_id).map(function() {
+            return this.to_hash();
+          });
+        }
+        var output = JST['comment_widget']({comments: comments});
         widget = context.openFaceboxWidget(output, "comment_widget");
         widget.find("table a").click(function() {
           var textarea = widget.find("textarea");
@@ -21,15 +24,18 @@
         });
       },
 
-      acceptComment: function(context, location_id) {
+      acceptComment: function(context, locations) {
         var new_comment = widget.find("textarea").val();
         $.ajax({
           type: 'POST',
           dataType: 'json',
-          url: "/locations/" + location_id + "/comments",
-          data: {"comment[comment]": new_comment},
-          success: function(data) {
-            new Comment(data).save();
+          url: "/comments/collection_create",
+          data: {"comment": new_comment, "locations": locations},
+          success: function(comments) {
+            _.each(comments, function(comment) {
+              var model = new Comment(comment);
+              model.save();
+            });
             context.redirect("#/");
           }
         });

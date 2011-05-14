@@ -10,6 +10,7 @@
       %li.nobg= link_to "Add Category", "#/category/add"
       %li.nobg= link_to "Remove Category", "#/category/remove"
       %li.nobg= link_to "Change Status", "#/status/change"
+      %li.nobg= link_to "Add Comment", "#/comment/add"
     %span
       For selected locations only
   .block_content
@@ -161,6 +162,7 @@
     })
 
     Comment.bind("add", function(new_comment) {
+      console.debug("Updating comments for" + new_comment.attr("location_id"));
       var counter = $('tr[data-id=' + new_comment.attr("location_id") + '] a').not("a.tag_delete");
       counter.text(parseInt(counter.text()) + 1);
     })
@@ -183,14 +185,20 @@
         context.redirect("#/");
       })
 
-      this.get("#/comments/:location_id/accept", function(context) {
-        var location_id = context.params['location_id'];
-        this.acceptComment(context, location_id);
+      this.get("#/comments/accept", function(context) {
+        this.acceptComment(context, context.app.selected_locations);
       });
 
       this.get("#/comments/:location_id", function(context) {
         var location_id = context.params['location_id'];
+        context.uncheckAll();
+        var row = context.select(location_id);
         this.showCommentWidget(context, location_id);
+      });
+
+      this.get("#/comment/add", function(context) {
+        if (_.isEmpty(context.app.selected_locations)) return this.showSelectionError("#");
+        this.showCommentWidget(context, null);
       });
 
       this.get('#/category/add', function(context) {

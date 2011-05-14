@@ -20,8 +20,10 @@ class CreateLocationsTable < ActiveRecord::Migration
         t.text :extensions
         t.timestamps
       end
+      add_index :locations, ["user_id"], :name => "idx_locations_user_id"
+      add_index :locations, ["city_id"], :name => "idx_locations_city_id"
       add_index :locations, ["feature"], :name => "idx_locations_feature", :spatial => true
-      add_index :locations, ["name"], :name => "idx_features_name"
+      add_index :locations, ["name"], :name => "idx_locations_name"
     end
   end
 

@@ -5,7 +5,7 @@ var Location = Model("location", function() {
         url: "/locations",
         type: "PUT",
         data: {locations: [{id: this.id(), longitude: this.attributes.longitude, latitude: this.attributes.latitude}], commit: "Commit"},
-        success: function(result) {
+        success: function() {
           alert("The coordinates have been successfully updated.");
         }
       });

@@ -31,6 +31,7 @@ gem "columnize"
 gem "enumerated_attribute"
 gem "wirble"
 gem "hirb"
+gem "newrelic_rpm"
 gem "foreigner"
 gem 'diff-lcs'
 gem 'uuidtools'
