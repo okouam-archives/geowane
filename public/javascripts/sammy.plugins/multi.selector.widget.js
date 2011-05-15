@@ -41,8 +41,8 @@
 
       select: function(id) {
         var row = $("tr[data-id=" + id + "]");
-        console.debug(row);
         row.find(".selector input").attr("checked", true);
+        app.selected_locations = [id];
       },
 
       getRow: function(id) {

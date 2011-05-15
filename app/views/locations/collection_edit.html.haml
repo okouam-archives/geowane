@@ -42,8 +42,9 @@
             %td.tags
               %span.list
                 = render :partial => "tags/collection", :locals => {:items => location.tags.map {|c| {:name => c.category.french, :delete_link => location_tag_url(c.location_id, c.id)}}}
+              = link_to "(+)", "#/category/single/#{location.id}"
             %td.comments
-              = link_to location.comments.count, "#/comments/#{location.id}"
+              = link_to location.comments.count, "#/comments/single/#{location.id}", :class => "comment_count"
       #actions{:style=>"text-align: right; margin-right: 15px; margin-bottom: 20px"}
         = submit_tag "Confirm Changes", :class => "button mid", :style => "position: relative; left: 20px"
 
@@ -163,7 +164,7 @@
 
     Comment.bind("add", function(new_comment) {
       console.debug("Updating comments for" + new_comment.attr("location_id"));
-      var counter = $('tr[data-id=' + new_comment.attr("location_id") + '] a').not("a.tag_delete");
+      var counter = $('tr[data-id=' + new_comment.attr("location_id") + '] a.comment_count');
       counter.text(parseInt(counter.text()) + 1);
     })
 
@@ -189,11 +190,18 @@
         this.acceptComment(context, context.app.selected_locations);
       });
 
-      this.get("#/comments/:location_id", function(context) {
+      this.get("#/comments/single/:location_id", function(context) {
         var location_id = context.params['location_id'];
         context.uncheckAll();
-        var row = context.select(location_id);
+        context.select(location_id);
         this.showCommentWidget(context, location_id);
+      });
+
+      this.get("#/category/single/:location_id", function(context) {
+        var location_id = context.params['location_id'];
+        context.uncheckAll();
+        context.select(location_id);
+        this.showCategoryWidget(context, "#/category/add/accept", "Add Category", "add_tag");
       });
 
       this.get("#/comment/add", function(context) {
