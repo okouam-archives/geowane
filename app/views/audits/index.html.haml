@@ -1,0 +1,57 @@
+= content_for :title, "Audits"
+
+.block
+  .block_head
+    %h2 Audits
+  .block_content
+    %table.list
+      %tbody
+        %tr
+          %th Action
+          %th Name
+          %th User
+          %th Timestamp
+        - if @audits && @audits.size > 0
+          - @audits.each do |audit|
+            %tr
+              %td
+                = audit.action
+              %td
+                = link_to audit.name, "#/audits/#{audit.id}"
+              %td
+                = audit.login
+              %td
+                = audit.created_at
+    %br
+      %div
+        = render :partial => "shared/paging", :locals => {:collection => @audits, :page_size => @per_page}
+    %div.clear
+    %span{:style=>"float: right; margin-bottom: 20px"}
+      = page_entries_info @audits
+
+:javascript
+  $(document).ready(function() {
+
+    var app = Sammy(function() {
+
+      this.get("#/", function(context) {
+        $(document).trigger('close.facebox');
+      })
+
+      this.get("#/close", function(context) {
+        context.redirect("#/");
+      })
+
+     this.get("#/audits/:audit_id", function(context) {
+        var audit_id = context.params['audit_id'];
+        jQuery.facebox({ ajax: "/audits/" + audit_id });
+      });
+
+    });
+
+    $(function() {
+      app.run('#/');
+    });
+
+  })
+

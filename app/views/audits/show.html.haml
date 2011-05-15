@@ -1,0 +1,21 @@
+%table{:style=>"margin-left: 20px"}
+  %thead
+    %th Attribute
+    %th Old Value
+    %th New Value
+  - object.model_changes.each do |model_change|
+    - unless model_change.old_value.blank? && model_change.new_value.blank?
+      %tr
+        %td
+          = model_change.datum
+        %td
+          = model_change.old_value
+        %td
+          - if model_change.new_value.blank?
+            %i empty
+          - else
+            = model_change.new_value
+
+%p{:style=>"text-align: center; margin-top: 20px"}
+  %a.cancel.action{:href=>"#/close"}
+    Close
