@@ -79,7 +79,6 @@
         map.instance.zoomToExtent(vecLayer.getDataExtent());
       });
 
-
       var modifyControl = new OpenLayers.Control.ModifyFeature(vecLayer);
       modifyControl.dragComplete = function(e) {
         e.state = OpenLayers.State.UPDATE;

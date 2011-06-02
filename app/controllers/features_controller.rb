@@ -21,6 +21,17 @@ class FeaturesController < ApplicationController
     render :json => [location].to_geojson
   end
 
+  def surrounding_landmarks
+    location = Location.find(params[:id])
+    sql = "
+      SELECT locations.id, locations.longitude, locations.latitude, ST_Distance(feature, X) as distance
+      FROM locations
+      WHERE locations.id != #{location.id}
+      ORDER BY ST_Distance(feature, ST_Point(#{location.longitude}, #{location.latitude})) ASC
+      LIMIT 10
+      "
+  end
+
   def update
 
     feature = Geometry.from_geojson(request.raw_post, SRID)
