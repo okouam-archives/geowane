@@ -10,14 +10,14 @@ class Permissions < Aegis::Permissions
     action :update do
       allow :auditor
       allow :collector do
-        (object.is_invalid? || object.is_new?) && object.user == user
+        (object.is_invalid? || object.is_new?) && object.username == user.login
       end
     end
 
     action :destroy do
       allow :auditor
       allow :collector do
-        (object.is_new? || object.is_invalid?) && object.user == user
+        (object.is_new? || object.is_invalid?) && object.username == user.login
       end
     end
 
@@ -25,7 +25,7 @@ class Permissions < Aegis::Permissions
 
       allow :collector do |new_status|
         if new_status
-          (object.is_invalid? && object.user == user && new_status == :corrected) || new_status == object.status
+          (object.is_invalid? && object.username == user.login && new_status == :corrected) || new_status == object.status
         else
           object.status == :invalid
         end
