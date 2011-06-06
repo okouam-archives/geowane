@@ -8,7 +8,7 @@ class Location < ActiveRecord::Base
   validates_presence_of :longitude, :latitude, :name
   belongs_to :user
   belongs_to :city
-  has_many :reviews
+
   with_options :class_name => "Boundary" do |entity|
     entity.belongs_to :administrative_unit_0, :foreign_key => "level_0"
     entity.belongs_to :administrative_unit_1, :foreign_key => "level_1"

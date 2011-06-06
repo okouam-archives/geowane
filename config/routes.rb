@@ -28,7 +28,7 @@ Gowane::Application.routes.draw do
   resource :search, :controller => "search"
   resource :map, :controller => "map"
   resource :account, :controller => "account"
-
+  resource :demo, :controller => "demo"
   resource :user_sessions
 
   resources :users, :cities, :counters, :conversions, :boundaries, :features, :samples, :audits

@@ -3,10 +3,6 @@ class Category < ActiveRecord::Base
   has_many :locations, :through => :tags
   validates_presence_of :french, :english
   has_many :tags
-  has_serialized :extensions,
-                 :website => false, :telephone => false, :fax => false, :postal_address => false, :opening_hours => false,
-                 :email => false, :user_rating => false, :twitter => false, :facebook_page => false
-
 
   def json_object
     {:name => self.french, :icon => self.icon, :id => self.id}

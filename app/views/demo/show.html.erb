@@ -1,0 +1,41 @@
+<html>
+<head>
+  <script type="text/javascript" src="/javascripts/jquery-1.5.js"></script>
+  <script src="/javascripts/OpenLayers-2.10/OpenLayers.js"></script>
+  <script type="text/javascript" src="/javascripts/helpers.js?1300463153"></script>
+  <script type="text/javascript" src="/javascripts/js-model-0.10.0.min.js?1300463153"></script>
+  <script type="text/javascript" src="/javascripts/spatial.models/settings.js"></script>
+  <script type="text/javascript" src="/javascripts/spatial.models/base_layer.js"></script>
+  <script type="text/javascript" src="/javascripts/spatial.models/map.js"></script>
+  <%= include_javascripts :mapping  %>
+  <%= stylesheet_link_tag 'ext-all.css' %>
+  <title></title>
+</head>
+<body>
+<style type="text/css">
+  body, html {margin: 0}
+</style>
+<div id="actions" style="background-color: #eee; height: 100%; width: 400px; float: right; border-left: 5px solid #999">
+  Points d'Interets | Routage | Localisation
+</div>
+<div id="map" style="background-color: blue; height: 100%; margin-right: 200px">
+<script type="text/javascript">
+  $(document).ready(function() {
+    var settings = new Spatial.Models.Settings();
+    settings.urls = ["http://galileo.codeifier.com/cgi-bin/mapserv?map=/home/deployment/mapserver/mapfiles/geocms.map"];
+    settings.layers = ["road-labels", "countries", "water", "roads-other", "roads-type-5", "roads-type-4", "roads-type-3", "roads-type-2", "roads-type-1"];
+    var map = new Spatial.Models.Map(settings);
+    var vecLayer = new OpenLayers.Layer.Vector("vector");
+    map.instance.addLayer(vecLayer);
+    var mapPanel = new GeoExt.MapPanel({
+      renderTo: "map",
+      map: map.instance
+    });
+    map.instance.zoomTo(2);
+  });
+</script>
+
+
+</div>
+</body>
+</html>
