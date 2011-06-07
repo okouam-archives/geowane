@@ -16,28 +16,45 @@ class SearchCriteria
     false
   end
 
-  def self.create_sql(params = nil, sort = nil)
+  def self.create_sql(params = nil, sort = nil, options = nil)
 
     params = nil unless params.is_a?(Hash)
 
     query = {sort: sort ? " ORDER BY #{sort} ASC" : " ORDER BY locations.name ASC"}
 
-    query[:from] = %{
-      SELECT
-        locations.id, longitude, latitude, locations.name, locations.created_at, users.login as username,
-        status, locations.updated_at, cities.name as city_name
-      FROM locations
-      JOIN users ON users.id = locations.user_id
-      LEFT JOIN cities ON cities.id = locations.city_id
-    }
+    if options && options[:include_geometry]
+      query[:from] = %{
+        SELECT
+          locations.id, longitude, latitude, locations.name, locations.created_at, users.login as username,
+          status, locations.updated_at, cities.name as city_name, locations.feature
+        FROM locations
+        JOIN users ON users.id = locations.user_id
+        LEFT JOIN cities ON cities.id = locations.city_id
+      }
+    else
+      query[:from] = %{
+        SELECT
+          locations.id, longitude, latitude, locations.name, locations.created_at, users.login as username,
+          status, locations.updated_at, cities.name as city_name
+        FROM locations
+        JOIN users ON users.id = locations.user_id
+        LEFT JOIN cities ON cities.id = locations.city_id
+      }
+    end
 
     return query[:from] + query[:sort] if params.nil?
 
     query[:where] = " WHERE 1 = 1 "
 
-    query[:group_by] = %{
+    if options && options[:include_geometry]
+      query[:group_by] = %{
+      GROUP BY locations.id, longitude, latitude, locations.name, locations.created_at, users.login, status, locations.updated_at, cities.name, locations.feature
+    }
+    else
+      query[:group_by] = %{
       GROUP BY locations.id, longitude, latitude, locations.name, locations.created_at, users.login, status, locations.updated_at, cities.name
     }
+    end
 
     query = filter_on_status(query, params[:status])
 

@@ -5,7 +5,7 @@ class LocationsController < ApplicationController
   before_filter :assign_form_data, :only => [:create, :edit]
 
   def index
-    @search = Search.construct(params[:s], params[:sort], params[:page], params[:per_page], session[:search_token], current_user)
+    @search = Search.construct(params[:s], params[:sort], params[:page], params[:per_page], session[:search_token], current_user, params[:options])
     @search.save_to_session(session)
     respond_to do |format|
       format.html { @locations = @search.execute }

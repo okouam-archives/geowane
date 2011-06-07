@@ -1,37 +1,99 @@
 <html>
 <head>
-  <script type="text/javascript" src="/javascripts/jquery-1.5.js"></script>
-  <script src="/javascripts/OpenLayers-2.10/OpenLayers.js"></script>
-  <script type="text/javascript" src="/javascripts/helpers.js?1300463153"></script>
-  <script type="text/javascript" src="/javascripts/js-model-0.10.0.min.js?1300463153"></script>
-  <script type="text/javascript" src="/javascripts/spatial.models/settings.js"></script>
-  <script type="text/javascript" src="/javascripts/spatial.models/base_layer.js"></script>
-  <script type="text/javascript" src="/javascripts/spatial.models/map.js"></script>
+  <%= include_javascripts :global  %>
   <%= include_javascripts :mapping  %>
   <%= stylesheet_link_tag 'ext-all.css' %>
   <title></title>
 </head>
 <body>
 <style type="text/css">
-  body, html {margin: 0}
+
+  body, html {margin: 0; }
+
+  .tabs a {
+    background: none repeat scroll 0 0 #E4E4E4;
+    border-color: #DDDDDD;
+    border-radius: 3px 3px 0 0;
+    border-style: solid;
+    border-width: 1px 1px 0;
+    color: #999999;
+    cursor: pointer;
+    float: left;
+    font-weight: bold;
+    padding: 4px 20px 4px 9px;
+    position: relative;
+    text-decoration: none
+  }
+
+  .tabs {
+      background: url("http://192.168.0.113:8889/images/sprite.png") repeat-x scroll 0 -490px #EEEEEE;
+      height: 30px;
+      padding: 10px 10px 0;
+  }
+
+  .page_link, .first_link, .previous_link, .next_link, .last_link {display: block ! important; float: left; margin-left: 5px}
+
+  .tab-body {padding: 20px; font-size: 12px; line-height: 16px; font-family: Arial; color: #434343}
+
+  #locations li {margin-top: 5px}
+
+  .ui-tabs-hide {display: none}
+
+  #actions {background-color: #F8F8F8; height: 100%; width: 410px; float: right; border-left: 5px solid #999}
+
+  #map {background-color: blue; height: 100%; margin-right: 200px}
+
+  .tabs a {font: 13px/20px "Helvetica Neue",Helvetica}
+
+        .tabs .ui-tabs-selected a {
+    background: none repeat scroll 0 0 #F8F8F8;
+    border-color: #CCCCCC;
+    color: #434343;
+    padding-bottom: 5px;
+}
+
+.divider {border: 1px solid #aaa; border-width: 0 0 1px 0; margin-bottom: 10px}
+
 </style>
-<div id="actions" style="background-color: #eee; height: 100%; width: 400px; float: right; border-left: 5px solid #999">
-  Points d'Interets | Routage | Localisation
+
+<div id="actions">
+  <div id="tabs"><%= render :partial => "tabs" %></div>
+  <div id="tab-content">
+    <div id="locations" class="tab-body">
+      <%= render :partial => "locations" %>
+    </div>
+    <div id="localization" class="tab-body">
+      <%= render :partial => "localization" %>
+    </div>
+    <div id="routing"  class="tab-body">
+      <%= render :partial => "routing" %>
+    </div>
+  </div>
 </div>
-<div id="map" style="background-color: blue; height: 100%; margin-right: 200px">
+
+<div id="map">
+
 <script type="text/javascript">
   $(document).ready(function() {
+    $(".list-of-categories").pajinate({num_page_links_to_display: 5, items_per_page: 13});
     var settings = new Spatial.Models.Settings();
     settings.urls = ["http://galileo.codeifier.com/cgi-bin/mapserv?map=/home/deployment/mapserver/mapfiles/geocms.map"];
     settings.layers = ["road-labels", "countries", "water", "roads-other", "roads-type-5", "roads-type-4", "roads-type-3", "roads-type-2", "roads-type-1"];
-    var map = new Spatial.Models.Map(settings);
-    var vecLayer = new OpenLayers.Layer.Vector("vector");
-    map.instance.addLayer(vecLayer);
+    window.map = new Spatial.Models.Map(settings);
+    window.features = new OpenLayers.Layer.Vector("vector");
+    window.map.instance.addLayer(window.features);
+    var style = new OpenLayers.Style({'fillColor': '#66C17B', 'fillOpacity': 0.6, 'pointRadius': 6, 'strokeWidth': 1, 'strokeColor': '#000'});
+    window.features.styleMap = new OpenLayers.StyleMap({'default': style});
+    window.features.events.register('featuresadded', this, function(features) {
+      window.map.instance.zoomToExtent(window.features.getDataExtent());
+    });
     var mapPanel = new GeoExt.MapPanel({
       renderTo: "map",
-      map: map.instance
+      map: window.map.instance
     });
-    map.instance.zoomTo(2);
+    window.map.instance.zoomTo(2);
+    $("#tabs").tabs();
+
   });
 </script>
 

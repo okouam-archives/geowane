@@ -1,0 +1,51 @@
+<h1>1. Veuillez choisir une catégorie</h1>
+<hr class="divider" />
+  <div class="list-of-categories">
+    <ul class="content">
+      <% Category.order("french").each do |category| %>
+        <li><input style="margin-right: 5px; position: relative; top: 2px" type="checkbox" value="<%= category.id %>"/>
+          <label><%= category.french %> (<%= category.locations.count %>)</label></li>
+      <% end %>
+    </ul>
+    <div style="padding-top: 10px; float: right" class="page_navigation"></div>
+  </div>
+  <div style="clear: both"></div>
+  <div class="list-of-locations">
+    <h1 style="margin-top: 20px">2. Points of interest</h1>
+    <hr class="divider"/>
+    <ul class="content"></ul>
+    <div style="padding-top: 10px; float: right" class="page_navigation"></div>
+  </div>
+
+<script type="text/javascript">
+
+  $(document).ready(function() {
+    var checkboxes = $(".list-of-categories input");
+    checkboxes.click(function() {
+      var selected = $(this);
+      checkboxes.removeAttr("checked");
+      selected.attr("checked", "checked");
+      $.get("/locations",
+        {
+          per_page: 100,
+          "s[category_id]": selected.val(),
+          options: {include_geometry: true}
+        },
+        function(data, textStatus) {
+          window.features.destroyFeatures();
+          var geojson_format = new OpenLayers.Format.GeoJSON();
+          var locations = geojson_format.read(data);
+          window.features.addFeatures(locations);
+          var listOfLocations = $(".list-of-locations .content");
+          listOfLocations.empty();
+          for(var i = 0; i < locations.length; i++) {
+            listOfLocations.append("<li>" + locations[i].attributes["name"] + "</li>");
+          }
+          $(".list-of-locations").pajinate({num_page_links_to_display: 5, items_per_page: 13});
+        },
+        "json"
+      );
+    });
+  });
+
+</script>
