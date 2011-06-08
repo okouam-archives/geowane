@@ -10,12 +10,21 @@
     <div style="padding-top: 10px; float: right" class="page_navigation"></div>
   </div>
   <div style="clear: both"></div>
+<br/>
   <div class="list-of-locations">
     <h1 style="margin-top: 20px">2. Points of interest</h1>
     <hr class="divider"/>
     <ul class="content"></ul>
     <div style="padding-top: 10px; float: right" class="page_navigation"></div>
   </div>
+
+<style type="text/css">
+  .list-of-locations .content li {line-height: 20px; margin-top: 0! important}
+  .list-of-locations .content li a {color: inherit; text-decoration: none; border-bottom: 1px dotted #777}
+        .list-of-locations .content li a:hover {font-style: italic;}
+.page_link, .first_link, .previous_link, .next_link, .last_link {border: 1px solid #ccc; -moz-border-radius: 3px;
+border-radius: 3px; padding: 2px 4px; color: inherit; text-decoration: none}
+</style>
 
 <script type="text/javascript">
 
@@ -39,12 +48,23 @@
           var listOfLocations = $(".list-of-locations .content");
           listOfLocations.empty();
           for(var i = 0; i < locations.length; i++) {
-            listOfLocations.append("<li>" + locations[i].attributes["name"] + "</li>");
+            var place = locations[i].attributes["country"];
+            if (locations[i]["city_name"]) place = place + locations[i]["city_name"];
+            listOfLocations.append("<li>"
+                    + "<div style='display: inline-block; float: left; width: 24px; text-align: right; padding-right: 5px; height:40px'>" + (i + 1) + ". </div>"
+                    + "<a href='#" + locations[i].fid + "'>"
+                    + locations[i].attributes["name"]
+                    + "</a><br/><span>"
+                    +  place
+                    + "</span><div style='clear: both'></div></li>");
           }
-          $(".list-of-locations").pajinate({num_page_links_to_display: 5, items_per_page: 13});
+          $(".list-of-locations").pajinate({num_page_links_to_display: 5, items_per_page: 8});
         },
         "json"
       );
+    });
+    $(".list-of-locations .content li a").live('click', function() {
+      alert($(this).attr("href"));
     });
   });
 

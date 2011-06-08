@@ -5,73 +5,40 @@
   <%= stylesheet_link_tag 'ext-all.css' %>
   <title></title>
 </head>
-<body>
-<style type="text/css">
+<body style="background: url(/images/all_bg.gif)  repeat fixed 50% 0 transparent">
 
-  body, html {margin: 0; }
+<div style="height: 100%">
 
-  .tabs a {
-    background: none repeat scroll 0 0 #E4E4E4;
-    border-color: #DDDDDD;
-    border-radius: 3px 3px 0 0;
-    border-style: solid;
-    border-width: 1px 1px 0;
-    color: #999999;
-    cursor: pointer;
-    float: left;
-    font-weight: bold;
-    padding: 4px 20px 4px 9px;
-    position: relative;
-    text-decoration: none
-  }
-
-  .tabs {
-      background: url("http://192.168.0.113:8889/images/sprite.png") repeat-x scroll 0 -490px #EEEEEE;
-      height: 30px;
-      padding: 10px 10px 0;
-  }
-
-  .page_link, .first_link, .previous_link, .next_link, .last_link {display: block ! important; float: left; margin-left: 5px}
-
-  .tab-body {padding: 20px; font-size: 12px; line-height: 16px; font-family: Arial; color: #434343}
-
-  #locations li {margin-top: 5px}
-
-  .ui-tabs-hide {display: none}
-
-  #actions {background-color: #F8F8F8; height: 100%; width: 410px; float: right; border-left: 5px solid #999}
-
-  #map {background-color: blue; height: 100%; margin-right: 200px}
-
-  .tabs a {font: 13px/20px "Helvetica Neue",Helvetica}
-
-        .tabs .ui-tabs-selected a {
-    background: none repeat scroll 0 0 #F8F8F8;
-    border-color: #CCCCCC;
-    color: #434343;
-    padding-bottom: 5px;
-}
-
-.divider {border: 1px solid #aaa; border-width: 0 0 1px 0; margin-bottom: 10px}
-
-</style>
-
-<div id="actions">
-  <div id="tabs"><%= render :partial => "tabs" %></div>
-  <div id="tab-content">
-    <div id="locations" class="tab-body">
-      <%= render :partial => "locations" %>
+  <div style="padding: 20px">
+    <div id="header" style="height: 50px; background-color: #212121; color: white; padding: 5px; padding-top: 10px">
+      <img src="images/logo.png" style="float: left" />
+      <ul>
+        <li><a href="http://www.0-one.net/">Accueil</a></li>
+        <li><a href="http://www.0-one.net/index.php?option=com_content&view=article&id=52&Itemid=69">Services</a></li>
+        <li><a href="http://www.0-one.net/index.php?option=com_content&view=article&id=64&Itemid=72">Boutique</a></li>
+        <li><a href="http://www.0-one.net/index.php?option=com_content&view=article&id=60&Itemid=84">Société</a></li>
+        <li><a href="http://www.0-one.net/index.php?option=com_contact&view=contact&id=2&Itemid=58">Contacts</a></li>
+      </ul>
     </div>
-    <div id="localization" class="tab-body">
-      <%= render :partial => "localization" %>
-    </div>
-    <div id="routing"  class="tab-body">
-      <%= render :partial => "routing" %>
+    <div style="height: 880px">
+      <div id="actions" style="height: 882px">
+        <div id="tabs"><%= render :partial => "tabs" %></div>
+        <div id="tab-content">
+          <div id="locations" class="tab-body">
+            <%= render :partial => "locations" %>
+          </div>
+          <div id="localization" class="tab-body">
+            <%= render :partial => "localization" %>
+          </div>
+          <div id="routing"  class="tab-body">
+            <%= render :partial => "routing" %>
+          </div>
+        </div>
+      </div>
+      <div id="map"></div>
     </div>
   </div>
 </div>
-
-<div id="map">
 
 <script type="text/javascript">
   $(document).ready(function() {
@@ -97,7 +64,69 @@
   });
 </script>
 
+<style type="text/css">
 
-</div>
+  * {
+margin:0; /* zero out margin */
+padding:0; /* zero out padding */
+}
+
+  body, html {margin: 0; height: 100%}
+
+  .tabs a {
+    background: none repeat scroll 0 0 #E4E4E4;
+    border-color: #DDDDDD;
+    border-radius: 3px 3px 0 0;
+    border-style: solid;
+    border-width: 1px 1px 0;
+    color: #999999;
+    cursor: pointer;
+    float: left;
+    font-weight: bold;
+    padding: 4px 20px 4px 9px;
+    position: relative;
+    text-decoration: none
+  }
+
+  .tabs {
+      background: url("http://192.168.0.113:8889/images/sprite.png") repeat-x scroll 0 -490px #EEEEEE;
+      height: 30px;
+      padding: 10px 10px 0;
+  }
+
+  .page_link, .first_link, .previous_link, .next_link, .last_link, .ellipse {float: left; margin-left: 5px}
+
+  .page_navigation {margin-top: 10px; font-size: 11px}
+  .page_navigation .active_page {font-weight: bold}
+
+  .tab-body {padding: 20px; font-size: 12px; line-height: 16px; font-family: Arial; color: #434343}
+
+  #locations li {margin-top: 5px}
+
+  .ui-tabs-hide {display: none}
+
+  #actions {background-color: #F8F8F8; height: 100%; width: 410px; float: right; border-left: 1px solid #999}
+
+  #map {background-color: blue; height: 100%; margin-right: 200px}
+
+  .tabs a {font: 13px/20px "Helvetica Neue",Helvetica}
+
+        .tabs .ui-tabs-selected a {
+    background: none repeat scroll 0 0 #F8F8F8;
+    border-color: #CCCCCC;
+    color: #434343;
+    padding-bottom: 5px;
+}
+
+  #header ul li {float: left; margin-left: 35px; margin-top: 25px}
+  #header ul li a {font-family: Arial; font-size: 12px; color: #bbb; font-weight: bold; text-decoration: none}
+  #header ul li a:hover {color: white}
+  #header ul {display: inline}
+
+.divider {border: 1px solid #aaa; border-width: 0 0 1px 0; margin-bottom: 10px}
+
+</style>
+
+
 </body>
 </html>

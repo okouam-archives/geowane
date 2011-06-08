@@ -26,10 +26,11 @@ class SearchCriteria
       query[:from] = %{
         SELECT
           locations.id, longitude, latitude, locations.name, locations.created_at, users.login as username,
-          status, locations.updated_at, cities.name as city_name, locations.feature
+          status, locations.updated_at, cities.name as city_name, locations.feature, boundaries.name "country"
         FROM locations
         JOIN users ON users.id = locations.user_id
         LEFT JOIN cities ON cities.id = locations.city_id
+        JOIN boundaries ON boundaries.id = locations.level_0
       }
     else
       query[:from] = %{
@@ -48,7 +49,7 @@ class SearchCriteria
 
     if options && options[:include_geometry]
       query[:group_by] = %{
-      GROUP BY locations.id, longitude, latitude, locations.name, locations.created_at, users.login, status, locations.updated_at, cities.name, locations.feature
+      GROUP BY locations.id, longitude, latitude, locations.name, locations.created_at, users.login, status, locations.updated_at, cities.name, locations.feature, boundaries.name
     }
     else
       query[:group_by] = %{
