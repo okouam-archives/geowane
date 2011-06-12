@@ -1,5 +1,11 @@
 Gowane::Application.routes.draw do
 
+  mount Services::LocationApi, :at => '/api/locations'
+
+  mount Services::CategoryApi, :at => '/api/categories'
+
+  mount Services::ImageApi, :at => '/api/images'
+
   match'/locations' => 'locations#collection_delete', :via => :delete 
   match'/locations/edit' => 'locations#collection_edit', :via => [:get, :post] 
   match'/locations' => 'locations#collection_update', :via => :put 
