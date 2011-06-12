@@ -11,6 +11,7 @@ class Services::LocationApi < Services::Base
   end
 
   get '/' do
+    coords = params[:bounds].split(',')
     sql = %{
       SELECT
         locations.id, longitude, latitude, locations.name,
@@ -22,6 +23,7 @@ class Services::LocationApi < Services::Base
       WHERE
         status != 'INVALID'
         AND #{build_criteria(params)}
+        AND ST_Intersects(SetSRID('BOX(#{coords[0]} #{coords[1]},#{coords[2]} #{coords[3]})'::box2d::geometry, 4326), locations.feature)
       GROUP BY locations.id, longitude, latitude, locations.name, cities.name, locations.feature, boundaries.name
       LIMIT 99
     }
