@@ -1,8 +1,4 @@
-require 'sinatra/base'
-require 'json'
-require 'rack/contrib/jsonp'
-
-class Services::LocationApi < Services::Base
+class API::Locations < API::Base
 
   use Rack::JSONP
 

@@ -1,6 +1,4 @@
-require 'sinatra/base'
-
-class Services::Base < Sinatra::Base
+class API::Base < Sinatra::Base
 
   set :sessions, false
   set :show_exceptions, false

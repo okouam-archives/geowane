@@ -1,7 +1,4 @@
-require 'sinatra/base'
-require 'RMagick'
-
-class Services::ImageApi < Services::Base
+class API::Images < API::Base
 
   get "/map_icon" do
     canvas = Magick::Image.new(24,24) { self.background_color = "#434343" }

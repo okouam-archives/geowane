@@ -12,7 +12,6 @@ gem 'spatial_adapter'
 gem 'aegis', :require => 'aegis'
 gem "rails"
 gem "dbf"
-gem "capybara-webkit"
 gem "rgeo"
 gem "activerecord-postgis-adapter"
 gem "rgeo-activerecord"
@@ -41,21 +40,21 @@ gem 'uuidtools'
 gem "nested_form"
 
 group :test do
+  gem "capybara-webkit"
   gem "faker"
   gem 'capybara'
   gem 'factory_girl'
   gem 'factory_girl_rails'
   gem 'launchy'
   gem 'rcov'
+  gem 'steak'
+  gem 'capybara'
+  gem 'database_cleaner'
+  gem "rspec-rails"
 end
 
 group :test, :development do
   gem "ruby-debug19"
-  gem "rack-bug"
-  gem 'database_cleaner'
-  gem "rspec-rails"
   gem 'capistrano-ext'
-  gem 'steak'
-  gem 'capybara'
   gem 'capistrano'
 end
