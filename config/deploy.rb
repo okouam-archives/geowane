@@ -1,6 +1,5 @@
 require 'capistrano/ext/multistage'
 require File.dirname(__FILE__) + '/boot'
-require 'hoptoad_notifier/capistrano'
 
 set :application, "gowane"
 set :repository,  "git@github.com:okouam/gowane.git"
