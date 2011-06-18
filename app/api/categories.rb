@@ -12,6 +12,7 @@ class API::Categories < API::Base
       FROM categories
       JOIN tags ON tags.category_id = categories.id
       GROUP BY categories.id, french
+      ORDER BY french ASC
     }
     Category.find_by_sql(sql).to_json
   end

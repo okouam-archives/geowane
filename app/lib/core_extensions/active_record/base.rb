@@ -1,6 +1,6 @@
 require 'rgeo/geo_json'
 
-module GowaneCoreExtensions
+module CoreExtensions
   module ActiveRecord
     module Base
 

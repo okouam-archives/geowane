@@ -109,6 +109,9 @@ GEM
     haml (3.1.2)
     highline (1.6.2)
     hirb (0.4.5)
+    hoptoad_notifier (2.4.11)
+      activesupport
+      builder
     i18n (0.5.0)
     jammit (0.6.3)
       yui-compressor (>= 0.9.3)
@@ -252,6 +255,7 @@ DEPENDENCIES
   formtastic
   haml
   hirb
+  hoptoad_notifier
   jammit
   launchy
   minitar

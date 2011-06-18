@@ -13,8 +13,6 @@ Bundler.require(:default, Rails.env) if defined?(Bundler)
 module Gowane
   class Application < Rails::Application
 
-    require File.expand_path("#{Rails.root}/app/api/init.rb")
-
     config.autoload_paths += %W(#{Rails.root}/app/lib)
     config.time_zone = 'UTC'
     config.i18n.default_locale = :en

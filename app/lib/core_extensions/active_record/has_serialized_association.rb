@@ -1,7 +1,7 @@
 # (c) Greg Moreno 2011-01-27
 # http://gregmoreno.ca/preventing-model-explosion-via-rails-serialization/
 
-module GowaneCoreExtensions
+module CoreExtensions
 module ActiveRecord
   module HasSerializedAssociation
    def self.included(base)

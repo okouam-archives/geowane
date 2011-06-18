@@ -1,4 +1,4 @@
-module GowaneCoreExtensions
+module CoreExtensions
   module Array
 
     def to_geojson(options = {})
