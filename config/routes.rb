@@ -8,6 +8,8 @@ Gowane::Application.routes.draw do
 
   mount API::Routing, :at => '/api/routing'
 
+  mount API::Features, :at => '/api/features'
+
   match'/locations' => 'locations#collection_delete', :via => :delete 
   match'/locations/edit' => 'locations#collection_edit', :via => [:get, :post] 
   match'/locations' => 'locations#collection_update', :via => :put 
