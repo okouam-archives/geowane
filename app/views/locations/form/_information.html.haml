@@ -1,18 +1,21 @@
-#information-tab
+.portlet.ui-widget.ui-widget-content.ui-helper-clearfix.ui-corner-all
+  .portlet-header.ui-widget-header.ui-corner-top
+    Information
+  .portlet-content
 
-  = form.input :email, :required => false, :input_html => { :class => "text" }
+    = form.input :email, :required => false, :input_html => { :class => "text" }
 
-  = form.input :telephone, :required => false, :input_html => { :class => "text" }
+    = form.input :telephone, :required => false, :input_html => { :class => "text" }
 
-  = form.input :fax, :required => false, :input_html => { :class => "text" }
+    = form.input :fax, :required => false, :input_html => { :class => "text" }
 
-  = form.input :website, :required => false, :input_html => { :class => "text" }
+    = form.input :website, :required => false, :input_html => { :class => "text" }
 
-  = form.input :postal_address, :required => false, :input_html => { :class => "text" }
+    = form.input :postal_address, :required => false, :input_html => { :class => "text" }
 
-  = form.input :opening_hours, :required => false, :input_html => { :class => "text" }
+    = form.input :opening_hours, :required => false, :input_html => { :class => "text" }
 
-  = form.input :user_rating, :required => false, :input_html => { :class => "text"}
+    = form.input :user_rating, :required => false, :input_html => { :class => "text"}
 
 :javascript
   $(document).ready(function() {

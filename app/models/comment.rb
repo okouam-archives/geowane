@@ -7,4 +7,14 @@ class Comment < ActiveRecord::Base
 
   belongs_to :user
 
+  def to_hash
+    {
+      text: comment,
+      created_at: created_at.to_s(:short),
+      location_id: commentable_id,
+      user: user.login,
+      thumb: "http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(user.login)}?d=identicon&s=25"
+    }
+  end
+
 end

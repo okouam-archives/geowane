@@ -11,37 +11,37 @@
       %li.nobg= link_to "Previous POI", previous_location_path(@location)
       %li.nobg= link_to "Next POI", next_location_path(@location)
       %li.nobg= link_to "Save", "#", :class => "save"
-  #edit-location-tabs
-    .block_sub
-      %ul
-        %li= link_to "Feature", "#/tabs/feature"
-        %li= link_to "Information", "#/tabs/information"
-        %li= link_to "History", "#/tabs/history"
-      .clear
   .block_content
-    %br
-    #mappanel
-    %br
-    = semantic_form_for @location do |form|
-      .editor-content
-        = render :partial => "locations/form/feature", :locals => {:form => form, :form_data => @form_data}
-        = render :partial => "locations/form/information", :locals => {:form => form}
-        = render :partial => "locations/form/history", :locals => {:form => form, :location => @location}
-        .clear
-    %br
-    %br
+    #portlets
+      %br
+      .portlet.ui.widget.ui-widget-content.ui-helper-clearfix.ui-corner-all
+        .portlet-header.fixed.ui-widget-header.ui-corner-top
+          Map
+          %span{:style=>"float: right"}
+            = link_to "Save", "#"
+        .portlet-content.nopadding
+          #mappanel
+      = semantic_form_for @location do |form|
+        .editor-content
+          #left.column.ui-sortable
+            = render :partial => "locations/feature", :locals => {:form => form, :form_data => @form_data}
+            = render :partial => "locations/comments", :locals => {:location => @location}
+          .column.ui-sortable
+            = render :partial => "locations/form/information", :locals => {:form => form}
+            = render :partial => "locations/form/history", :locals => {:form => form, :location => @location}
+          .clear
+      %br
+      %br
 
 :javascript
   $(document).ready(function() {
 
+    var options = {location_id: #{@location.id}, comments: #{@comments.to_json}};
+    $(".comments.portlet").location_comments(options);
+
     $(".save").click(function() {
       $(".block form").submit();
     });
-
-    Comment.bind("add", function(new_comment) {
-      var output = JST['comment_template']({comment: new_comment.to_hash()});
-      $(output).appendTo($(".comments .list"));
-    })
 
     Ext.onReady(function() {
       var settings = new Spatial.Models.Settings();
@@ -114,7 +114,7 @@
           renderTo: "mappanel",
           layout: "border",
           height: 200,
-          width: 920,
+          width: 898,
           items: [mapPanel, gridPanel]
         });
 
@@ -125,32 +125,15 @@
       this.selected_locations = [#{object.id}];
 
       this.use(Sammy.FaceboxWidget);
-      this.use(Sammy.CommentWidget);
       this.use(Sammy.CategoryWidget, #{@categories});
-      this.use(Sammy.TabWidget, $(".block_sub li a"));
 
       this.get("#/", function(context) {
         this.closeFacebox();
-        context.redirect("#/tabs/feature");
       })
 
       this.get("#/cancel", function(context) {
         context.redirect("#/");
       })
-
-      this.get("#/comments/:location_id/accept", function(context) {
-        var location_id = context.params['location_id'];
-        this.acceptComment(context, location_id);
-      });
-
-      this.get('#/tabs/:view', function(context) {
-        this.showTab(context.params["view"])
-      });
-
-      this.get("#/comments/:location_id", function(context) {
-        var location_id = context.params['location_id'];
-        this.showCommentWidget(context, location_id);
-      });
 
       this.get('#/category/add', function(context) {
         this.showCategoryWidget(context, "#/category/add/accept", "Add Category", "add_tag");

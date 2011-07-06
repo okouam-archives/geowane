@@ -1,5 +1,5 @@
 - unless collection.nil? || collection.empty?
-  = select_tag "pages", options_for_select([ "10", "20", "50", "100", "1000", "5000"], page_size), :style => "width: 70px; padding: 2px; margin-top: -3px"
+  = select_tag "pages", options_for_select([ "10", "20", "50", "100", "1000", "5000"], page_size), :style => "margin-left: 10px; width: 70px; padding: 2px; margin-top: -3px"
   = will_paginate collection, :params => @params, :class => "paggination right"
  
 :javascript

@@ -4,6 +4,8 @@
   %head
     %title= "GeoCMS - #{h yield(:title)}"
     = csrf_meta_tag
+    = stylesheet_link_tag 'ui'
+    = stylesheet_link_tag 'blue'
     = stylesheet_link_tag 'admin'
     = include_javascripts :global
     = include_javascripts :templates
@@ -11,7 +13,7 @@
     #hld
       .wrapper
         #header
-          %h1= link_to "Gowane", dashboard_path
+          %h1= link_to "GeoCMS", dashboard_path
           %ul#nav
             %li
               = link_to "Geospatial Database", dashboard_path

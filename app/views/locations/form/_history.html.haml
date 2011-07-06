@@ -1,32 +1,37 @@
-#history-tab
-  %br
-  - if object.persisted?
-    - if object.labels.count > 0
-      - object.labels.each do |label|
-        - if label.classification == 'SYSTEM' && label.key == 'IMPORTED FROM'
-          %b Imported from
-          = link_to Import.find(label.value).input.original_filename, Import.find(label.value).input.url
-    %p
-    - object.audits.each do |audit|
+.portlet.ui-widget.ui-widget-content.ui-helper-clearfix.ui-corner-all
+  .portlet-header.ui-widget-header.ui-corner-top
+    History
+  .portlet-content
+    %br
+    - if object.persisted?
+      - if object.labels.count > 0
+        - object.labels.each do |label|
+          - if label.classification == 'SYSTEM' && label.key == 'IMPORTED FROM'
+            %b Imported from
+            = link_to Import.find(label.value).input.original_filename, Import.find(label.value).input.url
+      %p
+      - object.audits.each do |audit|
+        .audit
+          .author{:style=>"width: 150px; float: left"}
+            = image_tag("http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(audit.user.login)}?d=identicon&s=50", :style => "float: left; border: 1px solid #777")
+            .details{:style=>"margin-left: 10px; float: left"}
+              #{audit.created_at.to_s(:short)}
+              %br
+              #{audit.user.login}
+          .change{:style=>"margin-left: 150px"}
+            %ul
+              - audit.model_changes.each do |model_change|
+                %li= "Changed #{model_change.datum} from #{model_change.old_value} to #{model_change.new_value}"
+        .clear{:style=>"height: 20px"}
       .audit
         .author{:style=>"width: 150px; float: left"}
-          = image_tag("http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(audit.user.login)}?d=identicon&s=50", :style => "float: left; border: 1px solid #777")
+          = image_tag("http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(object.user.login)}?d=identicon&s=50", :style => "float: left; border: 1px solid #777")
           .details{:style=>"margin-left: 10px; float: left"}
-            #{audit.created_at.to_s(:short)}
+            #{object.created_at.to_s(:short)}
             %br
-            #{audit.user.login}
+            #{object.user.login}
         .change{:style=>"margin-left: 150px"}
           %ul
-            - audit.model_changes.each do |model_change|
-              %li= "Changed #{model_change.datum} from #{model_change.old_value} to #{model_change.new_value}"
-      .clear{:style=>"height: 20px"}
-    .audit
-      .author{:style=>"width: 150px; float: left"}
-        = image_tag("http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(object.user.login)}?d=identicon&s=50", :style => "float: left; border: 1px solid #777")
-        .details{:style=>"margin-left: 10px; float: left"}
-          #{object.created_at.to_s(:short)}
-          %br
-          #{object.user.login}
-      .change{:style=>"margin-left: 150px"}
-        %ul
-          %li Added to database
+            %li Added to database
+    %br
+    %br

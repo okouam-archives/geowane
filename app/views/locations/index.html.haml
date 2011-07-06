@@ -6,57 +6,68 @@
 .block
   .block_head
     %h2 Points of Interest
-    %ul
-      - unless @locations.empty?
-        - if @locations.any? {|l| current_user.may_update_location?(l)}
-          %li.nobg.collection_edit= link_to "Edit Selection", "#"
-        - if @locations.any? {|l| current_user.may_destroy_location?(l)}
-          %li.nobg.collection_delete= link_to "Delete Selection", "#"
-        %li.nobg.export= link_to "Export Selection", "#"
   .block_content
-    %br
-    #mappanel
-    %br
-    = semantic_form_for :locations, :url => new_export_path do
-      %table.main{:cellspacing => "0", :cellpadding => "0", :style => "margin-left: 0px"}
-        %tbody
-          %tr
-            %th
-              %input{:type=>"checkbox"}
-            %th
-              = link_to "Name", "#", :"data-sort" => "name"
-            %th
-              = link_to "City", "#", :"data-sort" => "city_name"
-            %th.tags
-              Tags
-            %th.added_by
-              = link_to "Added By", "#", :"data-sort" => "username"
-            %th.date_added
-              = link_to "Date Added", "#", :"data-sort" => "created_at"
-            %th.last_changed
-              = link_to "Last Changed", "#", :"data-sort" => "updated_at"
-            %th.status
-              = link_to "Status", "#", :"data-sort" => "status"
-          - @locations.each do |location|
-            %tr
-              %td.selector
-                %input{:type=>"checkbox", :name=>"locations[]", :value => "#{location.id}"}
-              %td.name
-                - if location.name.length > 40
-                  = image_tag("warning-icon.png")
-                = link_to location.name, edit_location_path(location)
-              %td= location.city_name
-              %td= location.tags.map {|t| t.category.french}.join(", ") || ""
-              %td= location.username
-              %td= location.created_at.strftime("%d-%m-%Y")
-              %td= location.updated_at.strftime("%d-%m-%Y")
-              %td= location.status.to_s.humanize.upcase
-    %br
-      %div
-        = render :partial => "shared/paging", :locals => {:collection => @locations, :page_size => @search.per_page}
-    %div.clear
-    %span{:style=>"float: right; margin-bottom: 20px"}
-      = page_entries_info @locations
+    #portlets
+      %br
+      .portlet.ui.widget.ui-widget-content.ui-helper-clearfix.ui-corner-all
+        .portlet-header.fixed.ui-widget-header.ui-corner-top
+          Spatial Listing
+          %span{:style=>"float: right"}
+            = link_to "Select", "#"
+        .portlet-content.nopadding
+          #mappanel
+      %br
+      = semantic_form_for :locations, :url => new_export_path do
+        .portlet.ui.widget.ui-widget-content.ui-helper-clearfix.ui-corner-all
+          .portlet-header.fixed.ui-widget-header.ui-corner-top
+            Tabular Listing
+            %span{:style=>"float: right"}
+              - unless @locations.empty?
+                - if @locations.any? {|l| current_user.may_update_location?(l)}
+                  = link_to "Edit |", "#"
+                - if @locations.any? {|l| current_user.may_destroy_location?(l)}
+                  = link_to "Delete |", "#"
+                = link_to "Export", "#"
+          .portlet-content.nopadding
+            %table.main{:cellspacing => "0", :cellpadding => "0", :style => "margin-left: 0px"}
+              %tbody
+                %tr
+                  %th
+                    %input{:type=>"checkbox"}
+                  %th
+                    = link_to "Name", "#", :"data-sort" => "name"
+                  %th
+                    = link_to "City", "#", :"data-sort" => "city_name"
+                  %th.tags
+                    Tags
+                  %th.added_by
+                    = link_to "Added By", "#", :"data-sort" => "username"
+                  %th.date_added
+                    = link_to "Date Added", "#", :"data-sort" => "created_at"
+                  %th.last_changed
+                    = link_to "Last Changed", "#", :"data-sort" => "updated_at"
+                  %th.status
+                    = link_to "Status", "#", :"data-sort" => "status"
+                - @locations.each do |location|
+                  %tr
+                    %td.selector
+                      %input{:type=>"checkbox", :name=>"locations[]", :value => "#{location.id}"}
+                    %td.name
+                      - if location.name.length > 40
+                        = image_tag("warning-icon.png")
+                      = link_to location.name, edit_location_path(location)
+                    %td= location.city_name
+                    %td= location.tags.map {|t| t.category.french}.join(", ") || ""
+                    %td= location.username
+                    %td= location.created_at.strftime("%d-%m-%Y")
+                    %td= location.updated_at.strftime("%d-%m-%Y")
+                    %td= location.status.to_s.humanize.upcase
+            %br
+              %div{:style=>"margin-right: 20px"}
+                = render :partial => "shared/paging", :locals => {:collection => @locations, :page_size => @search.per_page}
+            %div.clear
+            %span{:style=>"float: right; margin-bottom: 20px; margin-right: 20px"}
+              = page_entries_info @locations
 
 :javascript
   var settings = new Spatial.Models.Settings();
@@ -86,15 +97,15 @@
       return false;
     }
 
-    $("li.collection_edit a").click(function() {
+    $("a:contains('Edit |')").click(function() {
       return collection_change('locations/edit')
     });
 
-    $("li.collection_delete a").click(function() {
+    $("a:contains('Delete |')").click(function() {
       return collection_change('locations', 'delete')
     });
 
-    $("li.export a").click(function() {
+    $("a:contains('Export')").click(function() {
       $("form").attr("action", "/exports/prepare");
       $("form").submit();
       return false;
@@ -170,7 +181,7 @@
         renderTo: "mappanel",
         layout: "border",
         height: 200,
-        width: 920,
+        width: 898,
         items: [mapPanel, gridPanel]
       });
 

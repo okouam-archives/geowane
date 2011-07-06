@@ -31,7 +31,7 @@ class CommentsController < ApplicationController
       location.comments.create!(:comment => comment, :user => current_user)
     end
 
-    render :json => comments.map {|x| {text: x.comment, created_at: x.created_at, location_id: x.commentable_id, user: x.user.login}}
+    render :json => comments.map {|x| x.to_hash}
   end
 
 end

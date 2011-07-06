@@ -78,6 +78,7 @@ class LocationsController < ApplicationController
     end
     props = props + [["Longitude", object.longitude], ["Latitude", object.latitude]]
     @props = props.to_json
+    @comments = object.comments.map {|c| c.to_hash}
   end
 
   update do

@@ -1,0 +1,101 @@
+.comments.portlet.ui-widget.ui-widget-content.ui-helper-clearfix.ui-corner-all
+  .portlet-header.ui-widget-header.ui-corner-top
+    Comments
+    %span
+      =link_to "(+)", "#"
+  .portlet-content
+    .editor
+      %textarea
+      .buttons
+        =link_to "Accept", "#/comments/accept"
+        =link_to "Cancel", "#/comments/cancel"
+      %h3 Preset Comments
+      %ul
+        %li= link_to "Préciser le quartier", "#"
+        %li= link_to "Doublon? sinon préciser le quartier", "#"
+        %li= link_to "Revoir l'orthographe", "#"
+        %li= link_to "Indiquer le nom exact", "#"
+        %li= link_to "Préciser le quartier", "#"
+    %ul.comments
+    :plain
+      <script type="text/x-jquery-tmpl" id="comment-template">
+        <li>
+          <div class="audit">
+            <div class="author">
+              <img src="${thumb}" />
+              <div class="details">
+                <span style="font-size: 10px">${created_at}</span>
+                <br/>
+                <span style="font-size: 11px; position: relative; top: -4px">${user}</span>
+                <p>${text}</p>
+              </div>
+            </div>
+          </div>
+          <div class="clear"></div>
+        </li>
+      </script>
+
+:css
+  .comments.portlet .portlet-header span {float: right}
+  .comments.portlet textarea {width: 407px; height: 60px}
+  .comments.portlet .buttons a {float: right; margin-right: 10px; margin-top: 5px}
+  .comments.portlet .editor {display: none}
+  .comments.portlet .editor h3 {margin-top: 10px}
+  .comments.portlet .editor li {margin-bottom: 3px}
+  .comments.portlet .portlet-content > ul {margin-top: 10px}
+  .comments.portlet .portlet-content > ul .author {float: left}
+  .comments.portlet .portlet-content > ul .details {margin-left: 10px; float: left; width: 330px; position: relative; top: -4px}
+  .comments.portlet .portlet-content > ul img {float: left; border: 1px solid #777}
+
+:javascript
+  $(document).ready(function() {
+    $.Controller("LocationComments",
+    {
+      init: function(el, options) {
+        this.comment = this.element.find("textarea");
+        this.editor = this.element.find(".editor");
+        this.location_id = options.location_id;
+        this.comment_list = this.element.find(".portlet-content > ul");
+        this.loadComments(options.comments);
+      },
+      loadComments: function(comments) {
+        var template = $.template(null, $("#comment-template").text());
+        $.tmpl(template, comments).appendTo(this.comment_list);
+        this.editor.hide();
+        this.comment_list.show();
+      },
+      saveComment: function() {
+        var self = this;
+        $.ajax({
+          type: 'POST',
+          dataType: 'json',
+          url: "/comments/collection_create",
+          data: {"comment": this.comment.val(), "locations": [this.location_id]},
+          success: function(comments) {
+            self.loadComments(comments);
+          }
+        });
+      },
+      "a:contains('(+)') click": function(el, evt) {
+        this.editor.show();
+        this.comment_list.hide();
+        return false;
+      },
+      "a:contains('Accept') click": function(el, evt) {
+        this.saveComment();
+        this.editor.hide();
+        this.comment_list.show();
+        return false;
+      },
+      "a:contains('Cancel') click": function(el, evt) {
+        this.comment.val("");
+        this.editor.hide();
+        this.comment_list.show();
+        return false;
+      },
+      "ul a click": function(el, evt) {
+        this.comment.val(el.text());
+        return false;
+      }
+    });
+  })
