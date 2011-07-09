@@ -1,8 +1,5 @@
 = content_for :title, "Edit Location"
 
-= include_javascripts :mapping
-= stylesheet_link_tag 'ext-all.css'
-
 .block.editor
   .block_head
     %h2 Edit Location #{@location.id}
@@ -10,115 +7,30 @@
       %li.nobg= link_to "Back", locations_path(:page => session[:search_page], :per_page => session[:search_page_size])
       %li.nobg= link_to "Previous POI", previous_location_path(@location)
       %li.nobg= link_to "Next POI", next_location_path(@location)
-      %li.nobg= link_to "Save", "#", :class => "save"
   .block_content
     #portlets
       %br
-      .portlet.ui.widget.ui-widget-content.ui-helper-clearfix.ui-corner-all
-        .portlet-header.fixed.ui-widget-header.ui-corner-top
-          Map
-          %span{:style=>"float: right"}
-            = link_to "Save", "#"
-        .portlet-content.nopadding
-          #mappanel
-      = semantic_form_for @location do |form|
-        .editor-content
-          #left.column.ui-sortable
-            = render :partial => "locations/feature", :locals => {:form => form, :form_data => @form_data}
-            = render :partial => "locations/comments", :locals => {:location => @location}
-          .column.ui-sortable
-            = render :partial => "locations/form/information", :locals => {:form => form}
-            = render :partial => "locations/form/history", :locals => {:form => form, :location => @location}
-          .clear
+      .editor-content
+        #left.column.ui-sortable
+          = render :partial => "locations/portlets/map"
+          = render :partial => "locations/portlets/feature", :locals => {:form => form, :form_data => @form_data}
+          = render :partial => "locations/portlets/comments", :locals => {:location => @location}
+        .column.ui-sortable
+          = render :partial => "locations/portlets/coordinates", :locals => {:coordinates => @coordinates}
+          = render :partial => "locations/portlets/information", :locals => {:form => form}
+          = render :partial => "locations/portlets/history", :locals => {:form => form, :location => @location}
+        .clear
       %br
       %br
 
 :javascript
   $(document).ready(function() {
 
-    var options = {location_id: #{@location.id}, comments: #{@comments.to_json}};
-    $(".comments.portlet").location_comments(options);
-
-    $(".save").click(function() {
-      $(".block form").submit();
-    });
-
-    Ext.onReady(function() {
-      var settings = new Spatial.Models.Settings();
-      var map = new Spatial.Models.Map(settings);
-      var saveStrategy = new OpenLayers.Strategy.Save();
-
-      var mapPanel = new GeoExt.MapPanel({
-        region: "center",
-        height: 200,
-        width: 400,
-        map: map.instance,
-        bbar: [
-          {
-            text: "Save",
-            handler: function() {
-              saveStrategy.save();
-            }
-          }
-        ]
-      });
-
-      var vecLayer = new OpenLayers.Layer.Vector("vector", {
-        strategies: [new OpenLayers.Strategy.Fixed()],
-         protocol: new OpenLayers.Protocol.HTTP({
-            url: "/features/#{object.id}",
-            headers: {"Accept": "application/json", "Content-Type": "application.json"},
-            format: new OpenLayers.Format.GeoJSON()
-         })
-      });
-      map.instance.addLayer(vecLayer);
-      var style = new OpenLayers.Style({'fillColor': '#66C17B', 'fillOpacity': 0.6, 'pointRadius': 6, 'strokeWidth': 1, 'strokeColor': '#000'});
-      var style_map = new OpenLayers.StyleMap({'default': style});
-      vecLayer.styleMap = style_map;
-      vecLayer.events.register('featuresadded', this, function(features) {
-        map.instance.zoomToExtent(vecLayer.getDataExtent());
-      });
-
-      var modifyControl = new OpenLayers.Control.ModifyFeature(vecLayer);
-      modifyControl.dragComplete = function(e) {
-        e.state = OpenLayers.State.UPDATE;
-      }
-      mapPanel.map.addControl(modifyControl);
-      modifyControl.activate();
-
-
-      var jsonStore = new Ext.data.SimpleStore({
-        fields: ["property", "value"],
-        data: #{@props}
-      });
-
-      var gridPanel = new Ext.grid.GridPanel({
-        title: "Geospatial Properties",
-        store: jsonStore,
-        autoExpandColumn: "value",
-        colModel: new Ext.grid.ColumnModel({
-           columns: [
-            {id: 'property', header: 'Property', width: 200, sortable: true, dataIndex: 'property'},
-            {id: 'value', header: 'Value', width: 200, sortable: true, dataIndex: 'value'}
-          ]
-        }),
-        viewConfig: {
-          forceFit: true
-        },
-        sm: new Ext.grid.RowSelectionModel({singleSelect:true}),
-        region: "east",
-        width: 420
-      });
-
-      var mainPanel = new Ext.Panel({
-          renderTo: "mappanel",
-          layout: "border",
-          height: 200,
-          width: 898,
-          items: [mapPanel, gridPanel]
-        });
-
-      });
+    $(".information.portlet").locations_edit_information({location_id: #{@location.id}});
+    $(".feature.portlet").locations_edit_feature({location_id: #{@location.id}});
+    $(".comments.portlet").locations_edit_comments({location_id: #{@location.id}, comments: #{@comments.to_json}});
+    $(".map.portlet").locations_edit_map({location_id: #{@location.id}});
+    $(".coordinates.portlet").locations_edit_coordinates();
 
     var app = Sammy(function() {
 

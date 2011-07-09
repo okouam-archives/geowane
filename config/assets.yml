@@ -2,6 +2,7 @@ javascripts:
   global:
     - public/javascripts/jquery-1.6.1.min.js
     - public/javascripts/jquery-ui-1.8rc3.custom.min.js
+    - public/javascripts/OpenLayers-2.10/OpenLayers.js
     - public/javascripts/jquery.plugins/*.js
     - public/javascripts/theme/jquery.date_input.js
     - public/javascripts/theme/custom.js
@@ -15,10 +16,9 @@ javascripts:
     - public/javascripts/sammy.plugins/*.js
     - public/javascripts/nested_form.js
     - public/javascripts/jquerymx-1.0.custom.min.js
-    - public/javascripts/controllers/*.js
+    - public/javascripts/controllers/**/*.js
 
   mapping:
-    - public/javascripts/OpenLayers-2.10/OpenLayers.js
     - public/javascripts/spatial.models/*.js
     - public/javascripts/ext-jquery-adapter.js
     - public/javascripts/ext-all.js

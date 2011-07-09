@@ -1,0 +1,36 @@
+.comments.portlet.ui-widget.ui-widget-content.ui-helper-clearfix.ui-corner-all
+  .portlet-header.ui-widget-header.ui-corner-top
+    Comments
+    %span
+      =link_to "(+)", "#"
+  .portlet-content
+    .editor
+      %textarea
+      .buttons
+        =link_to "Accept", "#/comments/accept"
+        =link_to "Cancel", "#/comments/cancel"
+      %h3 Preset Comments
+      %ul
+        %li= link_to "Préciser le quartier", "#"
+        %li= link_to "Doublon? sinon préciser le quartier", "#"
+        %li= link_to "Revoir l'orthographe", "#"
+        %li= link_to "Indiquer le nom exact", "#"
+        %li= link_to "Préciser le quartier", "#"
+    %ul.comments
+    :plain
+      <script type="text/x-jquery-tmpl" id="comment-template">
+        <li>
+          <div class="audit">
+            <div class="author">
+              <img src="${thumb}" />
+              <div class="details">
+                <span style="font-size: 10px">${created_at}</span>
+                <br/>
+                <span style="font-size: 11px; position: relative; top: -4px">${user}</span>
+                <p>${text}</p>
+              </div>
+            </div>
+          </div>
+          <div class="clear"></div>
+        </li>
+      </script>

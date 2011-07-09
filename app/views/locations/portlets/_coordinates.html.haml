@@ -1,0 +1,18 @@
+.coordinates.portlet.ui-widget.ui-widget-content.ui-helper-clearfix.ui-corner-all
+  .portlet-header.ui-widget-header.ui-corner-top
+    Coordinates
+    %span
+  .portlet-content
+    %ul
+      - coordinates[:boundaries].each_value do |boundary|
+        %li
+          %label= boundary[:classification]
+          = boundary[:name]
+    %ul
+      %li
+        %label Latitude
+        %span= coordinates[:latitude]
+      %li
+        %label Longitude
+        %span= coordinates[:longitude]
+    .clear

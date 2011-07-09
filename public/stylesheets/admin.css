@@ -59,18 +59,8 @@
 .locations .editor .right-panel table tr {background-color: transparent ! important}
 .locations .editor .right-panel table {width: 100%; margin-top: -15px}
 
-/* .locations.index */
-
-.locations.index .block_sub span {font-weight: bold; margin-right: 20px}
-.locations.index table.main td.name img {position: relative; top: 3px; margin-right: 3px} 
-.locations.index table.main th.added_by {width: 80px}
-.locations.index table.main th.date_added {width: 80px}
-.locations.index table.main th.tags {width: 120px}
-.locations.index table.main th.last_changed {width: 95px}
-.locations.index table.main th.status {width: 95px}
-
-/* .index */
-
+/* All Index Pages
+----------------------------------------------------------------------------------------------------------------------*/
 .index table {width: 100%; border-collapse: collapse}
 .index td.view, .index th.view {width: 22px}
 .index td.count, .index th.count {width: 90px; text-align: center}
@@ -85,15 +75,18 @@
 .index .level {min-width: 98px}
 .index table tfoot td {font-weight: bold}
 
-/* #search-parameters */
+/* Locations Index Page
+----------------------------------------------------------------------------------------------------------------------*/
+.locations.index .block_sub span {font-weight: bold; margin-right: 20px}
+.locations.index table.main td.name img {position: relative; top: 3px; margin-right: 3px}
+.locations.index table.main th.added_by {width: 80px}
+.locations.index table.main th.date_added {width: 80px}
+.locations.index table.main th.tags {width: 120px}
+.locations.index table.main th.last_changed {width: 95px}
+.locations.index table.main th.status {width: 95px}
 
-#search-parameters { padding: 20px; display: block; margin-bottom: 10px; }
-#search-parameters input[type="text"] { width: 190px; padding: 3px }
-#search-parameters input .button { width: auto; }
-#search-parameters select { width: 190px; }
-
-/* .exports.selection */
-
+/* Exports Selection Page
+----------------------------------------------------------------------------------------------------------------------*/
 .exports.selection .tabs {float: left}
 .exports.selection .tabs ul {padding-left: 0}
 .exports.selection .tabs li {background-image: none ! important; margin-bottom: 0 ! important}
@@ -117,8 +110,27 @@
 .exports.selection fieldset ol * {border-width: 0; font-weight: normal ! important}
 .exports.selection fieldset {border: 0 ! important}
 
-/* Others */
+/* Location Edit Page, Comments Portlet
+----------------------------------------------------------------------------------------------------------------------*/
+.comments.portlet .portlet-header span {float: right}
+.comments.portlet textarea {width: 407px; height: 60px}
+.comments.portlet .buttons a {float: right; margin-right: 10px; margin-top: 5px}
+.comments.portlet .editor {display: none}
+.comments.portlet .editor h3 {margin-top: 10px}
+.comments.portlet .editor li {margin-bottom: 3px}
+.comments.portlet .portlet-content > ul {margin-top: 10px}
+.comments.portlet .portlet-content > ul .author {float: left}
+.comments.portlet .portlet-content > ul .details {margin-left: 10px; float: left; width: 330px; position: relative; top: -4px}
+.comments.portlet .portlet-content > ul img {float: left; border: 1px solid #777}
 
+/* Location Edit Page, Coordinates Portlet
+----------------------------------------------------------------------------------------------------------------------*/
+.coordinates.portlet label {font-weight: bold; display: block}
+.coordinates.portlet li {width: 200px; margin-bottom: 5px}
+.coordinates.portlet ul {float: left}
+
+/* Others
+----------------------------------------------------------------------------------------------------------------------*/
 .block_sub {background-color: #777; padding-left: 30px; color: white; line-height: 16px; width: 952px; left: -10px; position: relative}
 .block_sub a {color: white; font-size: 11px}
 .block_sub a:hover {color: orange}
@@ -129,9 +141,27 @@
 .block form li { list-style-type: none; margin-bottom: 10px}
 .block form .commit {margin-top: 20px}
 .block form label {display: block; margin-bottom: 2px}
-
 .block_content ul.block_tabs {padding-bottom: 0}
 .block_content ul.block_tabs li {float: left; background: none; padding: 5px 10px 5px 10px; font-variant: small-caps; border: 1px solid #ccc; border-bottom-color: white; margin-bottom: -1px}
+.busybox {
+	position: absolute;
+	z-index: 999;
+	color: #fff;
+	background-color: #666;
+	margin: 0;
+	padding: 0;
+	opacity: 0.8;
+	filter: alpha(opacity=95);
+	-ms-filter: "alpha(opacity=95)";
+}
+
+
+/* #search-parameters */
+
+#search-parameters { padding: 20px; display: block; margin-bottom: 10px; }
+#search-parameters input[type="text"] { width: 190px; padding: 3px }
+#search-parameters input .button { width: auto; }
+#search-parameters select { width: 190px; }
 
 /* GeoExt */
 

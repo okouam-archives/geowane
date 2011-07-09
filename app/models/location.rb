@@ -34,16 +34,20 @@ class Location < ActiveRecord::Base
   }
 
   def json_object
-    { :label => name,
+    icon = !tags.empty? && tags.first.category.icon ? tags.first.category.icon : nil
+    boundaries = {}
+    (0..3).each do |num|
+      level = administrative_unit(num)
+      boundaries[num.to_s] = {id: level.id, classification: level.classification, name: level.name} if level
+    end
+    {
+      :label => name,
       :id => id,
       :name => name,
       :longitude => longitude,
       :latitude => latitude,
-      :icon => !tags.empty? && tags.first.category.icon ? tags.first.category.icon : nil,
-      :commune => administrative_unit(3).try(:name),
-      :country => administrative_unit(0).try(:name),
-      :city => administrative_unit(2).try(:name),
-      :region => administrative_unit(1).try(:name),
+      :icon => icon,
+      :boundaries => boundaries,
       :feature => feature.as_wkt
     }
   end

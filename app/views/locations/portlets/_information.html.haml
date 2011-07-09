@@ -1,25 +1,21 @@
-.portlet.ui-widget.ui-widget-content.ui-helper-clearfix.ui-corner-all
+.information.portlet.ui-widget.ui-widget-content.ui-helper-clearfix.ui-corner-all
   .portlet-header.ui-widget-header.ui-corner-top
     Information
+    %span{:style=>"float: right"}
+      = link_to "Save", "#"
   .portlet-content
-
-    = form.input :email, :required => false, :input_html => { :class => "text" }
-
-    = form.input :telephone, :required => false, :input_html => { :class => "text" }
-
-    = form.input :fax, :required => false, :input_html => { :class => "text" }
-
-    = form.input :website, :required => false, :input_html => { :class => "text" }
-
-    = form.input :postal_address, :required => false, :input_html => { :class => "text" }
-
-    = form.input :opening_hours, :required => false, :input_html => { :class => "text" }
-
-    = form.input :user_rating, :required => false, :input_html => { :class => "text"}
+    = semantic_form_for object do |form|
+      = form.input :email, :required => false, :input_html => { :class => "text" }
+      = form.input :telephone, :required => false, :input_html => { :class => "text" }
+      = form.input :fax, :required => false, :input_html => { :class => "text" }
+      = form.input :website, :required => false, :input_html => { :class => "text" }
+      = form.input :postal_address, :required => false, :input_html => { :class => "text" }
+      = form.input :opening_hours, :required => false, :input_html => { :class => "text" }
+      = form.input :user_rating, :required => false, :input_html => { :class => "text"}
 
 :javascript
   $(document).ready(function() {
-    var country = "#{@location.administrative_unit(0).name}";
+    var country = "#{@location.administrative_unit(0).try(:name)}";
     switch(country) {
       case "Côte d'Ivoire":
         jQuery.validator.addMethod("validPhoneNumber", function(value, element) {

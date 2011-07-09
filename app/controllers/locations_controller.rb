@@ -72,18 +72,22 @@ class LocationsController < ApplicationController
 
   edit.before do
     @categories = ["", ""] + Category.order("french").map{|c| [c.french, c.id]}
-    props = [0,1,2,3].inject([]) do |union, n|
-      boundary = object.administrative_unit(n)
-      boundary ? union << [boundary.classification, boundary.name] : union
-    end
-    props = props + [["Longitude", object.longitude], ["Latitude", object.latitude]]
-    @props = props.to_json
+    @coordinates = object.json_object
     @comments = object.comments.map {|c| c.to_hash}
+  end
+
+  show do
+    wants.json do
+      render :json => object.json_object.to_json
+    end
   end
 
   update do
     wants.html do
       redirect_to locations_path(:page => session[:search_page], :per_page => session[:search_page_size])
+    end
+    wants.json do
+      render :json => object.json_object.to_json
     end
   end
 
