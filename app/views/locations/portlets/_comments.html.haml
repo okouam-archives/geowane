@@ -20,17 +20,13 @@
     :plain
       <script type="text/x-jquery-tmpl" id="comment-template">
         <li>
-          <div class="audit">
-            <div class="author">
-              <img src="${thumb}" />
-              <div class="details">
-                <span style="font-size: 10px">${created_at}</span>
-                <br/>
-                <span style="font-size: 11px; position: relative; top: -4px">${user}</span>
-                <p>${text}</p>
-              </div>
+            <img src="${thumb}" />
+            <div class="details">
+              <span class="created_at">${created_at}</span>
+              <br/>
+              <span class="username">${user}</span>
+              <p>${text}</p>
             </div>
-          </div>
-          <div class="clear"></div>
+            <div class="clear"></div>
         </li>
       </script>

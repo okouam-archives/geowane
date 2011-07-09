@@ -1,9 +1,3 @@
-/**
- * 'busyBox' v1.1
- * @author Roger Padilla C. - rogerjose81@gmail.com
- * Web: http://rogerpadilla.wordpress.com/2010/05/24/jquery-busybox/
- * Licensed under Apached License v2.0
- */
 (function($) {
 
 	/**

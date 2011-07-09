@@ -1,8 +1,7 @@
-@import url(admin/style.css);
-@import url(admin/facebox.css);
-@import url(admin/titillium.css);
-@import url(admin/date_input.css);
-@import url(admin/formtastic.css);
+@import url(style.css);
+@import url(titillium.css);
+@import url(date_input.css);
+@import url(formtastic.css);
 
 /* .locations.collection_edit */
 
@@ -116,6 +115,8 @@
 .comments.portlet textarea {width: 407px; height: 60px}
 .comments.portlet .buttons a {float: right; margin-right: 10px; margin-top: 5px}
 .comments.portlet .editor {display: none}
+.comments.portlet .details .created_at {font-size: 11px; font-style: italic}
+.comments.portlet .details .username {font-size: 12px; font-style: italic; top: -2px; position: relative}
 .comments.portlet .editor h3 {margin-top: 10px}
 .comments.portlet .editor li {margin-bottom: 3px}
 .comments.portlet .portlet-content > ul {margin-top: 10px}
@@ -155,6 +156,27 @@
 	-ms-filter: "alpha(opacity=95)";
 }
 
+/* FaceBox */
+
+#facebox .b { background:url(/images/admin/b.png); }
+#facebox .tl { background:url(/images/admin/tl.png); }
+#facebox .tr { background:url(/images/admin/tr.png); }
+#facebox .bl { background:url(/images/admin/bl.png); }
+#facebox .br { background:url(/images/admin/br.png); }
+#facebox { position: absolute; top: 0; left: 0; z-index: 99999999; text-align: left; }
+#facebox .popup { position: relative;           	}
+#facebox table { border-collapse: collapse;  	}
+#facebox td {            	border-bottom: 0;              	padding: 0;     	}
+#facebox .body { padding: 10px;   	background: #fff; width: 400px; 	min-width: 400px;   	}
+#facebox .loading {           	text-align: center;  	}
+#facebox .image {       	text-align: center;  	}
+#facebox img {    	border: 0;  	margin: 0;    	}
+#facebox .footer {  	border-top: 1px solid #DDDDDD;       	padding-top: 5px;  	margin-top: 10px;  	text-align: right;}
+#facebox .body {width: 600px}
+#facebox .tl, #facebox .tr, #facebox .bl, #facebox .br {         	height: 10px;  	width: 10px; 	overflow: hidden;	padding: 0;            	}
+#facebox_overlay { position: fixed;	top: 0; left: 0; height:100%; width:100%; }
+.facebox_hide { z-index:-100; }
+.facebox_overlayBG { background-color: #000;    	z-index: 99;  	}
 
 /* #search-parameters */
 

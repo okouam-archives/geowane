@@ -1,1 +1,1 @@
-set :deploy_to, "/home/deployment/apps/gowane/production"
+set :deploy_to, "/home/deployment/apps/geocms/production"
