@@ -118,6 +118,9 @@ GEM
     launchy (0.4.0)
       configuration (>= 0.0.5)
       rake (>= 0.8.1)
+    less (1.2.21)
+      mutter (>= 0.4.2)
+      treetop (>= 1.4.2)
     linecache19 (0.5.12)
       ruby_core_source (>= 0.1.4)
     mail (2.2.19)
@@ -128,6 +131,7 @@ GEM
     meta_programming (0.2.2)
     mime-types (1.16)
     minitar (0.5.3)
+    mutter (0.5.3)
     nested_form (0.1.1)
     net-scp (1.0.4)
       net-ssh (>= 1.99.1)
@@ -145,6 +149,9 @@ GEM
     pg (0.11.0)
     polyglot (0.3.1)
     rack (1.2.3)
+    rack-less (2.0.2)
+      less (~> 1.2)
+      rack (~> 1.0)
     rack-mount (0.6.14)
       rack (>= 1.0.0)
     rack-test (0.5.7)
@@ -255,6 +262,7 @@ DEPENDENCIES
   paperclip
   pg
   rack
+  rack-less
   rails
   rake
   rcov

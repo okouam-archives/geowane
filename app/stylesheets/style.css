@@ -1,12 +1,3 @@
-/*	
-Template Name: Adminus
-Description: Beautiful admin panel interface
-Version: 1.1
-Author: enstyled
-Author URI: http://themeforest.net/user/enstyled
-*/
-
-
 /* Custom fonts */
 @import url("titillium.css");
 
@@ -125,18 +116,8 @@ a:hover {
 	left: 0;
 	}
 
-#header #nav ul:after /*From IE 7 lack of compliance*/{
-	clear: both;
-	display: block;
-	font: 1px/0px serif;
-	content: ".";
-	height: 0;
-	visibility: hidden;
-	}
-
 #header #nav ul li {
 	width: 190px;
-	float: left; /*For IE 7 lack of compliance*/
 	display: block !important;
 	display: inline; /*For IE*/
 	position: relative;

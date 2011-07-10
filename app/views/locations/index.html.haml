@@ -73,6 +73,7 @@
             %div.clear
             %span{:style=>"float: right; margin-bottom: 20px; margin-right: 20px"}
               = page_entries_info @locations
+            %div.clear
 
 :javascript
   $(".map.portlet").locations_index_map(#{@locations.map{|l| l.id}});

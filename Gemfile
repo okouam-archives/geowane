@@ -33,6 +33,7 @@ gem "foreigner"
 gem 'diff-lcs'
 gem 'uuidtools'
 gem "nested_form"
+gem 'rack-less'
 
 group :test do
   gem "capybara-webkit"

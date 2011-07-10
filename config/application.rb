@@ -2,6 +2,7 @@ require File.expand_path('../boot', __FILE__)
 
 require 'yaml'
 YAML::ENGINE.yamler= 'syck'
+require 'rack/less'
 
 require 'rails/all'
 
@@ -41,5 +42,15 @@ module Gowane
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
+
+    config.middleware.use "Rack::Less"
+    Rack::Less.configure do |config|
+      config.cache = Rails.configuration.action_controller.perform_caching
+      if Rails.env.development?
+        config.cache_bust = true
+      else
+        config.compress = :yui
+      end
+    end
   end
 end

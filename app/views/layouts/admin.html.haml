@@ -4,8 +4,8 @@
   %head
     %title= "GeoCMS - #{h yield(:title)}"
     = csrf_meta_tag
+    = stylesheet_link_tag Rack::Less.stylesheet('admin')
     = stylesheet_link_tag 'blue'
-    = stylesheet_link_tag 'admin'
     = include_javascripts :global
     = include_javascripts :templates
   %body{class: "#{controller.controller_name} #{controller.action_name}"}
