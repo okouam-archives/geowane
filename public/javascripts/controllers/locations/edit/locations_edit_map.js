@@ -69,9 +69,20 @@ $.Controller("LocationsEditMap",
         self.showActions();
       }
     });
+    var tooltip = new OpenLayers.Control.SelectFeature(this.layer, {
+      hover: true,
+      multiple: false,
+      highlightOnly: true,
+      overFeature: function() {
+        $("body").css({cursor: "pointer"});
+      },
+      outFeature: function() {
+        $("body").css({cursor: "default"});
+      }
+    });
     var panZoom = new OpenLayers.Control.PanZoomBar();
     panZoom.zoomWorldIcon = true;
-    var controls = [drag, new OpenLayers.Control.DragPan(), new OpenLayers.Control.Navigation(), panZoom];
+    var controls = [tooltip, drag, new OpenLayers.Control.DragPan(), new OpenLayers.Control.Navigation(), panZoom];
     this.map.addControls(controls);
     $.each(controls, function (index, item) {
       item.activate();

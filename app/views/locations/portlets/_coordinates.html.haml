@@ -2,17 +2,17 @@
   .portlet-header.ui-widget-header.ui-corner-top
     Coordinates
     %span
-  .portlet-content
-    %ul
-      - location.boundaries.each do |boundary|
+  .portlet-content.nopadding
+    %div{:style=>"padding: 10px; padding-top: 5px; padding-bottom: 0"}
+      %ul
+        - location.boundaries.each do |boundary|
+          %li
+            %label= boundary[1][:classification]
+            = boundary[1][:name]
+      %ul
         %li
-          %label= boundary[1][:classification]
-          = boundary[1][:name]
-    %ul
-      %li
-        %label Latitude
-        %span= location.latitude
-      %li
-        %label Longitude
-        %span= location.longitude
-    .clear
+          %label Latitude
+          %span= location.latitude
+        %li
+          %label Longitude
+          %span= location.longitude
