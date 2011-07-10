@@ -1,7 +1,7 @@
 = content_for :title, "Points of Interest"
 
 = include_javascripts :mapping
-= stylesheet_link_tag 'ext-all.css'
+= stylesheet_link_tag 'ext-all'
 
 .block
   .block_head
@@ -9,18 +9,30 @@
   .block_content
     #portlets
       %br
-      .portlet.ui.widget.ui-widget-content.ui-helper-clearfix.ui-corner-all
-        .portlet-header.fixed.ui-widget-header.ui-corner-top
-          Spatial Listing
-          %span{:style=>"float: right"}
-            = link_to "Select", "#"
-        .portlet-content.nopadding
-          #mappanel
+      #left.column
+        .portlet.map.ui.widget.ui-widget-content.ui-helper-clearfix.ui-corner-all
+          .portlet-header.fixed.ui-widget-header.ui-corner-top
+            Map
+          .portlet-content.nopadding
+            #mappanel{:style=>"height: 311px; width: 100%"}
+      .column
+        .coordinates.portlet.ui.widget.ui-widget-content.ui-helper-clearfix.ui-corner-all
+          .portlet-header.fixed.ui-widget-header.ui-corner-top
+            Index
+          .portlet-content.nopadding
+            %table.main
+              %thead
+                %tr{:style=>"background-color: rgb(251, 251, 251)"}
+                  %th{:style=>"width: 20px"} ID
+                  %th Name
+              %tbody
+
       %br
+      .clear
       = semantic_form_for :locations, :url => new_export_path do
         .portlet.ui.widget.ui-widget-content.ui-helper-clearfix.ui-corner-all
           .portlet-header.fixed.ui-widget-header.ui-corner-top
-            Tabular Listing
+            Details
             %span{:style=>"float: right"}
               - unless @locations.empty?
                 - if @locations.any? {|l| current_user.may_update_location?(l)}
@@ -34,20 +46,13 @@
                 %tr
                   %th
                     %input{:type=>"checkbox"}
-                  %th
-                    = link_to "Name", "#", :"data-sort" => "name"
-                  %th
-                    = link_to "City", "#", :"data-sort" => "city_name"
-                  %th.tags
-                    Tags
-                  %th.added_by
-                    = link_to "Added By", "#", :"data-sort" => "username"
-                  %th.date_added
-                    = link_to "Date Added", "#", :"data-sort" => "created_at"
-                  %th.last_changed
-                    = link_to "Last Changed", "#", :"data-sort" => "updated_at"
-                  %th.status
-                    = link_to "Status", "#", :"data-sort" => "status"
+                  %th= link_to "Name", "#", :"data-sort" => "name"
+                  %th= link_to "City", "#", :"data-sort" => "city_name"
+                  %th.tags Tags
+                  %th.added_by= link_to "Added By", "#", :"data-sort" => "username"
+                  %th.date_added= link_to "Date Added", "#", :"data-sort" => "created_at"
+                  %th.last_changed= link_to "Last Changed", "#", :"data-sort" => "updated_at"
+                  %th.status= link_to "Status", "#", :"data-sort" => "status"
                 - @locations.each do |location|
                   %tr
                     %td.selector
@@ -64,15 +69,14 @@
                     %td= location.status.to_s.humanize.upcase
             %br
               %div{:style=>"margin-right: 20px"}
-                = render :partial => "shared/paging", :locals => {:collection => @locations, :page_size => @search.per_page}
+                = render :partial => "shared/paging", :locals => {:collection => @locations, :page_size => @entries_per_page}
             %div.clear
             %span{:style=>"float: right; margin-bottom: 20px; margin-right: 20px"}
               = page_entries_info @locations
 
 :javascript
-  var settings = new Spatial.Models.Settings();
-  var map = new Spatial.Models.Map(settings);
-
+  $(".map.portlet").locations_index_map(#{@locations.map{|l| l.id}});
+  $(".coordinates.portlet").locations_index_coordinates();
   $(document).ready(function() {
 
     $("th a").click(function() {
@@ -109,87 +113,6 @@
       $("form").attr("action", "/exports/prepare");
       $("form").submit();
       return false;
-    });
-
-    Ext.onReady(function() {
-
-      var vecLayer = new OpenLayers.Layer.Vector("vector");
-      map.instance.addLayer(vecLayer);
-
-      var mapPanel = new GeoExt.MapPanel({
-          region: "center",
-          height: 200,
-          width: 400,
-          map: map.instance,
-          bbar: [
-             {  text: "Edit",
-                handler: function() {
-                  var selected = vecLayer.selectedFeatures;
-                  if (selected.length < 1) return;
-                  if (selected.length == 1) {
-                    $("input[value=" + selected[0].fid + "]").parents("tr").find("td.name a").click();
-                  } else {
-                    $("input[name='locations[]']").attr("checked", false);
-                    for(i = 0; i < selected.length; i++) {
-                      $("input[value=" + selected[i].fid + "]").attr("checked", true);
-                    }
-                    $("li.collection_edit a").click();
-                  }
-                }
-            }]
-      });
-
-      var style = new OpenLayers.Style({'fillColor': '#66C17B', 'fillOpacity': 0.6, 'pointRadius': 6, 'strokeWidth': 1, 'strokeColor': '#000'});
-      var style_map = new OpenLayers.StyleMap({'default': style});
-      vecLayer.styleMap = style_map;
-      vecLayer.events.register('featuresadded', this, function(features) {
-        map.instance.zoomToExtent(vecLayer.getDataExtent());
-      });
-
-      var featureStore = new GeoExt.data.FeatureStore({
-        layer: vecLayer,
-        fields: [
-            {name: 'name', type: 'string'}
-        ],
-        proxy: new GeoExt.data.ProtocolProxy({
-            protocol: new OpenLayers.Protocol.HTTP({
-                url: "features",
-                headers: {"Accept": "application/json"},
-                params: {"source": "search"},
-                format: new OpenLayers.Format.GeoJSON()
-            })
-        }),
-        autoLoad: true
-      });
-
-      var gridPanel = new Ext.grid.GridPanel({
-        title: "Points of Interest",
-        region: "east",
-        store: featureStore,
-        autoExpandColumn: "name",
-        width: 420,
-        columns: [{
-          header: "Name",
-          dataIndex: "name",
-          resizable: false,
-          id: "name"
-        }],
-        sm: new GeoExt.grid.FeatureSelectionModel()
-      });
-
-      var mainPanel = new Ext.Panel({
-        renderTo: "mappanel",
-        layout: "border",
-        height: 200,
-        width: 898,
-        items: [mapPanel, gridPanel]
-      });
-
-      vecLayer.events.register('featureselected', null, function(e) {
-        var feature = e.feature;
-        feature.layer.map.moveTo(feature.geometry.bounds.getCenterLonLat());
-      });
-
     });
 
   });

@@ -1,162 +1,92 @@
 = content_for :title, "Edit Selected Locations"
 
 = include_javascripts :mapping
-= stylesheet_link_tag 'ext-all.css'
+= stylesheet_link_tag 'ext-all'
 
 .block
   .block_head
     %h2 Update Locations
-    %ul
-      %li.nobg= link_to "Add Category", "#/category/add"
-      %li.nobg= link_to "Remove Category", "#/category/remove"
-      %li.nobg= link_to "Change Status", "#/status/change"
-      %li.nobg= link_to "Add Comment", "#/comment/add"
-    %span
-      For selected locations only
   .block_content
-    %br
-    #mappanel
-    %br
-    %table.layout
-    = form_for "locations", :url => "/locations", :html=>{:method=>:put} do |form|
-      %table.list.updates
-        %thead
-          %tr
-            %th
-              %input{:type=>"checkbox"}
-            %th Name
-            %th Long Name
-            %th Status
-            %th Categories
-            %th Comments
-        %tbody
-        - @locations.each_with_index do |location, i|
-          %tr{"data-id"=>location.id}
-            %td.selector
-              %input{:type=>"checkbox"}
-            %td.name= form.text_field "[#{i}][name]", :value => location.name
-            %td.long_name= form.text_field "[#{i}][long_name]", :value => location.long_name
-            %td.status
-              =select_tag "locations[#{i}][status]", options_for_select(workflow_actions(current_user, location), location.status)
-              =form.hidden_field "[#{i}][id]", :value => location.id
-            %td.tags
-              %span.list
-                = render :partial => "tags/collection", :locals => {:items => location.tags.map {|c| {:name => c.category.french, :delete_link => location_tag_url(c.location_id, c.id)}}}
-              = link_to "(+)", "#/category/single/#{location.id}"
-            %td.comments
-              = link_to location.comments.count, "#/comments/single/#{location.id}", :class => "comment_count"
-      #actions{:style=>"text-align: right; margin-right: 15px; margin-bottom: 20px"}
-        = submit_tag "Confirm Changes", :class => "button mid", :style => "position: relative; left: 20px"
+    #portlets
+      %br
+      #left.column
+        .portlet.map.ui.widget.ui-widget-content.ui-helper-clearfix.ui-corner-all
+          .portlet-header.fixed.ui-widget-header.ui-corner-top
+            Map
+            %span{:style=>"float: right; display: none"}
+              = link_to "Save", "#"
+              |
+              = link_to "Cancel", "#"
+          .portlet-content.nopadding
+            #mappanel{:style=>"height: 311px; width: 100%"}
+      .column
+        .coordinates.portlet.ui.widget.ui-widget-content.ui-helper-clearfix.ui-corner-all
+          .portlet-header.fixed.ui-widget-header.ui-corner-top
+            Index
+          .portlet-content.nopadding
+            %table.main
+              %thead
+                %tr{:style=>"background-color: rgb(251, 251, 251)"}
+                  %th{:style=>"width: 20px"} ID
+                  %th Name
+                  %th Longitude
+                  %th Latitude
+              %tbody
+      .clear
+      .portlet.ui.widget.ui-widget-content.ui-helper-clearfix.ui-corner-all
+        .portlet-header.fixed.ui-widget-header.ui-corner-top
+          Details
+          %span{:style=>"float: right"}
+            = link_to "Add Category", "#/category/add"
+            |
+            = link_to "Remove Category", "#/category/remove"
+            |
+            = link_to "Change Status", "#/status/change"
+            |
+            = link_to "Add Comment", "#/comment/add"
+        .portlet-content.nopadding
+          = form_for "locations", :url => "/locations", :html=>{:method=>:put} do |form|
+            %table.list.updates
+              %thead
+                %tr
+                  %th
+                    %input{:type=>"checkbox"}
+                  %th Name
+                  %th Long Name
+                  %th Status
+                  %th Categories
+                  %th Comments
+              %tbody
+              - @locations.each_with_index do |location, i|
+                %tr{"data-id"=>location.id}
+                  %td.selector
+                    %input{:type=>"checkbox"}
+                  %td.name= form.text_field "[#{i}][name]", :value => location.name
+                  %td.long_name= form.text_field "[#{i}][long_name]", :value => location.long_name
+                  %td.status
+                    =select_tag "locations[#{i}][status]", options_for_select(workflow_actions(current_user, location), location.status)
+                    =form.hidden_field "[#{i}][id]", :value => location.id
+                  %td.tags
+                    %span.list
+                      = render :partial => "tags/collection", :locals => {:items => location.tags.map {|c| {:name => c.category.french, :delete_link => location_tag_url(c.location_id, c.id)}}}
+                    = link_to "(+)", "#/category/single/#{location.id}"
+                  %td.comments
+                    = link_to location.comments.count, "#/comments/single/#{location.id}", :class => "comment_count"
+            #actions{:style=>"text-align: right; margin-right: 15px; margin-bottom: 20px; width: 100%"}
+              = submit_tag "Confirm Changes", :class => "button mid", :style => "position: relative; left: 20px"
+            .clear
+            %br
 
 :javascript
   var featureStore, saveStrategy;
 
   (function($) {
+    $(".map.portlet").locations_collection_edit_map({locations: #{@locations.map{|l| l.id}}});
+    $(".coordinates.portlet").locations_collection_edit_coordinates();
 
     _.each(#{@locations_cache}, function(value) {
       Location.add(new Location(value));
     })
-
-    Ext.onReady(function() {
-      var settings = new Spatial.Models.Settings();
-      var map = new Spatial.Models.Map(settings);
-
-      saveStrategy = new OpenLayers.Strategy.Save();
-
-      var vecLayer = new OpenLayers.Layer.Vector("vector", {
-        strategies: [new OpenLayers.Strategy.Fixed(), saveStrategy],
-         protocol: new OpenLayers.Protocol.HTTP({
-          url: "/features",
-          headers: {"Accept": "application/json", "Content-Type": "application.json"},
-          params: {"source": "selection"},
-          format: new OpenLayers.Format.GeoJSON()
-         })
-      });
-      map.instance.addLayer(vecLayer);
-      var style = new OpenLayers.Style({'fillColor': '#66C17B', 'fillOpacity': 0.6, 'pointRadius': 6, 'strokeWidth': 1, 'strokeColor': '#000'});
-      var style_map = new OpenLayers.StyleMap({'default': style});
-      vecLayer.styleMap = style_map;
-      vecLayer.events.register('featuresadded', this, function(features) {
-        map.instance.zoomToExtent(vecLayer.getDataExtent());
-      });
-
-
-      featureStore = new GeoExt.data.FeatureStore({
-        layer: vecLayer,
-        fields: [
-            {name: 'name', type: 'string'},
-            {name: 'longitude', type: 'string'},
-            {name: 'latitude', type: 'string'}
-        ]
-      });
-
-      var mapPanel = new GeoExt.MapPanel({
-          region: "center",
-          height: 200,
-          width: 400,
-          map: map.instance,
-          bbar: [
-             {  text: "Save",
-                handler: function() {
-                    featureStore.commitChanges();
-                    saveStrategy.save();
-                }
-            }
-        ]
-      });
-
-      var modifyControl = new OpenLayers.Control.ModifyFeature(vecLayer);
-      modifyControl.dragComplete = function(e) {
-        record = featureStore.getRecordFromFeature(e);
-        record.set('longitude', e.geometry.x);
-        record.set('latitude', e.geometry.y);
-        e.state = OpenLayers.State.UPDATE;
-      }
-      mapPanel.map.addControl(modifyControl);
-      modifyControl.activate();
-
-      var gridPanel = new Ext.grid.GridPanel ({
-        region: "east",
-        store: featureStore,
-        autoExpandColumn: "name",
-        width: 420,
-        cm: new Ext.grid.ColumnModel({
-          defaults: {
-            sortable: true,
-            editor: {xtype: "textfield"}
-          },
-          columns: [{
-            header: "Name",
-            dataIndex: "name",
-            resizable: false,
-            id: "name"
-          }, {
-            header: "Longitude",
-            dataIndex: "longitude",
-            resizable: false,
-            id: "longitude"
-          }, {
-            header: "Latitude",
-            dataIndex: "latitude",
-            resizable: false,
-            id: "latitude"
-          }],
-        }),
-        sm: new GeoExt.grid.FeatureSelectionModel({
-            selectControl: modifyControl.selectControl,
-            singleSelect: true
-        })
-      });
-
-      var mainPanel = new Ext.Panel({
-        renderTo: "mappanel",
-        layout: "border",
-        height: 250,
-        width: 920,
-        items: [mapPanel, gridPanel]
-      });
-
-    });
 
     _.each(#{@comments_cache}, function(value) {
       Comment.add(new Comment(value));

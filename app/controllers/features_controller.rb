@@ -16,11 +16,6 @@ class FeaturesController < ApplicationController
     render :json => locations.to_geojson
   end
 
-  def show
-    location = Location.find(params[:id])
-    render :json => [location].to_geojson
-  end
-
   def update
 
     feature = Geometry.from_geojson(request.raw_post, SRID)

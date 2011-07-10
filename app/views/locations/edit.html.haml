@@ -11,12 +11,12 @@
     #portlets
       %br
       .editor-content
-        #left.column.ui-sortable
+        #left.column
           = render :partial => "locations/portlets/map"
           = render :partial => "locations/portlets/feature", :locals => {:form => form, :form_data => @form_data}
           = render :partial => "locations/portlets/comments", :locals => {:location => @location}
-        .column.ui-sortable
-          = render :partial => "locations/portlets/coordinates", :locals => {:coordinates => @coordinates}
+        .column
+          = render :partial => "locations/portlets/coordinates", :locals => {:location => @location}
           = render :partial => "locations/portlets/information", :locals => {:form => form}
           = render :partial => "locations/portlets/history", :locals => {:form => form, :location => @location}
         .clear

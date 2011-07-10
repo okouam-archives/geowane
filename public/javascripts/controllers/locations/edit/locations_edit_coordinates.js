@@ -4,14 +4,14 @@ $.Controller("LocationsEditCoordinates",
     var boundaryWrapper = this.element.find("ul").eq(0);
     boundaryWrapper.empty();
     for(var i= 0; i < 5; i++) {
-      var boundary = params.boundaries[i];
+      var boundary = params.properties.boundaries[i];
       if (boundary) {
        $("<li><label>" + boundary.classification + "</label>" + boundary.name + "</li>").appendTo(boundaryWrapper);
       }
     }
     var lonlat = this.element.find("ul").eq(1);
-    lonlat.find("li").eq(0).find("span").text(params.latitude);
-    lonlat.find("li").eq(1).find("span").text(params.longitude);
+    lonlat.find("li").eq(0).find("span").text(params.properties.latitude);
+    lonlat.find("li").eq(1).find("span").text(params.properties.longitude);
     this.loading.busyBox('close');
   },
 

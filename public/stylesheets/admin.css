@@ -1,7 +1,5 @@
 @import url(style.css);
 @import url(titillium.css);
-@import url(date_input.css);
-@import url(formtastic.css);
 
 /* .locations.collection_edit */
 
@@ -130,6 +128,12 @@
 .coordinates.portlet li {width: 200px; margin-bottom: 5px}
 .coordinates.portlet ul {float: left}
 
+/* Coordinates Portlet
+----------------------------------------------------------------------------------------------------------------------*/
+.coordinates.portlet .portlet-content {min-height: 311px; max-height: 311px; overflow-y:  scroll}
+.coordinates.portlet table {width: 100%; border-collapse: collapse}
+.coordinates.portlet td, .coordinates.portlet th {line-height: normal; font-size: 11px; padding: 5px}
+
 /* Others
 ----------------------------------------------------------------------------------------------------------------------*/
 .block_sub {background-color: #777; padding-left: 30px; color: white; line-height: 16px; width: 952px; left: -10px; position: relative}
@@ -190,3 +194,14 @@
 #mappanel .x-panel-bwrap {overflow: visible}
 #mappanel table {margin-bottom: 0}
 #mappanel table tr td, #mappanel table tr th {padding: 0; border-bottom : inherit}
+
+/* TIPSY */
+/********************************************************************************************************************/
+.tipsy { padding: 5px; font-size: 12px; font-family: Arial, serif; opacity: 0.85; filter: alpha(opacity=85);
+background: url(/images/tipsy.gif) no-repeat}
+.tipsy-inner { padding: 5px 8px 4px 8px; background-color: black; color: white; max-width: 200px; text-align: center; }
+.tipsy-inner { -moz-border-radius:3px; -webkit-border-radius:3px; }
+.tipsy-north { background-position: top center; }
+.tipsy-south { background-position: bottom center; }
+.tipsy-east { background-position: right center; }
+.tipsy-west { background-position: left center; }

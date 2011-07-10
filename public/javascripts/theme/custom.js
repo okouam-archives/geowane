@@ -1,14 +1,5 @@
 $(function () {
 	
-	// Style file input
-	$("input[type=file]").filestyle({ 
-	    image: "/images/admin/upload.gif",
-	    imageheight : 30,
-	    imagewidth : 80,
-	    width : 250
-	});
-
-	// Messages
 	$('.block .message').hide().append('<span class="close" title="Dismiss"></span>').fadeIn('slow');
 	$('.block .message .close').hover(
 		function() { $(this).addClass('hover'); },
@@ -18,10 +9,6 @@ $(function () {
 	$('.block .message .close').click(function() {
 		$(this).parent().fadeOut('slow', function() { $(this).remove(); });
 	});
-
-	$("form select.styled").select_skin();
-
-  $('input.date_picker').date_input();
 
   // CSS tweaks
   $('#header #nav li:last').addClass('nobg');

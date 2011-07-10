@@ -4,7 +4,7 @@ gzip_assets: on
 javascripts:
   global:
     - public/javascripts/jquery-1.6.1.min.js
-    - public/javascripts/OpenLayers-2.10/OpenLayers.js
+    - public/javascripts/OpenLayers.js
     - public/javascripts/jquery.plugins/*.js
     - public/javascripts/theme/jquery.date_input.js
     - public/javascripts/theme/custom.js

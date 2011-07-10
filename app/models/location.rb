@@ -33,23 +33,17 @@ class Location < ActiveRecord::Base
      :select => "locations.*"}
   }
 
-  def json_object
-    icon = !tags.empty? && tags.first.category.icon ? tags.first.category.icon : nil
-    boundaries = {}
-    (0..3).each do |num|
-      level = administrative_unit(num)
-      boundaries[num.to_s] = {id: level.id, classification: level.classification, name: level.name} if level
+
+  def to_geojson(options = nil)
+    geoson = { :type => 'Feature' }
+    if attributes["feature"]
+      factory = RGeo::Geographic.spherical_factory
+      geom = factory.point(attributes["feature"].x, attributes["feature"].y)
+      geoson[:geometry] = RGeo::GeoJSON.encode(geom)
     end
-    {
-      :label => name,
-      :id => id,
-      :name => name,
-      :longitude => longitude,
-      :latitude => latitude,
-      :icon => icon,
-      :boundaries => boundaries,
-      :feature => feature.as_wkt
-    }
+    geoson[:id] = id
+    geoson[:properties] = geojson_attributes
+    geoson.to_json
   end
 
   def administrative_unit(level)
@@ -66,7 +60,33 @@ class Location < ActiveRecord::Base
     update_dynamic_attributes
   end
 
+  def boundaries
+    boundaries = {}
+    (0..3).each do |num|
+      level = administrative_unit(num)
+      boundaries[num.to_s] = {id: level.id, classification: level.classification, name: level.name} if level
+    end
+    boundaries
+  end
+
   private
+
+  def geojson_attributes
+
+    attrs = {
+      :id => id.to_s,
+      :name => name,
+      :created_at => created_at.to_s,
+      :updated_at => updated_at.to_s,
+      :status => status,
+      :longitude => longitude.to_s,
+      :latitude => latitude.to_s,
+      :boundaries => boundaries
+    }
+    attrs[:username] = respond_to?(:username) ? username : user.login
+    attrs[:icon] = tags.first.category.icon if !tags.empty? && tags.first.category.icon
+    attrs
+  end
 
   def update_dynamic_attributes
     if self.longitude && self.latitude

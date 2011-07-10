@@ -18,10 +18,13 @@ $.Controller("LocationsEditMap",
 
   loadFeature: function(location_id) {
     var self = this;
-    $.getJSON("/features/" + location_id,
+    $.getJSON("/locations/" + location_id,
       function(data) {
         var geojson_format = new OpenLayers.Format.GeoJSON();
         var locations = geojson_format.read(data);
+        for(var i = 0; i < locations.length; i++) {
+          locations[i].attributes["thumbnail"] = "/icon/" + (i+1) + ".gif";
+        }
         self.layer.addFeatures(locations);
         self.original_geometry = self.layer.getDataExtent().getCenterLonLat();
         self.map.setCenter(self.original_geometry, 6);
@@ -77,8 +80,8 @@ $.Controller("LocationsEditMap",
 
   setupFeatureLayer: function() {
     this.layer = new OpenLayers.Layer.Vector("Features");
-    var style = new OpenLayers.Style({'fillColor': '#66C17B', 'fillOpacity': 0.6, 'pointRadius': 6, 'strokeWidth': 1, 'strokeColor': '#000'});
-    var style_map = new OpenLayers.StyleMap({'default': style});
+    var style = new OpenLayers.Style({externalGraphic: '${thumbnail}', 'pointRadius': 10});
+    var style_map = new OpenLayers.StyleMap({'default': style, 'select': style});
     this.layer.styleMap = style_map;
     this.map.addLayer(this.layer);
   }

@@ -4,6 +4,8 @@ Gowane::Application.routes.draw do
   match'/locations/edit' => 'locations#collection_edit', :via => [:get, :post] 
   match'/locations' => 'locations#collection_update', :via => :put 
 
+  match '/icon/:num.gif' => 'graphics#draw_icon'
+
   resources :locations do
     resources :comments, :tags
     member do

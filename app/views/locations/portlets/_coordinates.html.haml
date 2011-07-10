@@ -4,15 +4,15 @@
     %span
   .portlet-content
     %ul
-      - coordinates[:boundaries].each_value do |boundary|
+      - location.boundaries.each do |boundary|
         %li
-          %label= boundary[:classification]
-          = boundary[:name]
+          %label= boundary[1][:classification]
+          = boundary[1][:name]
     %ul
       %li
         %label Latitude
-        %span= coordinates[:latitude]
+        %span= location.latitude
       %li
         %label Longitude
-        %span= coordinates[:longitude]
+        %span= location.longitude
     .clear

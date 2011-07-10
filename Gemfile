@@ -15,6 +15,7 @@ gem "rgeo-activerecord"
 gem "rgeo-geojson"
 gem "rgeo-shapefile"
 gem "minitar"
+gem 'rmagick'
 gem "jammit"
 gem 'authlogic', :git => 'git://github.com/odorcicd/authlogic.git', :branch => 'rails3'
 gem "will_paginate", "~> 3.0.pre2"

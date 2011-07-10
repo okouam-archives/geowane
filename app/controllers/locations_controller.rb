@@ -8,7 +8,10 @@ class LocationsController < ApplicationController
     @search = Search.construct(params[:s], params[:sort], params[:page], params[:per_page], session[:search_token], current_user, params[:options])
     @search.save_to_session(session)
     respond_to do |format|
-      format.html { @locations = @search.execute }
+      format.html do
+        @locations = @search.execute
+        @entries_per_page = @search.per_page
+      end
       format.json { render :json => @search.execute.to_a.to_geojson }
     end
   end
@@ -46,7 +49,7 @@ class LocationsController < ApplicationController
           @comments_cache = @locations.map do |loc|
             loc.comments.map {|x| {location_id: x.commentable_id, created_at: x.created_at, text: x.comment, user: x.user.login}}
           end.reject{|x| x.empty?}.flatten.to_json
-          @locations_cache = @locations.map {|location| location.json_object}.to_json
+          @locations_cache = @locations.map {|location| location.to_geojson}.to_json
         end
       end
     end
@@ -54,13 +57,15 @@ class LocationsController < ApplicationController
 
   def collection_update
     if params[:commit]
+      locations = []
       params[:locations].values.each do |attributes|
         location = Location.find(attributes.delete(:id))
         location.update_attributes(attributes)
         location.save!
+        locations << location
       end
       if request.xhr?
-        head :status => 200
+        render :json => locations.to_geojson
       else
         redirect_to locations_path(:page => session[:search_page], :per_page => session[:search_page_size])
       end
@@ -72,13 +77,13 @@ class LocationsController < ApplicationController
 
   edit.before do
     @categories = ["", ""] + Category.order("french").map{|c| [c.french, c.id]}
-    @coordinates = object.json_object
     @comments = object.comments.map {|c| c.to_hash}
   end
 
   show do
     wants.json do
-      render :json => object.json_object.to_json
+      @items = Location.find(params[:id].split(","))
+      render :json => @items.to_a.to_geojson
     end
   end
 
@@ -87,7 +92,7 @@ class LocationsController < ApplicationController
       redirect_to locations_path(:page => session[:search_page], :per_page => session[:search_page_size])
     end
     wants.json do
-      render :json => object.json_object.to_json
+      render :json => object.to_geojson
     end
   end
 
