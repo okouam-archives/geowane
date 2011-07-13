@@ -5,11 +5,18 @@ $.Controller("LocationsIndexMap",
     OpenLayers.IMAGE_RELOAD_ATTEMPTS = 3;
     this.map = new OpenLayers.Map("mappanel", {
         theme: null,
-        maxResolution: 0.703125,
+        maxResolution: 0.02197265625,
+        numZoomLevels: 14,
+        restrictedExtent: new OpenLayers.Bounds(-18.598705491875, -0.72081361875, 5.065845289375, 26.4046746625),
         maxExtent: new OpenLayers.Bounds(-62.6428949, -11.4905018, 49.85710501, 35.844773),
         controls: []
     });
-    this.map.addLayer(new OpenLayers.Layer.WMS("base", ["http://moussa.0-one.net/tilecache.py?"], {layers: "data01", format: "image/png"}));
+    var urls = [
+      "http://a.maps.geocms.co/tilecache.py?",
+      "http://b.maps.geocms.co/tilecache.py?",
+      "http://c.maps.geocms.co/tilecache.py?"
+    ];
+    this.map.addLayer(new OpenLayers.Layer.WMS("base", urls, {layers: "data01", format: "image/png"}));
     this.setupFeatureLayer();
     this.setupControls();
     this.loadFeatures(options);

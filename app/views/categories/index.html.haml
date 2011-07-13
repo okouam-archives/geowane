@@ -3,57 +3,61 @@
 .block
   .block_head
     %h2 Categories
-    %ul
-      - if current_user.may_create_category?
-        %li.nobg.back
-          = link_to "New Category", new_category_path
-      - if @categories && @categories.size > 0
-        - if current_user.may_destroy_category? @categories.first
-          %li.nobg.back
-            = link_to "Delete Selection", :confirm => 'Are you sure?', :method => :delete
-      %li.nobg.back
-        = link_to "Export Selection", export_categories_path
   .block_content
-    %table.list
-      %tbody
-        %tr
-          %th
-            %input{:type=>"checkbox"}
-          %th Name
-          %th Icon
-          %th.total_POI Total
-          %th.new New
-          %th.corrected Corrected
-          %th.invalid Invalid
-          %th.audited Audited
-          %th.checked Checked
-        - if @categories && @categories.size > 0
-          - @categories.each do |category|
-            %tr
-              %td
-                %input{:type=>"checkbox"}
-              %td
-                - if current_user.may_update_category? @categories.first
-                  = link_to category.french, edit_category_path(category)
-                - else
-                  = category.french
-                %br
-                %div{:style=>"font-style: italic; padding-top: 3px"}=category.english
-              %td{:style=>"width: 30px"}
-                - if category.icon 
-                  = image_tag "/images/" + category.icon
-              %td.total_POI= linked_figure(category.total_locations, "/locations?s[category_id]=#{category.id}")
-              %td.new= linked_figure(category.new_locations, "/locations?s[category_id]=#{category.id}&s[status]=new")
-              %td.corrected= linked_figure(category.corrected_locations, "/locations?s[category_id]=#{category.id}&s[status]=corrected")
-              %td.invalid= linked_figure(category.invalid_locations, "/locations?s[category_id]=#{category.id}&s[status]=invalid")
-              %td.audited= linked_figure(category.audited_locations, "/locations?s[category_id]=#{category.id}&s[status]=audited")
-              %td.checked= linked_figure(category.field_checked_locations, "/locations?s[category_id]=#{category.id}&s[status]=field+checked")
-    %br
-      %div
-        = render :partial => "shared/paging", :locals => {:collection => @categories, :page_size => @per_page}
-    %div.clear
-    %span{:style=>"float: right; margin-bottom: 20px"}
-      = page_entries_info @categories
+    #portlets
+      .portlet
+        .portlet-header
+          Listing
+          %span{:style=>"float: right"}
+            - if current_user.may_create_category?
+              = link_to "New Category", new_category_path
+              |
+            - if @categories && @categories.size > 0
+              - if current_user.may_destroy_category? @categories.first
+                = link_to "Delete Selection", :confirm => 'Are you sure?', :method => :delete
+                |
+            = link_to "Export Selection", export_categories_path
+        .portlet-content.nopadding
+          %table
+            %tbody
+              %tr
+                %th
+                  %input{:type=>"checkbox"}
+                %th Name
+                %th Icon
+                %th.total_POI Total
+                %th.new New
+                %th.corrected Corrected
+                %th.invalid Invalid
+                %th.audited Audited
+                %th.checked Checked
+              - if @categories && @categories.size > 0
+                - @categories.each do |category|
+                  %tr
+                    %td
+                      %input{:type=>"checkbox"}
+                    %td
+                      - if current_user.may_update_category? @categories.first
+                        = link_to category.french, edit_category_path(category)
+                      - else
+                        = category.french
+                      %br
+                      %div{:style=>"font-style: italic; padding-top: 3px"}=category.english
+                    %td{:style=>"width: 30px"}
+                      - if category.icon
+                        = image_tag "/images/" + category.icon
+                    %td.total_POI= linked_figure(category.total_locations, "/locations?s[category_id]=#{category.id}")
+                    %td.new= linked_figure(category.new_locations, "/locations?s[category_id]=#{category.id}&s[status]=new")
+                    %td.corrected= linked_figure(category.corrected_locations, "/locations?s[category_id]=#{category.id}&s[status]=corrected")
+                    %td.invalid= linked_figure(category.invalid_locations, "/locations?s[category_id]=#{category.id}&s[status]=invalid")
+                    %td.audited= linked_figure(category.audited_locations, "/locations?s[category_id]=#{category.id}&s[status]=audited")
+                    %td.checked= linked_figure(category.field_checked_locations, "/locations?s[category_id]=#{category.id}&s[status]=field+checked")
+          .pagination-wrapper
+            = render :partial => "shared/paging", :locals => {:collection => @categories, :page_size => @per_page}
+          .clear
+          .page-size
+            = page_entries_info @categories
+          .clear
 
 
 

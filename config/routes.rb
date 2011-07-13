@@ -53,7 +53,7 @@ Gowane::Application.routes.draw do
     end
   end
 
-  match '/' => 'user_sessions#new'
+  match '/' => 'admin#dashboard'
   match '/dashboard' => 'admin#dashboard', :as => :dashboard
   match '/jobs' => 'admin#jobs', :as => :periodic_jobs
 end

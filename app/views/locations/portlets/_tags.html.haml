@@ -1,7 +1,8 @@
-.portlet.ui-widget.ui-widget-content.ui-helper-clearfix.ui-corner-all
-  .portlet-header.ui-widget-header.ui-corner-top
+.portlet
+  .portlet-header
     Categories
-    = link_to "(+)", "#/category/add", :style => "float: right"
+    %span
+      = link_to "(+)", "#/category/add"
   .portlet-content
     %div.tags
       .list{:class=>"tags_for_#{object.id}"}

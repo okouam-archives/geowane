@@ -5,48 +5,62 @@
 
 .block
   .block_head
-    %h2 New Search
+    %h2 Search
   .block_content
-    %br
-    %input#draw{:type=>"checkbox"}
-    Check to select bounds for the search
-    %br
-    %br
-    #mappanel
-    %br
     = semantic_form_for SearchCriteria.new, :url => "/search" do |form|
-      #search-parameters
-        .filter_group
-          %h2 Categorization
-          = form.input :name, :required => false, :label => "Location Name"
-          = form.input :category_id, :as => :select, :collection => @all_categories, :required => false, :label => "Category"
-          = form.input :category_missing, :as => :boolean, :required => false, :label => " Category Missing"
-          = form.input :category_present, :as => :boolean, :required => false, :label => " Category Present"
-        .filter_group
-          %h2 Boundaries
-          = form.input :location_level_0, :as => :select, :collection => @all_level_0, :required => false, :label => "Level 0"
-          = form.input :location_level_1, :as => :select, :collection => @all_level_1, :required => false, :label => "Level 1"
-          = form.input :location_level_2, :as => :select, :collection => @all_level_2, :required => false, :label => "Level 2"
-          = form.input :location_level_3, :as => :select, :collection => @all_level_3, :required => false, :label => "Level 3"
-          %h2 Localization (city)
-          = form.input :city_id, :as => :select, :collection => @all_cities, :required => false, :label => "City"
-          = form.input :radius
-          = form.input :bbox, :as => :hidden
-        .filter_group
-          %h2 Auditing
-          = form.input :added_by, :as => :select, :collection => @all_users, :label => "Added By", :required => false
-          = form.input :corrected_by, :as => :select, :label => "Corrected By", :collection => @all_users, :required => false
-          = form.input :invalidated_by, :as => :select, :label => "Invalidated By", :collection => @all_users, :required => false
-          = form.input :field_checked_by, :as => :select, :label => "Field Checked By", :collection => @all_users, :required => false
-          = form.input :audited_by, :as => :select, :label => "Audited By", :collection => @all_users, :required => false
-          = form.input :modified_by, :as => :select, :label => "Modified By", :collection => @all_users, :required => false
-        .filter_group
-          %h2 Workflow
-          = form.input :added_on_before, :required => false, :label => "Added Before", :input_html => { :class => 'date_picker' }
-          = form.input :added_on_after, :required => false, :label => "Added After", :input_html => { :class => 'date_picker' }
-          = form.input :status, :as => :select, :collection => Location.new.enums(:status).select_options.map {|x| [x[0].upcase, x[1]]}   , :required => false
-        .clear
-        %input{:class=>"button long", :style=>"float: right; margin-bottom: 20px", :type=>"submit", :value=>"Search"}
+      #portlets
+        #left.column
+          .portlet.map
+            .portlet-header
+              Map
+              %span
+                %input#draw{:type=>"checkbox"}
+                Check to select bounds for the search
+            .portlet-content.nopadding
+              #mappanel
+          .portlet
+            .portlet-header
+              Boundaries
+            .portlet-content
+              = form.input :location_level_0, :as => :select, :collection => @all_level_0, :required => false, :label => "Level 0"
+              = form.input :location_level_1, :as => :select, :collection => @all_level_1, :required => false, :label => "Level 1"
+              = form.input :location_level_2, :as => :select, :collection => @all_level_2, :required => false, :label => "Level 2"
+              = form.input :location_level_3, :as => :select, :collection => @all_level_3, :required => false, :label => "Level 3"
+          .portlet
+            .portlet-header
+              Localization (City)
+            .portlet-content
+              = form.input :city_id, :as => :select, :collection => @all_cities, :required => false, :label => "City"
+              = form.input :radius, :required => false
+              = form.input :bbox, :as => :hidden
+        .column
+          .portlet
+            .portlet-header
+              Categorization
+            .portlet-content
+              = form.input :name, :required => false, :label => "Location Name"
+              = form.input :category_id, :as => :select, :collection => @all_categories, :required => false, :label => "Category"
+              = form.input :category_missing, :as => :boolean, :required => false, :label => " Category Missing"
+              = form.input :category_present, :as => :boolean, :required => false, :label => " Category Present"
+          .portlet
+            .portlet-header
+              Auditing
+            .portlet-content
+              = form.input :added_by, :as => :select, :collection => @all_users, :label => "Added By", :required => false
+              = form.input :corrected_by, :as => :select, :label => "Corrected By", :collection => @all_users, :required => false
+              = form.input :invalidated_by, :as => :select, :label => "Invalidated By", :collection => @all_users, :required => false
+              = form.input :field_checked_by, :as => :select, :label => "Field Checked By", :collection => @all_users, :required => false
+              = form.input :audited_by, :as => :select, :label => "Audited By", :collection => @all_users, :required => false
+              = form.input :modified_by, :as => :select, :label => "Modified By", :collection => @all_users, :required => false
+          .portlet
+            .portlet-header
+              Workflow
+            .portlet-content
+              = form.input :added_on_before, :required => false, :label => "Added Before", :input_html => { :class => 'date_picker' }
+              = form.input :added_on_after, :required => false, :label => "Added After", :input_html => { :class => 'date_picker' }
+              = form.input :status, :as => :select, :collection => Location.new.enums(:status).select_options.map {|x| [x[0].upcase, x[1]]}   , :required => false
+          .clear
+          %input{:class=>"button long", :style=>"float: right; margin-bottom: 20px", :type=>"submit", :value=>"Search"}
 
   :css
     div.filter_group {float: left; width: 220px}
@@ -64,8 +78,8 @@
 
         var mapPanel = new GeoExt.MapPanel({
             renderTo: "mappanel",
-            height: 200,
-            width: 920,
+            height: 311,
+            width: 438,
             map: map.instance
         });
 

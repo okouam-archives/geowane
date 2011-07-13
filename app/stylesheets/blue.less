@@ -23,15 +23,31 @@ a.approve_inline { background:url(../images/icons/action_check.gif) no-repeat le
 /*******************************************************************************
   PORTLETS AND GRID
 *******************************************************************************/
+
+.ui-corner-tl { -moz-border-radius-topleft: 4px; -webkit-border-top-left-radius: 4px; }
+.ui-corner-tr { -moz-border-radius-topright: 4px; -webkit-border-top-right-radius: 4px; }
+.ui-corner-bl { -moz-border-radius-bottomleft: 4px; -webkit-border-bottom-left-radius: 4px; }
+.ui-corner-br { -moz-border-radius-bottomright: 4px; -webkit-border-bottom-right-radius: 4px; }
+.ui-corner-top { -moz-border-radius-topleft: 4px; -webkit-border-top-left-radius: 4px; -moz-border-radius-topright: 4px; -webkit-border-top-right-radius: 4px; }
+.ui-corner-bottom { -moz-border-radius-bottomleft: 4px; -webkit-border-bottom-left-radius: 4px; -moz-border-radius-bottomright: 4px; -webkit-border-bottom-right-radius: 4px; }
+.ui-corner-right {  -moz-border-radius-topright: 4px; -webkit-border-top-right-radius: 4px; -moz-border-radius-bottomright: 4px; -webkit-border-bottom-right-radius: 4px; }
+.ui-corner-left { -moz-border-radius-topleft: 4px; -webkit-border-top-left-radius: 4px; -moz-border-radius-bottomleft: 4px; -webkit-border-bottom-left-radius: 4px; }
+.ui-corner-all { -moz-border-radius: 4px; -webkit-border-radius: 4px; }
+
+.ui-widget-content { font-family: "Lucida Grande",Verdana,sans-serif; font-size: 11px; border: 1px solid #aaaaaa; background: #ffffff url(/images/ui-bg_flat_75_ffffff_40x100.png) 50% 50% repeat-x; color: #222222; }
+.ui-widget-header { border: 1px solid #aaaaaa; background: #cccccc url(/images/ui-bg_highlight-soft_75_cccccc_1x100.png) 50% 50% repeat-x; color: #222222; font-weight: bold; }
+
 #portlets { padding:0px 10px; }
 .column { width: 440px; float: left; padding-bottom: 0px; }
 .column#left { margin-right:17px; }
-.portlet { margin: 0 0em 1em 0; }
-.portlet-header { margin: 0em; padding-bottom: 5px; padding-left: 6px; padding-top:4px; padding-right:6px; font-size:12px; border: none !important; color: #333 !important; font-family:"Trebuchet MS", Arial, Helvetica, sans-serif; cursor:move; }
+.portlet { margin: 0 0em 1em 0; .ui-widget-content;.ui-corner-all; }
+#portlets .fixed { cursor:auto; }
+.portlet-header {cursor:auto; .ui-widget-header; .ui-corner-top; margin: 0em; padding-bottom: 5px; padding-left: 6px; padding-top:4px; padding-right:6px; font-size:12px; border: none !important; color: #333 !important; font-family:"Trebuchet MS", Arial, Helvetica, sans-serif; cursor:move; }
 .portlet-header .ui-icon { float: right; cursor:pointer; }
 .portlet-header img { float:left; margin-right:5px; }
-#portlets .fixed { cursor:auto; } 
 .portlet-content { padding: 0.8em; color: #333; border-top:1px solid #999 !important}
+.portlet-header span {float: right; margin-right: 5px; font-variant: small-caps }
+.portlet-header span a:hover {color: white}
 
 /*******************************************************************************
   Informational Messages
@@ -295,19 +311,7 @@ form .wide { width:890px; }
   background-position: left bottom;
   color: #333;
 }
-.ui-widget-content { font-family: "Lucida Grande",Verdana,sans-serif;
-    font-size: 11px; border: 1px solid #aaaaaa; background: #ffffff url(/images/ui-bg_flat_75_ffffff_40x100.png) 50% 50% repeat-x; color: #222222; }
-/*.ui-widget-content a { color: #222222; }*/
-.ui-widget-header { border: 1px solid #aaaaaa; background: #cccccc url(/images/ui-bg_highlight-soft_75_cccccc_1x100.png) 50% 50% repeat-x; color: #222222; font-weight: bold; }
-.ui-widget-header a { color: #222222; }
 
-.ui-corner-tl { -moz-border-radius-topleft: 4px; -webkit-border-top-left-radius: 4px; }
-.ui-corner-tr { -moz-border-radius-topright: 4px; -webkit-border-top-right-radius: 4px; }
-.ui-corner-bl { -moz-border-radius-bottomleft: 4px; -webkit-border-bottom-left-radius: 4px; }
-.ui-corner-br { -moz-border-radius-bottomright: 4px; -webkit-border-bottom-right-radius: 4px; }
-.ui-corner-top { -moz-border-radius-topleft: 4px; -webkit-border-top-left-radius: 4px; -moz-border-radius-topright: 4px; -webkit-border-top-right-radius: 4px; }
-.ui-corner-bottom { -moz-border-radius-bottomleft: 4px; -webkit-border-bottom-left-radius: 4px; -moz-border-radius-bottomright: 4px; -webkit-border-bottom-right-radius: 4px; }
-.ui-corner-right {  -moz-border-radius-topright: 4px; -webkit-border-top-right-radius: 4px; -moz-border-radius-bottomright: 4px; -webkit-border-bottom-right-radius: 4px; }
-.ui-corner-left { -moz-border-radius-topleft: 4px; -webkit-border-top-left-radius: 4px; -moz-border-radius-bottomleft: 4px; -webkit-border-bottom-left-radius: 4px; }
-.ui-corner-all { -moz-border-radius: 4px; -webkit-border-radius: 4px; }
+
+
 

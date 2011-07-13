@@ -99,6 +99,7 @@ a:hover {
 	padding: 0 10px;
 	background: url(/images/admin/nsp.gif) center right no-repeat;
 	line-height: 50px;
+  z-index: 99999999999;
 	}
 	
 #header #nav li.nobg { background: none; }
@@ -488,7 +489,7 @@ a:hover {
 	}
 
 .block form select {
-	width: 410px;
+	width: 418px;
 	background: #fefefe;
 	border: 1px solid #bbb;
 	font-family: "Lucida Grande", Verdana, sans-serif;
@@ -502,7 +503,7 @@ a:hover {
 	vertical-align: middle;
 	}
 
-.block form input.text {
+.block input[type='text'], .block input[type='email'], .block input[type='tel'], .block input[type='url'], .block input[type='password'] {
 	width: 409px;
 	background: #fefefe;
 	border: 1px solid #bbb;

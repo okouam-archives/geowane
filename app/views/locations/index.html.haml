@@ -1,44 +1,41 @@
 = content_for :title, "Points of Interest"
 
-= include_javascripts :mapping
-= stylesheet_link_tag 'ext-all'
-
 .block
   .block_head
     %h2 Points of Interest
   .block_content
     #portlets
-      %br
       #left.column
-        .portlet.map.ui.widget.ui-widget-content.ui-helper-clearfix.ui-corner-all
-          .portlet-header.fixed.ui-widget-header.ui-corner-top
+        .portlet.map
+          .portlet-header
             Map
           .portlet-content.nopadding
-            #mappanel{:style=>"height: 311px; width: 100%"}
+            #mappanel
       .column
-        .coordinates.portlet.ui.widget.ui-widget-content.ui-helper-clearfix.ui-corner-all
-          .portlet-header.fixed.ui-widget-header.ui-corner-top
+        .coordinates.portlet
+          .portlet-header
             Index
           .portlet-content.nopadding
-            %table.main
+            %table
               %thead
                 %tr{:style=>"background-color: rgb(251, 251, 251)"}
                   %th{:style=>"width: 20px"} ID
                   %th Name
               %tbody
-
       %br
       .clear
       = semantic_form_for :locations, :url => new_export_path do
-        .portlet.ui.widget.ui-widget-content.ui-helper-clearfix.ui-corner-all
-          .portlet-header.fixed.ui-widget-header.ui-corner-top
-            Details
-            %span{:style=>"float: right"}
+        .portlet
+          .portlet-header
+            Listing
+            %span
               - unless @locations.empty?
                 - if @locations.any? {|l| current_user.may_update_location?(l)}
-                  = link_to "Edit |", "#"
+                  = link_to "Edit", "#"
+                  |
                 - if @locations.any? {|l| current_user.may_destroy_location?(l)}
-                  = link_to "Delete |", "#"
+                  = link_to "Delete", "#"
+                  |
                 = link_to "Export", "#"
           .portlet-content.nopadding
             %table.main{:cellspacing => "0", :cellpadding => "0", :style => "margin-left: 0px"}
@@ -67,13 +64,12 @@
                     %td= location.created_at.strftime("%d-%m-%Y")
                     %td= location.updated_at.strftime("%d-%m-%Y")
                     %td= location.status.to_s.humanize.upcase
-            %br
-              %div{:style=>"margin-right: 20px"}
-                = render :partial => "shared/paging", :locals => {:collection => @locations, :page_size => @entries_per_page}
-            %div.clear
-            %span{:style=>"float: right; margin-bottom: 20px; margin-right: 20px"}
+            .pagination-wrapper
+              = render :partial => "shared/paging", :locals => {:collection => @locations, :page_size => @entries_per_page}
+            .clear
+            %span.page-size
               = page_entries_info @locations
-            %div.clear
+            .clear
 
 :javascript
   $(".map.portlet").locations_index_map(#{@locations.map{|l| l.id}});
@@ -102,11 +98,11 @@
       return false;
     }
 
-    $("a:contains('Edit |')").click(function() {
+    $("a:contains('Edit')").click(function() {
       return collection_change('locations/edit')
     });
 
-    $("a:contains('Delete |')").click(function() {
+    $("a:contains('Delete')").click(function() {
       return collection_change('locations', 'delete')
     });
 
