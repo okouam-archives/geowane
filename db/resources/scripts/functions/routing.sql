@@ -1,6 +1,6 @@
-DROP FUNCTION IF EXISTS GeoCMS_find_closest_edge(double precision, double precision);
+DROP FUNCTION IF EXISTS geocms_find_closest_edge(double precision, double precision);
 
-CREATE OR REPLACE FUNCTION GeoCMS_find_closest_edge(IN x double precision, IN y double precision) RETURNS integer AS 
+CREATE OR REPLACE FUNCTION geocms_find_closest_edge(IN x double precision, IN y double precision) RETURNS integer AS
 $BODY$
 BEGIN
 	RETURN gid FROM roads	
@@ -36,7 +36,7 @@ $BODY$
   COST 100
   ROWS 1000;
 
-CREATE OR REPLACE FUNCTION find_route(IN x1 double precision, IN y1 double precision, IN x2 double precision, IN y2 double precision)
+CREATE OR REPLACE FUNCTION geocms_find_route(IN x1 double precision, IN y1 double precision, IN x2 double precision, IN y2 double precision)
   RETURNS TABLE(a text, b character varying, d double precision, e double precision) AS
 $BODY$
   DECLARE
