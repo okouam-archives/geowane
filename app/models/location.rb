@@ -72,7 +72,6 @@ class Location < ActiveRecord::Base
   private
 
   def geojson_attributes
-
     attrs = {
       :id => id.to_s,
       :name => name,
@@ -83,6 +82,7 @@ class Location < ActiveRecord::Base
       :latitude => latitude.to_s,
       :boundaries => boundaries
     }
+    attrs[:city_name] = city.name if city
     attrs[:username] = respond_to?(:username) ? username : user.login
     attrs[:icon] = tags.first.category.icon if !tags.empty? && tags.first.category.icon
     attrs
