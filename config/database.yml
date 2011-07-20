@@ -10,12 +10,6 @@ development: &development
   min_messages: warning
   template: template_postgis
 
-beta:
-  <<: *development
-  database: geocms_beta
-  username: deployment
-  password: FireDrake[1981]
-
 test:
   <<: *development
   database: geocms_test
@@ -26,7 +20,3 @@ production:
   database: cms_production
   username: deployment
   password: FireDrake[1981]
-
-cucumber:
-  <<: *development
-  database: geocms_test
