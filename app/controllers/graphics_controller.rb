@@ -2,6 +2,7 @@ require 'RMagick'
 
 class GraphicsController < ApplicationController
   caches_page :draw_icon
+  skip_before_filter :require_user
 
   def draw_icon
     canvas = Magick::Image.new(24,24) { self.background_color = "#434343" }

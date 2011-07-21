@@ -31,25 +31,31 @@ class ApiController < ApplicationController
   end
 
   def features
-    bounds = params[:bounds].split(',')
-    name = params[:q]
-
     query = Location
       .joins(:tags, :administrative_unit_0)
-      .where("locations.name ilike '%#{name}%'")
-      .where("ST_Intersects(SetSRID('BOX(#{bounds[0]} #{bounds[1]},#{bounds[2]} #{bounds[3]})'::box2d::geometry, 4326), locations.feature)")
+      .where("locations.name ilike '%#{params[:q]}%'")
       .where("status != 'INVALID'")
       .limit(99)
+
+    if bounds = params[:bounds]
+      box = bounds.split(',')
+      query =  query.where("ST_Intersects(SetSRID('BOX(#{box[0]} #{box[1]},#{box[2]} #{box[3]})'::box2d::geometry, 4326), locations.feature)")
+    end
 
     results = query.all.to_a
 
     unless results.size > 98
       query = Road
         .joins(:administrative_unit_0)
-        .where("label ilike '%#{name}%'")
-        .where("ST_Intersects(SetSRID('BOX(#{bounds[0]} #{bounds[1]},#{bounds[2]} #{bounds[3]})'::box2d::geometry, 4326), roads.the_geom)")
+        .where("label ilike '%#{params[:q]}%'")
         .limit(99 - results.size)
         .select("DISTINCT(road_id), label, the_geom, country_id, gid, centroid")
+
+      if bounds = params[:bounds]
+        box = bounds.split(',')
+        query = query.where("ST_Intersects(SetSRID('BOX(#{box[0]} #{box[1]},#{box[2]} #{box[3]})'::box2d::geometry, 4326), roads.centroid)")
+      end
+
       results = results + query.all.to_a
     end
 
@@ -70,7 +76,7 @@ class ApiController < ApplicationController
   private
 
   def find_route(x1, y1, x2, y2)
-    sql = "SELECT * FROM find_route(#{x1}, #{y1}, #{x2}, #{y2})"
+    sql = "SELECT * FROM geocms_find_route(#{x1}, #{y1}, #{x2}, #{y2})"
     Road.connection.execute(sql).map do |row|
       geometry = @geofactory.parse_wkt(row["a"])
       feature = RGeo::GeoJSON::Feature.new(geometry, nil, {"label" => row["b"], "start_angle" => row["d"], "end_angle" => row["e"]})
