@@ -86,7 +86,7 @@ class ApiController < ApplicationController
 
   def fetch_locations(bounds, category, name)
     query = Location
-      .includes(:tags, :administrative_unit_0, :city, :users)
+      .includes(:tags, :administrative_unit_0, :city)
       .limit(99)
       .where("ST_Intersects(SetSRID('BOX(#{bounds[0]} #{bounds[1]},#{bounds[2]} #{bounds[3]})'::box2d::geometry, 4326), locations.feature)")
       .where("status != 'INVALID'")
