@@ -32,7 +32,7 @@ class ApiController < ApplicationController
 
   def features
     query = Location
-      .joins(:tags, :administrative_unit_0)
+      .includes(:tags, :administrative_unit_0)
       .where("locations.name ilike '%#{params[:q]}%'")
       .where("status != 'INVALID'")
       .limit(99)
@@ -46,7 +46,7 @@ class ApiController < ApplicationController
 
     unless results.size > 98
       query = Road
-        .joins(:administrative_unit_0)
+        .includes(:administrative_unit_0)
         .where("label ilike '%#{params[:q]}%'")
         .limit(99 - results.size)
         .select("DISTINCT(road_id), label, the_geom, country_id, gid, centroid")
@@ -86,7 +86,7 @@ class ApiController < ApplicationController
 
   def fetch_locations(bounds, category, name)
     query = Location
-      .joins(:tags, :administrative_unit_0, :city)
+      .includes(:tags, :administrative_unit_0, :city, :users)
       .limit(99)
       .where("ST_Intersects(SetSRID('BOX(#{bounds[0]} #{bounds[1]},#{bounds[2]} #{bounds[3]})'::box2d::geometry, 4326), locations.feature)")
       .where("status != 'INVALID'")
