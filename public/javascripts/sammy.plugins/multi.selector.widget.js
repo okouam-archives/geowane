@@ -9,10 +9,16 @@
     var items = table.find("td input[type='checkbox']");
     var master = table.find("th input[type='checkbox']");
 
+    var getLocations = function() {
+      return _.map(items, function(item) {
+        return $(item).parents("tr").attr("data-id");
+      });
+    };
+
     master.click(function() {
       var isChecked = $(this).attr("checked");
       items.attr("checked", isChecked);
-      app.selected_locations = isChecked ? Location.pluck("id") : [];
+      app.selected_locations = isChecked ? getLocations() : [];
     });
 
     items.click(function() {
