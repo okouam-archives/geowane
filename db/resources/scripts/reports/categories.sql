@@ -1,5 +1,5 @@
 
-      CREATE OR REPLACE VIEW category_workflow_report AS
+      CREATE OR REPLACE VIEW reports.categories AS
       SELECT
         categories.id,
         categories.french,

@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW category_workflow_partner_report AS
+CREATE OR REPLACE VIEW reports.partners AS
       SELECT
         overview.category_id AS "Identifier",
         overview.name AS "Country",

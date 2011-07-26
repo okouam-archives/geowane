@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW city_workflow_report AS
+CREATE OR REPLACE VIEW reports.cities AS
 SELECT
   cities.id,
   cities.name,

@@ -2,7 +2,7 @@
 
 -- DROP FUNCTION geocms_find_route(double precision, double precision, double precision, double precision);
 
-CREATE OR REPLACE FUNCTION geocms_find_route(IN x1 double precision, IN y1 double precision, IN x2 double precision, IN y2 double precision)
+CREATE OR REPLACE FUNCTION routing.find_route(IN x1 double precision, IN y1 double precision, IN x2 double precision, IN y2 double precision)
   RETURNS TABLE(a text, b character varying, d double precision, e double precision) AS
 $BODY$
   DECLARE
