@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION geocms_get_angles(IN segment geometry)
+CREATE OR REPLACE FUNCTION routing.get_angles(IN segment geometry)
   RETURNS TABLE(start_azimut double precision, end_azimut double precision) AS
 $BODY$
   DECLARE
