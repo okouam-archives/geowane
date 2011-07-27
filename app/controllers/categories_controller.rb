@@ -8,7 +8,7 @@ class CategoriesController < ApplicationController
       session[:category_index_page] = params[:page] || session[:category_index_page]
       session[:category_index_per_page] = params[:per_page] || session[:category_index_per_page] || 10
       @per_page = session[:category_index_per_page]
-      sql = "SELECT * FROM category_workflow_report ORDER BY #{@language}"
+      sql = "SELECT * FROM reports.categories ORDER BY #{@language}"
       @categories = Category.find_by_sql(sql).paginate(:page => session[:category_index_page], :per_page => @per_page)
   end
 
@@ -23,7 +23,7 @@ class CategoriesController < ApplicationController
   end
 
   def export
-    report_name = "category_workflow_partner_report"
+    report_name = "reports.partners"
     send_data Report.new(report_name).to_csv, :filename => "#{report_name}.csv"
   end
 

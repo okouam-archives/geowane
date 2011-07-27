@@ -3,7 +3,8 @@ class CreateReports < ActiveRecord::Migration
 
     execute("CREATE SCHEMA reports AUTHORIZATION deployment")
 
-    files = ["partners", "categories", "cities", "collectors"]
+    #TODDO!
+    files = ["partners", "categories", "cities", "collectors", "boundaries_0"]
     files.each do |file|
       script = File.join(Rails.root, "db/resources/scripts/reports/#{file}.sql")
       execute File.read(script)
