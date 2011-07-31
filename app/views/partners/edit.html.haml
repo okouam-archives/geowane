@@ -20,7 +20,9 @@
             = mapping.text_field :french, :style => "margin-left: 20px; width: 190px"
             = mapping.text_field :english, :style => "margin-left: 20px; margin-right: 10px; width: 190px"
             = mapping.link_to_remove "remove"
+            .clear
       = f.link_to_add "Add a mapping", :mappings, :style => "margin-left: 5px; position: relative; top: 15px"
+      .clear
       %div{:style=>"text-align: right; margin-bottom: 30px"}
 
         = f.submit :class => "submit long", :style => "margin-right: 0"
@@ -28,3 +30,6 @@
 
 :css
   .fields input {padding: 3px; position: relative; top: 1px; border: 1px solid #ccc}
+  .fields select {width: 415px ! important; float: left; padding: 3px ! important}
+  .fields input[type='text'] {float: left}
+  .add_nested_fields {float: left}

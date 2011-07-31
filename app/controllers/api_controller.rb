@@ -49,7 +49,7 @@ class ApiController < ApplicationController
         .includes(:administrative_unit_0)
         .where("label ilike '%#{params[:q]}%'")
         .limit(99 - results.size)
-        .select("DISTINCT(road_id), label, the_geom, country_id, gid, centroid")
+        .select("id, label, the_geom, country_id, centroid")
 
       if bounds = params[:bounds]
         box = bounds.split(',')
@@ -69,8 +69,13 @@ class ApiController < ApplicationController
   end
 
   def locations
-    bounds = params[:bounds].split(',')
-    render :json => fetch_locations(bounds, params["category"], params["name"]), :callback => params[:callback]
+    if (params["id"])
+      render :json => Location.find(params[:id]).to_geojson
+    else
+      bounds = params[:bounds].split(',')
+      render :json => fetch_locations(bounds, params["category"], params["name"]), :callback => params[:callback]
+    end
+
   end
 
   private

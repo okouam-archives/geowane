@@ -21,7 +21,6 @@ class Road  < ActiveRecord::Base
     attrs = {
       :id => id.to_s,
       :name => label,
-      :road_id => road_id,
       :boundaries => boundaries
     }
     attrs

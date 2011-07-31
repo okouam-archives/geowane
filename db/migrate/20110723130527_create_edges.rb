@@ -7,6 +7,7 @@ class CreateEdges < ActiveRecord::Migration
         road_id integer,
         label character varying(255),
         to_cost float8,
+        cost float8,
         reverse_cost float8,
         "source" integer,
         "target" integer,
@@ -15,9 +16,10 @@ class CreateEdges < ActiveRecord::Migration
         x2 double precision,
         y1 double precision,
         y2 double precision,
-        country_id integer,
+        cost_multiplier double precision,
+        is_one_way boolean,
         rule text,
-        CONSTRAINT roads_pkey PRIMARY KEY (gid)
+        CONSTRAINT edges_pkey PRIMARY KEY (gid)
       );
       SELECT AddGeometryColumn('edges', 'the_geom', 4326, 'LINESTRING', 2);
       SELECT AddGeometryColumn('edges', 'centroid', 4326, 'POINT', 2);
