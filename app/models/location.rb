@@ -78,6 +78,11 @@ class Location < ActiveRecord::Base
       :created_at => created_at.to_s,
       :updated_at => updated_at.to_s,
       :status => status,
+      :website => website,
+      :email => email,
+      :opening_hours => opening_hours,
+      :telephone => telephone,
+      :fax => fax,
       :longitude => longitude.to_s,
       :latitude => latitude.to_s,
       :boundaries => boundaries

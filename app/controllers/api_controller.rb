@@ -68,14 +68,14 @@ class ApiController < ApplicationController
     render :json =>  {route: RGeo::GeoJSON.encode(RGeo::GeoJSON::FeatureCollection.new(route))}.to_json, :callback => params[:callback]
   end
 
-  def locations
-    if (params["id"])
-      render :json => Location.find(params[:id]).to_geojson
-    else
-      bounds = params[:bounds].split(',')
-      render :json => fetch_locations(bounds, params["category"], params["name"]), :callback => params[:callback]
-    end
+  def location
+    id = params[:id]
+    render :json => Location.find(id).to_geojson, :callback => params[:callback]
+  end
 
+  def locations
+    bounds = params[:bounds].split(',')
+    render :json => fetch_locations(bounds, params["category"], params["name"]), :callback => params[:callback]
   end
 
   private

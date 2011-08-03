@@ -17,7 +17,11 @@ class CreateLocationsTable < ActiveRecord::Migration
         t.integer :level_2
         t.integer :level_3
         t.integer :level_4
-        t.text :extensions
+        t.string :email,
+        t.string :telephone,
+        t.string :website,
+        t.string :postal_address,
+        t.string :opening_hours
         t.timestamps
       end
       add_index :locations, ["user_id"], :name => "idx_locations_user_id"
