@@ -1,7 +1,6 @@
 = content_for :title, "New Search"
 
 = include_javascripts :mapping
-= stylesheet_link_tag 'ext-all'
 
 .block
   .block_head
@@ -64,42 +63,4 @@
 
   :css
     div.filter_group {float: left; width: 220px}
-
-  :javascript
-    $(document).ready(function() {
-
-      Ext.onReady(function() {
-
-        var settings = new Spatial.Models.Settings();
-        var map = new Spatial.Models.Map(settings);
-
-        var vecLayer = new OpenLayers.Layer.Vector("vector");
-        map.instance.addLayer(vecLayer);
-
-        var mapPanel = new GeoExt.MapPanel({
-            renderTo: "mappanel",
-            height: 311,
-            width: 438,
-            map: map.instance
-        });
-
-        var draw = new OpenLayers.Control.DrawFeature(vecLayer, OpenLayers.Handler.Polygon);
-        map.instance.addControl(draw);
-
-        $("#draw").click(function() {
-          if ($(this).attr("checked")) draw.activate();
-          else draw.deactivate();
-        });
-
-        $("input[type='submit']").click(function() {
-          if (vecLayer.features.length > 0) {
-            var searchBox = vecLayer.features[0].geometry.bounds.toBBOX();
-            $("#search_criteria_bbox").val(searchBox);
-          }
-          return true;
-        });
-
-      });
-
-    });
 

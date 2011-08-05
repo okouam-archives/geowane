@@ -18,11 +18,5 @@ javascripts:
     - public/javascripts/jquerymx-1.0.custom.min.js
     - public/javascripts/controllers/**/*.js
 
-  mapping:
-    - public/javascripts/spatial.models/*.js
-    - public/javascripts/ext-jquery-adapter.js
-    - public/javascripts/ext-all.js
-    - public/javascripts/GeoExt.js
-
   templates:
     - app/views/**/*.jst
