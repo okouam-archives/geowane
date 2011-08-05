@@ -2,6 +2,8 @@ class ExportsController < ApplicationController
   include Aegis::Controller
   resource_controller
 
+  PAGER = :exports_index_page
+
   create.after do
     object.user = current_user
     object.locations_count = session[:locations].size
@@ -10,9 +12,9 @@ class ExportsController < ApplicationController
   end
 
   def index
-    session[:exports_index_page] = params[:page] || session[:exports_index_page]
+    session[PAGER] = params[:page] || session[PAGER]
     @per_page = params[:per_page] || 10
-    @exports = Export.order("created_at desc").paginate(:page => session[:exports_index_page], :per_page => @per_page)
+    @exports = Export.order("created_at desc").paginate(:page => session[PAGER], :per_page => @per_page)
   end
   
   create.wants.html do
@@ -26,31 +28,12 @@ class ExportsController < ApplicationController
     @all_statuses = Location.new.enums(:status).select_options
   end
 
-  def prepare    
-    if params[:s]
-      countries = params[:s][:country_id].reject{|x| x.blank?}
-      statuses = params[:s][:status].reject{|x| x.blank?}
-      users = params[:s][:user_id].reject{|x| x.blank?}
-      categories = params[:s][:category_id].reject{|x| x.blank?}
-      include_uncategorized = params[:include_uncategorized]
-      query = Location
-        .select("id")
-        .where("status IN ('#{statuses.join("','")}')")
-        .where("level_0 IN (#{countries.join(",")})")
-        .where("user_id IN (#{users.join(",")})")
-      if categories.count > 0 || include_uncategorized
-        if include_uncategorized.nil? && categories.count > 0
-          query = query.where("locations.id IN (SELECT location_id FROM tags WHERE category_id IN (" + categories.join(",") + "))")
-        elsif include_uncategorized && categories.count > 0
-          query = query.where("locations.id IN (SELECT location_id FROM tags WHERE category_id IN (" + categories.join(",") + ")) OR locations.id NOT IN (SELECT location_id FROM tags)")
-        else 
-          query = query.where("locations.id NOT IN (SELECT location_id FROM tags)")
-        end
-      end
-      session[:locations] = query.all.map{|c| c.id}
-    else
-      session[:locations] = params[:locations]
-    end
+  def count
+    render :json => Export.locate(params[:s]).count
+  end
+
+  def prepare
+    session[:locations] =  params[:s] ? Export.locate(params[:s]).all.map{|c| c.id} : params[:locations]
     redirect_to :action => :new
   end
 
