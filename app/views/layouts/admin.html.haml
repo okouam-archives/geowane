@@ -26,6 +26,7 @@
             %li
               = link_to "Data Management", "#"
               %ul
+                %li= link_to "Place Lookup", lookup_search_path
                 - unless current_user.has_role?("collector")
                   %li= link_to "Import Data", imports_path
                   - if current_user.has_role?("administrator")

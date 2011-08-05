@@ -17,4 +17,18 @@ class SearchController < ApplicationController
     redirect_to locations_path(:s => criteria)
   end
 
+  def lookup
+    if query = params[:q]
+      sql = "SELECT locations.id, locations.name, coalesce(cities.name, '') as city, boundaries.name as country
+              FROM locations
+              LEFT JOIN cities ON locations.city_id = cities.id
+              LEFT JOIN boundaries ON boundaries.id = locations.level_0
+              WHERE searchable_name ilike '%#{query}%' LIMIT 100"
+      results = Location.connection.execute(sql)
+      render :json => results
+    else
+      render :lookup
+    end
+  end
+
 end

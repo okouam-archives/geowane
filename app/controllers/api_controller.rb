@@ -33,7 +33,7 @@ class ApiController < ApplicationController
   def features
     query = Location
       .includes(:tags, :administrative_unit_0)
-      .where("locations.name ilike '%#{params[:q]}%'")
+      .where("locations.searchable_name ilike '%#{params[:q]}%'")
       .where("status != 'INVALID'")
       .limit(99)
 
@@ -98,7 +98,7 @@ class ApiController < ApplicationController
     if category
       query = query.where("tags.category_id = #{category}")
     elsif name
-      query = query.where("locations.name ILIKE '%#{name}%'")
+      query = query.where("locations.searchable_name ILIKE '%#{name}%'")
     else
       raise "No filtering criteria have been provided"
     end

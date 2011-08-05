@@ -27,7 +27,11 @@ Gowane::Application.routes.draw do
     end
   end               
 
-  resource :search, :controller => "search"
+  resource :search, :controller => "search" do
+    member do
+      get :lookup
+    end
+  end
   resource :map, :controller => "map"
   resource :account, :controller => "account"
   resource :user_sessions
