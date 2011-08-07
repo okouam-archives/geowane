@@ -6,6 +6,14 @@ class ApiController < ApplicationController
 
   def categories
     sql = %{
+      SELECT categories.id, french, icon, count(*) as count
+      FROM categories
+      JOIN tags ON tags.category_id = categories.id
+      GROUP BY categories.id, french, icon
+      ORDER BY french ASC
+    }
+=begin
+    sql = %{
       SELECT
         classifications.id,
         classifications.french,
@@ -23,6 +31,7 @@ class ApiController < ApplicationController
       ORDER
         BY classifications.french ASC
     }
+=end
     render :json => Category.connection.execute(sql).to_json, :callback => params[:callback]
   end
 
