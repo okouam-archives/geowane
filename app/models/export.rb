@@ -56,7 +56,7 @@ class Export < ActiveRecord::Base
     categories = query[:category_id].reject{|x| x.blank?}
     include_uncategorized = query[:include_uncategorized]
     query = Location.select("id")
-    return query.where("1 = 2") if statuses.size == 0 && countries.size == 0 && users.size == 0 && !include_uncategorized
+    return query.where("1 = 2") if statuses.size == 0 && countries.size == 0 && categories.size == 0 && users.size == 0 && !include_uncategorized
     query = query.where("status IN ('#{statuses.join("','")}')") if statuses.size > 0
     query = query.where("level_0 IN (#{countries.join(",")})") if countries.size > 0
     query = query.where("user_id IN (#{users.join(",")})") if users.size > 0

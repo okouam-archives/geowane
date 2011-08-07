@@ -9,6 +9,7 @@ class ClassificationsController < ApplicationController
   def create
     @classification = Classification.new(params[:classification])
     @classification.partner = Partner.find(params[:partner_id])
+    @classification.save!
     categories = params[:categories]
     categories.each do |category|
       @classification.mappings.build(:category_id => category)
