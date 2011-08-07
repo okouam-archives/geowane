@@ -1,4 +1,4 @@
-$.Controller("SearchNewMap",
+$.Controller("SearchNew",
 {
   init: function(el, options) {
     OpenLayers.ImgPath = "/images/OpenLayers/";
@@ -19,13 +19,12 @@ $.Controller("SearchNewMap",
     this.map.addLayer(new OpenLayers.Layer.WMS("base", urls, {layers: "data01", format: "image/png"}));
     this.setupFeatureLayer();
 
-    $("#draw").click(function() {
-      if ($(this).attr("checked")) draw.activate();
-      else draw.deactivate();
-    });
+    this.setupControls();
 
-    var self = this;
-    this.element.find("input[type='submit']").click(function() {
+    this.map.zoomTo(0);
+
+        var self = this;
+    $("input[type='submit']").click(function() {
       if (self.layer.features.length > 0) {
         var searchBox = self.layer.features[0].geometry.bounds.toBBOX();
         $("#search_criteria_bbox").val(searchBox);
@@ -33,19 +32,26 @@ $.Controller("SearchNewMap",
       return true;
     });
 
-
-    this.setupControls();
   },
 
   setupControls: function() {
     var draw = new OpenLayers.Control.DrawFeature(this.layer, OpenLayers.Handler.Polygon);
     var panZoom = new OpenLayers.Control.PanZoomBar();
     panZoom.zoomWorldIcon = true;
-    var controls = [draw, new OpenLayers.Control.DragPan(), new OpenLayers.Control.Navigation(), panZoom];
+    var controls = [new OpenLayers.Control.DragPan(), new OpenLayers.Control.Navigation(), panZoom];
     this.map.addControls(controls);
     $.each(controls, function (index, item) {
       item.activate();
     });
+
+    this.map.addControls([draw]);
+
+    $("#draw").click(function() {
+      if ($(this).attr("checked")) draw.activate();
+      else draw.deactivate();
+    });
+
+
   },
 
   setupFeatureLayer: function() {

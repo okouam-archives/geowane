@@ -10,9 +10,10 @@
       = form.input :fax, :required => false, :input_html => { :class => "text" }
       = form.input :website, :required => false, :input_html => { :class => "text" }
       = form.input :postal_address, :required => false, :input_html => { :class => "text" }
+      = form.input :geographical_address, :required => false, :input_html => { :class => "text"}
       = form.input :opening_hours, :required => false, :input_html => { :class => "text" }
       = form.input :user_rating, :required => false, :input_html => { :class => "text"}
-
+      = form.input :acronym, :required => false, :input_html => { :class => "text"}
 :javascript
   $(document).ready(function() {
     var country = "#{@location.administrative_unit(0).try(:name)}";

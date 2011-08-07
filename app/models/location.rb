@@ -14,6 +14,7 @@ class Location < ActiveRecord::Base
     entity.belongs_to :administrative_unit_1, :foreign_key => "level_1"
     entity.belongs_to :administrative_unit_2, :foreign_key => "level_2"
     entity.belongs_to :administrative_unit_3, :foreign_key => "level_3"
+    entity.belongs_to :administrative_unit_4, :foreign_key => "level_4"
   end
   with_options :autosave => true do |entity|
     entity.has_many :tags
@@ -62,7 +63,7 @@ class Location < ActiveRecord::Base
 
   def boundaries
     boundaries = {}
-    (0..3).each do |num|
+    (0..4).each do |num|
       level = administrative_unit(num)
       boundaries[num.to_s] = {id: level.id, classification: level.classification, name: level.name} if level
     end
@@ -100,6 +101,7 @@ class Location < ActiveRecord::Base
       self.administrative_unit_1 = Boundary.find_enclosing(self.longitude, self.latitude, 1)
       self.administrative_unit_2 = Boundary.find_enclosing(self.longitude, self.latitude, 2)
       self.administrative_unit_3 = Boundary.find_enclosing(self.longitude, self.latitude, 3)
+      self.administrative_unit_4 = Boundary.find_enclosing(self.longitude, self.latitude, 4)
     end
   end
 
