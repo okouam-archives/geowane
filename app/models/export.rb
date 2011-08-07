@@ -50,16 +50,16 @@ class Export < ActiveRecord::Base
   end
 
   def self.locate(query)
-    countries = params[:s][:country_id].reject{|x| x.blank?}
-    statuses = params[:s][:status].reject{|x| x.blank?}
-    users = params[:s][:user_id].reject{|x| x.blank?}
-    categories = params[:s][:category_id].reject{|x| x.blank?}
-    include_uncategorized = params[:include_uncategorized]
-    query = Location
-      .select("id")
-      .where("status IN ('#{statuses.join("','")}')")
-      .where("level_0 IN (#{countries.join(",")})")
-      .where("user_id IN (#{users.join(",")})")
+    countries = query[:country_id].reject{|x| x.blank?}
+    statuses = query[:status].reject{|x| x.blank?}
+    users = query[:user_id].reject{|x| x.blank?}
+    categories = query[:category_id].reject{|x| x.blank?}
+    include_uncategorized = query[:include_uncategorized]
+    query = Location.select("id")
+    return query.where("1 = 2") if statuses.size == 0 && countries.size == 0 && users.size == 0 && !include_uncategorized
+    query = query.where("status IN ('#{statuses.join("','")}')") if statuses.size > 0
+    query = query.where("level_0 IN (#{countries.join(",")})") if countries.size > 0
+    query = query.where("user_id IN (#{users.join(",")})") if users.size > 0
     if categories.count > 0 || include_uncategorized
       if include_uncategorized.nil? && categories.count > 0
         query = query.where("locations.id IN (SELECT location_id FROM tags WHERE category_id IN (" + categories.join(",") + "))")

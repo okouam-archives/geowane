@@ -22,16 +22,13 @@
               Categories
               %span{:style=>"margin-right: 0"}
                 Classification:
-                %select{:style=>"position: relative; top: -2px; padding: 0; width: 60px"}
-                  %option Navteq
-                  %option Sygic
-                  %option 0-One
+                = select_tag(:partner, options_for_select(@all_partners), :style=>"position: relative; top: -2px; padding: 0; width: 80px")
             .portlet-content
               %span
                 <input type="checkbox" id="all_categories" name="all_categories">
                 All Categories
               %span
-                <input type="checkbox" name="include_uncategorized" id="include_uncategorized">
+                <input type="checkbox" name="s[include_uncategorized]" id="s_include_uncategorized">
                 Uncategorized
               %hr
               %div{:style=>"height: 260px; overflow-y: scroll"}
@@ -58,11 +55,26 @@
               %div{:style=>"height: 260px; overflow-y: scroll"}
                 = form.input :user_id, :as => :check_boxes, :label => "Individual Users", :collection => @all_users, :required => false
 
-      #validation-errors
+      %div{:style=>"float: left; font-size: 16px; margin-left: 15px; margin-top: 3px"}
+        %b.location-count
+          0
+        locations will be exported.
       %input{:class=>"button long", :style=>"float: right; margin-top: 20px; margin-right: 15px; margin-bottom: 20px", :type=>"submit", :value=>"Export"}
 
   :javascript 
     $(document).ready(function() {
+      $("#partner").change(function() {
+        $.get("/partners/" + $(this).val() + "/classifications", function() {
+          dsfsd
+        })
+      });
+
+      $("input[type='checkbox']").change(function() {
+        var data = $("form").formParams();
+        $.post("/exports/count", data, function(result) {
+          $(".location-count").html(result);
+        });
+      });
 
       $("#s_country_id_input input").click(function() {
         if (!$(this).attr("checked")) $("#all_countries").attr('checked', false);
@@ -94,6 +106,10 @@
 
       $("#all_statuses").click(function() {
         $("#s_status_input input").attr('checked', $(this).attr("checked") == "checked");
+      });
+
+      $("input[type='checkbox']").click(function() {
+        $(this).trigger("change");
       });
 
     });

@@ -39,14 +39,15 @@ Gowane::Application.routes.draw do
   resources :users, :cities, :counters, :conversions, :boundaries, :features, :samples, :audits
 
   resources :partners do
-    resources :mappings
+    resources :classifications
   end
 
   resources :exports do
     collection do
       get :selection
+      post :count
+      post :prepare
     end
-    post :prepare, :on => :collection
   end
 
   resources :imports do

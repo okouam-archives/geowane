@@ -6,14 +6,22 @@ class ApiController < ApplicationController
 
   def categories
     sql = %{
-      SELECT categories.id, mappings.french, icon, count(*) as count
-      FROM categories
-      JOIN tags ON tags.category_id = categories.id
-      JOIN mappings ON mappings.category_id = categories.id
-      JOIN partners ON partners.id = mappings.partner_id
-      WHERE partners.name = '#{params[:partner]}'
-      GROUP BY categories.id, mappings.french, icon
-      ORDER BY mappings.french ASC
+      SELECT
+        classifications.id,
+        classifications.french,
+        classifications.icon,
+        count(*) as count
+      FROM classifications
+        JOIN mappings ON mappings.classification_id = classifications.id
+        JOIN categories ON mappings.category_id = categories.id
+        JOIN tags ON tags.category_id = categories.id
+        JOIN partners ON partners.id = mappings.partner_id
+      WHERE
+        partners.name = '#{params[:partner]}'
+      GROUP BY
+        classifications.id, classifications.french, classifications.icon
+      ORDER
+        BY classifications.french ASC
     }
     render :json => Category.connection.execute(sql).to_json, :callback => params[:callback]
   end

@@ -4,10 +4,8 @@ class CreateMappingsTable < ActiveRecord::Migration
     unless table_exists?(:mappings)
       create_table :mappings, :force => true do |t|
         t.timestamps
-        t.string :name
-        t.string :value
         t.references :category, :foreign_key => true, :dependent => :delete
-        t.references :partner, :foreign_key => true, :dependent => :delete
+        t.references :classification, :foreign_key => true, :dependent => :delete
       end
     end
   end
