@@ -12,7 +12,6 @@ class ApiController < ApplicationController
       GROUP BY categories.id, french, icon
       ORDER BY french ASC
     }
-=begin
     sql = %{
       SELECT
         classifications.id,
@@ -23,15 +22,14 @@ class ApiController < ApplicationController
         JOIN mappings ON mappings.classification_id = classifications.id
         JOIN categories ON mappings.category_id = categories.id
         JOIN tags ON tags.category_id = categories.id
-        JOIN partners ON partners.id = mappings.partner_id
+        JOIN partners ON partners.id = classifications.partner_id
       WHERE
-        partners.name = '#{params[:partner]}'
+        partners.name ilike '#{params[:client]}'
       GROUP BY
         classifications.id, classifications.french, classifications.icon
       ORDER
         BY classifications.french ASC
     }
-=end
     render :json => Category.connection.execute(sql).to_json, :callback => params[:callback]
   end
 
@@ -94,8 +92,7 @@ class ApiController < ApplicationController
   end
 
   def locations
-    bounds = params[:bounds].split(',')
-    render :json => fetch_locations(bounds, params["category"], params["name"]), :callback => params[:callback]
+    render :json => fetch_locations(params[:bounds], params["classification"], params["name"]), :callback => params[:callback]
   end
 
   private
@@ -109,20 +106,16 @@ class ApiController < ApplicationController
     end
   end
 
-  def fetch_locations(bounds, category, name)
-    query = Location
-      .includes(:tags, :administrative_unit_0, :city)
-      .limit(99)
-      .where("ST_Intersects(SetSRID('BOX(#{bounds[0]} #{bounds[1]},#{bounds[2]} #{bounds[3]})'::box2d::geometry, 4326), locations.feature)")
-      .where("status != 'INVALID'")
-    if category
-      query = query.where("tags.category_id = #{category}")
+  def fetch_locations(bounds, classification, name)
+    query = Location.valid.includes(:administrative_unit_0, :city).limit(99).in(bounds.split(","))
+    if classification
+      query = query.classified_as(classification)
     elsif name
-      query = query.where("locations.searchable_name ILIKE '%#{name}%'")
+      query = query.named(name)
     else
       raise "No filtering criteria have been provided"
     end
-    query.all.to_a.to_geojson
+    query.to_a.to_geojson
   end
 
 end

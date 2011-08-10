@@ -1,4 +1,4 @@
-namespace :gowane do
+namespace :geocms do
 
   task :load_config => :rails_env do
     require 'active_record'

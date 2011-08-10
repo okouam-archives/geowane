@@ -1,5 +1,4 @@
 class CitiesController < ApplicationController
-  include Area
 
   def index
     session[:city_index_page] = params[:page] || session[:city_index_page]

@@ -6,6 +6,7 @@ class CreateClassifications < ActiveRecord::Migration
         t.timestamps
         t.string :french
         t.string :english
+        t.string :icon
         t.references :partner, :foreign_key => true, :dependent => :delete
       end
     end

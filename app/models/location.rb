@@ -1,76 +1,35 @@
-require 'nokogiri'
-require 'will_paginate'
-
 class Location < ActiveRecord::Base
   include Audited
+  include Geolocatable
   acts_as_commentable
   acts_as_audited
-  validates_presence_of :longitude, :latitude, :name
+  validates_presence_of :name
   belongs_to :user
   belongs_to :city
 
-  with_options :class_name => "Boundary" do |entity|
-    entity.belongs_to :administrative_unit_0, :foreign_key => "level_0"
-    entity.belongs_to :administrative_unit_1, :foreign_key => "level_1"
-    entity.belongs_to :administrative_unit_2, :foreign_key => "level_2"
-    entity.belongs_to :administrative_unit_3, :foreign_key => "level_3"
-    entity.belongs_to :administrative_unit_4, :foreign_key => "level_4"
-  end
   with_options :autosave => true do |entity|
     entity.has_many :tags
     entity.has_many :labels
   end
+
+  scope :in, lambda {|bounds|
+    where("ST_Intersects(SetSRID('BOX(#{bounds[0]} #{bounds[1]},#{bounds[2]} #{bounds[3]})'::box2d::geometry, 4326), locations.feature)")
+  }
+
+  scope :valid, where("status != 'INVALID'")
+
+  scope :classified_as, lambda {|classification|
+    includes({:tags => {:category => {:mappings => :classification}}}).
+      where("classifications.id = #{classification}")
+  }
+
+  scope :named, lambda {|name| where("locations.searchable_name ILIKE '%#{name}%'")}
+
   enum_attr :status, %w(new invalid corrected audited field_checked), :init => :new, :nil => false
+
   accepts_nested_attributes_for :tags, :reject_if => lambda { |a| a[:category_id].blank? }
+
   accepts_nested_attributes_for :comments, :reject_if => lambda { |a| a[:comment].blank? || a[:title].blank? }
-
-  scope :within_bounds_for_category, lambda {|category_id, top, left, right, bottom|
-    {:conditions => ["feature && SetSrid('BOX3D(? ?, ? ?)'::box3d, 4326) and category_id = #{category_id}", top, left, right, bottom]}
-  }
-
-  scope :surrounding_landmarks, lambda {|location_id, top, left, right, bottom, limit|
-    {:conditions => ["categories.icon is not null AND feature && SetSrid('BOX3D(? ?, ? ?)'::box3d, 4326) AND locations.id != ?", top, left, right, bottom, location_id],
-     :joins => "join categories on categories.id = locations.category_id", :limit => limit,
-     :select => "locations.*"}
-  }
-
-
-  def to_geojson(options = nil)
-    geoson = { :type => 'Feature' }
-    if attributes["feature"]
-      factory = RGeo::Geographic.spherical_factory
-      geom = factory.point(attributes["feature"].x, attributes["feature"].y)
-      geoson[:geometry] = RGeo::GeoJSON.encode(geom)
-    end
-    geoson[:id] = id
-    geoson[:properties] = geojson_attributes
-    geoson.to_json
-  end
-
-  def administrative_unit(level)
-    self.send "administrative_unit_#{level}"
-  end
-
-  def longitude=(longitude)
-    self[:longitude] = longitude
-    update_dynamic_attributes
-  end
-
-  def latitude=(latitude)
-    self[:latitude] = latitude
-    update_dynamic_attributes
-  end
-
-  def boundaries
-    boundaries = {}
-    (0..4).each do |num|
-      level = administrative_unit(num)
-      boundaries[num.to_s] = {id: level.id, classification: level.classification, name: level.name} if level
-    end
-    boundaries
-  end
-
-  private
 
   def geojson_attributes
     attrs = {
@@ -92,17 +51,6 @@ class Location < ActiveRecord::Base
     attrs[:username] = respond_to?(:username) ? username : user.login
     attrs[:icon] = tags.first.category.icon if !tags.empty? && tags.first.category.icon
     attrs
-  end
-
-  def update_dynamic_attributes
-    if self.longitude && self.latitude
-      self.feature = GeoRuby::SimpleFeatures::Point.from_x_y(self.longitude, self.latitude, 4326)
-      self.administrative_unit_0 = Boundary.find_enclosing(self.longitude, self.latitude, 0)
-      self.administrative_unit_1 = Boundary.find_enclosing(self.longitude, self.latitude, 1)
-      self.administrative_unit_2 = Boundary.find_enclosing(self.longitude, self.latitude, 2)
-      self.administrative_unit_3 = Boundary.find_enclosing(self.longitude, self.latitude, 3)
-      self.administrative_unit_4 = Boundary.find_enclosing(self.longitude, self.latitude, 4)
-    end
   end
 
 end

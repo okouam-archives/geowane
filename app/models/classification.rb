@@ -3,4 +3,5 @@ class Classification < ActiveRecord::Base
   has_many :categories, :through => :mappings
   has_many :mappings
   belongs_to :partner
+
 end
