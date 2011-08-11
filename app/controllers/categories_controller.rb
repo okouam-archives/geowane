@@ -12,12 +12,6 @@ class CategoriesController < ApplicationController
       @categories = Category.find_by_sql(sql).paginate(:page => session[:category_index_page], :per_page => @per_page)
   end
 
-  def save_icon
-    object.icon = params[:filename]
-    object.save
-    redirect_to edit_object_path(object)
-  end
-
   def change_icon
     @icons =  Category.available_icons
   end

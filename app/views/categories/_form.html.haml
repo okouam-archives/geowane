@@ -4,12 +4,10 @@
   = form.input :code, :label => "Garmin Code", :required => true, :input_html => { :class => "text" }
   = form.input :level, :as => :select, :collection => [0, 1, 2, 3, 4]
   = form.input :end_level, :as => :select, :collection => [0, 1, 2, 3, 4]
-  = form.input :icon, :as => :hidden
+  = form.input :icon
+  %span{:style=>"font-style: italic; font-size: 10px; width: 420px; display: block"}
+    Please copy a link to an image from the site mapicons.nicolasmollet.com or a link to an existing icon in the GeoCMS
   - if object.persisted? && object.icon
-    %label
-      Icon
+    %label Current Icon
     = image_tag "/images/" + object.icon
-  - if object.persisted? && object.icon
-    %span{:style=>"position: relative; top: -15px; left: 5px"}
-      = link_to "Change Icon", change_icon_category_path(object.id), :class => "open_facebox"
   = form.commit_button :button_html => { :class => "submit long" }
