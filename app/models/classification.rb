@@ -4,4 +4,6 @@ class Classification < ActiveRecord::Base
   has_many :mappings
   belongs_to :partner
 
+  default_scope :order => 'french ASC'
+
 end

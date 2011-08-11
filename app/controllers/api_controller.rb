@@ -6,13 +6,6 @@ class ApiController < ApplicationController
 
   def categories
     sql = %{
-      SELECT categories.id, french, icon, count(*) as count
-      FROM categories
-      JOIN tags ON tags.category_id = categories.id
-      GROUP BY categories.id, french, icon
-      ORDER BY french ASC
-    }
-    sql = %{
       SELECT
         classifications.id,
         classifications.french,

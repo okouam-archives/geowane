@@ -16,8 +16,7 @@ class Category < ActiveRecord::Base
   end
 
   def self.dropdown_items
-    sql = "SELECT id, french FROM categories ORDER BY french ASC"
-    Category.all.map {|rs| [rs.french, rs.id]}
+    Category.order(:french).map {|category| [category.french, category.id]}
   end
 
   private

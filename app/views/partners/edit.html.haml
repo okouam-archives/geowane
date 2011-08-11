@@ -2,13 +2,9 @@
 
 %div.block
   %div.block_head
-    %h2
-      Edit
-      = object.name
-      Classifications
+    %h2 Edit #{object.name} Classifications
     %ul
-      %li.nobg
-        = link_to "Back", partners_path
+      %li.nobg= link_to "Back", partners_path
   .block_content
     #portlets
       .portlet
@@ -30,5 +26,22 @@
                   %td= classification.french
                   %td= classification.english
                   %td= classification.categories.map{|c| c.french}.join(", ")
-                  %td Edit
-                  %td Delete
+                  %td= link_to "Edit", edit_partner_classification_path(classification.partner, classification)
+                  %td= link_to "Delete", partner_classification_path(classification.partner, classification), :class => "delete-classification"
+:javascript
+  $(document).ready(function() {
+    $("a.delete-classification").click(function() {
+      var a = $(this);
+      $.ajax({
+        type: 'POST',
+        url: $(this).attr("href"),
+        dataType: 'script',
+        data: {'_method': 'delete'},
+        success: function() {
+          a.closest("tr").remove();
+          return false;
+        }
+      });
+      return false;
+    });
+  })

@@ -1,0 +1,46 @@
+%div.block_content
+  = form_for([partner, object]) do |f|
+    = f.label :french
+    = f.text_field :french, :input_html => { :class => "text" }
+    %br
+    = f.label :english
+    = f.text_field :english, :input_html => { :class => "text" }
+    %br
+    %div{:style=>"width: 440px; float: right; padding-right: 40px'"}
+      = f.label "Available Categories"
+      = select_tag("available_categories[]", options_for_select(Category.dropdown_items), {:multiple => true, :style=>"height: 100px"})
+    %div{:style=>"float: right; margin: 20px; padding-top: 20px"}
+      %input#add_category{:type=>"submit", :value=>"<"}
+      %br
+      %input#remove_category{:type=>"submit", :value=>">"}
+    %div{:style=>"width: 390px; float: left"}
+      = f.label "Selected Categories"
+      = select_tag("categories[]", options_for_select(selected), {:multiple => true, :style=>"height: 100px"})
+    .clear
+    %br
+    = f.submit :button_html => { :class => "submit long" }
+    %br
+    %br
+
+:javascript
+$(document).ready(function() {
+  var available_categories = $("#available_categories_");
+  var categories = $("#categories_");
+  $("#add_category").click(function() {
+    var selected = available_categories.find(":selected");
+    categories.append(selected);
+    return false;
+  });
+  $("#remove_category").click(function() {
+    var selected = categories.find(":selected");
+    available_categories.append(selected);
+    return false;
+  });
+  $("form").submit(function() {
+    $("#categories_ option").each(function() {
+      $(this).attr("selected", "selected");
+    });
+    return true;
+  });
+});
+
