@@ -7,7 +7,6 @@ class Category < ActiveRecord::Base
   before_create :process_icon
   before_validation :validate_icon
 
-
   def json_object
     {:name => self.french, :icon => self.icon, :id => self.id}
   end
@@ -18,7 +17,7 @@ class Category < ActiveRecord::Base
 
   def self.dropdown_items
     sql = "SELECT id, french FROM categories ORDER BY french ASC"
-    Category.connection.select_all(sql).map {|rs| [rs["french"], rs["id"]]}
+    Category.all.map {|rs| [rs.french, rs.id]}
   end
 
   private

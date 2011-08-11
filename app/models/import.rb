@@ -17,7 +17,9 @@ class Import < ActiveRecord::Base
   end
 
   def labelled_locations
-    Location.joins(:labels).where("labels.classification ilike 'SYSTEM'").where("labels.key ilike 'IMPORTED FROM'")
+    Location.joins(:labels)
+      .where("labels.classification ilike 'SYSTEM'")
+      .where("labels.key ilike 'IMPORTED FROM'")
       .where("labels.value = '#{id}'").count
   end
 

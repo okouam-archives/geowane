@@ -4,8 +4,7 @@ require 'rgeo/shapefile'
 class Boundary < ActiveRecord::Base
 
   def self.dropdown_items(depth)
-    sql = "SELECT id, name FROM boundaries WHERE level = #{depth} ORDER BY name ASC"
-    Boundary.connection.select_all(sql).map {|rs| [rs["name"], rs["id"]]}
+    Boundary.where(:level => depth).map {|boundary| [boundary.name, boundary.id]}
   end
 
   def self.find_enclosing(longitude, latitude, depth)

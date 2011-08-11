@@ -2,8 +2,7 @@ class Partner < ActiveRecord::Base
   has_many :classifications
 
   def self.dropdown_items
-    sql = "SELECT id, name FROM partners ORDER BY name ASC"
-    Partner.connection.select_all(sql).map {|rs| [rs["name"], rs["id"]]}
+    Partner.all.order("name ASC").map {|partner| [partner.name, partner.id]}
   end
 
 end

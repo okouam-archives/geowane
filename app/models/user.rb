@@ -1,6 +1,3 @@
-require 'aegis'
-require 'will_paginate'
-
 class User < ActiveRecord::Base
   acts_as_authentic
   has_role
@@ -11,8 +8,7 @@ class User < ActiveRecord::Base
   scope :active, :conditions => {:is_active => true}
 
   def self.dropdown_items
-    sql = "SELECT login, id FROM users ORDER BY login ASC"
-    User.connection.select_all(sql).map {|rs| [rs["login"], rs["id"]]}
+    User.order("login ASC").map {|user| [user.login, user.id]}
   end
 
 end

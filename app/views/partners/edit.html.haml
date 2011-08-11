@@ -22,9 +22,13 @@
               %th French
               %th English
               %th Categories
+              %th
+              %th
             %tbody
               - object.classifications.each do |classification|
                 %tr
                   %td= classification.french
                   %td= classification.english
                   %td= classification.categories.map{|c| c.french}.join(", ")
+                  %td Edit
+                  %td Delete
