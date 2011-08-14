@@ -10,7 +10,7 @@ class Search < ActiveRecord::Base
     if criteria.nil? && search_token
       search = Search.find_by_persistence_token(search_token)
     else
-      search.sql = SearchCriteria.create_sql criteria, sort_order, options
+      search.sql = SearchCriteria.create_sql(criteria, sort_order, options).to_sql
     end
     search.per_page = page_size || 10
     search.page = page || 1

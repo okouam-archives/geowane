@@ -3,11 +3,11 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe "geocms_get_angles" do
 
   before(:all) do
-    PostGIS.define_function("geocms_get_angles")
+    PostGIS.define_function("routing.get_angles")
   end
 
   def execute(sql)
-    ActiveRecord::Base.connection.execute("SELECT * FROM geocms_get_angles(#{sql})")[0]
+    ActiveRecord::Base.connection.execute("SELECT * FROM routing.get_angles(#{sql})")[0]
   end
 
   it "returns an empty result if the geometry is NULL" do

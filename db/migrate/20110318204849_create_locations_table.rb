@@ -11,17 +11,17 @@ class CreateLocationsTable < ActiveRecord::Migration
         t.references :user, :foreign_key => true, :dependent => :restrict
         t.references :import, :foreign_key => true, :dependent => :restrict
         t.string :long_name
+        t.string :searchable_name
         t.geometry :feature, :srid => 4326
         t.integer :level_0
         t.integer :level_1
         t.integer :level_2
         t.integer :level_3
         t.integer :level_4
-        t.string :email,
-        t.string :telephone,
-        t.string :website,
-        t.string :postal_address,
-        t.string :opening_hours
+        t.string :emaile
+        t.string :telephone
+        t.string :website
+        t.string :postal_address
         t.string :opening_hours
         t.string :acronym
         t.string :geographical_address
@@ -31,6 +31,7 @@ class CreateLocationsTable < ActiveRecord::Migration
       add_index :locations, ["city_id"], :name => "idx_locations_city_id"
       add_index :locations, ["feature"], :name => "idx_locations_feature", :spatial => true
       add_index :locations, ["name"], :name => "idx_locations_name"
+      add_index :locations, ["status"], :name => "idx_locations_status"
     end
   end
 

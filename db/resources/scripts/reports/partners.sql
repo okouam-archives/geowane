@@ -3,7 +3,8 @@ CREATE OR REPLACE VIEW reports.partners AS
         overview.category_id AS "Identifier",
         overview.name AS "Country",
         overview.french AS "Category - French",
-        overview.english AS "Category - English", overview.numeric_code AS "Garmin Code", overview.navteq_french AS "NAVTEQ - French", overview.navteq_english AS "NAVTEQ - English", overview.navteq_code AS "NAVTEQ Code", sum(
+        overview.english AS "Category - English",
+        sum(
         CASE
             WHEN overview.status::text = 'new'::text THEN 1
             ELSE 0
@@ -24,10 +25,10 @@ CREATE OR REPLACE VIEW reports.partners AS
             WHEN overview.status::text = 'field_checked'::text THEN 1
             ELSE 0
         END) AS "Field Checked"
-   FROM ( SELECT boundaries.name, locations.id, locations.status, categories.id AS category_id, categories.french, categories.english, categories.numeric_code, categories.navteq_english, categories.navteq_french, categories.navteq_code
+   FROM ( SELECT boundaries.name, locations.id, locations.status, categories.id AS category_id, categories.french, categories.english
            FROM categories
       JOIN tags ON categories.id = tags.category_id
    JOIN locations ON locations.id = tags.location_id
    JOIN boundaries ON locations.level_0 = boundaries.id
   ORDER BY categories.french, boundaries.name, locations.id) overview
-  GROUP BY overview.name, overview.french, overview.english, overview.numeric_code, overview.navteq_french, overview.navteq_english, overview.navteq_code, overview.category_id;
+  GROUP BY overview.name, overview.french, overview.english, overview.category_id;

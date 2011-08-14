@@ -1,6 +1,6 @@
 Factory.define :collector, :class => User do |f|
   password = "password"
-  f.login { Faker::Internet.user_name}
+  f.login { Factory.next :username  }
   f.email { Faker::Internet.email }
   f.password {password}
   f.password_confirmation {password}
@@ -9,7 +9,7 @@ end
 
 Factory.define :administrator, :class => User do |f|
   password = "password"
-  f.login { Faker::Internet.user_name}
+  f.login { Factory.next :username }
   f.email { Faker::Internet.email }
   f.password {password}
   f.password_confirmation {password}
@@ -18,7 +18,7 @@ end
 
 Factory.define :auditor, :class => User do |f|
   password = "password"
-  f.login { Faker::Internet.user_name}
+  f.login { Factory.next :username }
   f.email { Faker::Internet.email }
   f.password {password}
   f.password_confirmation {password}
@@ -26,4 +26,8 @@ Factory.define :auditor, :class => User do |f|
 end
 
 Factory.define :invalid_user, :class => User do |f|
+end
+
+Factory.sequence(:username, %w[username]) do |name, i|
+  "#{name}_#{i}"
 end

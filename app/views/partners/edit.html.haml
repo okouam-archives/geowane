@@ -9,25 +9,47 @@
     #portlets
       .portlet
         .portlet-header
-          Classifications
+          Listing
           %span
             = link_to "New Classification", new_partner_classification_path(object)
+            |
+            = link_to "Delete Selection", "#"
         .portlet-content.nopadding
           %table.datatable
-            %thead
-              %th French
-              %th English
-              %th Categories
-              %th
-              %th
             %tbody
-              - object.classifications.each do |classification|
-                %tr
-                  %td= classification.french
-                  %td= classification.english
-                  %td= classification.categories.map{|c| c.french}.join(", ")
-                  %td= link_to "Edit", edit_partner_classification_path(classification.partner, classification)
-                  %td= link_to "Delete", partner_classification_path(classification.partner, classification), :class => "delete-classification"
+              %tr
+                %th
+                  %input{:type=>"checkbox"}
+                %th Name
+                %th Categories
+                %th Icon
+                %th.total_POI Total
+                %th.new New
+                %th.corrected Corrected
+                %th.invalid Invalid
+                %th.audited Audited
+                %th.checked Checked
+              - if @classifications && @classifications.size > 0
+                - @classifications.each do |classification|
+                  %tr
+                    %td
+                      %input{:type=>"checkbox"}
+                    %td
+                      = link_to classification.french, edit_partner_classification_path(classification.partner, classification)
+                      %br
+                      %div{:style=>"font-style: italic; padding-top: 3px"}=classification.english
+                    %td
+                      = classification.categories.map{|c| c.french}.join(", ")
+                    %td{:style=>"width: 30px"}
+                      - if classification.icon
+                        = image_tag "/images/" + classification.icon
+                    %td.total_POI= linked_figure(classification.total_locations, "/locations?s[category_id]=#{classification.id}")
+                    %td.new= linked_figure(classification.new_locations, "/locations?s[category_id]=#{classification.id}&s[status]=new")
+                    %td.corrected= linked_figure(classification.corrected_locations, "/locations?s[category_id]=#{classification.id}&s[status]=corrected")
+                    %td.invalid= linked_figure(classification.invalid_locations, "/locations?s[category_id]=#{classification.id}&s[status]=invalid")
+                    %td.audited= linked_figure(classification.audited_locations, "/locations?s[category_id]=#{classification.id}&s[status]=audited")
+                    %td.checked= linked_figure(classification.field_checked_locations, "/locations?s[category_id]=#{classification.id}&s[status]=field+checked")
+
 :javascript
   $(document).ready(function() {
     $("a.delete-classification").click(function() {

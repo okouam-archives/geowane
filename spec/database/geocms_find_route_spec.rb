@@ -10,7 +10,7 @@ describe "geocms_find_route" do
   end
 
   def execute(sql)
-    ActiveRecord::Base.connection.execute("SELECT * FROM geocms_find_route(#{sql})")[0]
+    ActiveRecord::Base.connection.execute("SELECT * FROM routing.find_route(#{sql})")[0]
   end
 
 end

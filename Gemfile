@@ -40,11 +40,12 @@ group :test do
   gem "faker"
   gem 'capybara'
   gem 'factory_girl'
-  gem 'factory_girl_rails'
   gem 'launchy'
   gem 'rcov'
   gem 'steak'
   gem 'capybara'
+  gem 'spork', '~> 0.9.0rc7'
+  gem 'autotest-standalone'
   gem 'database_cleaner'
   gem "rspec-rails"
 end

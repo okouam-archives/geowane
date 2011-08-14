@@ -7,8 +7,10 @@ class CreateClassifications < ActiveRecord::Migration
         t.string :french
         t.string :english
         t.string :icon
+        t.string :code
         t.references :partner, :foreign_key => true, :dependent => :delete
       end
+      add_index :classifications, ["partner_id"], :name => "idx_classifications_partner_id"
     end
   end
 

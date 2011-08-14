@@ -6,21 +6,35 @@ class Location < ActiveRecord::Base
   validates_presence_of :name
   belongs_to :user
   belongs_to :city
+  has_many :categories, :through => :tags
+  has_many :tags, :autosave => true
+  has_many :labels, :autosave => true
 
-  with_options :autosave => true do |entity|
-    entity.has_many :tags
-    entity.has_many :labels
-  end
-
-  scope :in, lambda {|bounds|
-    where("ST_Intersects(SetSRID('BOX(#{bounds[0]} #{bounds[1]},#{bounds[2]} #{bounds[3]})'::box2d::geometry, 4326), locations.feature)")
+  scope :not_geolocated, lambda {
+    where(:level_0 => nil).where(:level_1 => nil).where(:level_2 => nil).where(:level_3 => nil)
   }
 
-  scope :valid, where("status != 'INVALID'")
+  scope :in_boundary, lambda {|level|
+    where("(level_0 = #{level} OR level_1 = #{level} OR level_2 = #{level} OR level_3 = #{level})")
+  }
+
+  scope :in_bbox, lambda {|bbox|
+    where("ST_Intersects(SetSRID('BOX(#{bbox[0]} #{bbox[1]},#{bbox[2]} #{bbox[3]})'::box2d::geometry, 4326), locations.feature)")
+  }
+
+  scope :labelled, lambda {|key, value, classification|
+    joins(:labels)
+      .where("labels.classification ilike ?", classification)
+      .where("labels.key ilike ?", key)
+      .where("labels.value = ?", value).count
+  }
+
+  scope :valid, lambda {
+    where("status != 'INVALID'")
+  }
 
   scope :classified_as, lambda {|classification|
-    includes({:tags => {:category => {:mappings => :classification}}}).
-      where("classifications.id = #{classification}")
+    joins({:tags => {:category => {:mappings => :classification}}}).where("classifications.id = #{classification}")
   }
 
   scope :named, lambda {|name| where("locations.searchable_name ILIKE '%#{name}%'")}
@@ -51,6 +65,11 @@ class Location < ActiveRecord::Base
     attrs[:username] = respond_to?(:username) ? username : user.login
     attrs[:icon] = tags.first.category.icon if !tags.empty? && tags.first.category.icon
     attrs
+  end
+
+  def name=(name)
+    self[:name] = name
+    self.searchable_name = name
   end
 
 end

@@ -1,31 +1,40 @@
+require 'spork'
 
-ENV["RAILS_ENV"] ||= 'test'
-require File.expand_path("../../config/environment", __FILE__)
-require 'rspec/rails'
-require 'aegis/spec/matchers'
-require 'database_cleaner'
-require 'factory_girl'
-require 'capybara/rspec'
+Spork.prefork do
+  ENV["RAILS_ENV"] ||= 'test'
+  require "rails/application"
+  Spork.trap_method(Rails::Application, :reload_routes!)
+  require File.expand_path("../../config/environment", __FILE__)
+  require 'rspec/rails'
+  require 'aegis/spec/matchers'
+  require 'factory_girl'
+  require 'capybara/rspec'
+  require 'database_cleaner'
 
-Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
+  RSpec.configure do |config|
 
-RSpec.configure do |config|
+    config.use_transactional_fixtures = false
 
-  config.mock_with :rspec
-  config.use_transactional_fixtures = false
+    config.before(:suite) do
+      DatabaseCleaner.strategy = :transaction
+      DatabaseCleaner.clean_with(:truncation)
+    end
 
-  config.before(:suite) do
-    DatabaseCleaner.strategy = :truncation
+    config.before(:each) do
+      DatabaseCleaner.start
+    end
+
+    config.after(:each) do
+      DatabaseCleaner.clean
+    end
+
   end
+end
 
-  config.before(:each) do
-    DatabaseCleaner.start
-  end
-
-  config.after(:each) do
-    DatabaseCleaner.clean
-  end
-
+Spork.each_run do
+  Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
+  Factory.definition_file_paths = [File.join(Rails.root, 'spec', 'factories')]
+  Factory.find_definitions
 end
 
 def current_user(stubs = {})
@@ -56,23 +65,3 @@ def logout
   @user_session = nil
 end
 
-class PostGIS
-
-  def self.define_function(name)
-    path = Rails.root.join("db/resources/scripts/functions/#{name}.sql")
-    sql = File.read(path)
-    ActiveRecord::Base.connection.execute(sql)
-  end
-
-  def self.point(x, y)
-    "ST_SetSRID(ST_MakePoint(#{x}, #{y}), 4326)"
-  end
-
-  def self.linestring(points)
-    points = points.map do |point|
-      "#{point[0]} #{point[1]}"
-    end
-    sql = "ST_GeomFromEWKT('SRID=4269;LINESTRING(#{points.join(",")})')"
-  end
-
-end

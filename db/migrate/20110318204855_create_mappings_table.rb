@@ -7,6 +7,8 @@ class CreateMappingsTable < ActiveRecord::Migration
         t.references :category, :foreign_key => true, :dependent => :delete, :null => false
         t.references :classification, :foreign_key => true, :dependent => :delete, :null => false
       end
+      add_index :mappings, [:category_id], :name => "idx_mappings_on_category_id"
+      add_index :mappings, [:classification_id], :name => "idx_mappings_on_classification_id"
     end
   end
 

@@ -4,7 +4,7 @@ class Category < ActiveRecord::Base
   validates_presence_of :french, :english
   has_many :mappings
   has_many :classifications, :through => :mappings
-  before_create :process_icon
+  before_save :process_icon
   before_validation :validate_icon
 
   def json_object
@@ -19,6 +19,14 @@ class Category < ActiveRecord::Base
     Category.order(:french).map {|category| [category.french, category.id]}
   end
 
+  def icon_directory
+    "#{Rails.root}/public/images/icons/"
+  end
+
+  def relative_icon_directory
+    "/icons/"
+  end
+
   private
 
   def validate_icon
@@ -28,13 +36,13 @@ class Category < ActiveRecord::Base
   def process_icon
     if icon.starts_with?("http")
       filename = File.basename(icon)
-      path =  "#{Rails.root}/public/images/icons/#{filename}"
+      path = File.join(icon_directory, filename)
       unless File.exists?(path)
         img = File.new(path, 'w')
         img.write(open(icon)) {|f| f.read}
         img.close
       end
-      icon = "/icons/#{filename}"
+      self[:icon] = File.join(relative_icon_directory, filename)
     end
   end
 end

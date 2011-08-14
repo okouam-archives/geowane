@@ -9,4 +9,9 @@ class PartnersController < ApplicationController
     redirect_to partners_path
   end
 
+  def edit
+    sql = "SELECT * FROM reports.classifications WHERE name = '#{object.name}' ORDER BY french"
+    @classifications = Classification.find_by_sql(sql)
+  end
+
 end

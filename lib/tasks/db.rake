@@ -41,4 +41,15 @@ namespace :geocms do
 
   end
 
+  namespace :db do
+
+    desc "Rebuild test database"
+    task :rspec => [:environment] do
+      system("rake db:drop RAILS_ENV=test")
+      system("rake db:create RAILS_ENV=test")
+      system("rake db:migrate RAILS_ENV=test")
+    end
+
+  end
+
 end

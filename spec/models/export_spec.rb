@@ -1,5 +1,3 @@
-require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
-
 describe Export do
 
   describe "when exporting locations" do

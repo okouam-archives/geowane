@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110723130703) do
+ActiveRecord::Schema.define(:version => 20110807180101) do
 
   create_table "audits", :force => true do |t|
     t.datetime "created_at"
@@ -36,33 +36,13 @@ ActiveRecord::Schema.define(:version => 20110723130703) do
   add_index "boundaries", ["level"], :name => "idx_administrative_units_level"
 
   create_table "categories", :force => true do |t|
-    t.string   "french",                  :limit => 200
-    t.string   "english",                 :limit => 200
-    t.string   "code",                    :limit => 200
-    t.string   "classification",          :limit => 100
-    t.string   "icon",                    :limit => 200
-    t.boolean  "visible",                                :default => true
-    t.integer  "numeric_code",                           :default => 0
-    t.integer  "total_locations",                        :default => 0
-    t.integer  "new_locations",                          :default => 0
-    t.integer  "invalid_locations",                      :default => 0
-    t.integer  "corrected_locations",                    :default => 0
-    t.integer  "audited_locations",                      :default => 0
-    t.integer  "field_checked_locations",                :default => 0
-    t.string   "navitel_french"
-    t.string   "navitel_english"
-    t.string   "navitel_code"
-    t.string   "navteq_french"
-    t.string   "navteq_english"
-    t.string   "navteq_code"
-    t.string   "garmin_french"
-    t.string   "garmin_english"
-    t.string   "sygic_french"
-    t.string   "sygic_english"
-    t.text     "extensions"
-    t.string   "sygic_code"
-    t.integer  "level",                                  :default => 0,    :null => false
-    t.integer  "end_level",                              :default => 0,    :null => false
+    t.string   "french",       :limit => 200,                    :null => false
+    t.string   "english",      :limit => 200,                    :null => false
+    t.string   "shape",                                          :null => false
+    t.string   "code",         :limit => 200
+    t.string   "icon",         :limit => 200
+    t.boolean  "is_internal",                 :default => false
+    t.integer  "numeric_code",                :default => 0
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -75,6 +55,18 @@ ActiveRecord::Schema.define(:version => 20110723130703) do
 
   add_index "cities", ["centre"], :name => "idx_cities_centre", :spatial => true
   add_index "cities", ["feature"], :name => "idx_cities_feature", :spatial => true
+
+  create_table "classifications", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "french"
+    t.string   "english"
+    t.string   "icon"
+    t.string   "code"
+    t.integer  "partner_id"
+  end
+
+  add_index "classifications", ["partner_id"], :name => "idx_classifications_partner_id"
 
   create_table "comments", :force => true do |t|
     t.string   "title",            :limit => 50, :default => ""
@@ -112,6 +104,7 @@ ActiveRecord::Schema.define(:version => 20110723130703) do
     t.integer     "road_id"
     t.string      "label"
     t.float       "to_cost"
+    t.float       "cost"
     t.float       "reverse_cost"
     t.integer     "source"
     t.integer     "target"
@@ -120,10 +113,11 @@ ActiveRecord::Schema.define(:version => 20110723130703) do
     t.float       "x2"
     t.float       "y1"
     t.float       "y2"
-    t.integer     "country_id"
+    t.float       "cost_multiplier"
+    t.boolean     "is_one_way"
     t.text        "rule"
-    t.line_string "the_geom",     :limit => nil, :srid => 4326
-    t.point       "centroid",     :limit => nil, :srid => 4326
+    t.line_string "the_geom",        :limit => nil, :srid => 4326
+    t.point       "centroid",        :limit => nil, :srid => 4326
   end
 
   create_table "exports", :force => true do |t|
@@ -190,30 +184,39 @@ ActiveRecord::Schema.define(:version => 20110723130703) do
     t.integer  "user_id"
     t.integer  "import_id"
     t.string   "long_name"
+    t.string   "searchable_name"
     t.integer  "level_0"
     t.integer  "level_1"
     t.integer  "level_2"
     t.integer  "level_3"
     t.integer  "level_4"
-    t.text     "extensions"
+    t.string   "emaile"
+    t.string   "telephone"
+    t.string   "website"
+    t.string   "postal_address"
+    t.string   "opening_hours"
+    t.string   "acronym"
+    t.string   "geographical_address"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.geometry "feature",    :limit => nil, :srid => 4326
+    t.geometry "feature",              :limit => nil, :srid => 4326
   end
 
   add_index "locations", ["city_id"], :name => "idx_locations_city_id"
   add_index "locations", ["feature"], :name => "idx_locations_feature", :spatial => true
   add_index "locations", ["name"], :name => "idx_locations_name"
+  add_index "locations", ["status"], :name => "idx_locations_status"
   add_index "locations", ["user_id"], :name => "idx_locations_user_id"
 
   create_table "mappings", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "name"
-    t.string   "value"
-    t.integer  "category_id"
-    t.integer  "partner_id"
+    t.integer  "category_id",       :null => false
+    t.integer  "classification_id", :null => false
   end
+
+  add_index "mappings", ["category_id"], :name => "idx_mappings_on_category_id"
+  add_index "mappings", ["classification_id"], :name => "idx_mappings_on_classification_id"
 
   create_table "model_changes", :force => true do |t|
     t.string   "old_value"
@@ -228,6 +231,17 @@ ActiveRecord::Schema.define(:version => 20110723130703) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "name"
+  end
+
+  create_table "roads", :id => false, :force => true do |t|
+    t.integer     "id",                              :null => false
+    t.string      "label"
+    t.integer     "country_id"
+    t.boolean     "is_one_way"
+    t.string      "route_parameters", :limit => 100
+    t.integer     "category_id"
+    t.line_string "the_geom",         :limit => nil,                 :srid => 4326
+    t.point       "centroid",         :limit => nil,                 :srid => 4326
   end
 
   create_table "searches", :force => true do |t|

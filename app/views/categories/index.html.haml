@@ -14,7 +14,7 @@
               |
             - if @categories && @categories.size > 0
               - if current_user.may_destroy_category? @categories.first
-                = link_to "Delete Selection", :confirm => 'Are you sure?', :method => :delete
+                = link_to "Delete Selection"
                 |
             = link_to "Export Selection", export_categories_path
         .portlet-content.nopadding

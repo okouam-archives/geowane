@@ -20,139 +20,68 @@ class SearchCriteria
 
     params = nil unless params.is_a?(Hash)
 
-    query = {sort: sort ? " ORDER BY #{sort} ASC" : " ORDER BY locations.name ASC"}
+    query = Location.scoped
 
-    if options && options[:include_geometry]
-      query[:from] = %{
-        SELECT
-          locations.id, longitude, latitude, locations.name, locations.created_at, users.login as username,
-          status, locations.updated_at, cities.name as city_name, locations.feature, boundaries.name "country"
-        FROM locations
-        JOIN users ON users.id = locations.user_id
-        LEFT JOIN cities ON cities.id = locations.city_id
-        JOIN boundaries ON boundaries.id = locations.level_0
-      }
-    else
-      query[:from] = %{
-        SELECT
-          locations.id, longitude, latitude, locations.name, locations.created_at, users.login as username,
-          status, locations.updated_at, cities.name as city_name
-        FROM locations
-        JOIN users ON users.id = locations.user_id
-        LEFT JOIN cities ON cities.id = locations.city_id
-      }
-    end
+    query = sort ? query.order("#{sort} ASC") : query.order("locations.name")
 
-    return query[:from] + query[:sort] if params.nil?
+    query = query
+    .select(%{locations.id, longitude, latitude, locations.name,
+                locations.created_at, users.login as username, status, locations.updated_at,
+                cities.name as city_name, locations.feature, boundaries.name "country"})
+    .joins(:user)
+    .joins("LEFT JOIN boundaries ON locations.level_0 = boundaries.id")
+    .joins("LEFT JOIN cities ON cities.id = locations.city_id")
 
-    query[:where] = " WHERE 1 = 1 "
+    return query if params.nil?
 
-    if options && options[:include_geometry]
-      query[:group_by] = %{
-      GROUP BY locations.id, longitude, latitude, locations.name, locations.created_at, users.login, status, locations.updated_at, cities.name, locations.feature, boundaries.name
-    }
-    else
-      query[:group_by] = %{
-      GROUP BY locations.id, longitude, latitude, locations.name, locations.created_at, users.login, status, locations.updated_at, cities.name
-    }
-    end
+    query = query.group("locations.id, longitude, latitude, locations.name, locations.created_at, users.login, status, locations.updated_at, cities.name, locations.feature, boundaries.name")
 
-    query = filter_on_status(query, params[:status])
+    query = query.classified_as(params[:classification_id]) unless params[:classification_id].blank?
 
-    query = filter_on_user(query, params[:added_by])
+    query = query.labelled("SYSTEM", "IMPORTED FROM", params[:import_id]) unless params[:import_id].blank?
+
+    query = query.where(:user_id => params[:added_by]) unless params[:added_by].blank?
+
+    query = query.where(:status => params[:status]) unless params[:status].blank?
 
     query = filter_on_category_presence(query, params[:category_missing] == "1", params[:category_present] == "1", params[:category_id])
 
-    query = filter_on_label(query, params[:import_id])
-
-    query = filter_on_change(query, params[:confirmed_by], params[:audited_by], params[:modified_by])
+    #query = filter_on_change(query, params[:confirmed_by], params[:audited_by], params[:modified_by])
 
     administrative_unit_id = find_most_selective_level(params)
 
     query = filter_on_administrative_unit(query, administrative_unit_id)
 
-    query = filter_on_city(query, params[:city_id])
+    query = query.where(:city_id => params[:city_id]) unless params[:city_id].blank?
 
-    query = filter_on_bbox(query, params[:bbox])
+    query = query.in(params[:bbox].split(",")) unless params[:bbox].blank?
 
-    query = filter_on_creation_after_date(query, params[:added_on_after])
+    query = query.where("locations.created_at > ?", params[:added_on_after]) unless params[:added_on_after].blank?
 
-    query = filter_on_creation_before_date(query, params[:added_on_before])
+    query = query.where("locations.created_at < ?", params[:added_on_before]) unless params[:added_on_before].blank?
 
-    query = filter_on_name(query, params[:name])
+    query = query.named(params[:name]) unless params[:name].blank?
 
-    query[:from] + query[:where] + query[:group_by] + (query[:having] || "") + query[:sort]
+    query
 
   end
 
   private
 
-  def self.filter_on_bbox(query, bbox)
-     query.tap do |o|
-      unless bbox.blank?
-        coords = bbox.split(",")
-        o[:where] = "#{o[:where]} AND ST_Intersects(SetSRID('BOX(#{coords[0]} #{coords[1]},#{coords[2]} #{coords[3]})'::box2d::geometry, 4326), locations.feature)"
-      end
-    end
-  end
-
   def self.find_most_selective_level(criteria)
-    level_id = criteria[:location_level_4]
-    level_id = criteria[:location_level_3] if level_id.nil?
-    level_id = criteria[:location_level_2] if level_id.nil?
-    level_id = criteria[:location_level_1] if level_id.nil?
-    level_id = criteria[:location_level_0] if level_id.nil?
-    level_id
-  end
-
-  def self.filter_on_name(query, field)
-    query.tap do |o|
-      unless field.blank?
-        o[:where] = "#{o[:where]} AND locations.name ilike '%#{field}%'"
-      end
+    4.downto 1 do |i|
+      identifier = ":location_level_#{i}".to_sym
+      level_id = criteria[identifier]
+      return level_id unless level_id.nil?
     end
-  end
-
-  def self.filter_on_city(query, field)
-    query.tap do |o|
-      unless field.blank?
-        o[:where] = "#{o[:where]} AND cities.id = #{field}"
-      end
-    end
-  end
-
-  def self.filter_on_creation_before_date(query, date)
-    query.tap do |o|
-      unless date.blank?
-        o[:where] = "#{o[:where]} AND locations.created_at < '#{date}'"
-      end
-    end
-  end
-
-  def self.filter_on_creation_after_date(query, date)
-    query.tap do |o|
-      unless date.blank?
-        o[:where] = "#{o[:where]} AND locations.created_at > '#{date}'"
-      end
-    end
+    return nil
   end
 
   def self.filter_on_administrative_unit(query, level)
-    query.tap do |o|
-      unless level.blank?
-        if level == "none"
-          o[:where] = "#{o[:where]} AND level_0 IS NULL AND level_1 IS NULL AND level_2 IS NULL AND level_3 IS NULL"
-        else
-          o[:where] = "#{o[:where]} AND (level_0 = #{level} OR level_1 = #{level} OR level_2 = #{level} OR level_3 = #{level})"
-        end
-      end
+    unless level.blank?
+      query = level == "none" ? query.not_geolocated : query.in_boundary(level)
     end
-  end
-
-  def self.filter_on_status(query, field)
-    query.tap do |o|
-      o[:where] = "#{o[:where]} AND status = '#{field}'" unless field.blank?
-    end
+    query
   end
 
   def self.filter_on_change(query, confirmed_by, audited_by, modified_by)
@@ -172,29 +101,13 @@ class SearchCriteria
   end
 
   def self.filter_on_category_presence(query, missing, not_missing, id)
-    query.tap do |o|
-      if missing || not_missing || id.present?
-        o[:from] = "#{o[:from]} LEFT JOIN tags ON tags.location_id = locations.id"
-        o[:from] = "#{o[:from]} JOIN categories ON tags.category_id = categories.id AND categories.id = #{id}" if id.present?
-        o[:having] = "HAVING 1 = 1 AND count(distinct tags.category_id) > 0" if not_missing
-        o[:having] = "HAVING 1 = 1 AND count(distinct tags.category_id) < 1" if missing
-      end
-    end   
-  end
-
-  def self.filter_on_label(query, field)
-    query.tap do |o|
-      unless field.blank?
-        o[:from] = "#{o[:from]} JOIN labels ON labels.location_id = locations.id"
-        o[:where] = "#{o[:where]} AND labels.key ilike 'IMPORTED FROM' AND labels.classification ilike 'SYSTEM' AND labels.value = '#{field}'"
-      end
+    if missing || not_missing || id.present?
+      query = query.joins(:categories)
+      query = query.where("categories.id = ?", id) if id.present?
+      query = query.having("count(distinct tags.category_id) > 0") if not_missing
+      query = query.having("count(distinct tags.category_id) < 1") if missing
     end
-  end
-
-  def self.filter_on_user(query, field)
-    query.tap do |o|
-      o[:where] = "#{o[:where]} AND user_id = #{field}" unless field.blank?
-    end
+    query
   end
 
 end

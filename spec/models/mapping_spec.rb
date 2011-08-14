@@ -1,5 +1,3 @@
-require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
-
 describe Mapping do
 
   it "can be instantiated" do
