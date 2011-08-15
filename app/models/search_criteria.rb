@@ -38,7 +38,9 @@ class SearchCriteria
 
     query = query.classified_as(params[:classification_id]) unless params[:classification_id].blank?
 
-    query = query.labelled("SYSTEM", "IMPORTED FROM", params[:import_id]) unless params[:import_id].blank?
+    query = query.in_bbox(params[:bbox].split(",")) unless params[:bbox].blank?
+
+    query = query.labelled("IMPORTED FROM", params[:import_id], "SYSTEM") unless params[:import_id].blank?
 
     query = query.where(:user_id => params[:added_by]) unless params[:added_by].blank?
 
@@ -46,15 +48,13 @@ class SearchCriteria
 
     query = filter_on_category_presence(query, params[:category_missing] == "1", params[:category_present] == "1", params[:category_id])
 
-    #query = filter_on_change(query, params[:confirmed_by], params[:audited_by], params[:modified_by])
+    query = filter_on_change(query, params[:confirmed_by], params[:audited_by], params[:modified_by])
 
     administrative_unit_id = find_most_selective_level(params)
 
     query = filter_on_administrative_unit(query, administrative_unit_id)
 
     query = query.where(:city_id => params[:city_id]) unless params[:city_id].blank?
-
-    query = query.in(params[:bbox].split(",")) unless params[:bbox].blank?
 
     query = query.where("locations.created_at > ?", params[:added_on_after]) unless params[:added_on_after].blank?
 
@@ -70,7 +70,7 @@ class SearchCriteria
 
   def self.find_most_selective_level(criteria)
     4.downto 1 do |i|
-      identifier = ":location_level_#{i}".to_sym
+      identifier = "location_level_#{i}".to_sym
       level_id = criteria[identifier]
       return level_id unless level_id.nil?
     end
@@ -88,21 +88,20 @@ class SearchCriteria
     confirmed_by = confirmed_by.blank? ? nil : confirmed_by
     modified_by = modified_by.blank? ? nil : modified_by
     audited_by = audited_by.blank? ? nil : audited_by
-    query.tap do |o|
-      unless confirmed_by.blank? && audited_by.blank? && modified_by.blank?
-        user_id = confirmed_by || audited_by || modified_by
-        query[:from] = "#{o[:from]} JOIN audits ON audits.auditable_id = locations.id AND audits.user_id = #{user_id}"
-        if audited_by || confirmed_by
-          value = audited_by ? 'audited' : 'field_checked'
-          query[:from] = "#{o[:from]} JOIN model_changes ON audits.id = model_changes.audit_id AND model_changes.new_value = '#{value}'"
-        end
+    unless confirmed_by.blank? && audited_by.blank? && modified_by.blank?
+      user_id = confirmed_by || audited_by || modified_by
+      query = query.joins(:audits).where("audits.user_id = ?", user_id)
+      if audited_by || confirmed_by
+        value = audited_by ? 'audited' : 'field_checked'
+        query = query.joins("JOIN model_changes ON audits.id = model_changes.audit_id").where("model_changes.new_value = ?", value)
       end
     end
+    query
   end
 
   def self.filter_on_category_presence(query, missing, not_missing, id)
     if missing || not_missing || id.present?
-      query = query.joins(:categories)
+      query = query.joins('LEFT JOIN "tags" ON "locations"."id" = "tags"."location_id" LEFT JOIN "categories" ON "categories"."id" = "tags"."category_id"')
       query = query.where("categories.id = ?", id) if id.present?
       query = query.having("count(distinct tags.category_id) > 0") if not_missing
       query = query.having("count(distinct tags.category_id) < 1") if missing

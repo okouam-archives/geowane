@@ -9,13 +9,14 @@ class Location < ActiveRecord::Base
   has_many :categories, :through => :tags
   has_many :tags, :autosave => true
   has_many :labels, :autosave => true
+  has_many :model_changes, :through => :audits
 
   scope :not_geolocated, lambda {
     where(:level_0 => nil).where(:level_1 => nil).where(:level_2 => nil).where(:level_3 => nil)
   }
 
   scope :in_boundary, lambda {|level|
-    where("(level_0 = #{level} OR level_1 = #{level} OR level_2 = #{level} OR level_3 = #{level})")
+    where("level_0 = #{level} OR level_1 = #{level} OR level_2 = #{level} OR level_3 = #{level}")
   }
 
   scope :in_bbox, lambda {|bbox|
@@ -26,7 +27,7 @@ class Location < ActiveRecord::Base
     joins(:labels)
       .where("labels.classification ilike ?", classification)
       .where("labels.key ilike ?", key)
-      .where("labels.value = ?", value).count
+      .where("labels.value = ?", value)
   }
 
   scope :valid, lambda {

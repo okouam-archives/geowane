@@ -48,38 +48,83 @@ describe SearchCriteria do
     query.all.size.should == 1
   end
 
-  it "searches for locations with no categories" do
-    hotels = Factory(:category)
-    hotels.locations << Factory(:location)
-    Factory(:location)
-    query = SearchCriteria.create_sql({:category_missing => "1"})
-    puts query.to_sql
-    query.all.size.should == 1
+  context "when filtering by model change" do
+
+    before(:each) do
+      @user = Factory(:administrator)
+      Thread.current[:acts_as_audited_user] = @user
+    end
+
+    it "can search for locations modified by a given user" do
+      Factory(:location)
+      hotel = Factory(:location)
+      hotel.update_attributes(:longitude => 12)
+      query = SearchCriteria.create_sql({:modified_by => @user.id})
+      query.all.size.should == 1
+    end
+
+    it "can search for locations audited by a given user" do
+      Factory(:location)
+      hotel = Factory(:location)
+      hotel.update_attributes(:status => "audited")
+      query = SearchCriteria.create_sql({:audited_by => @user.id})
+      query.all.size.should == 1
+    end
+
+    it "can search for locations field checked by a given user" do
+     Factory(:location)
+      hotel = Factory(:location)
+      hotel.update_attributes(:status => "field_checked")
+      query = SearchCriteria.create_sql({:confirmed_by => @user.id})
+      query.all.size.should == 1
+    end
+
   end
 
-  it "searches for locations in any category" do
-    hotels = Factory(:category)
-    hotels.locations << Factory(:location)
-    Factory(:location)
-    query = SearchCriteria.create_sql({:category_present => "1"})
-    query.all.size.should == 1
+  context "when filtering by category" do
+
+    it "can search for locations with no categories" do
+      hotels = Factory(:category)
+      hotels.locations << Factory(:location)
+      Factory(:location)
+      query = SearchCriteria.create_sql({:category_missing => "1"})
+      query.all.size.should == 1
+    end
+
+    it "can search for locations belongong to any category" do
+      hotels = Factory(:category)
+      hotels.locations << Factory(:location)
+      Factory(:location)
+      query = SearchCriteria.create_sql({:category_present => "1"})
+      query.all.size.should == 1
+    end
+
+    it "filters by category when a category ID is provided" do
+      hotels = Factory(:category)
+      bars = Factory(:category)
+      hotels.locations << Factory(:location)
+      bars.locations << Factory(:location)
+      query = SearchCriteria.create_sql({:category_id => hotels.id})
+      query.all.size.should == 1
+    end
+
   end
 
-  it "searches for locations created after a certain date" do
+  it "can search for locations created after a certain date" do
     Factory(:location, :created_at => DateTime.now + 3.days)
     Factory(:location)
     query = SearchCriteria.create_sql({:added_on_after => (DateTime.now + 2.days).to_s})
     query.all.size.should == 1
   end
 
-  it "searches for locations created before a certain date" do
+  it "can search for locations created before a certain date" do
     Factory(:location, :created_at => DateTime.now + 3.days)
     Factory(:location)
     query = SearchCriteria.create_sql({:added_on_before => (DateTime.now + 2.days).to_s})
     query.all.size.should == 1
   end
 
-  it "searches by name" do
+  it "can filter by name" do
     Factory(:location, :name => "Residence Eburnea")
     Factory(:location, :name => "Sococe")
     query = SearchCriteria.create_sql({:name=> "ebur"})
@@ -87,21 +132,20 @@ describe SearchCriteria do
   end
 
   it "searches by label" do
-    pending
+    Factory(:location)
+    location = Factory(:location)
+    location.labels << Label.new(:key => "IMPORTED FROM", :value => "4", :classification => "SYSTEM")
+    query = SearchCriteria.create_sql({:import_id=> "4"})
+    query.all.size.should == 1
   end
 
   context "when searching by boundary" do
 
     it "considers the most specific boundary" do
-      Factory(:location, :level_0 => 384, :level_1 => 3944, :level_3 => 23)
-      Factory(:location, :level_0 => 384)
-      query = SearchCriteria.create_sql({:location_level_1=> 3944, :location_level_0 => 384})
-      query.all.size.should == 1
-    end
-
-    it "returns non-geolocated locations" do
-      Factory(:location, :level_0 => 384)
-      Factory(:location)
+      hotel = Factory(:location)
+      hotel.update_attributes(:level_0 => 384, :level_1 => 3944, :level_3 => 23)
+      bar = Factory(:location)
+      bar.update_attributes(:level_0 => 384)
       query = SearchCriteria.create_sql({:location_level_1=> 3944, :location_level_0 => 384})
       query.all.size.should == 1
     end
@@ -109,27 +153,16 @@ describe SearchCriteria do
   end
 
   it "searches by bbox" do
-    pending
-  end
-
-  it "searches by boundary" do
-    pending
-  end
-
-  it "searches by category when a category ID is provided" do
-    hotels = Factory(:category)
-    bars = Factory(:category)
-    hotels.locations << Factory(:location)
-    bars.locations << Factory(:location)
-    query = SearchCriteria.create_sql({:category_id => hotels.id})
+    Factory(:location, :longitude => 2, :latitude => 2)
+    Factory(:location, :longitude => 0, :latitude => 0)
+    query = SearchCriteria.create_sql({:bbox => "1,-1,-1,1"})
     query.all.size.should == 1
   end
 
-  it "searches by status" do
+  it "can filter by status" do
     Factory(:location, :status => "invalid")
     Factory(:location, :status => "corrected")
     query = SearchCriteria.create_sql({:status => "corrected"})
-    query.to_sql
     query.all.size.should == 1
   end
 
