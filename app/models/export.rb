@@ -27,23 +27,24 @@ class Export < ActiveRecord::Base
     query = Location.select("id")
     return query.where("1 = 2") if statuses.empty? && countries.empty? && categories.empty? && users.empty? && !include_uncategorized
     query = query.where(:status => statuses) if statuses.size > 0
-    query = query.where(:level0 => countries) if countries.size > 0
+    query = query.where(:level_0 => countries) if countries.size > 0
     query = query.where(:user_id => users) if users.size > 0
     filter_categories(query, categories, include_uncategorized)
   end
 
   private
 
-  def self.filter_categories(query, categories, include_categoried)
+  def self.filter_categories(query, categories, include_uncategorized)
     if categories.any? || include_uncategorized
       if include_uncategorized.nil? && categories.any?
-        query.where("locations.id IN (SELECT location_id FROM tags WHERE category_id IN (" + categories.join(",") + "))")
+        query = query.where("locations.id IN (SELECT location_id FROM tags WHERE category_id IN (" + categories.join(",") + "))")
       elsif include_uncategorized && categories.any?
-        query.where("locations.id IN (SELECT location_id FROM tags WHERE category_id IN (" + categories.join(",") + ")) OR locations.id NOT IN (SELECT location_id FROM tags)")
+        query = query.where("locations.id IN (SELECT location_id FROM tags WHERE category_id IN (" + categories.join(",") + ")) OR locations.id NOT IN (SELECT location_id FROM tags)")
       else
-        query.where("locations.id NOT IN (SELECT location_id FROM tags)")
+        query = query.where("locations.id NOT IN (SELECT location_id FROM tags)")
       end
     end
+    query
   end
 
   def create_shapefiles(dir, locations)
