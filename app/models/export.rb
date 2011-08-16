@@ -34,7 +34,7 @@ class Export < ActiveRecord::Base
 
   private
 
-  def filter_categories(query, categories, include_categoried)
+  def self.filter_categories(query, categories, include_categoried)
     if categories.any? || include_uncategorized
       if include_uncategorized.nil? && categories.any?
         query.where("locations.id IN (SELECT location_id FROM tags WHERE category_id IN (" + categories.join(",") + "))")
