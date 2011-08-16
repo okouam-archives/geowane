@@ -100,7 +100,7 @@ class ApiController < ApplicationController
   end
 
   def fetch_locations(bounds, classification, name)
-    query = Location.valid.includes(:administrative_unit_0, :city).limit(99).in(bounds.split(","))
+    query = Location.valid.includes(:administrative_unit_0, :city).limit(99).in_bbox(bounds.split(","))
     if classification
       query = query.classified_as(classification)
     elsif name
