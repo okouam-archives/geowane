@@ -8,6 +8,7 @@ class ExportsController < ApplicationController
     object.user = current_user
     object.locations_count = session[:locations].size
     object.execute Location.find(session[:locations], :include => [:city, :tags => :category])
+    object.output_format = ".SHP"
     object.save!
   end
 

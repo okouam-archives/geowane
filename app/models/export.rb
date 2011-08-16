@@ -111,8 +111,8 @@ class Export < ActiveRecord::Base
       'Country' => level_0,
       'Highway' => "",
       'Description' => location.id,
-      'Level' => location.tags.try(:first).try(:category).try(:level) || 0,
-      'Endlevel' => location.tags.try(:first).try(:category).try(:end_level) || 0
+      'Level' => 0,
+      'Endlevel' => 0
     )
   end
 
