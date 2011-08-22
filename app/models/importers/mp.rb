@@ -4,9 +4,11 @@ module Importers
 
     def create_selection(import, file)
       commands = parse(file)
-      locations = Location.find(commands.map{|x| x[:id]})
       lookup = Hash.new
-      locations.each {|loc| lookup[loc.id] = loc}
+      commands.each do |command|
+        location = Location.find(command[:id])
+        lookup[location.id] = location
+      end
       commands.each do |command|
         id = command[:id]
         if location = lookup[id.to_i]
