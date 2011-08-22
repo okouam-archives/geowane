@@ -1,3 +1,5 @@
+require "rack/debug"
+
 Gowane::Application.configure do
   # Settings specified here will take precedence over those in config/environment.rb
 
@@ -24,12 +26,6 @@ Gowane::Application.configure do
   # Only use best-standards-support built into browsers
   config.action_dispatch.best_standards_support = :builtin
 
-end
+  config.middleware.use "Rack::Debug"
 
-if File.exists?(File.join(Rails.root,'tmp', 'debug.txt'))
-  require 'ruby-debug'
-  Debugger.wait_connection = true
-  Debugger.start_remote
-  File.delete(File.join(Rails.root,'tmp', 'debug.txt'))
 end
-

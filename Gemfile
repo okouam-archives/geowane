@@ -51,6 +51,7 @@ group :test do
 end
 
 group :test, :development do
+  gem "rack-debug"
   gem "ruby-debug19"
   gem 'capistrano-ext'
   gem 'capistrano'

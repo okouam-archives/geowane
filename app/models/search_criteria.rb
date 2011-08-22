@@ -32,6 +32,8 @@ class SearchCriteria
     .joins("LEFT JOIN boundaries ON locations.level_0 = boundaries.id")
     .joins("LEFT JOIN cities ON cities.id = locations.city_id")
 
+    debugger
+
     return query if params.nil?
 
     query = query.group("locations.id, longitude, latitude, locations.name, locations.created_at, users.login, status, locations.updated_at, cities.name, locations.feature, boundaries.name")
@@ -69,7 +71,7 @@ class SearchCriteria
   private
 
   def self.find_most_selective_level(criteria)
-    4.downto 1 do |i|
+    4.downto 0 do |i|
       identifier = "location_level_#{i}".to_sym
       level_id = criteria[identifier]
       return level_id unless level_id.nil?
