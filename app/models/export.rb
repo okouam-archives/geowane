@@ -95,7 +95,11 @@ class Export < ActiveRecord::Base
         GeoRuby::Shp4r::Dbf::Field.new("Highway","C",40),
         GeoRuby::Shp4r::Dbf::Field.new("Level","C",10),
         GeoRuby::Shp4r::Dbf::Field.new("Endlevel","C",10),
-        GeoRuby::Shp4r::Dbf::Field.new("Comment","C",10,0)
+        GeoRuby::Shp4r::Dbf::Field.new("Comment","C",10,0),
+
+        GeoRuby::Shp4r::Dbf::Field.new("NAVTEQ_ENGLISH","C",200),
+        GeoRuby::Shp4r::Dbf::Field.new("NAVTEQ_CODE","C",200),
+        GeoRuby::Shp4r::Dbf::Field.new("SYGIC_ENGLISH","C",200),
       ]
     )
   end
@@ -112,7 +116,10 @@ class Export < ActiveRecord::Base
       'Highway' => "",
       'Description' => location.id,
       'Level' => 0,
-      'Endlevel' => 0
+      'Endlevel' => 0,
+      'NAVTEQ_ENGLISH' =>  location.tags.try(:first).try(:category).try(:navteq_english),
+      'NAVTEQ_CODE' =>  location.tags.try(:first).try(:category).try(:navteq_code),
+      'SYGIC_ENGLISH' =>  location.tags.try(:first).try(:category).try(:sygic_english)
     )
   end
 
