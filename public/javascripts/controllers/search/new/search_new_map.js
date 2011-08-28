@@ -37,8 +37,9 @@ $.Controller("SearchNew",
   setupControls: function() {
     var draw = new OpenLayers.Control.DrawFeature(this.layer, OpenLayers.Handler.Polygon);
     var panZoom = new OpenLayers.Control.PanZoomBar();
+    var scalebar = new OpenLayers.Control.ScaleLine();
     panZoom.zoomWorldIcon = true;
-    var controls = [new OpenLayers.Control.DragPan(), new OpenLayers.Control.Navigation(), panZoom];
+    var controls = [new OpenLayers.Control.DragPan(), scalebar, new OpenLayers.Control.Navigation(), panZoom];
     this.map.addControls(controls);
     $.each(controls, function (index, item) {
       item.activate();

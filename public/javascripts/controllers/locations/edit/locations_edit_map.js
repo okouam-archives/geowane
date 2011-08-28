@@ -89,7 +89,8 @@ $.Controller("LocationsEditMap",
     });
     var panZoom = new OpenLayers.Control.PanZoomBar();
     panZoom.zoomWorldIcon = true;
-    var controls = [tooltip, drag, new OpenLayers.Control.DragPan(), new OpenLayers.Control.Navigation(), panZoom];
+    var scalebar = new OpenLayers.Control.ScaleLine();
+    var controls = [scalebar, tooltip, drag, new OpenLayers.Control.DragPan(), new OpenLayers.Control.Navigation(), panZoom];
     this.map.addControls(controls);
     $.each(controls, function (index, item) {
       item.activate();
