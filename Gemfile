@@ -34,6 +34,7 @@ gem 'diff-lcs'
 gem 'uuidtools'
 gem "nested_form"
 gem 'rack-less'
+gem 'lighthouse-api'
 
 group :test do
   gem "capybara-webkit"

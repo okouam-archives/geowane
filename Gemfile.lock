@@ -119,6 +119,9 @@ GEM
     less (1.2.21)
       mutter (>= 0.4.2)
       treetop (>= 1.4.2)
+    lighthouse-api (2.0)
+      activeresource (>= 3.0.0)
+      activesupport (>= 3.0.0)
     linecache19 (0.5.12)
       ruby_core_source (>= 0.1.4)
     mail (2.2.19)
@@ -258,6 +261,7 @@ DEPENDENCIES
   hoptoad_notifier
   jammit
   launchy
+  lighthouse-api
   minitar
   nested_form
   nokogiri
