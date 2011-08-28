@@ -50,6 +50,7 @@
                   %th Name
                   %th Long Name
                   %th Status
+                  %th City
                   %th Categories
                   %th Comments
               %tbody
@@ -62,6 +63,8 @@
                   %td.status
                     =select_tag "locations[#{i}][status]", options_for_select(workflow_actions(current_user, location), location.status)
                     =form.hidden_field "[#{i}][id]", :value => location.id
+                  %td
+                    = select_tag "locations[#{i}][city_id]", options_for_select(City.dropdown_items, location.city_id), :style=>"width: 150px"
                   %td.tags
                     %span.list
                       = render :partial => "tags/collection", :locals => {:items => location.tags.map {|c| {:name => c.category.french, :delete_link => location_tag_url(c.location_id, c.id)}}}
