@@ -52,6 +52,8 @@ class SearchCriteria
 
     query = filter_on_change(query, params[:confirmed_by], params[:audited_by], params[:modified_by])
 
+    query = filter_on_administrative_unit(query, params[:level_id])
+
     administrative_unit_id = find_most_selective_level(params)
 
     query = filter_on_administrative_unit(query, administrative_unit_id)
