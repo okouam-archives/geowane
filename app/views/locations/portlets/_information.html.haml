@@ -14,6 +14,7 @@
       = form.input :opening_hours, :required => false, :input_html => { :class => "text" }
       = form.input :user_rating, :required => false, :input_html => { :class => "text"}
       = form.input :acronym, :required => false, :input_html => { :class => "text"}
+      = form.input :miscellaneous, :label => "Other", :required => false, :input_html => { :class => "text"}
 :javascript
   $(document).ready(function() {
     var country = "#{@location.administrative_unit(0).try(:name)}";
