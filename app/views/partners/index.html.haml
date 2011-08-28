@@ -18,12 +18,14 @@
               %tr
                 %th{:style=>"width: 20px"}
                 %th Name
-                %th{:style=>"width: 100px"} Categories
+                %th{:style=>"width: 50px"}
+                %th{:style=>"width: 60px"}
               - @partners.each do |partner|
                 %tr
                   %td
                     %input{:type=>"checkbox"}
                   %td= link_to partner.name, edit_partner_path(partner)
-                  %td= partner.classifications.count
+                  %td Manage
+                  %td Statistics
 
 
