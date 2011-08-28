@@ -25,6 +25,7 @@ class CreateLocationsTable < ActiveRecord::Migration
         t.string :opening_hours
         t.string :acronym
         t.string :geographical_address
+        t.text :miscellanous
         t.timestamps
       end
       add_index :locations, ["user_id"], :name => "idx_locations_user_id"
