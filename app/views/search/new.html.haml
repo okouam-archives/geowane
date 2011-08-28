@@ -46,7 +46,7 @@
               = form.input :added_by, :as => :select, :collection => @all_users, :label => "Added By", :required => false
               = form.input :corrected_by, :as => :select, :label => "Corrected By", :collection => @all_users, :required => false
               = form.input :invalidated_by, :as => :select, :label => "Invalidated By", :collection => @all_users, :required => false
-              = form.input :field_checked_by, :as => :select, :label => "Field Checked By", :collection => @all_users, :required => false
+              = form.input :confirmed_by, :as => :select, :label => "Field Checked By", :collection => @all_users, :required => false
               = form.input :audited_by, :as => :select, :label => "Audited By", :collection => @all_users, :required => false
               = form.input :modified_by, :as => :select, :label => "Modified By", :collection => @all_users, :required => false
           .portlet

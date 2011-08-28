@@ -21,6 +21,12 @@ describe Location do
       Audit.count.should == 1
     end
 
+    it "records all the model changes" do
+      location = Factory(:location)
+      location.update_attributes(:status => 'field_checked')
+      pending
+    end
+
   end
 
   context "when creating GeoJSON representation" do
