@@ -35,6 +35,7 @@ gem 'uuidtools'
 gem "nested_form"
 gem 'rack-less'
 gem 'lighthouse-api'
+gem 'addressable'
 gem 'awesome_nested_set'
 
 group :test do
