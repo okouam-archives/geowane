@@ -73,14 +73,11 @@ GEM
       rack-test (>= 0.5.4)
       selenium-webdriver (>= 0.0.27)
       xpath (~> 0.1.3)
-    capybara-webkit (0.5.0)
-      capybara (~> 0.4.1)
     celerity (0.8.9)
     childprocess (0.1.9)
       ffi (~> 1.0.6)
     cocaine (0.1.0)
     columnize (0.3.3)
-    configuration (1.3.1)
     culerity (0.2.15)
     database_cleaner (0.6.7)
     dbf (1.5.3)
@@ -113,9 +110,6 @@ GEM
     jammit (0.6.3)
       yui-compressor (>= 0.9.3)
     json_pure (1.5.3)
-    launchy (0.4.0)
-      configuration (>= 0.0.5)
-      rake (>= 0.8.1)
     less (1.2.21)
       mutter (>= 0.4.2)
       treetop (>= 1.4.2)
@@ -220,8 +214,6 @@ GEM
       GeoRuby (>= 1.3.0)
       activerecord (>= 2.2.2)
     spork (0.9.0.rc9)
-    steak (1.1.0)
-      rspec (>= 1.3)
     thor (0.14.6)
     treetop (1.4.9)
       polyglot (>= 0.3.1)
@@ -246,7 +238,6 @@ DEPENDENCIES
   capistrano
   capistrano-ext
   capybara
-  capybara-webkit
   columnize
   database_cleaner
   dbf
@@ -260,7 +251,6 @@ DEPENDENCIES
   hirb
   hoptoad_notifier
   jammit
-  launchy
   lighthouse-api
   minitar
   nested_form
@@ -283,7 +273,6 @@ DEPENDENCIES
   ruby-debug19
   spatial_adapter
   spork (~> 0.9.0rc7)
-  steak
   uuidtools
   will_paginate (~> 3.0.pre2)
   wirble

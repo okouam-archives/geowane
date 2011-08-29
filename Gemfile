@@ -37,14 +37,10 @@ gem 'rack-less'
 gem 'lighthouse-api'
 
 group :test do
-  gem "capybara-webkit"
   gem "faker"
   gem 'capybara'
   gem 'factory_girl'
-  gem 'launchy'
   gem 'rcov'
-  gem 'steak'
-  gem 'capybara'
   gem 'spork', '~> 0.9.0rc7'
   gem 'autotest-standalone'
   gem 'database_cleaner'
