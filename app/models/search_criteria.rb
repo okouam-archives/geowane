@@ -32,8 +32,6 @@ class SearchCriteria
     .joins("LEFT JOIN boundaries ON locations.level_0 = boundaries.id")
     .joins("LEFT JOIN cities ON cities.id = locations.city_id")
 
-    debugger
-
     return query if params.nil?
 
     query = query.group("locations.id, longitude, latitude, locations.name, locations.created_at, users.login, status, locations.updated_at, cities.name, locations.feature, boundaries.name")

@@ -5,6 +5,7 @@ Gowane::Application.routes.draw do
   match'/locations' => 'locations#collection_update', :via => :put 
   match '/icon/:num.gif' => 'graphics#draw_icon'
   match '/api/:action', :controller => 'api'
+  match '/landmarks' => 'landmarks#index', :as => "landmarks", :via => :get
 
   resources :locations do
     resources :comments, :tags

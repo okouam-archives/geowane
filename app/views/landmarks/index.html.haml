@@ -1,0 +1,42 @@
+= content_for :title, "Landmarks"
+
+%div.block
+  %div.block_head
+    %h2
+      Landmarks
+  %div.block_content
+    #portlets
+      .portlet
+        .portlet-header
+          Listing
+        .portlet-content.nopadding
+          %table
+            %thead
+              %tr
+                %th French
+                %th English
+                %th Is Landmark?
+            %tbody
+              - @categories.each do |category|
+                %tr
+                  %td= category.french
+                  %td= category.english
+                  %td
+                    %input{:type=>"checkbox", :value => category.id, :checked => category.is_landmark}
+
+:javascript
+  $(document).ready(function() {
+    var token = $("meta[name=csrf-token]").attr("content");
+    $("input:checkbox").click(function() {
+      console.debug(token);
+      $.post("/categories/" + $(this).val(),
+        {
+          "category[is_landmark]": $(this).is(":checked"),
+          "_method": "put"
+        },
+        function() {
+          //do nothing
+        }
+      );
+    });
+  });
