@@ -5,24 +5,11 @@
     %h2 Points of Interest
   .block_content
     #portlets
-      #left.column
-        .portlet.map
-          .portlet-header
-            Map
-          .portlet-content.nopadding
-            #mappanel
-      .column
-        .coordinates.portlet
-          .portlet-header
-            Index
-          .portlet-content.nopadding
-            %table
-              %thead
-                %tr{:style=>"background-color: rgb(251, 251, 251)"}
-                  %th{:style=>"width: 20px"} ID
-                  %th Name
-              %tbody
-      %br
+      .portlet.map
+        .portlet-header
+          Map
+        .portlet-content.nopadding
+          #mappanel
       .clear
       = semantic_form_for :locations, :url => new_export_path do
         .portlet
@@ -74,17 +61,12 @@
 :javascript
   $(".map.portlet").locations_index_map(#{@locations.map{|l| l.id}});
   $(".coordinates.portlet").locations_index_coordinates();
+  $("table.main").checkboxes();
   $(document).ready(function() {
 
     $("th a").click(function() {
       url = jQuery.param.querystring(window.location.href, {sort: $(this).data("sort"), page: 1});
       window.location = url;
-    });
-
-    $("th input[type=checkbox]").click(function() {
-      var master = $(this);
-      var isChecked = master.attr("checked");
-      $("td input[type=checkbox]").attr("checked", isChecked);
     });
 
     var collection_change = function(url, method) {

@@ -3,8 +3,12 @@ Gowane::Application.routes.draw do
   match'/locations' => 'locations#collection_delete', :via => :delete
   match'/locations/edit' => 'locations#collection_edit', :via => [:get, :post] 
   match'/locations' => 'locations#collection_update', :via => :put 
+
   match '/icon/:num.gif' => 'graphics#draw_icon'
+
   match '/api/:action', :controller => 'api'
+
+  match '/landmarks/:id' => 'landmarks#show', :as => "show_landmarks", :via => :get
   match '/landmarks' => 'landmarks#index', :as => "landmarks", :via => :get
 
   resources :locations do

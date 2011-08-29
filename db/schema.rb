@@ -41,8 +41,13 @@ ActiveRecord::Schema.define(:version => 20110807180101) do
     t.string   "shape",                                          :null => false
     t.string   "code",         :limit => 200
     t.string   "icon",         :limit => 200
-    t.boolean  "is_internal",                 :default => false
+    t.boolean  "is_hidden",                   :default => false
     t.integer  "numeric_code",                :default => 0
+    t.boolean  "is_leaf",                     :default => true
+    t.boolean  "is_landmark",                 :default => false
+    t.integer  "parent_id"
+    t.integer  "lft"
+    t.integer  "rgt"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -197,6 +202,7 @@ ActiveRecord::Schema.define(:version => 20110807180101) do
     t.string   "opening_hours"
     t.string   "acronym"
     t.string   "geographical_address"
+    t.text     "miscellanous"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.geometry "feature",              :limit => nil, :srid => 4326

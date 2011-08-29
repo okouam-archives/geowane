@@ -5,29 +5,15 @@
     %h2 Update Locations
   .block_content
     #portlets
-      #left.column
-        .portlet.map
-          .portlet-header.fixed.ui-widget-header.ui-corner-top
-            Map
-            %span{:style=>"float: right; display: none"}
-              = link_to "Save", "#"
-              |
-              = link_to "Cancel", "#"
-          .portlet-content.nopadding
-            #mappanel{:style=>"height: 311px; width: 100%"}
-      .column
-        .coordinates.portlet.ui.widget.ui-widget-content.ui-helper-clearfix.ui-corner-all
-          .portlet-header.fixed.ui-widget-header.ui-corner-top
-            Index
-          .portlet-content.nopadding
-            %table.main
-              %thead
-                %tr{:style=>"background-color: rgb(251, 251, 251)"}
-                  %th{:style=>"width: 20px"} ID
-                  %th Name
-                  %th Longitude
-                  %th Latitude
-              %tbody
+      .portlet.map
+        .portlet-header.fixed.ui-widget-header.ui-corner-top
+          Map
+          %span{:style=>"float: right; display: none"}
+            = link_to "Save", "#"
+            |
+            = link_to "Cancel", "#"
+        .portlet-content.nopadding
+          #mappanel{:style=>"height: 311px; width: 100%"}
       .clear
       .portlet.ui.widget.ui-widget-content.ui-helper-clearfix.ui-corner-all
         .portlet-header.fixed.ui-widget-header.ui-corner-top
@@ -82,7 +68,7 @@
   (function($) {
     $(".map.portlet").locations_collection_edit_map({locations: #{@locations.map{|l| l.id}}});
     $(".coordinates.portlet").locations_collection_edit_coordinates();
-
+    $("table.list.updates").checkboxes();
     _.each(#{@locations_cache}, function(value) {
       Location.add(new Location(value));
     })
@@ -103,7 +89,6 @@
 
       this.use(Sammy.StatusWidget, #{workflow_actions(current_user, nil)});
       this.use(Sammy.CategoryWidget, #{@categories});
-      this.use(Sammy.MultiSelectorWidget, $("table.list.updates"));
       this.use(Sammy.FaceboxWidget);
       this.use(Sammy.CommentWidget);
 

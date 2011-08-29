@@ -13,16 +13,6 @@ $.Controller("LocationsCollectionEditCoordinates",
   },
 
   displayLocations: function(locations) {
-    var table = this.element.find("tbody");
-    table.empty();
-    for(var i = 0; i < locations.length; i++){
-      var location = locations[i];
-      $("<tr><td>" + location.attributes.counter + "</td><td>"
-              + location.attributes.name + "</td><td>" + Math.round(location.attributes.longitude * 100000) / 100000
-              + "</td><td>" + Math.round(location.attributes.latitude * 100000) / 100000
-              + "</td></tr>").appendTo(table);
-    }
-    table.find('tr:odd').css('background-color', '#fbfbfb');
     if (this.loading) this.loading.busyBox('close');
   }
 });

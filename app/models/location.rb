@@ -46,6 +46,17 @@ class Location < ActiveRecord::Base
 
   accepts_nested_attributes_for :comments, :reject_if => lambda { |a| a[:comment].blank? || a[:title].blank? }
 
+  def surrounding_landmarks
+    Location.scoped
+      .joins(:tags => [:category])
+      .where("locations.id != ?", id)
+      .where("categories.is_landmark")
+      .where("NOT categories.is_hidden")
+      .where("ST_DWithin(ST_GeographyFromText('SRID=4326;Point(#{longitude} #{latitude})'), locations.feature::geometry, 500)")
+      .order("ST_Distance(ST_GeographyFromText('SRID=4326;Point(#{longitude} #{latitude})'), locations.feature::geometry)")
+      .limit(10)
+  end
+
   def geojson_attributes
     attrs = {
       :id => id.to_s,

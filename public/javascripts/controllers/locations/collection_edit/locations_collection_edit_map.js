@@ -89,6 +89,9 @@ $.Controller("LocationsCollectionEditMap",
   setupControls: function() {
     var self = this;
     var drag = new OpenLayers.Control.DragFeature(this.layer, {
+      onStart: function() {
+        self.hideTipsy();
+      },
       onComplete: function() {
         self.showActions();
       }
@@ -97,11 +100,13 @@ $.Controller("LocationsCollectionEditMap",
       hover: true,
       multiple: false,
       highlightOnly: true,
-      overFeature: function() {
+      overFeature: function(feature) {
+        self.showLabel(feature);
         $("body").css({cursor: "pointer"});
       },
       outFeature: function() {
         $("body").css({cursor: "default"});
+        self.hideTipsy();
       }
     });
 
@@ -121,5 +126,33 @@ $.Controller("LocationsCollectionEditMap",
     var style_map = new OpenLayers.StyleMap({'default': style, 'select': style});
     this.layer.styleMap = style_map;
     this.map.addLayer(this.layer);
+  },
+
+  showLabel: function(feature){
+    var coords = feature.layer.getViewPortPxFromLonLat(feature.geometry.bounds.getCenterLonLat());
+    window["cancel.tipsy"] = true;
+    var tip = window["active.tipsy"];
+    if (!tip) {
+        tip = $('<div class="tipsy"><div class="tipsy-inner"/></div>');
+        tip.css({position: 'absolute', zIndex: 100000});
+        window["active.tipsy"] = tip;
+    }
+    tip.find('.tipsy-inner')['html'](feature.attributes["name"]);
+    var pos = {top: coords.y + 183, left: coords.x + 170, width: 24, height: 24};
+    tip.remove().css({top: 0, left: 0, visibility: 'hidden', display: 'block'}).appendTo(document.body);
+    var actualWidth = tip[0].offsetWidth, actualHeight = tip[0].offsetHeight;
+    tip.css({top: pos.top - actualHeight, left: pos.left + pos.width / 2 - actualWidth / 2}).addClass('tipsy-south');
+    tip.css({visibility: 'visible'});
+  },
+
+  hideTipsy: function () {
+    window["cancel.tipsy"] = false;
+    $("body").css({cursor: "default"});
+    setTimeout(function() {
+        if (window["cancel.tipsy"] || !window["active.tipsy"]) return;
+        var tip = window["active.tipsy"];
+        tip.remove();
+    }, 100);
   }
+
 });

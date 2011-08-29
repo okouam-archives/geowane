@@ -6,6 +6,13 @@ class Category < ActiveRecord::Base
   has_many :classifications, :through => :mappings
   before_save :process_icon
   before_validation :validate_icon
+  acts_as_nested_set
+
+  scope :visible, lambda {where(:is_hidden => false)}
+
+  scope :hidden, lambda {where(:is_hidden => true)}
+
+  scope :leaf, lambda {where(:is_leaf => true)}
 
   def json_object
     {:name => self.french, :icon => self.icon, :id => self.id}

@@ -27,16 +27,33 @@ $.Controller("LocationsEditMap",
     var self = this;
     $.getJSON("/locations/" + location_id,
       function(data) {
-        var geojson_format = new OpenLayers.Format.GeoJSON();
-        var locations = geojson_format.read(data);
-        for(var i = 0; i < locations.length; i++) {
-          locations[i].attributes["thumbnail"] = "/icon/" + (i+1) + ".gif";
-        }
-        self.layer.addFeatures(locations);
+        self.display_location(data);
         self.original_geometry = self.layer.getDataExtent().getCenterLonLat();
         self.map.setCenter(self.original_geometry, 6);
+        self.display_landmarks(location_id);
       }
     );
+  },
+
+  display_landmarks: function(location_id) {
+    var self = this;
+    $.getJSON("/landmarks/" + location_id,
+      function(data) {
+        var locations = new OpenLayers.Format.GeoJSON().read(data);
+        for(var i = 0; i < locations.length; i++) {
+          locations[i].attributes["thumbnail"] = "/images/" + locations[i].attributes["icon"]
+        }
+        self.layer.addFeatures(locations);
+      }
+    );
+  },
+
+  display_location: function(data) {
+    var locations = new OpenLayers.Format.GeoJSON().read(data);
+    for(var i = 0; i < locations.length; i++) {
+      locations[i].attributes["thumbnail"] = "/icon/" + (i+1) + ".gif";
+    }
+    this.layer.addFeatures(locations);
   },
 
   "a:contains('Save') click": function() {

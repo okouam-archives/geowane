@@ -1,20 +1,11 @@
 class LandmarksController < ApplicationController
 
   def show
-    id = params[:id]
-
+    render :json => Location.find(params[:id]).surrounding_landmarks.to_geojson
   end
 
   def index
-    @categories = Category
-      .where(:is_hidden => false)
-      .where(:is_leaf => true)
-      .select("id, french, english, is_landmark")
-      .order("french")
-  end
-
-  def update
-
+    @categories = Category.visible.leaf.select("id, french, english, is_landmark").order("french")
   end
 
 end

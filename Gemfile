@@ -35,6 +35,7 @@ gem 'uuidtools'
 gem "nested_form"
 gem 'rack-less'
 gem 'lighthouse-api'
+gem 'awesome_nested_set'
 
 group :test do
   gem "faker"
@@ -51,5 +52,6 @@ group :test, :development do
   gem "rack-debug"
   gem "ruby-debug19"
   gem 'capistrano-ext'
+  gem 'addressable'
   gem 'capistrano'
 end
