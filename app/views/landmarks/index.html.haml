@@ -26,16 +26,13 @@
 
 :javascript
   $(document).ready(function() {
-    var token = $("meta[name=csrf-token]").attr("content");
     $("input:checkbox").click(function() {
-      console.debug(token);
       $.post("/categories/" + $(this).val(),
         {
           "category[is_landmark]": $(this).is(":checked"),
           "_method": "put"
         },
         function() {
-          //do nothing
         }
       );
     });
