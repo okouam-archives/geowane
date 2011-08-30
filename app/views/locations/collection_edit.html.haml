@@ -69,6 +69,7 @@
     $(".map.portlet").locations_collection_edit_map({locations: #{@locations.map{|l| l.id}}});
     $(".coordinates.portlet").locations_collection_edit_coordinates();
     $("table.list.updates").checkboxes();
+
     _.each(#{@locations_cache}, function(value) {
       Location.add(new Location(value));
     })
@@ -90,6 +91,7 @@
       this.use(Sammy.StatusWidget, #{workflow_actions(current_user, nil)});
       this.use(Sammy.CategoryWidget, #{@categories});
       this.use(Sammy.FaceboxWidget);
+      this.use(Sammy.MultiSelectorWidget, $("table.list.updates"));
       this.use(Sammy.CommentWidget);
 
       this.get("#/", function(context) {

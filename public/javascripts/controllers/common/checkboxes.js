@@ -1,10 +1,16 @@
 $.Controller("Checkboxes",
 {
   init: function(el) {
-    $(el).find("th input[type=checkbox]").click(function() {
+    this.table = $(el);
+    var self = this;
+    this.table.find("th input[type=checkbox]").click(function() {
       var master = $(this);
       var isChecked = master.is(":checked");
-      $("td input[type=checkbox]").attr("checked", isChecked);
+      self.find("td input[type=checkbox]").attr("checked", isChecked);
     });
+  },
+
+  uncheckAll: function() {
+    this.find("input[type=checkbox]").attr("checked", false);
   }
 });
