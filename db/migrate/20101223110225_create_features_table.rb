@@ -1,6 +1,5 @@
 class CreateFeaturesTable < ActiveRecord::Migration
-
-  def self.up
+  def change
     create_table :features do |t|
       t.integer :end_level
       t.boolean :one_way
@@ -14,9 +13,4 @@ class CreateFeaturesTable < ActiveRecord::Migration
     add_column :features, :geom, :geometry, :limit => nil, :srid => 4326
     add_index "features", ["geom"], :name => "idx_features_geom", :spatial => true
   end
-
-  def self.down
-    drop_table :features
-  end
-
 end

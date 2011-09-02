@@ -1,10 +1,9 @@
 = content_for :title, "New Category"
 
-%div.block
-  %div.block_head
+.block
+  .block_head
     %h2
       New Category
-    %ul
-      %li.nobg= link_to "Back", categories_path
-  %div.block_content
+      = link_to "Back", categories_path, :class=> "heading-action"
+  .block_content
     = render :partial => "form"

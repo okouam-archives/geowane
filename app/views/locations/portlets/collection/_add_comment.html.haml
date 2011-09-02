@@ -1,0 +1,18 @@
+.portlet.action-portlet.add_comment
+  .portlet-header
+    Add Comment to Selected Locations
+  .portlet-content
+    .left{style: "float: left; width: 415px; text-align: right"}
+      = text_area_tag("add_comment", nil, :class=>"text", :style=>"width: 410px; height: 100px; margin-bottom: 10px; margin-top: 5px")
+      %br
+      %input.button.ok{:type=>"button", :value=>"Add"}
+      %input.button.cancel{:type=>"button", :value=>"Cancel"}
+    .right{style: "float: left; margin-left: 30px"}
+      %h3 Preset Comments
+      %ul
+        %li= link_to("Préciser le quartier", "#")
+        %li= link_to("Doublon?", "#")
+        %li= link_to("Doublon? sinon préciser le quartier", "#")
+        %li= link_to("Revoir l'orthographe", "#")
+        %li= link_to("Indiquer le nom exact", "#")
+    .clear

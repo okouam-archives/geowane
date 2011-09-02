@@ -3,29 +3,33 @@
   .block_head
     %h2
       Exports
-    %ul
-      %li.nobg= link_to "Create Selection", "/exports/selection"
+      = link_to "Create Selection", "/exports/selection"
   .block_content
-    - if @exports && @exports.count > 0
-      %table{:cellspacing => "0", :cellpadding => "0", :style => "width: 100%; margin-left: 0px"}
-        %thead
-          %tr
-            %th Name
-            %th{:style=>"width: 100px"} Export Format
-            %th{:style=>"width: 100px"} Date Exported
-            %th{:style=>"width: 100px"} Location Count
-        %tbody
-          - @exports.each do |export|
-            %tr
-              %td= link_to export.name, export.output.url
-              %td= export.output_format
-              %td= export.created_at.strftime("%d-%m-%Y")
-              %td= export.locations_count
-      %br
-        %div
-          = render :partial => "shared/paging", :locals => {:collection => @exports, :page_size => @per_page}
-    - else
-      %p
-        %br
-        No exports are currently available
-    %br
+    #portlets
+      .portlet
+        .portlet-header
+          Listing
+        .portlet-content.nopadding
+          - if @exports && @exports.count > 0
+            %table{:cellspacing => "0", :cellpadding => "0", :style => "width: 100%; margin-left: 0px"}
+              %thead
+                %tr
+                  %th Name
+                  %th{:style=>"width: 100px"} Export Format
+                  %th{:style=>"width: 100px"} Date Exported
+                  %th{:style=>"width: 100px"} Location Count
+              %tbody
+                - @exports.each do |export|
+                  %tr
+                    %td= link_to export.name, export.output.url
+                    %td= export.output_format
+                    %td= export.created_at.strftime("%d-%m-%Y")
+                    %td= export.locations_count
+            %br
+              %div
+                = render :partial => "shared/paging", :locals => {:collection => @exports, :page_size => @per_page}
+          - else
+            %p
+              %br
+              No exports are currently available
+          %br

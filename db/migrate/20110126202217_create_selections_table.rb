@@ -1,6 +1,5 @@
 class CreateSelectionsTable < ActiveRecord::Migration
-
-  def self.up
+  def change
     create_table :selections do |t|
       t.string :name, :null => false
       t.decimal :longitude, :null => false
@@ -13,9 +12,4 @@ class CreateSelectionsTable < ActiveRecord::Migration
     add_index :selections, ["original_id"], :name => "idx_selections_original_id"
     add_index :selections, ["import_id"], :name => "idx_selections_import_id"
   end
-
-  def self.down
-    drop_table :selections
-  end
-
 end

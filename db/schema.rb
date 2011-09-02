@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -10,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110807180101) do
+ActiveRecord::Schema.define(:version => 20110902115612) do
 
   create_table "audits", :force => true do |t|
     t.datetime "created_at"
@@ -45,9 +46,7 @@ ActiveRecord::Schema.define(:version => 20110807180101) do
     t.integer  "numeric_code",                :default => 0
     t.boolean  "is_leaf",                     :default => true
     t.boolean  "is_landmark",                 :default => false
-    t.integer  "parent_id"
-    t.integer  "lft"
-    t.integer  "rgt"
+    t.integer  "tags_count"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -60,18 +59,6 @@ ActiveRecord::Schema.define(:version => 20110807180101) do
 
   add_index "cities", ["centre"], :name => "idx_cities_centre", :spatial => true
   add_index "cities", ["feature"], :name => "idx_cities_feature", :spatial => true
-
-  create_table "classifications", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "french"
-    t.string   "english"
-    t.string   "icon"
-    t.string   "code"
-    t.integer  "partner_id"
-  end
-
-  add_index "classifications", ["partner_id"], :name => "idx_classifications_partner_id"
 
   create_table "comments", :force => true do |t|
     t.string   "title",            :limit => 50, :default => ""
@@ -130,16 +117,13 @@ ActiveRecord::Schema.define(:version => 20110807180101) do
     t.integer  "user_id"
     t.string   "output_file_name"
     t.string   "output_content_type"
-    t.string   "string"
     t.integer  "output_file_size"
-    t.integer  "integer"
     t.string   "output_format"
     t.datetime "output_updated_at"
-    t.datetime "datetime"
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.string   "output_platform"
     t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "features", :force => true do |t|
@@ -188,6 +172,7 @@ ActiveRecord::Schema.define(:version => 20110807180101) do
     t.integer  "city_id"
     t.integer  "user_id"
     t.integer  "import_id"
+    t.integer  "road_id"
     t.string   "long_name"
     t.string   "searchable_name"
     t.integer  "level_0"
@@ -233,10 +218,28 @@ ActiveRecord::Schema.define(:version => 20110807180101) do
     t.datetime "updated_at"
   end
 
+  create_table "partner_categories", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "french"
+    t.string   "english"
+    t.string   "icon"
+    t.string   "code"
+    t.integer  "partner_id"
+  end
+
+  add_index "partner_categories", ["partner_id"], :name => "idx_partner_categories_partner_id"
+
   create_table "partners", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "name"
+  end
+
+  create_table "road_categories", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "roads", :id => false, :force => true do |t|
@@ -245,9 +248,40 @@ ActiveRecord::Schema.define(:version => 20110807180101) do
     t.integer     "country_id"
     t.boolean     "is_one_way"
     t.string      "route_parameters", :limit => 100
-    t.integer     "category_id"
+    t.integer     "road_category_id"
     t.line_string "the_geom",         :limit => nil,                 :srid => 4326
     t.point       "centroid",         :limit => nil,                 :srid => 4326
+  end
+
+  create_table "search_criteria", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "search_id"
+    t.string   "sort"
+    t.integer  "classification_id"
+    t.string   "bbox"
+    t.integer  "import_id"
+    t.integer  "added_by"
+    t.boolean  "category_missing"
+    t.boolean  "category_present"
+    t.integer  "category_id"
+    t.integer  "confirmed_by"
+    t.integer  "invalidated_by"
+    t.integer  "corrected_by"
+    t.integer  "audited_by"
+    t.integer  "modified_by"
+    t.integer  "city_id"
+    t.string   "added_on_after"
+    t.string   "added_on_before"
+    t.string   "name"
+    t.string   "status"
+    t.integer  "radius"
+    t.integer  "level_id"
+    t.integer  "location_level_0"
+    t.integer  "location_level_1"
+    t.integer  "location_level_2"
+    t.integer  "location_level_3"
+    t.integer  "location_level_4"
   end
 
   create_table "searches", :force => true do |t|

@@ -1,0 +1,128 @@
+@import url(theme/blue.css);
+@import url(theme/style.css);
+
+#portlets {padding-top: 10px}
+
+.datatable {width: 100%; border-collapse: collapse}
+
+.widget {
+  select {width: 650px}
+  a.action {float: right; margin-left: 20px; margin-top: 5px}
+}
+
+.widget.comment_widget textarea {border: 1px solid #ccc; width: 99%; margin-bottom: 5px}
+
+/* .locations */
+
+.block_sub {padding-top: 5px}
+.block_sub a {margin-right: 5px}
+.block_sub li {margin-bottom: 5px}
+.locations a.tag_delete {position: relative; top: 3px}
+.block_sub  .block_content {padding-bottom: 30px;}
+.block_sub  ul {margin-left: -30px}
+.block_sub  ul li:first-child {margin-left: 30px}
+.block_sub  ul li {float: left; list-style-type: none; font-weight: bold; background-image: none; margin-right: 20px}
+
+/* .locations.edit */
+
+.locations.edit #history-tab {margin-top: 10px}
+.locations.edit #history-tab p {padding-bottom: 3px}
+.locations.edit #history-tab ul {padding-bottom: 5px}
+.locations.edit  #actions {margin-top: 15px}
+.locations.edit .general_info {width: 400px; float: left}
+.locations.edit .ajax-action {margin-top: 3px}
+.locations.edit .ajax-action img {position: relative; top: 3px}
+.locations.edit .right-panel {margin-top: 7px; width: 417px; float: right}
+
+.locations .editor fieldset {border-width: 0}
+.locations .editor fieldset ol {padding-left: 0}
+.locations .editor .submit input {padding: 2px; background-color: #444; margin-right: 3px; margin-top: 3px; color: white; font-weight: bold; border: 1px solid #222}
+.locations .editor .submit input:hover {cursor: pointer; color: #008EE8}
+.locations .editor .ui-tabs-hide {display: none}
+.locations .editor .tags .list span {margin-right: 5px}
+.locations .editor .map-instructions {font-style: italic; font-size: 10px; text-align: center}
+.locations .editor .right-panel table td, .locations.editor .right-panel table th {border-bottom-width: 0 ! important}
+.locations .editor .right-panel table tr {background-color: transparent ! important}
+.locations .editor .right-panel table {width: 100%; margin-top: -15px}
+
+/* All Index Pages
+----------------------------------------------------------------------------------------------------------------------*/
+.index table {width: 100%; border-collapse: collapse}
+.index td.view, .index th.view {width: 22px}
+.index td.count, .index th.count {width: 90px; text-align: center}
+.index table td.edit, .index table td.delete, .index table td.history {width: 22px; }
+.index .block_head .back {padding-right: 10px}
+.index table td, .index table th {font-size: 11px}
+.index .checked {width: 60px; text-align: right; padding-right: 10px; padding-left: 3px}
+.index .corrected {width: 70px; text-align: right; padding-left: 3px; padding-right: 5px}
+.index .total_POI, .index .audited, .index .invalid, .index .new {width: 44px; text-align: right; padding-left: 5px; padding-right: 5px}
+.index .new {padding-right: 12px}
+.index .uncategorized {width: 62px; font-style: italic; text-align: right}
+.index .level {min-width: 98px}
+.index table tfoot td {font-weight: bold}
+
+/* Locations Index Page
+----------------------------------------------------------------------------------------------------------------------*/
+.locations.index .block_sub span {font-weight: bold; margin-right: 20px}
+.locations.index table.main td.name img {position: relative; top: 3px; margin-right: 3px}
+.locations.index table.main th.added_by {width: 80px}
+.locations.index table.main th.date_added {width: 80px}
+.locations.index table.main th.tags {width: 120px}
+.locations.index table.main th.last_changed {width: 95px}
+.locations.index table.main th.status {width: 95px}
+
+/* Exports Selection Page
+----------------------------------------------------------------------------------------------------------------------*/
+.exports.selection span {margin-right: 20px}
+.exports.selection hr {margin-top: 10px; margin-bottom: 0}
+.exports.selection legend {margin-bottom: 10px; padding-top: 10px}
+
+.exports.selection .tab {float: left; width: 620px; margin-right: 20px; border: 1px solid #ccc; padding: 20px}
+.exports.selection .tab li {float: left; min-width: 300px; display: inline}
+
+.exports.selection #validation-errors {margin-left: 155px; color: red ! important; margin-top: 10px}
+.exports.selection .error {color: red; font-weight: normal}
+
+.exports.selection fieldset ol * {border-width: 0; font-weight: normal ! important}
+.exports.selection fieldset ol * {border-width: 0; font-weight: normal ! important}
+.exports.selection fieldset {border: 0 ! important}
+
+/* Others
+----------------------------------------------------------------------------------------------------------------------*/
+.block_sub {background-color: #777; padding-left: 30px; color: white; line-height: 16px; width: 952px; left: -10px; position: relative}
+.block_sub a {color: white; font-size: 11px}
+.block_sub a:hover {color: orange}
+.change_status #location_status {padding: 1px; width: 200px; font-size: 10px}
+.block .block_content ol {padding-bottom: 0}
+.block table.layout tr td, .block table.layout tr th { border-bottom-width: 0; line-height:normal; padding:10px; text-align:left; background-color: white ! important}
+.block form li { list-style-type: none; margin-bottom: 10px}
+.block form .commit {margin-top: 20px}
+.block form label {display: block; margin-bottom: 2px}
+.block_content ul.block_tabs {padding-bottom: 0}
+.block_content ul.block_tabs li {float: left; background: none; padding: 5px 10px 5px 10px; font-variant: small-caps; border: 1px solid #ccc; border-bottom-color: white; margin-bottom: -1px}
+.busybox {
+	position: absolute;
+	z-index: 999;
+	color: #fff;
+	background-color: #666;
+	margin: 0;
+	padding: 0;
+	opacity: 0.8;
+	filter: alpha(opacity=95);
+	-ms-filter: "alpha(opacity=95)";
+}
+
+/* #search-parameters */
+
+#search-parameters { padding: 20px; display: block; margin-bottom: 10px; }
+#search-parameters input[type="text"] { width: 190px; padding: 3px }
+#search-parameters input .button { width: auto; }
+#search-parameters select { width: 190px; }
+
+/* GeoExt */
+
+#mappanel .x-panel-bwrap {overflow: visible}
+#mappanel table {margin-bottom: 0}
+#mappanel table tr td, #mappanel table tr th {padding: 0; border-bottom : inherit}
+
+

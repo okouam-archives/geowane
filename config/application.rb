@@ -2,8 +2,6 @@ require File.expand_path('../boot', __FILE__)
 
 require 'yaml'
 YAML::ENGINE.yamler= 'syck'
-require 'rack/less'
-
 require 'rails/all'
 
 # If you have a Gemfile, require the gems listed there, including any gems
@@ -38,19 +36,9 @@ module Gowane
 
     # Configure the default encoding used in templates for Ruby 1.9.
     config.encoding = "utf-8"
-    config.serve_static_assets = true
+    config.assets.enabled = true
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
-
-    config.middleware.use "Rack::Less"
-    Rack::Less.configure do |config|
-      config.cache = Rails.configuration.action_controller.perform_caching
-      if Rails.env.development?
-        config.cache_bust = true
-      else
-        config.compress = :yui
-      end
-    end
   end
 end

@@ -1,0 +1,44 @@
+=pagination-box
+  border: 1px solid #ccc
+  -webkit-border-radius: 3px
+  -moz-border-radius: 3px
+  border-radius: 3px
+  padding: 3px 6px
+  margin: 0 1px
+=active-pagination-link
+  background: #39a3e6
+  border: 1px solid #0082d5
+  color: #fff
+
+#pagination-wrapper
+  margin-right: 20px
+  select
+    margin-left: 10px
+    width: 70px
+    padding: 2px
+    margin-top: -3px
+  .pagination
+    font-size: 10px
+    font-weight: bold
+    padding-bottom: 15px
+    padding-top: 0px
+    float: right
+    text-align: right
+    border: 0
+    a
+      +pagination-box
+    a:hover
+      color: #fff
+      background: #ec8526
+      border: 1px solid #d77011
+    span.current
+      background: white
+      font-weight: bold
+    span.disabled
+      +pagination-box
+    a.active
+      +active-pagination-link
+
+
+
+

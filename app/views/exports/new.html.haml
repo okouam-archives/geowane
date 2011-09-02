@@ -3,13 +3,13 @@
 .block
   .block_head
     %h2 Export POI
-
   .block_content
-    .message.info
-      %p
-        = session[:locations].size
-        locations have been selected for export
-    = semantic_form_for object, :html => { :enctype => "multipart/form-data"} do |f|
-      = f.input :name, :class => "text"
-      = f.input :output_platform, :collection => object.enums(:output_platform).select_options.map {|option| [option[0].upcase, option[1].upcase]}
-      = f.commit_button :button_html => { :class => "submit long" }, :label => "Process File"
+    #portlets
+      .portlet
+        .portlet-header
+          Output
+        .portlet-content
+          = semantic_form_for object, :html => { :enctype => "multipart/form-data"} do |f|
+            = f.input :name, :class => "text"
+            = f.input :output_platform, :collection => object.enums(:output_platform).select_options.map {|option| [option[0].upcase, option[1].upcase]}
+            = f.commit_button :label => "Export"

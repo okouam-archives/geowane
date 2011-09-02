@@ -1,0 +1,19 @@
+= content_for :title, "Roads"
+
+.block
+  .block_head
+    %h2
+      Roads
+  .block_content
+    #portlets
+      .portlet
+        .portlet-header
+          Listing
+        .portlet-content.nopadding
+          %table.main
+            - @road_groups.each do |road_group|
+              %tr
+                %td
+                  %input{:type=>"checkbox"}
+                %td= link_to road_group.name, "#"
+

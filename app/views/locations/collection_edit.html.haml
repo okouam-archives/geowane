@@ -1,12 +1,14 @@
 = content_for :title, "Edit Selected Locations"
+- content_for :javascripts do
+  = javascript_include_tag "/assets/locations.collection_edit", :debug => Rails.env.development?
 
 .block
   .block_head
     %h2 Update Locations
   .block_content
     #portlets
-      .portlet.map
-        .portlet-header.fixed.ui-widget-header.ui-corner-top
+      .portlet.map{:style=>"margin-bottom: 0"}
+        .portlet-header
           Map
           %span{:style=>"float: right; display: none"}
             = link_to "Save", "#"
@@ -15,20 +17,32 @@
         .portlet-content.nopadding
           #mappanel{:style=>"height: 311px; width: 100%"}
       .clear
-      .portlet.ui.widget.ui-widget-content.ui-helper-clearfix.ui-corner-all
-        .portlet-header.fixed.ui-widget-header.ui-corner-top
-          Details
-          %span{:style=>"float: right"}
-            = link_to "Add Category", "#/category/add"
-            |
-            = link_to "Remove Category", "#/category/remove"
-            |
-            = link_to "Change Status", "#/status/change"
-            |
-            = link_to "Add Comment", "#/comment/add"
-        .portlet-content.nopadding
-          = form_for "locations", :url => "/locations", :html=>{:method=>:put} do |form|
-            %table.list.updates
+      .map-positioning{:style=>"text-align: center"}
+        .contents
+        .tab{:style=>"padding: 0 5px; margin: auto; border-radius: 0 0 4px 4px; width: 100px; background-color: #666; font-style: italic; text-align: center; font-weight: bold; font-size: 9px; color: white"}
+          = link_to "Glossary", "#", :style=>"color: white"
+      .clear{:style=>"height: 10px"}
+      = render :partial => "locations/portlets/collection/change_city"
+      = render :partial => "locations/portlets/collection/add_category"
+      = render :partial => "locations/portlets/collection/remove_category"
+      = render :partial => "locations/portlets/collection/change_status"
+      = render :partial => "locations/portlets/collection/add_comment"
+      .bulk-actions
+        %select
+          %option Bulk Actions
+          %option Add Category
+          %option Remove Category
+          %option Change Status
+          %option Add Comment
+          %option Change City
+        %input.button{:type=>"button", :value=>"Apply"}
+      .clear
+      = form_for "locations", :url => "/locations", :html=>{:method=>:put} do |form|
+        .portlet
+          .portlet-header
+            Details
+          .portlet-content.nopadding
+            %table.list.updates.main
               %thead
                 %tr
                   %th
@@ -49,122 +63,29 @@
                   %td.status
                     =select_tag "locations[#{i}][status]", options_for_select(workflow_actions(current_user, location), location.status)
                     =form.hidden_field "[#{i}][id]", :value => location.id
-                  %td
+                  %td.city
                     = select_tag "locations[#{i}][city_id]", options_for_select([""] + City.dropdown_items, location.city_id), :style=>"width: 150px"
-                    = location.city_id
                   %td.tags
                     %span.list
                       = render :partial => "tags/collection", :locals => {:items => location.tags.map {|c| {:name => c.category.french, :delete_link => location_tag_url(c.location_id, c.id)}}}
-                    = link_to "(+)", "#/category/single/#{location.id}"
+                    = link_to "(+)", "#", :class => "add-category-inline"
                   %td.comments
                     = link_to location.comments.count, "#/comments/single/#{location.id}", :class => "comment_count"
-            #actions{:style=>"text-align: right; margin-right: 15px; margin-bottom: 20px; width: 100%"}
-              = submit_tag "Confirm Changes", :class => "button mid", :style => "position: relative; left: 20px"
-            .clear
-            %br
+                    = link_to "(+)", "#", :class => "add-comment-inline"
+        #actions{:style=>"text-align: right; margin-right: 15px; margin-bottom: 20px; width: 100%"}
+          = submit_tag "Apply Changes", :class => "button"
+      .clear
+      %br
 
 :javascript
-  var featureStore, saveStrategy;
-
   (function($) {
-    $(".map.portlet").locations_collection_edit_map({locations: #{@locations.map{|l| l.id}}});
-    $(".coordinates.portlet").locations_collection_edit_coordinates();
-    $("table.list.updates").checkboxes();
-
+    $(".map.portlet").manage_map({locations: #{@locations.map{|l| l.id}}});
     _.each(#{@locations_cache}, function(value) {
       Location.add(new Location(value));
     })
-
     _.each(#{@comments_cache}, function(value) {
       Comment.add(new Comment(value));
     })
-
-    Comment.bind("add", function(new_comment) {
-      console.debug("Updating comments for" + new_comment.attr("location_id"));
-      var counter = $('tr[data-id=' + new_comment.attr("location_id") + '] a.comment_count');
-      counter.text(parseInt(counter.text()) + 1);
-    })
-
-    var app = Sammy(function() {
-
-      this.selected_locations = [];
-
-      this.use(Sammy.StatusWidget, #{workflow_actions(current_user, nil)});
-      this.use(Sammy.CategoryWidget, #{@categories});
-      this.use(Sammy.FaceboxWidget);
-      this.use(Sammy.MultiSelectorWidget, $("table.list.updates"));
-      this.use(Sammy.CommentWidget);
-
-      this.get("#/", function(context) {
-        this.closeFacebox();
-      })
-
-      this.get("#/cancel", function(context) {
-        context.redirect("#/");
-      })
-
-      this.get("#/comments/accept", function(context) {
-        this.acceptComment(context, context.app.selected_locations);
-      });
-
-      this.get("#/comments/single/:location_id", function(context) {
-        var location_id = context.params['location_id'];
-        context.uncheckAll();
-        context.select(location_id);
-        this.showCommentWidget(context, location_id);
-      });
-
-      this.get("#/category/single/:location_id", function(context) {
-        var location_id = context.params['location_id'];
-        context.uncheckAll();
-        context.select(location_id);
-        this.showCategoryWidget(context, "#/category/add/accept", "Add Category", "add_tag");
-      });
-
-      this.get("#/comment/add", function(context) {
-        if (_.isEmpty(context.app.selected_locations)) return this.showSelectionError("#");
-        this.showCommentWidget(context, null);
-      });
-
-      this.get('#/category/add', function(context) {
-        if (_.isEmpty(context.app.selected_locations)) return this.showSelectionError("#");
-        this.showCategoryWidget(context, "#/category/add/accept", "Add Category", "add_tag");
-      });
-
-      this.get('#/category/remove', function(context) {
-        if (_.isEmpty(context.app.selected_locations)) return this.showSelectionError("#");
-        this.showCategoryWidget(context, "#/category/remove/accept", "Remove Category", "remove_tag");
-      });
-
-      this.get('#/status/change', function(context) {
-        if (_.isEmpty(context.app.selected_locations)) return this.showSelectionError("#");
-        this.showStatusWidget(context);
-      });
-
-      this.get('#/status/change/accept', function(context) {
-        this.changeStatus(context, context.app.selected_locations);
-        context.redirect("#/");
-      });
-
-      this.get('#/category/add/accept', function(context) {
-        var target = function(id) {
-          return context.getRow(id).find("span.list");
-        };
-        this.addCategory(context, context.app.selected_locations, target);
-        context.redirect("#/");
-      });
-
-      this.get('#/category/remove/accept', function(context) {
-        this.removeCategory(context, context.app.selected_locations);
-        context.redirect("#/");
-      });
-
-    });
-
-    $(function() {
-      app.run('#/');
-    });
-
   })(jQuery);
 
 

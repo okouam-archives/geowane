@@ -9,7 +9,7 @@ class ImportsController < ApplicationController
 
   def index
     setup_paging(:imports_index_page, params)
-    @imports = Import.paged(session[:imports_index_page], @per_page)
+    @imports = Import.page(session[:imports_index_page]).per(@per_page)
   end
 
   create.before do

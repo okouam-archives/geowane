@@ -1,7 +1,6 @@
 class CreateConversionsTable < ActiveRecord::Migration
-
-  def self.up
-    create_table :conversions, :force => true do |t|
+  def change
+    create_table :conversions do |t|
       t.string :input_file_name
       t.string :input_content_type, :string
       t.integer :input_file_size, :integer
@@ -15,9 +14,4 @@ class CreateConversionsTable < ActiveRecord::Migration
       t.timestamps
     end
   end
-
-  def self.down
-    drop_table :conversions
-  end
-
 end

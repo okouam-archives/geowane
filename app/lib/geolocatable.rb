@@ -54,6 +54,7 @@ module Geolocatable
       self.administrative_unit_2 = Boundary.find_enclosing(self.longitude, self.latitude, 2)
       self.administrative_unit_3 = Boundary.find_enclosing(self.longitude, self.latitude, 3)
       self.administrative_unit_4 = Boundary.find_enclosing(self.longitude, self.latitude, 4)
+      self.road = Road.closest(self.longitude, self.latitude)
     end
   end
 

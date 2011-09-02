@@ -1,3 +1,4 @@
+require "open-uri"
 class Category < ActiveRecord::Base
   has_many :tags
   has_many :locations, :through => :tags
@@ -6,7 +7,6 @@ class Category < ActiveRecord::Base
   has_many :classifications, :through => :mappings
   before_save :process_icon
   before_validation :validate_icon
-  acts_as_nested_set
 
   scope :visible, lambda {where(:is_hidden => false)}
 
@@ -23,15 +23,15 @@ class Category < ActiveRecord::Base
   end
 
   def self.dropdown_items
-    Category.order(:french).map {|category| [category.french, category.id]}
+    Category.select("french, id").order(:french).map {|category| [category.french, category.id]}
   end
 
   def icon_directory
-    "#{Rails.root}/public/images/icons/"
+    "#{Rails.root}/public/assets/images/google"
   end
 
   def relative_icon_directory
-    "/icons/"
+    "/google/"
   end
 
   private
@@ -43,7 +43,7 @@ class Category < ActiveRecord::Base
   def process_icon
     if icon.starts_with?("http")
       filename = File.basename(icon)
-      path = File.join(icon_directory, filename)
+      path = File.join(icon_directory, "#{english}.png")
       unless File.exists?(path)
         img = File.new(path, 'w')
         img.write(open(icon)) {|f| f.read}

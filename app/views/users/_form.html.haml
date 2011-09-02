@@ -1,12 +1,17 @@
-%div.block_content
-  = semantic_form_for @user, :html => { :enctype => "multipart/form-data"} do |form|
-    = form.input :login, :input_html => { :class => "text" }
-    = form.input :email, :input_html => { :class => "text" }
-    = form.input :password, :input_html => { :class => "text" }
-    = form.input :password_confirmation, :input_html => { :class => "text" }
-    = form.input :role_name, :as => :select, :collection => ["administrator", "collector", "auditor"], :required => false, :label => "Role"
-    = form.input :skype_alias, :input_html => { :class => "text" }
-    = form.input :home_country, :as => :string, :input_html => { :class => "text" }
-    = form.input :mobile_number, :input_html => { :class => "text" }
-    = form.input :is_active, :label => " Is Allowed To Login"
-    = form.commit_button :button_html => { :class => "submit long" }
+.block_content
+  #portlets
+    .portlet
+      .portlet-header
+        Listing
+      .portlet-content
+        = semantic_form_for @user, :html => { :enctype => "multipart/form-data"} do |form|
+          = form.input :login, :input_html => { :class => "text" }
+          = form.input :email, :input_html => { :class => "text" }
+          = form.input :password, :input_html => { :class => "text" }
+          = form.input :password_confirmation, :input_html => { :class => "text" }
+          = form.input :role_name, :as => :select, :collection => ["administrator", "collector", "auditor"], :required => false, :label => "Role"
+          = form.input :skype_alias, :input_html => { :class => "text" }
+          = form.input :home_country, :as => :string, :input_html => { :class => "text" }
+          = form.input :mobile_number, :input_html => { :class => "text" }
+          = form.input :is_active, :label => " Is Allowed To Login"
+          = form.commit_button :button_html => { :class => "submit long" }

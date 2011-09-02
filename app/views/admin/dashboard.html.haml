@@ -6,5 +6,56 @@
     .block_head
       %h2 Dashboard
     .block_content
-      %br
-      %br
+      #portlets
+        #left.column
+          .portlet
+            .portlet-header
+              Latest Resolved Issues
+            .portlet-content.nopadding
+              %table
+                %thead
+                  %tr
+                    %th
+                      Title
+                    %th
+                      Raised By
+                    %th
+                      Opened
+                    %th
+                      Closed
+                - for ticket in @resolved
+                  %tr
+                    %td
+                      =link_to ticket.title, ticket.url
+                    %td
+                      = ticket.creator_name
+                    %td
+                      = DateTime.parse(ticket.created_at).strftime("%d-%m-%Y")
+                    %td
+                      = DateTime.parse(ticket.updated_at).strftime("%d-%m-%Y")
+        .column
+          .portlet
+            .portlet-header
+              Oustanding Issues
+            .portlet-content.nopadding
+              %table
+                %thead
+                  %tr
+                    %th
+                      Title
+                    %th
+                      Raised By
+                    %th
+                      Opened
+                    %th
+                      Status
+                - for ticket in @outstanding
+                  %tr
+                    %td
+                      =link_to ticket.title, ticket.url
+                    %td
+                      = ticket.creator_name
+                    %td
+                      = DateTime.parse(ticket.created_at).strftime("%d-%m-%Y")
+                    %td
+                      = ticket.state

@@ -8,8 +8,8 @@ class CategoriesController < ApplicationController
       session[:category_index_page] = params[:page] || session[:category_index_page]
       session[:category_index_per_page] = params[:per_page] || session[:category_index_per_page] || 10
       @per_page = session[:category_index_per_page]
-      sql = "SELECT * FROM reports.categories ORDER BY #{@language}"
-      @categories = Category.find_by_sql(sql).paginate(:page => session[:category_index_page], :per_page => @per_page)
+      query = Category.scoped.from("reports.categories").order(@language)
+      @categories = query.page(session[:category_index_page]).per(@per_page)
   end
 
   def change_icon

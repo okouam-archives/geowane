@@ -2,22 +2,22 @@
 
 .block.editor
   .block_head
-    %h2 Edit Location #{@location.id}
-    %ul
-      %li.nobg= link_to "Back", locations_path(:page => session[:search_page], :per_page => session[:search_page_size])
-      %li.nobg= link_to "Previous POI", previous_location_path(@location)
-      %li.nobg= link_to "Next POI", next_location_path(@location)
+    %h2
+      Edit Location #{@location.id}
+      = link_to "Back", locations_path(:page => session[:search_page], :per_page => session[:search_page_size]), :class=> "heading-action"
+      = link_to "Previous POI", previous_location_path(@location), :class=> "heading-action"
+      = link_to "Next POI", next_location_path(@location), :class=> "heading-action"
   .block_content
     #portlets
       .editor-content
         = render :partial => "locations/portlets/map"
         #left.column
-          = render :partial => "locations/portlets/feature", :locals => {:form => form, :form_data => @form_data}
+          = render :partial => "locations/portlets/feature", :locals => {:form_data => @form_data}
           = render :partial => "locations/portlets/coordinates", :locals => {:location => @location}
           = render :partial => "locations/portlets/comments", :locals => {:location => @location}
         .column
-          = render :partial => "locations/portlets/information", :locals => {:form => form}
-          = render :partial => "locations/portlets/history", :locals => {:form => form, :location => @location}
+          = render :partial => "locations/portlets/information"
+          = render :partial => "locations/portlets/history", :locals => {:location => @location}
         .clear
       %br
       %br

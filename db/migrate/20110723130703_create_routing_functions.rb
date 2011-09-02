@@ -1,6 +1,5 @@
 class CreateRoutingFunctions < ActiveRecord::Migration
-
-  def self.up
+  def up
     execute("CREATE SCHEMA routing AUTHORIZATION deployment")
     files = ["create_connector", "find_route", "get_angles", "find_closest_edge"]
     files.each do |file|
@@ -8,8 +7,4 @@ class CreateRoutingFunctions < ActiveRecord::Migration
       execute File.read(script)
     end
   end
-
-  def self.down
-  end
-
 end

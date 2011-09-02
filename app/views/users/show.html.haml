@@ -4,23 +4,27 @@
   %div.block_head
     %h2
       User Details
-    %ul
-      %li.nobg= link_to "Edit", edit_user_path(object)
-  %div.block_content
-    %ul
-      %li
-        %b Username:
-        = object.login
-      %li
-        %b Email:
-        = object.email
-      %li
-        %b Skype Alias:
-        = object.skype_alias
-      %li
-        %b Home Country:
-        = object.home_country
-      %li
-        %b Mobile Number:
-        = object.mobile_number
+      = link_to "Edit", edit_user_path(object)
+  .block_content
+    #portlets
+      .portlet
+        .portlet-header
+          Listing
+        .portlet-content
+          %ul
+            %li
+              %b Username:
+              = object.login
+            %li
+              %b Email:
+              = object.email
+            %li
+              %b Skype Alias:
+              = object.skype_alias
+            %li
+              %b Home Country:
+              = object.home_country
+            %li
+              %b Mobile Number:
+              = object.mobile_number
 

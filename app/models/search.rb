@@ -4,16 +4,18 @@ class Search < ActiveRecord::Base
   belongs_to :user
   validates_presence_of :user
   before_save :generate_persistence_token
+  has_one :criteria, :class_name => "SearchCriteria"
 
-  def self.construct(criteria, sort_order, page, page_size, search_token, user, options = nil)
-    search = Search.new(:user => user)
-    if criteria.nil? && search_token
+  def self.construct(criteria, sort_order, page, page_size, search_token, user)
+    search = Search.new(:user => user, :per_page => page_size || 10, :page => page || 1)
+    if criteria && criteria["reset"]
+      search.criteria = SearchCriteria.new(Hash.new)
+    elsif criteria.nil? && search_token
       search = Search.find_by_persistence_token(search_token)
     else
-      search.sql = SearchCriteria.create_sql(criteria, sort_order, options).to_sql
+      # Put sort order back in place at some point
+      search.criteria = SearchCriteria.new(criteria)
     end
-    search.per_page = page_size || 10
-    search.page = page || 1
     search.save!
     search
   end
@@ -25,7 +27,7 @@ class Search < ActiveRecord::Base
   end
 
   def execute
-    Location.paginate_by_sql(self.sql, :page => self.page, :per_page => self.per_page)
+    query = criteria.create_query.page(self.page).per(self.per_page)
   end
 
   def next(id)
@@ -49,7 +51,7 @@ class Search < ActiveRecord::Base
   private
 
   def current_range_and_index(id)
-    locations = Location.find_by_sql(sql).map{|l|l.id}
+    locations = Location.find_by_sql(criteria.create_query.all).map{|l|l.id}
     index = locations.index id.to_i
     return locations, index
   end

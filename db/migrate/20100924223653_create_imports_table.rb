@@ -1,7 +1,6 @@
 class CreateImportsTable < ActiveRecord::Migration
-
-  def self.up
-    create_table :imports, :force => true do |t|
+  def change
+    create_table :imports do |t|
       t.integer :locations_count, :default => 0
       t.string :input_file_name
       t.string :input_content_type
@@ -12,5 +11,4 @@ class CreateImportsTable < ActiveRecord::Migration
       t.timestamps
     end
   end
-
 end

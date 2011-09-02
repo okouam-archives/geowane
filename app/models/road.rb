@@ -1,6 +1,12 @@
 class Road  < ActiveRecord::Base
   set_primary_key :gid
 
+  scope :closest, lambda {|longitude, latitude|
+    where("ST_DWithin(ST_GeographyFromText('SRID=4326;Point(#{longitude} #{latitude})'), locations.the_geom::geometry, 500)")
+    .order("ST_Distance(ST_GeographyFromText('SRID=4326;Point(#{longitude} #{latitude})'), locations.the_geom::geometry)")
+    .limit(1)
+  }
+
   with_options :class_name => "Boundary" do |entity|
     entity.belongs_to :administrative_unit_0, :foreign_key => "country_id"
   end

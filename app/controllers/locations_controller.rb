@@ -5,12 +5,12 @@ class LocationsController < ApplicationController
   before_filter :assign_form_data, :only => [:create, :edit]
 
   def index
-    @search = Search.construct(params[:s], params[:sort], params[:page], params[:per_page], session[:search_token], current_user, params[:options])
+    @search = Search.construct(params[:s], params[:sort], params[:page], params[:per_page], session[:search_token], current_user)
     @search.save_to_session(session)
     respond_to do |format|
       format.html do
         @locations = @search.execute
-        @entries_per_page = @search.per_page
+        @per_page = @search.per_page
       end
       format.json { render :json => @search.execute.to_a.to_geojson }
     end

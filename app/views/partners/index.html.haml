@@ -2,30 +2,31 @@
 
 .block
   .block_head
-    %h2 Partners
+    %h2
+      Partners
+      = link_to "New Partner", "#", :class=> "heading-action"
   .block_content
     #portlets
+      .bulk-actions
+        %select
+          %option Bulk Actions
+          %option Delete
+        %input.button{:type=>"button", :value=>"Apply"}
+      .clear
       .portlet
         .portlet-header
           Listing
-          %span
-            = link_to "New Partner", new_partner_path
-            |
-            = link_to "Delete Selection", :confirm => 'Are you sure?', :method => :delete
         .portlet-content.nopadding
           %table
             %tbody
               %tr
-                %th{:style=>"width: 20px"}
+                %th.selector
+                  %input{:type=>"checkbox"}
                 %th Name
-                %th{:style=>"width: 50px"}
-                %th{:style=>"width: 60px"}
               - @partners.each do |partner|
                 %tr
                   %td
                     %input{:type=>"checkbox"}
                   %td= link_to partner.name, edit_partner_path(partner)
-                  %td Manage
-                  %td Statistics
 
 

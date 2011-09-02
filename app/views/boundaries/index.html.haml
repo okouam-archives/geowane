@@ -2,19 +2,25 @@
 
 .block
   .block_head
-    %h2 Boundaries
+    %h2
+      Boundaries
+      = link_to "Country Field Collection", "#", :class=> "heading-action"
   .block_content
     #portlets
+      .bulk-actions
+        %select
+          %option Change Level
+          %option Level 0
+          %option Level 1
+          %option Level 2
+          %option Level 3
+        %input.button{:type=>"button", :value=>"Change"}
+      .clear
       .portlet
         .portlet-header
           Listing
-          %span
-            - [0, 1, 2, 3].each do |depth|
-              = link_to "Level #{depth}", "/boundaries?depth=#{depth}"
-              - if depth != 3
-                |
         .portlet-content.nopadding
-          %table{:cellspacing => "0", :cellpadding => "0", :style => "width: 100%; margin-left: 0px"}
+          %table.main
             %thead
               %tr
                 %th.level Level 0

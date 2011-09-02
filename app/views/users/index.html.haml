@@ -4,33 +4,32 @@
   %div.block_head
     %h2
       Users
-    %ul
-      %li.nobg= link_to "New User", new_user_path
+      = link_to "New User", "#", :class=> "heading-action"
   %div.block_content
     %form{:method => "post"}
-      %table{:style => "width: 100%; margin-left: 0px", :cellspacing => "0", :cellpadding => "0"}
-        %thead
-          %tr
-            %th Name
-            %th Last Logged In At
-            %th Can Login?
-            %th Role
-            %th
-        %tbody
-        - for user in @users
-          %tr
-            %td= link_to user.login, user_path(user)
-            %td= user.last_login_at
-            %td= user.is_active
-            %td= user.role_name
-            %td.delete= link_to "Delete", user_path(user), :confirm => 'Are you sure?', :method => :delete
-      %div{:style=>"width: 100%; float: right"}
-        = select_tag "pages", options_for_select(["10", "20", "50", "100"], params[:per_page]), :style => "width: 70px; padding: 2px; margin-top: -3px"
-        = will_paginate @users, :params => @params, :class => "paggination right"
+      #portlets
+        .portlet
+          .portlet-header
+            Listing
+          .portlet-content.nopadding
+            %table.main
+              %thead
+                %tr
+                  %th.selector
+                    %input{:type=>"checkbox"}
+                  %th Name
+                  %th{:style=>"width: 150px"} Last Logged In At
+                  %th{:style=>"width: 80px; text-align: center"} Active
+                  %th{:style=>"width: 70px"} Role
+              %tbody
+              - for user in @users
+                %tr
+                  %td
+                    %input{:type=>"checkbox"}
+                  %td= link_to user.login, user_path(user)
+                  %td= user.last_login_at
+                  %td{:style=>"text-align: center"}
+                    %input{:type=>"checkbox", :checked => user.is_active, :disabled => "true"}
+                  %td= user.role_name
+            = render :partial => "shared/paging", :locals => {:collection => @users, :page_size => @per_page}
 
-  :javascript
-    $(document).ready(function() {
-      $("#pages").change(function() {
-        window.location = $.param.querystring(window.location.href, {per_page: $(this).val()});
-      });
-    });

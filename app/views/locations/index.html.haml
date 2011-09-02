@@ -1,5 +1,8 @@
 = content_for :title, "Points of Interest"
 
+- content_for :javascripts do
+  = javascript_include_tag "/assets/locations.index", :debug => Rails.env.development?
+
 .block
   .block_head
     %h2 Points of Interest
@@ -11,22 +14,21 @@
         .portlet-content.nopadding
           #mappanel
       .clear
+      .bulk-actions
+        %select
+          %option Bulk Actions
+          %option Delete
+          %option Export
+          %option{:selected=>"selected"} Edit
+        %input.button{:type=>"button", :value=>"Apply"}
+      .clear
       = semantic_form_for :locations, :url => new_export_path do
         .portlet
           .portlet-header
             Listing
-            %span
-              - unless @locations.empty?
-                - if @locations.any? {|l| current_user.may_update_location?(l)}
-                  = link_to "Edit", "#"
-                  |
-                - if @locations.any? {|l| current_user.may_destroy_location?(l)}
-                  = link_to "Delete", "#"
-                  |
-                = link_to "Export", "#"
           .portlet-content.nopadding
-            %table.main{:cellspacing => "0", :cellpadding => "0", :style => "margin-left: 0px"}
-              %tbody
+            %table.main
+              %thead
                 %tr
                   %th
                     %input{:type=>"checkbox"}
@@ -37,13 +39,14 @@
                   %th.date_added= link_to "Date Added", "#", :"data-sort" => "created_at"
                   %th.last_changed= link_to "Last Changed", "#", :"data-sort" => "updated_at"
                   %th.status= link_to "Status", "#", :"data-sort" => "status"
-                - @locations.each do |location|
-                  %tr
+              %tbody
+                - for location in @locations
+                  %tr{:"data-id" => location.id, :"data-name" => location.name, :"data-longitude" => location.longitude, :"data-latitude" => location.latitude}
                     %td.selector
                       %input{:type=>"checkbox", :name=>"locations[]", :value => "#{location.id}"}
                     %td.name
                       - if location.name.length > 40
-                        = image_tag("warning-icon.png")
+                        = image_tag("/assets/images/warning-icon.png")
                       = link_to location.name, edit_location_path(location)
                     %td= location.city_name
                     %td= location.tags.map {|t| t.category.french}.join(", ") || ""
@@ -51,48 +54,5 @@
                     %td= location.created_at.strftime("%d-%m-%Y")
                     %td= location.updated_at.strftime("%d-%m-%Y")
                     %td= location.status.to_s.humanize.upcase
-            .pagination-wrapper
-              = render :partial => "shared/paging", :locals => {:collection => @locations, :page_size => @entries_per_page}
-            .clear
-            %span.page-size
-              = page_entries_info @locations
-            .clear
-
-:javascript
-  $(".map.portlet").locations_index_map(#{@locations.map{|l| l.id}});
-  $(".coordinates.portlet").locations_index_coordinates();
-  $("table.main").checkboxes();
-  $(document).ready(function() {
-
-    $("th a").click(function() {
-      url = jQuery.param.querystring(window.location.href, {sort: $(this).data("sort"), page: 1});
-      window.location = url;
-    });
-
-    var collection_change = function(url, method) {
-      if ($("td.selector input:checked").length < 1) {
-        alert("Please select one or more locations");
-        return false;
-      }
-      $("form").attr("action", url);      
-      if (method)   $('<input type="hidden" name="_method" value="' + method + '" />').appendTo($("form"));
-      $("form").submit();
-      return false;
-    }
-
-    $("a:contains('Edit')").click(function() {
-      return collection_change('locations/edit')
-    });
-
-    $("a:contains('Delete')").click(function() {
-      return collection_change('locations', 'delete')
-    });
-
-    $("a:contains('Export')").click(function() {
-      $("form").attr("action", "/exports/prepare");
-      $("form").submit();
-      return false;
-    });
-
-  });
+            = render :partial => "shared/paging", :locals => {:collection => @locations, :page_size => @per_page}
 

@@ -2,15 +2,11 @@ class Import < ActiveRecord::Base
   has_attached_file :input
   validates_format_of :input_file_name, :with => /\.(mp|gpx)/
   validates_attachment_presence :input
-
   belongs_to :user
   has_many :locations
   has_many :selections          
   after_post_process :identify_selection
-
-  def self.paged(page, per_page)
-    Import.order("created_at desc").paginate(:page => page, :per_page => per_page)
-  end
+  default_scope :order => "created_at DESC"
 
   def execute(selected_items)
     importer_for(self.input.path).execute(self, selected_items)

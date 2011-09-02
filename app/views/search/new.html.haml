@@ -2,7 +2,9 @@
 
 .block
   .block_head
-    %h2 Search
+    %h2
+      Search
+      = link_to "Name Lookup", lookup_search_path
   .block_content
     = semantic_form_for SearchCriteria.new, :url => "/search" do |form|
       #portlets

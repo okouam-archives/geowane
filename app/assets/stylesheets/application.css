@@ -1,0 +1,4 @@
+//= require "admin"
+//= require_tree "./common"
+//= require_tree "./components"
+//= require_tree "./pages"

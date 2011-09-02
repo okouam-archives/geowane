@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
   scope :active, :conditions => {:is_active => true}
 
   def self.dropdown_items
-    User.order("login ASC").map {|user| [user.login, user.id]}
+    User.select("login, id").order("login ASC").map {|user| [user.login, user.id]}
   end
 
 end

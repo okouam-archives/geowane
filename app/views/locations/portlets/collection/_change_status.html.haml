@@ -1,0 +1,7 @@
+.portlet.action-portlet.change_status
+  .portlet-header
+    Change Status for Selected Locations
+  .portlet-content
+    = select_tag "change_status", options_for_select(workflow_actions(current_user)), :style=>"width: 250px"
+    %input.button.ok{:type=>"button", :value=>"Change"}
+    %input.button.cancel{:type=>"button", :value=>"Cancel"}

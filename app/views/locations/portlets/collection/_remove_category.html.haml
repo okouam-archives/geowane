@@ -1,0 +1,7 @@
+.portlet.action-portlet.remove_category
+  .portlet-header
+    Remove Category from Selected Locations
+  .portlet-content
+    = select_tag "remove_category", options_for_select(Category.dropdown_items), :style=>"width: 250px"
+    %input.button.ok{:type=>"button", :value=>"Remove"}
+    %input.button.cancel{:type=>"button", :value=>"Cancel"}

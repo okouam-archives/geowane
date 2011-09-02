@@ -2,54 +2,57 @@
 
 %div.block
   %div.block_head
-    %h2 Edit #{object.name} Classifications
-    %ul
-      %li.nobg= link_to "Back", partners_path
+    %h2
+      Edit #{object.name} Categories
+      = link_to "Back", partners_path
   .block_content
     #portlets
       .portlet
         .portlet-header
-          Listing
-          %span
-            = link_to "New Classification", new_partner_classification_path(object)
-            |
-            = link_to "Delete Selection", "#"
+          New Classification
+        .portlet-content
+          = form_for @category, :url => {:action => "create", :controller => "partner_categories", :partner_id => @category.partner_id} do |f|
+            = f.hidden_field :partner_id, :value => @category.partner_id
+            French:
+            = f.text_field :french, :style=>"width: 150px"
+            English:
+            = f.text_field :english, :style=>"width: 150px"
+            Code:
+            = f.text_field :code, :style=>"width: 150px"
+            = f.submit "Create Partner Category"
+      .bulk-actions
+        %select
+          %option Bulk Actions
+          %option Delete
+        %input.button{:type=>"button", :value=>"Apply"}
+      .clear
+      .portlet
+        .portlet-header
+          Mappings
         .portlet-content.nopadding
-          %table.datatable
+          %table.main
             %tbody
               %tr
-                %th
-                  %input{:type=>"checkbox"}
-                %th Name
-                %th Categories
+                %th= check_box_tag 'selector'
                 %th Icon
-                %th.total_POI Total
-                %th.new New
-                %th.corrected Corrected
-                %th.invalid Invalid
-                %th.audited Audited
-                %th.checked Checked
+                %th{:style=>"width: 150px"} Name
+                %th 0-One Categories
               - if @classifications && @classifications.size > 0
-                - @classifications.each do |classification|
+                - @classifications.each do |taxonomy|
                   %tr
-                    %td
-                      %input{:type=>"checkbox"}
-                    %td
-                      = link_to classification.french, edit_partner_classification_path(classification.partner, classification)
-                      %br
-                      %div{:style=>"font-style: italic; padding-top: 3px"}=classification.english
-                    %td
-                      = classification.categories.map{|c| c.french}.join(", ")
+                    %td{:style=>"width: 10px"}
+                      = check_box_tag 'selector'
                     %td{:style=>"width: 30px"}
-                      - if classification.icon
-                        = image_tag "/images/" + classification.icon
-                    %td.total_POI= linked_figure(classification.total_locations, "/locations?s[category_id]=#{classification.id}")
-                    %td.new= linked_figure(classification.new_locations, "/locations?s[category_id]=#{classification.id}&s[status]=new")
-                    %td.corrected= linked_figure(classification.corrected_locations, "/locations?s[category_id]=#{classification.id}&s[status]=corrected")
-                    %td.invalid= linked_figure(classification.invalid_locations, "/locations?s[category_id]=#{classification.id}&s[status]=invalid")
-                    %td.audited= linked_figure(classification.audited_locations, "/locations?s[category_id]=#{classification.id}&s[status]=audited")
-                    %td.checked= linked_figure(classification.field_checked_locations, "/locations?s[category_id]=#{classification.id}&s[status]=field+checked")
-
+                      = taxonomy[:icon] ? image_tag(taxonomy[:icon]) : ""
+                    %td
+                      = taxonomy[:french]
+                      %br
+                      %div{:style=>"font-style: italic; padding-top: 3px"}
+                        =taxonomy[:english]
+                    %td
+                      - if taxonomy[:categories]
+                        = taxonomy[:categories].map{|category|"<span>" + category[:french] + link_to("x", category[:delete_link], :method => :delete, :confirm => "Are you sure you want to delete this category?", :remote => :true, :class => "tag_delete") + "</span>"}.join(" ").html_safe
+                      = link_to "(+)", "#"
 :javascript
   $(document).ready(function() {
     $("a.delete-classification").click(function() {

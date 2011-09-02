@@ -10,8 +10,15 @@ class PartnersController < ApplicationController
   end
 
   def edit
-    sql = "SELECT * FROM reports.classifications WHERE name = '#{object.name}' ORDER BY french"
-    @classifications = Classification.find_by_sql(sql)
+    @category = PartnerCategory.new(:partner_id => object.id)
+    @classifications = object.categories.map do |taxonomy|
+      model = { french: taxonomy.french, english: taxonomy.english }
+      model[:icon] = "/images/" + taxonomy.icon if taxonomy.icon
+      model[:categories] = taxonomy.mappings.map do |mapping|
+        {french: mapping.category.french, delete_link: mapping_path(mapping.id)}
+      end
+      model
+    end
   end
 
 end

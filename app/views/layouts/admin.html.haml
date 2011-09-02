@@ -4,9 +4,9 @@
   %head
     %title= "GeoCMS - #{h yield(:title)}"
     = csrf_meta_tag
-    = stylesheet_link_tag Rack::Less.stylesheet('admin')
-    = include_javascripts :global
-    = include_javascripts :templates
+    = javascript_include_tag "/assets/application", :debug => Rails.env.development?
+    = yield :javascripts
+    = stylesheet_link_tag "/assets/application", :debug => Rails.env.development?
   %body{class: "#{controller.controller_name} #{controller.action_name}"}
     #hld
       .wrapper
@@ -18,42 +18,15 @@
               %ul
                 %li= link_to "Search", new_search_path
                 %li= link_to "Points of Interest", locations_path(:s => :reset)
-                %li
-                  = link_to "Categories", "#"
-                  %ul
-                    %li= link_to "Manage", categories_path(:page => 1)
-                    %li= link_to "Statistics", categories_path(:page => 1)
-                    %li
-                      = link_to "Reports", "#"
-                      %ul
-                        %li= link_to "Field Collection Errors", '#'
-                %li
-                  = link_to "Collectors", "#"
-                  %ul
-                    %li= link_to "Statistics", counters_path
-                    %li
-                      = link_to "Reports", "#"
-                      %ul
-                        %li= link_to "Field Collection Errors", '#'
-                %li
-                  = link_to "Boundaries", "#"
-                  %ul
-                    %li= link_to "Statistics", boundaries_path
-                    %li
-                      = link_to "Reports", "#"
-                      %ul
-                        %li= link_to "Field Collection Errors", '#'
+                %li= link_to "Categories", categories_path(:page => 1)
+                %li= link_to "Collectors", counters_path
+                %li= link_to "Boundaries", boundaries_path
                 %li= link_to "Cities", cities_path
                 %li= link_to "Partners", partners_path
-                %li
-                  =link_to "Road Network", '#'
-                  %ul
-                    %li= link_to "Breakdown By Road Type", boundaries_path
-                    %li= link_to "Breakdown By Boundary", boundaries_path
+                %li=link_to "Road Network", roads_path
             %li
               = link_to "Data Management", "#"
               %ul
-                %li= link_to "Place Lookup", lookup_search_path
                 - unless current_user.has_role?("collector")
                   %li= link_to "Import Data", imports_path
                   - if current_user.has_role?("administrator")

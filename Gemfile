@@ -7,18 +7,18 @@ gem 'haml'
 gem 'nokogiri'
 gem 'spatial_adapter'
 gem 'aegis', :require => 'aegis'
-gem "rails"
+gem 'rails', '3.1.0'
 gem "dbf"
 gem "rgeo"
+gem 'ejs'
 gem "activerecord-postgis-adapter"
 gem "rgeo-activerecord"
 gem "rgeo-geojson"
 gem "rgeo-shapefile"
 gem "minitar"
 gem 'rmagick'
-gem "jammit"
 gem 'authlogic', :git => 'git://github.com/odorcicd/authlogic.git', :branch => 'rails3'
-gem "will_paginate", "~> 3.0.pre2"
+gem "kaminari"
 gem 'haml'
 gem 'acts_as_commentable'
 gem 'rake'
@@ -33,10 +33,17 @@ gem "foreigner"
 gem 'diff-lcs'
 gem 'uuidtools'
 gem "nested_form"
-gem 'rack-less'
 gem 'lighthouse-api'
 gem 'addressable'
 gem 'awesome_nested_set'
+gem 'coffee-script'
+gem 'uglifier'
+gem 'tilt', :git => 'git://github.com/thisduck/tilt.git'
+gem 'less-js'
+
+group :production do
+  gem 'therubyracer', '>= 0.9.2'
+end
 
 group :test do
   gem "faker"
@@ -47,6 +54,10 @@ group :test do
   gem 'autotest-standalone'
   gem 'database_cleaner'
   gem "rspec-rails"
+end
+
+group :development do
+  gem 'query_trace'
 end
 
 group :test, :development do

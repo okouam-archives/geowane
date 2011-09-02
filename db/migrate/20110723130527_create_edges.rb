@@ -1,5 +1,5 @@
 class CreateEdges < ActiveRecord::Migration
-  def self.up
+  def up
     execute %{
       CREATE TABLE edges
       (
@@ -24,8 +24,5 @@ class CreateEdges < ActiveRecord::Migration
       SELECT AddGeometryColumn('edges', 'the_geom', 4326, 'LINESTRING', 2);
       SELECT AddGeometryColumn('edges', 'centroid', 4326, 'POINT', 2);
     }
-  end
-
-  def self.down
   end
 end

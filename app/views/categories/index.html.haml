@@ -2,62 +2,63 @@
 
 .block
   .block_head
-    %h2 Categories
+    %h2
+      Categories
+      - if current_user.may_create_category?
+        = link_to "New Category", new_category_path, :class=> "heading-action"
+      = link_to "Category Field Collection", "#", :class=> "heading-action"
   .block_content
     #portlets
+      .bulk-actions
+        %select
+          %option Bulk Actions
+          - if @categories && @categories.any? && current_user.may_destroy_category?(@categories.first)
+            %option Delete
+          %option Export
+        %input.button{:type=>"button", :value=>"Apply"}
+      .clear
       .portlet
         .portlet-header
           Listing
-          %span{:style=>"float: right"}
-            - if current_user.may_create_category?
-              = link_to "New Category", new_category_path
-              |
-            - if @categories && @categories.size > 0
-              - if current_user.may_destroy_category? @categories.first
-                = link_to "Delete Selection"
-                |
-            = link_to "Export Selection", export_categories_path
         .portlet-content.nopadding
           %table.main
             %tbody
               %tr
-                %th
+                %th.selector
                   %input{:type=>"checkbox"}
                 %th Name
-                %th Icon
+                %th Attributes
                 %th.total_POI Total
                 %th.new New
                 %th.corrected Corrected
                 %th.invalid Invalid
                 %th.audited Audited
                 %th.checked Checked
-              - if @categories && @categories.size > 0
-                - @categories.each do |category|
+                - for category in @categories
                   %tr
                     %td
                       %input{:type=>"checkbox"}
                     %td
+                      - if category.icon
+                        = image_tag "/assets/images/" + category.icon, :style=>"float: left; margin-right: 10px"
                       - if current_user.may_update_category? @categories.first
                         = link_to category.french, edit_category_path(category)
                       - else
                         = category.french
                       %br
                       %div{:style=>"font-style: italic; padding-top: 3px"}=category.english
-                    %td{:style=>"width: 30px"}
-                      - if category.icon
-                        = image_tag "/images/" + category.icon
+                    %td
+                      - if category.is_hidden?
+                        Hidden
+                      - if category.is_landmark?
+                        Landmark
                     %td.total_POI= linked_figure(category.total_locations, "/locations?s[category_id]=#{category.id}")
                     %td.new= linked_figure(category.new_locations, "/locations?s[category_id]=#{category.id}&s[status]=new")
                     %td.corrected= linked_figure(category.corrected_locations, "/locations?s[category_id]=#{category.id}&s[status]=corrected")
                     %td.invalid= linked_figure(category.invalid_locations, "/locations?s[category_id]=#{category.id}&s[status]=invalid")
                     %td.audited= linked_figure(category.audited_locations, "/locations?s[category_id]=#{category.id}&s[status]=audited")
                     %td.checked= linked_figure(category.field_checked_locations, "/locations?s[category_id]=#{category.id}&s[status]=field+checked")
-          .pagination-wrapper
-            = render :partial => "shared/paging", :locals => {:collection => @categories, :page_size => @per_page}
-          .clear
-          .page-size
-            = page_entries_info @categories
-          .clear
+          = render :partial => "shared/paging", :locals => {:collection => @categories, :page_size => @per_page}
 
 :javascript
   $("table.main").checkboxes();

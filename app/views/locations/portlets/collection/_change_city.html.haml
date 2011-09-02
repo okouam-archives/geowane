@@ -1,0 +1,7 @@
+.portlet.action-portlet.change_city
+  .portlet-header
+    Change City for Selected Locations
+  .portlet-content
+    = select_tag "change_city", options_for_select(City.dropdown_items), :style=>"width: 250px"
+    %input.button.ok{:type=>"button", :value=>"Change"}
+    %input.button.cancel{:type=>"button", :value=>"Cancel"}

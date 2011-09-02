@@ -1,6 +1,5 @@
 class CreateReports < ActiveRecord::Migration
-
-  def self.up
+  def up
     execute("CREATE SCHEMA reports AUTHORIZATION deployment")
     files = ["partners", "categories", "cities", "collectors", "boundaries_0"]
     files.each do |file|
@@ -8,8 +7,4 @@ class CreateReports < ActiveRecord::Migration
       execute File.read(script)
     end
   end
-
-  def self.down
-  end
-
 end

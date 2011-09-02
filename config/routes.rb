@@ -41,10 +41,10 @@ Gowane::Application.routes.draw do
   resource :account, :controller => "account"
   resource :user_sessions
 
-  resources :users, :cities, :counters, :conversions, :boundaries, :features, :samples, :audits
+  resources :users, :cities, :counters, :conversions, :boundaries, :features, :samples, :audits, :roads
 
   resources :partners do
-    resources :classifications
+    resources :partner_categories, :as => "categories"
   end
 
   resources :exports do

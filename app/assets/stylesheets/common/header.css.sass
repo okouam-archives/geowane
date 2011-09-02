@@ -1,0 +1,128 @@
+
+#header
+  height: 50px
+  padding: 0 20px
+  line-height: 50px
+  background: url(/assets/images/admin/hdr.gif) 0 0 no-repeat
+  color: #999
+  font-weight: bold
+  margin-bottom: 20px
+  a
+    color: #999
+    text-decoration: none
+  a:hover
+    color: #fff
+  h1
+    float: left 
+    margin-right: 80px 
+    font-family: "Titillium800", Helvetica, Arial, sans-serif 
+    font-size: 18px 
+    font-weight: normal 
+    text-transform: uppercase 
+    color: #fff
+    a
+      color: #fff
+    a:hover
+      color: #008ee8
+
+#header #nav, #header #nav *
+  z-index: 20
+
+#header #nav
+  margin: 0
+  border: 0 none
+  padding: 0
+  width: auto
+  list-style: none
+  height: 50px
+  padding: 0
+  float: left
+  li
+    margin: 0
+    border: 0 none
+    padding: 0
+    float: left
+    display: inline
+    list-style: none
+    position: relative
+    height: 50px
+    padding: 0 10px
+    background: url(/assets/images/admin/nsp.gif) center right no-repeat
+    line-height: 50px
+    z-index: 99999999999
+  li.nobg
+    background: none
+  ul
+    margin: 0
+    border: 0 none
+    padding: 0
+    width: 190px
+    list-style: none
+    display: none
+    position: absolute
+    top: 50px
+    left: 0
+    li
+      width: 190px
+      display: block !important
+      display: inline
+      position: relative
+      top: 0
+      height: 30px
+      line-height: 30px
+      padding: 0
+      background: none
+  a
+    float: none !important
+    float: left
+    display: block
+    height: auto !important
+    height: 1%
+    height: 30px
+    padding: 0 10px
+
+#header #nav li.active
+  a
+    color: #ddd
+  a:hover
+    color: #fff
+
+#header #nav a:hover, #header #nav li:hover a, #header #nav li.iehover a
+  color: #fff
+
+#header #nav li:hover li a, #header #nav li.iehover li a
+  text-transform: none
+  padding: 0 15px
+  font-size: 11px
+  font-weight: bold
+  line-height: 30px
+  color: #999
+  background: url(/assets/images/admin/mbg.png) 0 0 repeat
+
+#header #nav li:hover li a:hover, #header #nav li:hover li:hover a, #header #nav li.iehover li a:hover, #header #nav li.iehover li.iehover a
+  color: #fff
+  background: #000
+  z-index: 99999
+
+#header #nav ul ul, #header #nav ul ul ul
+  display: none
+  position: absolute
+  top: 0
+  left: 190px
+
+#header #nav li:hover ul ul, #header #nav li:hover ul ul ul, #header #nav li.iehover ul ul
+  display: none
+
+#header #nav li.iehover ul ul ul
+  display: none
+
+#header #nav li:hover ul, #header #nav ul li:hover ul, #header #nav ul ul li:hover ul, #header #nav li.iehover ul, #header #nav ul li.iehover ul, #header #nav ul ul li.iehover ul
+  display: block
+
+#header .user
+  float: right
+  font-size: 11px
+  a
+    text-decoration: none
+  a:hover
+    text-decoration: none

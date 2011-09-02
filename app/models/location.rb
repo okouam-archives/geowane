@@ -6,6 +6,7 @@ class Location < ActiveRecord::Base
   validates_presence_of :name
   belongs_to :user
   belongs_to :city
+  belongs_to :road
   has_many :categories, :through => :tags
   has_many :tags, :autosave => true
   has_many :labels, :autosave => true

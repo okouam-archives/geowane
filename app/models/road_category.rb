@@ -1,0 +1,3 @@
+class RoadCategory
+
+end
