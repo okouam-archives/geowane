@@ -1,3 +1,6 @@
+//= require "./theme/blue"
+//= require "./theme/style"
+//= require "./theme/titillium"
 //= require "admin"
 //= require_tree "./common"
 //= require_tree "./components"

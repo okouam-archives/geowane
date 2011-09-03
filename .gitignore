@@ -1,3 +1,4 @@
+.sass-cache/
 index/**/*
 .bundle
 db/*.sqlite3
