@@ -71,6 +71,7 @@ $.Class.extend('Carto',
     }
     layer.addFeatures(locations);
     layer.map.zoomToExtent(layer.getDataExtent());
+    return locations;
   },
 
   displayNumberedFeatures: function(features, layer) {

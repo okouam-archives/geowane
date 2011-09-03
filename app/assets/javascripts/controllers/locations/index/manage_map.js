@@ -1,11 +1,11 @@
 $.Controller("ManageMap",
 {
-  init: function(el, options) {
+  init: function(el, features) {
     this.map = Carto.build();
     Carto.addCommonControls(this.map);
     this.layer = Carto.createLayer("Features", this.map);
     this.setupControls();
-    Carto.displayNumberedFeatures(options, this.layer);
+    Carto.displayNumberedFeatures(features, this.layer);
   },
 
   setupControls: function() {

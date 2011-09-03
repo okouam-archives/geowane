@@ -2,10 +2,11 @@ $.Controller("ManageMap",
 {
   init: function(el, options) {
     this.map = Carto.build();
+    this.footer = options.footer;
     Carto.addCommonControls(this.map);
     this.layer = Carto.createLayer("Features", this.map);
     this.setupControls();
-    this.loadFeatures(options.locations);
+    this.loadFeatures(options.locations, this.buildInfoTab.bind(this));
   },
 
   "a:contains('Save') click": function() {
@@ -38,6 +39,25 @@ $.Controller("ManageMap",
     this.hideActions();
   },
 
+  buildInfoTab: function(features) {
+    var contents = this.footer.find(".contents");
+    var wrapper = contents.children("ul").empty();
+    var template = $.template(null,
+      "<li> \
+        <span><img src='${attributes.thumbnail}' style='height: 18px' /></span> \
+        <span class='name'>${attributes.name}</span> \
+      </li>"
+    );
+    var output = $($.tmpl(template, features));
+    wrapper.append(output);
+    this.footer.find(".tab").click(function() {
+      if ($(this).text() == "show") $(this).text("hide");
+      else $(this).text("show");
+      contents.toggle();
+      return false;
+    });
+  },
+
   showActions: function() {
     this.element.find(".portlet-header span").show();
   },
@@ -46,13 +66,9 @@ $.Controller("ManageMap",
     this.element.find(".portlet-header span").hide();
   },
 
-  loadFeatures: function(locations) {
-    var layer = this.layer;
-    $.getJSON("/locations/" + locations,
-      function(data) {
-        Carto.displayNumberedFeaturesById(data, layer);
-      }
-    );
+  loadFeatures: function(features, callback) {
+    Carto.displayNumberedFeatures(features, this.layer);
+    callback(features);
   },
 
   setupControls: function() {

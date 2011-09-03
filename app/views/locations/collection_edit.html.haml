@@ -20,8 +20,9 @@
       .clear
       .map-footer
         .contents
-        .tab
-          = link_to "Info", "#"
+          %ul
+          .clear
+        .tab show
       .clear{:style=>"height: 10px"}
       = render :partial => "locations/portlets/collection/change_city"
       = render :partial => "locations/portlets/collection/add_category"
@@ -56,7 +57,7 @@
                   %th Comments
               %tbody
               - @locations.each_with_index do |location, i|
-                %tr{"data-id"=>location.id}
+                %tr{:"data-id" => location.id, :"data-name" => location.name, :"data-longitude" => location.longitude, :"data-latitude" => location.latitude}
                   %td.selector
                     %input{:type=>"checkbox"}
                   %td.name= form.text_field "[#{i}][name]", :value => location.name
@@ -80,7 +81,6 @@
 
 :javascript
   (function($) {
-    $(".map.portlet").manage_map({locations: #{@locations.map{|l| l.id}}});
     _.each(#{@locations_cache}, function(value) {
       Location.add(new Location(value));
     })

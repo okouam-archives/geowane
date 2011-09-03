@@ -9,7 +9,7 @@ $.Controller("ManageMap",
     $("input[type='submit']").click(this.buildBoundingBox.bind(this));
   },
 
-  buildBoundingBox: function(el) {
+  buildBoundingBox: function() {
     if (this.layer.features.length > 0) {
       var searchBox = this.layer.features[0].geometry.bounds.toBBOX();
       $("#search_criteria_bbox").val(searchBox);
