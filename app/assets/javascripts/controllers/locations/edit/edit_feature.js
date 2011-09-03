@@ -1,4 +1,4 @@
-$.Controller("LocationsEditFeature",
+$.Controller("EditFeature",
 {
   init : function(el, options){
     this.location_id = options.location_id;

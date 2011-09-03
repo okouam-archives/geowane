@@ -1,67 +1,26 @@
 = content_for :title, "Edit Location"
 
+- content_for :javascripts do
+  = javascript_include_tag "/assets/locations.edit", :debug => Rails.env.development?
+
 .block.editor
   .block_head
     %h2
       Edit Location #{@location.id}
-      = link_to "Back", locations_path(:page => session[:search_page], :per_page => session[:search_page_size]), :class=> "heading-action"
-      = link_to "Previous POI", previous_location_path(@location), :class=> "heading-action"
-      = link_to "Next POI", next_location_path(@location), :class=> "heading-action"
+      = link_to "Back", locations_path(:page => session[:search_page], :per_page => session[:search_page_size])
+      = link_to "Previous POI", previous_location_path(@location)
+      = link_to "Next POI", next_location_path(@location)
   .block_content
     #portlets
-      .editor-content
+      .editor-content{:"data-id" => @location.id, :"data-name" => @location.name, :"data-longitude" => @location.longitude, :"data-latitude" => @location.latitude}
         = render :partial => "locations/portlets/map"
         #left.column
           = render :partial => "locations/portlets/feature", :locals => {:form_data => @form_data}
           = render :partial => "locations/portlets/coordinates", :locals => {:location => @location}
-          = render :partial => "locations/portlets/comments", :locals => {:location => @location}
+          = render :partial => "locations/portlets/comments", :locals => {:location => @location, :comments => @comments}
         .column
           = render :partial => "locations/portlets/information"
           = render :partial => "locations/portlets/history", :locals => {:location => @location}
         .clear
       %br
       %br
-
-:javascript
-  $(document).ready(function() {
-
-    $(".information.portlet").locations_edit_information({location_id: #{@location.id}});
-    $(".feature.portlet").locations_edit_feature({location_id: #{@location.id}});
-    $(".comments.portlet").locations_edit_comments({location_id: #{@location.id}, comments: #{@comments.to_json}});
-    $(".map.portlet").locations_edit_map({location_id: #{@location.id}});
-    $(".coordinates.portlet").locations_edit_coordinates();
-
-    var app = Sammy(function() {
-
-      this.selected_locations = [#{object.id}];
-
-      this.use(Sammy.FaceboxWidget);
-      this.use(Sammy.CategoryWidget, #{@categories});
-
-      this.get("#/", function(context) {
-        this.closeFacebox();
-      })
-
-      this.get("#/cancel", function(context) {
-        context.redirect("#/");
-      })
-
-      this.get('#/category/add', function(context) {
-        this.showCategoryWidget(context, "#/category/add/accept", "Add Category", "add_tag");
-      });
-
-      this.get('#/category/add/accept', function(context) {
-        var target = function(id) {
-          return $(".tags .list");
-        };
-        this.addCategory(context, context.app.selected_locations, target);
-        context.redirect("#/");
-      });
-
-    });
-
-    $(function() {
-      app.run('#/');
-    });
-
-  });

@@ -17,6 +17,15 @@
         %li= link_to "Indiquer le nom exact", "#"
         %li= link_to "Préciser le quartier", "#"
     %ul.comments
+      - for comment in comments do
+        %li
+          = image_tag(comment[:thumb])
+          .details
+            %span.created_at= comment[:created_at]
+            %br
+            %span.username= comment[:user]
+            %p= comment[:text]
+          .clear
     :plain
       <script type="text/x-jquery-tmpl" id="comment-template">
         <li>

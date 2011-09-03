@@ -1,9 +1,14 @@
 .map.portlet
   .portlet-header
     Map
-    %span{:style=>"display: none"}
+    %span
       = link_to "Save", "#"
       |
       = link_to "Cancel", "#"
   .portlet-content.nopadding
     #mappanel
+.map-footer
+  .contents
+  .tab
+    = link_to "Info", "#"
+.clear{:style=>"height: 15px"}

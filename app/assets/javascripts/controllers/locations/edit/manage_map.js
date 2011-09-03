@@ -7,21 +7,7 @@ $.Controller("ManageMap",
     this.landmark_layer = Carto.createLayer("Landmarks", this.map);
     this.setupControls();
     this.location_id = options.location_id;
-    this.loadFeature(options.location_id);
-  },
-
-  loadFeature: function(location_id) {
-    var self = this;
-    $.getJSON("/locations/" + location_id,
-      function(data) {
-        var locations = new OpenLayers.Format.GeoJSON().read(data);
-        locations[0].attributes["thumbnail"] = "/assets/images/icons/1.gif";
-        self.layer.addFeatures(locations);
-        self.original_geometry = self.layer.getDataExtent().getCenterLonLat();
-        self.map.setCenter(self.original_geometry, 6);
-        Carto.displayLandmarkFeatures(location_id, this.landmark_layer);
-      }
-    );
+    $.getJSON("/locations/" + this.location_id, this.update.bind(this));
   },
 
   "a:contains('Save') click": function() {
@@ -30,10 +16,9 @@ $.Controller("ManageMap",
     $.ajax({
       url: "/locations/" + this.location_id,
       data: {location: {id: this.location_id, longitude: this.original_geometry.lon, latitude: this.original_geometry.lat}},
-      success: function(data) {
+      success: function() {
         this.original_geometry = this.layer.getDataExtent().getCenterLonLat();
         this.hideActions();
-        this.publish("geocms.location-updated", data);
       },
       context: this,
       type: "PUT",
@@ -44,6 +29,15 @@ $.Controller("ManageMap",
   "a:contains('Cancel') click": function() {
     this.layer.features[0].move(this.original_geometry);
     this.hideActions();
+  },
+
+  update: function(data) {
+    var locations = new OpenLayers.Format.GeoJSON().read(data);
+    locations[0].attributes["thumbnail"] = "/assets/images/icons/1.gif";
+    this.layer.addFeatures(locations);
+    this.original_geometry = this.layer.getDataExtent().getCenterLonLat();
+    this.map.setCenter(this.original_geometry, 6);
+    Carto.displayLandmarkFeatures(this.location_id, this.landmark_layer);
   },
 
   showActions: function() {

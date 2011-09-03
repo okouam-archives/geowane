@@ -1,18 +1,19 @@
-$.Controller("LocationsEditComments",
+$.Controller("EditComments",
 {
   init: function(el, options) {
     this.comment = this.element.find("textarea");
     this.editor = this.element.find(".editor");
     this.location_id = options.location_id;
     this.comment_list = this.element.find(".portlet-content > ul");
-    this.loadComments(options.comments);
   },
+
   loadComments: function(comments) {
     var template = $.template(null, $("#comment-template").text());
     $.tmpl(template, comments).appendTo(this.comment_list);
     this.editor.hide();
     this.comment_list.show();
   },
+
   saveComment: function() {
     $.ajax({
       type: 'POST',

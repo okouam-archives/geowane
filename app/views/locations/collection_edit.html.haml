@@ -1,4 +1,5 @@
 = content_for :title, "Edit Selected Locations"
+
 - content_for :javascripts do
   = javascript_include_tag "/assets/locations.collection_edit", :debug => Rails.env.development?
 
@@ -7,20 +8,20 @@
     %h2 Update Locations
   .block_content
     #portlets
-      .portlet.map{:style=>"margin-bottom: 0"}
+      .portlet.map
         .portlet-header
           Map
-          %span{:style=>"float: right; display: none"}
+          %span
             = link_to "Save", "#"
             |
             = link_to "Cancel", "#"
         .portlet-content.nopadding
-          #mappanel{:style=>"height: 311px; width: 100%"}
+          #mappanel
       .clear
-      .map-positioning{:style=>"text-align: center"}
+      .map-footer
         .contents
-        .tab{:style=>"padding: 0 5px; margin: auto; border-radius: 0 0 4px 4px; width: 100px; background-color: #666; font-style: italic; text-align: center; font-weight: bold; font-size: 9px; color: white"}
-          = link_to "Glossary", "#", :style=>"color: white"
+        .tab
+          = link_to "Info", "#"
       .clear{:style=>"height: 10px"}
       = render :partial => "locations/portlets/collection/change_city"
       = render :partial => "locations/portlets/collection/add_category"

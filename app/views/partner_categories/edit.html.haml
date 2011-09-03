@@ -1,9 +1,0 @@
-= content_for :title, "New Classification"
-
-%div.block
-  %div.block_head
-    %h2
-      New Classification
-    %ul
-      %li.nobg= link_to "Back", edit_partner_path(@object.partner)
-  = render :partial => "form", :locals => {:partner => @object.partner, :object => @object, :selected => @selected, :available => @available}

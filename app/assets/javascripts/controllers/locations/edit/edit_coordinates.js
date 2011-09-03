@@ -1,4 +1,4 @@
-$.Controller("LocationsEditCoordinates",
+$.Controller("EditCoordinates",
 {
   "geocms.location-updated subscribe": function(called, params) {
     var boundaryWrapper = this.element.find("ul").eq(0);

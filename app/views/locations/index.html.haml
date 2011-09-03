@@ -13,7 +13,11 @@
           Map
         .portlet-content.nopadding
           #mappanel
-      .clear
+      .map-footer
+        .contents
+        .tab
+          = link_to "Info", "#"
+      .clear{:style=>"height: 10px"}
       .bulk-actions
         %select
           %option Bulk Actions
