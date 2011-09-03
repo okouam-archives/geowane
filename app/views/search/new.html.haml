@@ -1,5 +1,8 @@
 = content_for :title, "New Search"
 
+- content_for :javascripts do
+  = javascript_include_tag "/assets/search", :debug => Rails.env.development?
+
 .block
   .block_head
     %h2
@@ -61,10 +64,4 @@
           .clear
           %input{:class=>"button long", :style=>"float: right; margin-bottom: 20px", :type=>"submit", :value=>"Search"}
 
-  :css
-    div.filter_group {float: left; width: 220px}
-  :javascript
-    $(document).ready(function() {
-      $("#mappanel").search_new();
-    });
 

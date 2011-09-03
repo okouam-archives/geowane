@@ -94,6 +94,12 @@ $.Class.extend('Carto',
     );
   },
 
+  createDrawingLayer: function(name, map) {
+    var layer = new OpenLayers.Layer.Vector(name);
+    map.addLayer(layer);
+    return layer;
+  },
+
   createLayer: function(name, map) {
     var layer = new OpenLayers.Layer.Vector(name);
     var style = new OpenLayers.Style({externalGraphic: '${thumbnail}', 'pointRadius': 9});
