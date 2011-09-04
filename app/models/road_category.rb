@@ -1,3 +1,3 @@
-class RoadCategory
+class RoadCategory < ActiveRecord::Base
 
 end

@@ -14,7 +14,6 @@
           %option Bulk Actions
           - if @categories && @categories.any? && current_user.may_destroy_category?(@categories.first)
             %option Delete
-          %option Export
         %input.button{:type=>"button", :value=>"Apply"}
       .clear
       .portlet
@@ -41,7 +40,7 @@
                       - if category.icon
                         = image_tag category.icon.url, :style=>"float: left; margin-right: 10px"
                       - if current_user.may_update_category? @categories.first
-                        = link_to category.french, edit_category_path(category)
+                        = link_to category.french, edit_category_path(category, page: params[:page], per_page: params[:per_page])
                       - else
                         = category.french
                       %br
@@ -52,7 +51,7 @@
                     %td.invalid= linked_figure(category.invalid_locations, "/locations?s[category_id]=#{category.id}&s[status]=invalid")
                     %td.audited= linked_figure(category.audited_locations, "/locations?s[category_id]=#{category.id}&s[status]=audited")
                     %td.checked= linked_figure(category.field_checked_locations, "/locations?s[category_id]=#{category.id}&s[status]=field+checked")
-          = render :partial => "shared/paging", :locals => {:collection => @categories, :page_size => @per_page}
+          = render :partial => "shared/paging", :locals => {:collection => @categories}
 
 :javascript
   $("table.main").checkboxes();

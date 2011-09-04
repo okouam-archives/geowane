@@ -2,6 +2,8 @@ require 'rgeo'
 require 'rgeo/shapefile'
 
 class Boundary < ActiveRecord::Base
+  has_many :children, :class_name => 'Boundary', :foreign_key => 'parent_id'
+  belongs_to :parent, :class_name => 'Boundary'
 
   def self.dropdown_items(depth)
     Boundary.select("name, id").order("name").where(:level => depth).map {|boundary| [boundary.name, boundary.id]}

@@ -24,24 +24,45 @@ class Export < ActiveRecord::Base
     users = query[:user_id].reject{|x| x.blank?}
     categories = query[:category_id].reject{|x| x.blank?}
     include_uncategorized = query[:include_uncategorized]
-    query = Location.select("id")
+    query = Location.scoped.select("id")
     return query.where("1 = 2") if statuses.empty? && countries.empty? && categories.empty? && users.empty? && !include_uncategorized
     query = query.where(:status => statuses) if statuses.size > 0
     query = query.where(:level_0 => countries) if countries.size > 0
     query = query.where(:user_id => users) if users.size > 0
-    filter_categories(query, categories, include_uncategorized)
+    filter_categories(query, categories, include_uncategorized, client)
   end
 
   private
 
-  def self.filter_categories(query, categories, include_uncategorized)
+  def self.filter_categories(query, categories, include_uncategorized, client)
     if categories.any? || include_uncategorized
       if include_uncategorized.nil? && categories.any?
-        query = query.where("locations.id IN (SELECT location_id FROM tags WHERE category_id IN (" + categories.join(",") + "))")
+        query = query.where(%{
+          locations.id IN
+          (
+            SELECT location_id
+            FROM tags
+            JOIN categories ON tags.category_id = categories.id
+            JOIN mappings ON mappings.category_id = categories.id
+            JOIN partner_categories ON mappings.partner_category_id = partner_categories.id
+            WHERE partner_categories.id IN (#{categories.join(",")})
+          )
+        })
       elsif include_uncategorized && categories.any?
-        query = query.where("locations.id IN (SELECT location_id FROM tags WHERE category_id IN (" + categories.join(",") + ")) OR locations.id NOT IN (SELECT location_id FROM tags)")
+        query = query.where(%{
+          locations.id IN
+          (
+            SELECT location_id
+            FROM tags
+            JOIN categories ON tags.category_id = categories.id
+            JOIN mappings ON mappings.category_id = categories.id
+            JOIN partner_categories ON mappings.partner_category_id = partner_categories.id
+            WHERE partner_categories.id IN (#{categories.join(",")})
+          )
+          OR locations.id NOT IN (SELECT location_id FROM tags)
+        })
       else
-        query = query.where("locations.id NOT IN (SELECT location_id FROM tags)")
+        query = query.where("locations.id NOT IN (SELECT id FROM tags)")
       end
     end
     query

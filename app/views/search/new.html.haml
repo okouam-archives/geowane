@@ -1,15 +1,14 @@
 = content_for :title, "New Search"
 
 - content_for :javascripts do
-  = javascript_include_tag "/assets/search", :debug => Rails.env.development?
+  = javascript_include_tag "/assets/controllers/search/new/init", :debug => Rails.env.development?
 
 .block
   .block_head
     %h2
       Search
-      = link_to "Name Lookup", lookup_search_path
   .block_content
-    = semantic_form_for SearchCriteria.new, :url => "/search" do |form|
+    = semantic_form_for :s, url: "/locations", method: "get" do |form|
       #portlets
         #left.column
           .portlet.map
@@ -20,14 +19,14 @@
                 Check to select bounds for the search
             .portlet-content.nopadding
               #mappanel
-          .portlet
+          .portlet.boundaries
             .portlet-header
               Boundaries
             .portlet-content
-              = form.input :location_level_0, :as => :select, :collection => @all_level_0, :required => false, :label => "Level 0"
-              = form.input :location_level_1, :as => :select, :collection => @all_level_1, :required => false, :label => "Level 1"
-              = form.input :location_level_2, :as => :select, :collection => @all_level_2, :required => false, :label => "Level 2"
-              = form.input :location_level_3, :as => :select, :collection => @all_level_3, :required => false, :label => "Level 3"
+              = form.input :level_id, :as => :hidden
+              %label
+                Country
+                = select_tag("level_0", options_for_select([""] + @all_level_0))
           .portlet
             .portlet-header
               Localization (City)
@@ -36,14 +35,13 @@
               = form.input :radius, :required => false
               = form.input :bbox, :as => :hidden
         .column
-          .portlet
+          .portlet.categorization
             .portlet-header
               Categorization
             .portlet-content
               = form.input :name, :required => false, :label => "Location Name"
+              %table.main
               = form.input :category_id, :as => :select, :collection => @all_categories, :required => false, :label => "Category"
-              = form.input :category_missing, :as => :boolean, :required => false, :label => " Category Missing"
-              = form.input :category_present, :as => :boolean, :required => false, :label => " Category Present"
           .portlet
             .portlet-header
               Auditing

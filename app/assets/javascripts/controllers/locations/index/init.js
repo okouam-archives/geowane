@@ -1,3 +1,5 @@
+//= require_tree .
+
 $(function() {
   var features = new FeatureReader("table.main").getFeatures();
   $(".map.portlet").manage_map({features: features, footer: $(".map-footer")});

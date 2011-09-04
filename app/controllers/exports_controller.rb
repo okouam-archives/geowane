@@ -27,7 +27,7 @@ class ExportsController < ApplicationController
     @all_categories = Category.dropdown_items
     @all_users = User.dropdown_items
     @all_statuses = Location.new.enums(:status).select_options
-    @all_partners = ["0-One"]+ Partner.dropdown_items
+    @all_partners = Partner.dropdown_items
   end
 
   def count

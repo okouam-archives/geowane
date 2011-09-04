@@ -1,3 +1,5 @@
+//= require_tree .
+
 $(function($) {
   var featureReader = new FeatureReader($("table.main"));
   var locations = featureReader.getFeatures();

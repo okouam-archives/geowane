@@ -1,0 +1,27 @@
+!!!
+%html
+  %head
+    %meta{:"http-equiv" => "Content-Type", :content => "text/html; charset=utf-8"}
+    %title GeoCMS - Login
+    = stylesheet_link_tag "/assets/application", :debug => Rails.env.development?
+  %body
+    #hld
+      .wrapper
+        .block.small.center.login
+          .block_head
+            %h2 Login
+          .block_content{:style=>"width: auto; padding: 20px"}
+            = form_for @user_session do |f|
+              - if f.object.errors.any?
+                %ul
+                  - f.object.errors.full_messages.each do |msg|
+                    %li.error_message= msg
+              = f.label :login
+              = f.text_field :login, :class => "text", :style=>"width: 97%"
+              %br
+              %br
+              = f.label :password
+              = f.password_field :password, :class => "text", :style=>"width: 97%"
+              %br
+              %br
+              = f.submit "Login", :class => "submit", :style=>"float: right"

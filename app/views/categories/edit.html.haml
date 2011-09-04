@@ -4,7 +4,7 @@
   .block_head
     %h2
       Edit Category
-      = link_to "Back", categories_path
+      = link_to "Back", categories_path(page: params[:page], per_page: params[:per_page])
   .block_content
     = semantic_form_for object, :html => { :enctype => "multipart/form-data"} do |form|
       = render :partial => "form", :locals => {:form => form}

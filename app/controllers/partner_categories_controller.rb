@@ -15,6 +15,13 @@ class PartnerCategoriesController < ApplicationController
     @object = Partner.find(params[:partner_id]).partner_categories.find(params[:id])
   end
 
+  def index
+    @categories = Partner.find(params[:partner_id]).partner_categories
+    respond_to do |format|
+      format.json {render :json => @categories}
+    end
+  end
+
   def update
     category = Partner.find(params[:partner_id]).partner_categories.find(params[:id])
     category.update_attributes(params[:partner_category])

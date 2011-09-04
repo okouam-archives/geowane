@@ -2,7 +2,6 @@ class User < ActiveRecord::Base
   acts_as_authentic
   has_role
   has_many :locations
-  has_many :reviews
   validates_presence_of :role_name
 
   scope :active, :conditions => {:is_active => true}

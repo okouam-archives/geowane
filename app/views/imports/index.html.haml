@@ -3,8 +3,7 @@
   .block_head
     %h2
       Imports
-    %ul
-      %li.nobg.back= link_to "New Import", new_import_url
+      = link_to "New Import", new_import_url
   .block_content
     - if @imports && @imports.count > 0
       %table{:cellspacing => "0", :cellpadding => "0", :style => "width: 100%; margin-left: 0px"}

@@ -1,3 +1,5 @@
+//= require_tree .
+
 $(function() {
   var location_id = $(".editor-content").data("id");
   $(".information.portlet").edit_information({location_id: location_id});

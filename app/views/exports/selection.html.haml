@@ -1,5 +1,8 @@
 = content_for :title, "Export Selection"
 
+- content_for :javascripts do
+  = javascript_include_tag "/assets/controllers/exports/init", :debug => Rails.env.development?
+
 .block
   .block_head
     %h2 Create Selection
@@ -7,109 +10,80 @@
     = semantic_form_for :s, :url => "/exports/prepare" do |form|
       #portlets
         #left.column
-          .portlet.map
+          .portlet.countries
             .portlet-header
-              Countries
-            .portlet-content
-              %span
-                <input type="checkbox" id="all_countries" name="all_countries"">
-                All Countries
-              %hr
-              %div{:style=>"height: 260px"}
-                = form.input :country_id, :as => :check_boxes, :collection => @all_countries, :required => false, :label => "Individual Countries", :wrapper_html => {:class => "selector"}
-          .portlet
+              Boundaries
+            .portlet-content.nopadding
+              %table.main
+                %thead
+                  %tr
+                    %th.selector
+                      %input{:type=>"checkbox"}
+                    %th Country
+                %tbody
+                  - for country in @all_countries
+                    %tr
+                      %td.selector
+                        %input{:type=>"checkbox", :value=>country[1]}
+                      %td
+                        = country[0]
+          .portlet.categories
             .portlet-header
-              Categories
+              Partner Categories
               %span{:style=>"margin-right: 0"}
-                Classification:
-                = select_tag(:partner, options_for_select(@all_partners), :style=>"position: relative; top: -2px; padding: 0; width: 80px")
-            .portlet-content
-              %span
-                <input type="checkbox" id="all_categories" name="all_categories">
-                All Categories
-              %span
-                <input type="checkbox" name="s[include_uncategorized]" id="s_include_uncategorized">
-                Uncategorized
-              %hr
-              %div{:style=>"height: 260px; overflow-y: scroll"}
-                = form.input :category_id, :as => :check_boxes, :collection => @all_categories, :required => false, :label => "Individual Categories"
+                Partner:
+                = select_tag(:partner, options_for_select(@all_partners))
+            .portlet-content.nopadding
+              %table.main
+                %thead
+                  %tr
+                    %th.selector
+                      %input{:type=>"checkbox"}
+                    %th Category
+                %tbody
+                  - for category in @all_categories
+                    %tr
+                      %td.selector
+                        %input{:type=>"checkbox", :value=>category[1]}
+                      %td
+                        = category[0]
         .column
-          .portlet
+          .portlet.workflow
             .portlet-header
               Workflow
-            .portlet-content
-              %span
-                <input type="checkbox" id="all_statuses" name="all_statuses"">
-                All States
-              %hr
-              %div{:style=>"height: 260px"}
-                = form.input :status, :as => :check_boxes, :collection => @all_statuses, :required => false, :label => "Individual States"
-          .portlet
+            .portlet-content.nopadding
+              %table.main
+                %thead
+                  %tr
+                    %th.selector
+                      %input{:type=>"checkbox"}
+                    %th Status
+                %tbody
+                  - for status in @all_statuses
+                    %tr
+                      %td.selector
+                        %input{:type=>"checkbox", :value=>status[1]}
+                      %td
+                        = status[0]
+          .portlet.users
             .portlet-header
               Users
-            .portlet-content
-              %span
-                <input type="checkbox" id="all_users" name="all_users">
-                All Users
-              %hr
-              %div{:style=>"height: 260px; overflow-y: scroll"}
-                = form.input :user_id, :as => :check_boxes, :label => "Individual Users", :collection => @all_users, :required => false
-
+            .portlet-content.nopadding
+              %table.main
+                %thead
+                  %tr
+                    %th.selector
+                      %input{:type=>"checkbox"}
+                    %th Username
+                %tbody
+                  - for user in @all_users
+                    %tr
+                      %td.selector
+                        %input{:type=>"checkbox", :value=>user[1]}
+                      %td
+                        = user[0]
       %div{:style=>"float: left; font-size: 16px; margin-left: 15px; margin-top: 3px"}
         %b.location-count
           0
         locations will be exported.
       %input{:class=>"button long", :style=>"float: right; margin-top: 20px; margin-right: 15px; margin-bottom: 20px", :type=>"submit", :value=>"Export"}
-
-  :javascript 
-    $(document).ready(function() {
-      $("#partner").change(function() {
-        $.get("/partners/" + $(this).val() + "/classifications", function() {
-          dsfsd
-        })
-      });
-
-      $("input[type='checkbox']").change(function() {
-        var data = $("form").formParams();
-        $.post("/exports/count", data, function(result) {
-          $(".location-count").html(result);
-        });
-      });
-
-      $("#s_country_id_input input").click(function() {
-        if (!$(this).attr("checked")) $("#all_countries").attr('checked', false);
-      })
-
-      $("#all_countries").click(function() {
-        $("#s_country_id_input input").attr('checked', $(this).attr("checked") == "checked");
-      });
-
-      $("#s_category_id_input input").click(function() {
-        if (!$(this).attr("checked")) $("#all_categories").attr('checked', false);
-      })
-
-      $("#all_categories").click(function() {
-        $("#s_category_id_input input").attr('checked', $(this).attr("checked") == "checked");
-      });
-
-      $("#s_user_id_input input").click(function() {
-        if (!$(this).attr("checked")) $("#all_users").attr('checked', false);
-      })
-
-      $("#all_users").click(function() {
-        $("#s_user_id_input input").attr('checked', $(this).attr("checked") == "checked");
-      });
-
-      $("#s_status_input input").click(function() {
-        if (!$(this).attr("checked")) $("#all_statuses").attr('checked', false);
-      })
-
-      $("#all_statuses").click(function() {
-        $("#s_status_input input").attr('checked', $(this).attr("checked") == "checked");
-      });
-
-      $("input[type='checkbox']").click(function() {
-        $(this).trigger("change");
-      });
-
-    });
