@@ -19,7 +19,7 @@ class BoundariesController < ApplicationController
     boundary = Boundary.find(params[:id])
     respond_to do |format|
       format.json do
-        render :json => boundary.children
+        render :json => boundary.children.map {|child| {id: child.id, name: child.name, classification: child.classification}}.to_json
       end
     end
   end

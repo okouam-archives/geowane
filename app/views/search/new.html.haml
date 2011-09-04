@@ -24,8 +24,9 @@
               Boundaries
             .portlet-content
               = form.input :level_id, :as => :hidden
-              %label
-                Country
+              %div.boundary
+                %label
+                  Country
                 = select_tag("level_0", options_for_select([""] + @all_level_0))
           .portlet
             .portlet-header
