@@ -3,13 +3,8 @@ Gowane::Application.routes.draw do
   match'/locations' => 'locations#collection_delete', :via => :delete
   match'/locations/edit' => 'locations#collection_edit', :via => [:get, :post] 
   match'/locations' => 'locations#collection_update', :via => :put 
-
-  match '/icon/:num.gif' => 'graphics#draw_icon'
-
   match '/api/:action', :controller => 'api'
-
   match '/landmarks/:id' => 'landmarks#show', :as => "show_landmarks", :via => :get
-  match '/landmarks' => 'landmarks#index', :as => "landmarks", :via => :get
 
   resources :locations do
     resources :comments, :tags
@@ -23,20 +18,19 @@ Gowane::Application.routes.draw do
       post :collection_create
     end
   end
+
   resources :categories do
     collection do
       get :export
     end
-    member do
-      get :save_icon, :change_icon
-    end
-  end               
+  end
 
   resource :search, :controller => "search" do
     member do
       get :lookup
     end
   end
+
   resource :map, :controller => "map"
   resource :account, :controller => "account"
   resource :user_sessions
@@ -44,7 +38,15 @@ Gowane::Application.routes.draw do
   resources :users, :cities, :counters, :conversions, :boundaries, :features, :samples, :audits, :roads
 
   resources :partners do
-    resources :partner_categories, :as => "categories"
+    collection do
+      post :collection_delete
+    end
+    resources :partner_categories do
+      collection do
+        post :collection_delete
+      end
+      resources :mappings
+    end
   end
 
   resources :exports do
@@ -64,5 +66,4 @@ Gowane::Application.routes.draw do
 
   match '/' => 'admin#dashboard'
   match '/dashboard' => 'admin#dashboard', :as => :dashboard
-  match '/jobs' => 'admin#jobs', :as => :periodic_jobs
 end

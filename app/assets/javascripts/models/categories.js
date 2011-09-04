@@ -1,5 +1,17 @@
 $.Class.extend('Categories',
 {
+  fetchAll: function(callback) {
+    $.ajax({
+      url: "/api/categories",
+      type: "GET",
+      success:  function(data) {
+        var categories = $(data).map(function() {
+          return this.category;
+        });
+        callback(categories.get());
+      }
+    });
+  },
   add: function(locations, category, callback) {
     this.action(locations, category, callback, "add_tag");
   },

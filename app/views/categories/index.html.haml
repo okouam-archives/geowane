@@ -27,7 +27,6 @@
                 %th.selector
                   %input{:type=>"checkbox"}
                 %th Name
-                %th Attributes
                 %th.total_POI Total
                 %th.new New
                 %th.corrected Corrected
@@ -40,18 +39,13 @@
                       %input{:type=>"checkbox"}
                     %td
                       - if category.icon
-                        = image_tag "/assets/images/" + category.icon, :style=>"float: left; margin-right: 10px"
+                        = image_tag category.icon.url, :style=>"float: left; margin-right: 10px"
                       - if current_user.may_update_category? @categories.first
                         = link_to category.french, edit_category_path(category)
                       - else
                         = category.french
                       %br
                       %div{:style=>"font-style: italic; padding-top: 3px"}=category.english
-                    %td
-                      - if category.is_hidden?
-                        Hidden
-                      - if category.is_landmark?
-                        Landmark
                     %td.total_POI= linked_figure(category.total_locations, "/locations?s[category_id]=#{category.id}")
                     %td.new= linked_figure(category.new_locations, "/locations?s[category_id]=#{category.id}&s[status]=new")
                     %td.corrected= linked_figure(category.corrected_locations, "/locations?s[category_id]=#{category.id}&s[status]=corrected")

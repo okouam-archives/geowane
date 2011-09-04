@@ -4,6 +4,7 @@
   .block_head
     %h2
       New Category
-      = link_to "Back", categories_path, :class=> "heading-action"
+      = link_to "Back", categories_path
   .block_content
-    = render :partial => "form"
+    = semantic_form_for object, :html => { :enctype => "multipart/form-data"} do |form|
+      = render :partial => "form", :locals => {:form => form}

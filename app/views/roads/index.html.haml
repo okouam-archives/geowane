@@ -15,5 +15,7 @@
               %tr
                 %td
                   %input{:type=>"checkbox"}
-                %td= link_to road_group.name, "#"
+                %td= link_to road_group.label, "#"
+                %td= road_group.classification_id
+                %td= road_group.country_id
 

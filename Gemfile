@@ -15,6 +15,7 @@ gem "activerecord-postgis-adapter"
 gem "rgeo-activerecord"
 gem "rgeo-geojson"
 gem "rgeo-shapefile"
+gem 'carrierwave'
 gem "minitar"
 gem 'rmagick'
 gem 'authlogic', :git => 'git://github.com/odorcicd/authlogic.git', :branch => 'rails3'

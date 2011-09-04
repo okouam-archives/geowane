@@ -1,11 +1,12 @@
 $.Controller("ManageMap",
 {
-  init: function(el, features) {
+  init: function(el, options) {
     this.map = Carto.build();
     Carto.addCommonControls(this.map);
     this.layer = Carto.createLayer("Features", this.map);
     this.setupControls();
-    Carto.displayNumberedFeatures(features, this.layer);
+    Carto.displayNumberedFeatures(options.features, this.layer);
+    this.buildInfoTab(options.features, options.footer);
   },
 
   setupControls: function() {
@@ -22,5 +23,24 @@ $.Controller("ManageMap",
     });
     this.map.addControls([tooltip]);
     tooltip.activate();
+  },
+
+  buildInfoTab: function(features, footer) {
+    var contents = footer.find(".contents");
+    var wrapper = contents.children("ul").empty();
+    var template = $.template(null,
+      "<li> \
+        <span><img src='${attributes.thumbnail}' style='height: 18px' /></span> \
+        <span class='name'>${attributes.name}</span> \
+      </li>"
+    );
+    var output = $($.tmpl(template, features));
+    wrapper.append(output);
+    footer.find(".tab").click(function() {
+      if ($(this).text() == "show") $(this).text("hide");
+      else $(this).text("show");
+      contents.toggle();
+      return false;
+    });
   }
 });

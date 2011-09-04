@@ -5,25 +5,24 @@ class ApiController < ApplicationController
   skip_before_filter :require_user
 
   def categories
-    sql = %{
-      SELECT
-        classifications.id,
-        classifications.french,
-        classifications.icon,
-        count(*) as count
-      FROM classifications
-        JOIN mappings ON mappings.classification_id = classifications.id
-        JOIN categories ON mappings.category_id = categories.id
-        JOIN tags ON tags.category_id = categories.id
-        JOIN partners ON partners.id = classifications.partner_id
-      WHERE
-        partners.name ilike '#{params[:client]}'
-      GROUP BY
-        classifications.id, classifications.french, classifications.icon
-      ORDER
-        BY classifications.french ASC
-    }
-    render :json => Category.connection.execute(sql).to_json, :callback => params[:callback]
+    if params[:client]
+        query = Category
+        .scoped
+        .select("partner_categories.id, partner_categories.french, partner_categories.icon, count(*) as count")
+        .where("partners.name ilike ?", "%#{params[:client]}%")
+        .group("partner_categories.id, partner_categories.french, partner_categories.icon")
+        .order("partner_categories.french ASC")
+        .joins(:mappings)
+        .joins(:categories)
+        .joins(:partners)
+    else
+      query = Category
+        .scoped
+        .select("categories.id, categories.french, categories.icon, count(*) as count")
+        .group("categories.id, categories.french, categories.icon")
+        .order("categories.french ASC")
+    end
+    render :json => query.to_json, :callback => params[:callback]
   end
 
   def features

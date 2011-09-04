@@ -1,16 +1,27 @@
 #portlets
-  .portlet
-    .portlet-header
-      Listing
-    .portlet-content
-      = semantic_form_for object, :html => { :enctype => "multipart/form-data"} do |form|
+  #left.column
+    .portlet
+      .portlet-header
+        Properties
+      .portlet-content
         = form.input :french
         = form.input :english
         = form.input :code, :required => true
-        = form.input :icon
-        %span{:style=>"font-style: italic; font-size: 10px; width: 420px; display: block"}
-          Please copy a link to an image from the site mapicons.nicolasmollet.com or a link to an existing icon in the GeoCMS
-        - if object.persisted? && object.icon
-          %label Current Icon
-          = image_tag "/assets/images/" + object.icon
-        = form.commit_button
+        = form.input :is_hidden
+        = form.input :is_landmark
+  .column
+    .portlet
+      .portlet-header
+        Icon
+      .portlet-content
+        %p
+          Please use of the icons found at
+          = link_to "http://mapicons.nicolasmollet.com", "http://mapicons.nicolasmollet.com"
+          or use an existing icon. This icon will be used for displaying this category on the map.
+        = form.input :icon, :as => :file, :label => "Upload Icon"
+        %label{:style=>"margin-top: 13px"}
+          Current Icon
+        = image_tag(object.icon.url)
+    .clear
+    %div.form_commit
+      = form.commit_button

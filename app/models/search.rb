@@ -51,7 +51,7 @@ class Search < ActiveRecord::Base
   private
 
   def current_range_and_index(id)
-    locations = Location.find_by_sql(criteria.create_query.all).map{|l|l.id}
+    locations = criteria.create_query.select("locations.id").all.map{|l|l.id}
     index = locations.index id.to_i
     return locations, index
   end

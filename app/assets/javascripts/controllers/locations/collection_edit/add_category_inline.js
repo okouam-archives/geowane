@@ -20,6 +20,23 @@ $.Controller("AddCategoryInline",
     Categories.add(locations, category, this.update.bind(this));
   },
 
+  "tbody a.delete-category click": function() {
+    if (confirm("Are you sure you want to delete this category?")) {
+      var a = $(this);
+      $.ajax({
+        type: 'POST',
+        url: $(this).attr("href"),
+        dataType: 'script',
+        data: {'_method': 'delete'},
+        success: function() {
+          a.closest("tr").remove();
+          return false;
+        }
+      });
+    }
+    return false;
+  },
+
   showWidget: function(el) {
     this.hideWidget();
     $(el).closest("tr").after("<tr class='inline-picker inline-category-picker'><td colspan='7'><div class='inline-picker-wrapper'><select>" + this.categories + "</select> <input class='button ok' type='button' value='Accept' /> <input class='cancel button' type='button' value='Cancel' /></div></td></tr>");

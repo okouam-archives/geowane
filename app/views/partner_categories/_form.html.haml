@@ -1,0 +1,25 @@
+#portlets
+  #left.column
+    .portlet
+      .portlet-header
+        New Partner Category
+      .portlet-content
+        = form.input :french
+        = form.input :english
+        = form.input :code
+  .column
+    .portlet
+      .portlet-header
+        Icon
+      .portlet-content
+        %p
+          Please use of the icons found at
+          = link_to "http://mapicons.nicolasmollet.com", "http://mapicons.nicolasmollet.com"
+          or use an existing icon. This icon will be used for displaying this category on the map.
+        = form.input :icon, :as => :file, :label => "Upload Icon"
+        %label{:style=>"margin-top: 13px"}
+          Current Icon
+        = image_tag(object.icon.url)
+.clear
+%div.form_commit
+  = form.commit_button

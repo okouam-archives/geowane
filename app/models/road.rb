@@ -7,9 +7,11 @@ class Road  < ActiveRecord::Base
     .limit(1)
   }
 
-  with_options :class_name => "Boundary" do |entity|
-    entity.belongs_to :administrative_unit_0, :foreign_key => "country_id"
-  end
+  scope :named, lambda {
+    where("label IS NOT NULL").where("label != ''")
+  }
+
+  belongs_to :administrative_unit_0, :foreign_key => "country_id", :class_name => "Boundary"
 
   def to_geojson(options = nil)
     geoson = { :type => 'Feature' }
@@ -37,12 +39,8 @@ class Road  < ActiveRecord::Base
   end
 
   def boundaries
-    boundaries = {}
-    [0].each do |num|
-      level = administrative_unit(num)
-      boundaries[num.to_s] = {id: level.id, classification: level.classification, name: level.name} if level
-    end
-    boundaries
+    level = administrative_unit(0)
+    {"0" => {id: level.id, classification: level.classification, name: level.name}} if level
   end
 
 end

@@ -1,9 +1,10 @@
 = content_for :title, "Edit Category"
 
-%div.block
-  %div.block_head
+.block
+  .block_head
     %h2
       Edit Category
       = link_to "Back", categories_path
-  %div.block_content
-    = render :partial => "form"
+  .block_content
+    = semantic_form_for object, :html => { :enctype => "multipart/form-data"} do |form|
+      = render :partial => "form", :locals => {:form => form}

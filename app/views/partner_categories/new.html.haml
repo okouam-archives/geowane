@@ -1,0 +1,10 @@
+= content_for :title, "New Partner Category"
+
+.block
+  .block_head
+    %h2
+      New #{@object.partner.name} Category
+      = link_to "Back", edit_partner_path(@object.partner_id)
+  .block_content
+    = semantic_form_for @object, :url => {:action => "create", :controller => "partner_categories", :partner_id => @object.partner_id} do |form|
+      = render :partial => "form", :locals => {:form => form}
