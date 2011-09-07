@@ -1,7 +1,8 @@
 $.Controller("PartnerPicker",
 {
   init: function() {
-    this.partners = [];
+    this.list = this.element.find("tbody");
+    this.template = "<tr><td><input type='checkbox' value='${partner_category.id}' name='s[category_id][]' /></td><td> ${partner_category.french || '-'} / ${partner_category.english || '-'}</td></tr>";
   },
 
   "select change": function(el) {
@@ -9,9 +10,8 @@ $.Controller("PartnerPicker",
   },
 
   updateCategoryList: function(categories) {
-    var list = this.element.find("tbody");
-    list.empty();
-    var template = "<tr><td><input type='checkbox' value='${partner_category.id}' name='s[category_id][]' /></td><td> ${partner_category.french}</td></tr>";
-    $($.tmpl(template, categories)).appendTo(list);
+    this.list.empty();
+    $($.tmpl(this.template, categories)).appendTo(this.list);
+    this.list.find('tr:odd').css('background-color', '#fbfbfb');
   }
 });

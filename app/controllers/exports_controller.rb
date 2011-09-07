@@ -7,7 +7,31 @@ class ExportsController < ApplicationController
   create.after do
     object.user = current_user
     object.locations_count = session[:locations].size
-    object.execute Location.find(session[:locations], :include => [:city, :tags => :category])
+    object.execute Location.find_by_sql(%{
+      SELECT DISTINCT
+        locations.id,
+        cities.name as city,
+        boundary_0.name as country,
+        boundary_1.name as region,
+        locations.name,
+        locations.feature,
+        partners.name as partner,
+        partner_categories.french as french_category,
+        partner_categories.english as english_category,
+        partner_categories.code as code
+      FROM
+        locations
+        LEFT JOIN cities on cities.id = locations.city_id
+        LEFT JOIN boundaries boundary_0 ON boundary_0.level = 0 AND boundary_0.id = locations.level_0
+        LEFT JOIN boundaries boundary_1 ON boundary_1.level = 1 AND boundary_1.id = locations.level_1
+        JOIN tags ON tags.location_id = locations.id
+        JOIN categories ON categories.id = tags.category_id
+        JOIN mappings ON mappings.category_id = categories.id
+        JOIN partner_categories ON partner_categories.id = mappings.partner_category_id
+        JOIN partners ON partners.id = partner_categories.partner_id
+      WHERE
+        locations.id IN (#{session[:locations].join(",")})
+    })
     object.output_format = ".SHP"
     object.save!
   end
@@ -24,18 +48,19 @@ class ExportsController < ApplicationController
 
   def selection
     @all_countries = Boundary.dropdown_items(0)
-    @all_categories = Category.dropdown_items
+    @selected_partner = Partner.where(:name => "0-One") .first
+    @all_categories = @selected_partner.partner_categories
     @all_users = User.dropdown_items
     @all_statuses = Location.new.enums(:status).select_options
     @all_partners = Partner.dropdown_items
   end
 
   def count
-    render :json => Export.locate(params[:s]).count
+    render :text => Export.locate(params[:export]).count
   end
 
   def prepare
-    session[:locations] =  params[:s] ? Export.locate(params[:s]).all.map{|c| c.id} : params[:locations]
+    session[:locations] =  params[:export] ? Export.locate(params[:export]).map{|loc| loc.id} : params[:locations]
     redirect_to :action => :new
   end
 

@@ -24,7 +24,7 @@
                   - for country in @all_countries
                     %tr
                       %td.selector
-                        %input{:type=>"checkbox", :value=>country[1]}
+                        %input{:type=>"checkbox", :value=>country[1], :name => "export[countries][]"}
                       %td
                         = country[0]
           .portlet.categories
@@ -32,8 +32,8 @@
               Partner Categories
               %span{:style=>"margin-right: 0"}
                 Partner:
-                = select_tag(:partner, options_for_select(@all_partners))
-            .portlet-content.nopadding
+                = select_tag("", options_for_select(@all_partners, @selected_partner.id))
+            .portlet-content.nopadding{:style=>"height: 300px; overflow-y: scroll"}
               %table.main
                 %thead
                   %tr
@@ -44,9 +44,9 @@
                   - for category in @all_categories
                     %tr
                       %td.selector
-                        %input{:type=>"checkbox", :value=>category[1]}
+                        %input{:type=>"checkbox", :value=>category.id, :name => "export[categories][]"}
                       %td
-                        = category[0]
+                        = "#{category.french || "-" } / #{category.english || "-" }"
         .column
           .portlet.workflow
             .portlet-header
@@ -62,13 +62,13 @@
                   - for status in @all_statuses
                     %tr
                       %td.selector
-                        %input{:type=>"checkbox", :value=>status[1]}
+                        %input{:type=>"checkbox", :value=>status[1], :name => "export[statuses][]"}
                       %td
                         = status[0]
           .portlet.users
             .portlet-header
               Users
-            .portlet-content.nopadding
+            .portlet-content.nopadding{:style=>"height: 412px; overflow-y: scroll"}
               %table.main
                 %thead
                   %tr
@@ -79,11 +79,11 @@
                   - for user in @all_users
                     %tr
                       %td.selector
-                        %input{:type=>"checkbox", :value=>user[1]}
+                        %input{:type=>"checkbox", :value=>user[1], :name => "export[users][]"}
                       %td
                         = user[0]
-      %div{:style=>"float: left; font-size: 16px; margin-left: 15px; margin-top: 3px"}
-        %b.location-count
+      %div{:style=>"float: right; font-size: 16px; margin-left: 15px; margin-top: 10px"}
+        %b.location#count
           0
         locations will be exported.
-      %input{:class=>"button long", :style=>"float: right; margin-top: 20px; margin-right: 15px; margin-bottom: 20px", :type=>"submit", :value=>"Export"}
+        %input{:class=>"button long", :style=>"margin-right: 15px; position: relative; top: -3px; margin-bottom: 20px; margin-left: 10px",:type=>"submit", :value=>"Export"}

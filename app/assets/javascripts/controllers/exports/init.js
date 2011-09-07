@@ -6,16 +6,10 @@ $(function() {
   $(".portlet.users table.main").checkboxes();
   $(".portlet.countries table.main").checkboxes();
   $(".portlet.workflow table.main").checkboxes();
-
   $("input[type='checkbox']").change(function() {
     var data = $("form").formParams();
     $.post("/exports/count", data, function(result) {
-      $(".location-count").html(result);
+      $("#count").html(result);
     });
   });
-
-  $("input[type='checkbox']").click(function() {
-    $(this).trigger("change");
-  });
-
 });
