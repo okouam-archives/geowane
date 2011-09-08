@@ -31,7 +31,7 @@
                 %th 0-One Categories
             %tbody{"data-partner-id" => object.id}
               - if object.partner_categories && object.partner_categories.size > 0
-                - object.partner_categories.each do |category|
+                - object.partner_categories.order("french").order("english").each do |category|
                   %tr{"data-id" => category.id}
                     %td.selector
                       = check_box_tag 'selector'
