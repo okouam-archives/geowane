@@ -2,7 +2,7 @@ class IconUploader < CarrierWave::Uploader::Base
   storage :file
 
   def store_dir
-    'uploads/map'
+    'system/icons'
   end
 
   def filename

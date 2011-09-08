@@ -25,4 +25,9 @@ module ApplicationHelper
     "s[level_id]=#{level_id}"
   end
 
+  def deferred(&block)
+    @deferred_content ||= ""
+    @deferred_content << capture(&block)
+  end
+
 end
