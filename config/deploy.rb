@@ -40,4 +40,8 @@ namespace :bundler do
   end
 end
 
-after 'deploy:update_code', 'bundler:bundle_new_release', 'assets:precompile'
+after 'deploy:update_code', 'bundler:bundle_new_release'
+
+after 'bundler:bundle_new_release' do
+  run "cd #{release_path}; RAILS_ENV=production rake assets:precompile"
+end
