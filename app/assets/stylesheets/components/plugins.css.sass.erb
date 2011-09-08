@@ -4,7 +4,7 @@
   font-family: Arial, serif
   opacity: 0.85
   filter: alpha(opacity=85)
-  background: url(/assets/images/tipsy.gif) no-repeat
+  background: url(<%= asset_path "tipsy.gif" %>) no-repeat
 
 .tipsy-inner
   padding: 5px 8px 4px 8px
@@ -36,7 +36,7 @@
   z-index: 99999999
   text-align: left
   .b
-    background: url(/assets/images/admin/b.png)
+    background: url(<%= asset_path "admin/b.png" %>)
   .popup
     position: relative
   table
@@ -69,13 +69,13 @@
     overflow: hidden
     padding: 0
   .tl
-    background: url(/assets/images/admin/tl.png)
+    background: url(<%= asset_path "admin/tl.png" %>)
   .tr
-    background: url(/assets/images/admin/tr.png)
+    background: url(<%= asset_path "admin/tr.png" %>)
   .bl
-    background: url(/assets/images/admin/bl.png)
+    background: url(<%= asset_path "admin/bl.png" %>)
   .br
-    background: url(/assets/images/admin/br.png)
+    background: url(<%= asset_path "admin/br.png" %>)
 
 #facebox_overlay
   position: fixed

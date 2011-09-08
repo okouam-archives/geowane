@@ -1,7 +1,7 @@
 * { padding:0; margin:0; }
 	
 body {
-	background: #fbfbfb url(/assets/images/admin/bg.jpg) 0 0 repeat;
+	background: #fbfbfb url(<%= asset_path "admin/bg.jpg" %>) 0 0 repeat;
 	font-family: "Lucida Grande", Verdana, sans-serif;
 	font-size: 12px;
 	color: #666;
@@ -27,7 +27,7 @@ a:hover {
 	}	
 	
 #hld {
-	background: url(/assets/images/admin/hld.jpg) 0 0 repeat-x;
+	background: url(<%= asset_path "admin/hld.jpg" %>) 0 0 repeat-x;
 	min-height: 402px;
 	}
 	
@@ -40,7 +40,7 @@ a:hover {
 /* Blocks */
 
 .block {	
-	background: url(/assets/images/admin/bnd.gif) bottom center no-repeat;
+	background: url(<%= asset_path "admin/bnd.gif" %>) bottom center no-repeat;
 	padding-bottom: 5px;
 	margin-bottom: 25px;
 	clear: both;
@@ -51,7 +51,7 @@ a:hover {
 
 .block .block_content {
 	overflow: hidden;
-	background: url(/assets/images/admin/bbg.gif) 0 0 repeat-y;
+	background: url(<%= asset_path "admin/bbg.gif" %>) 0 0 repeat-y;
 	padding: 10px 10px 0;
 	width: 940px
 	}
@@ -168,11 +168,11 @@ select {
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
 	border-radius: 3px;
-	background: url('/assets/images/admin/sdd.jpg') center right no-repeat;
+	background: url(<%= asset_path "admin/sdd.jpg" %>) center right no-repeat;
 	}
 
 .block form .cmf-skinned-select:hover {
-	background: url('/assets/images/admin/sdd_.jpg') center right no-repeat;
+	background: url(<%= asset_path "admin/sdd_.jpg" %>) center right no-repeat;
 	}
 
 .block form div.cmf-skinned-text {
@@ -222,14 +222,14 @@ select {
 
 .block.small {
 	width: 470px;
-	background: url(/assets/images/admin/bnds.gif) bottom center no-repeat;
+	background: url(<%= asset_path "admin/bnds.gif" %>) bottom center no-repeat;
 	}
 
 .block.small.left { float: left; clear: none; }
 .block.small.right { float: right; clear: none; }
 
-.block.small .block_head { background: url(/assets/images/admin/bheads.gif) top center no-repeat; }
-.block.small .block_content { background: url(/assets/images/admin/bbgs.gif) top center repeat-y; }
+.block.small .block_head { background: url(<%= asset_path "admin/bheads.gif" %>) top center no-repeat; }
+.block.small .block_content { background: url(<%= asset_path "admin/bbgs.gif" %>) top center repeat-y; }
 
 .block.small .block_content textarea { width: 414px; }
 

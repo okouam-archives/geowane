@@ -3,7 +3,7 @@
   height: 50px
   padding: 0 20px
   line-height: 50px
-  background: url(/assets/images/admin/hdr.gif) 0 0 no-repeat
+  background: url(<%= asset_path "admin/hdr.gif" %>) 0 0 no-repeat
   color: #999
   font-weight: bold
   margin-bottom: 20px
@@ -47,7 +47,7 @@
     position: relative
     height: 50px
     padding: 0 10px
-    background: url(/assets/images/admin/nsp.gif) center right no-repeat
+    background: url(<%= asset_path "admin/nsp.gif" %>) center right no-repeat
     line-height: 50px
     z-index: 99999999999
   li.nobg
@@ -97,7 +97,7 @@
   font-weight: bold
   line-height: 30px
   color: #999
-  background: url(/assets/images/admin/mbg.png) 0 0 repeat
+  background: url(<%= asset_path "admin/mbg.png" %>) 0 0 repeat
 
 #header #nav li:hover li a:hover, #header #nav li:hover li:hover a, #header #nav li.iehover li a:hover, #header #nav li.iehover li.iehover a
   color: #fff

@@ -1,7 +1,7 @@
 $.Class.extend('Carto',
 {
   build: function() {
-    OpenLayers.ImgPath = "/assets/images/OpenLayers/";
+    OpenLayers.ImgPath = '<%= asset_path "OpenLayers/" %>';
     OpenLayers.IMAGE_RELOAD_ATTEMPTS = 3;
     this.map = new OpenLayers.Map("mappanel", {
       theme: null,
@@ -67,7 +67,7 @@ $.Class.extend('Carto',
     var locations = geojson_format.read(data);
     for(var i = 0; i < locations.length; i++) {
       locations[i].attributes["counter"] = (i+1);
-      locations[i].attributes["thumbnail"] = "/assets/images/icons/" + (i+1) + ".gif";
+      locations[i].attributes["thumbnail"] = '<%= asset_path "icons/" %>' + (i+1) + ".gif";
     }
     layer.addFeatures(locations);
     layer.map.zoomToExtent(layer.getDataExtent());
@@ -77,7 +77,7 @@ $.Class.extend('Carto',
   displayNumberedFeatures: function(features, layer) {
     for(var i = 0; i < features.length; i++) {
       features[i].attributes["counter"] = (i+1);
-      features[i].attributes["thumbnail"] = "/assets/images/icons/" + (i+1) + ".gif";
+      features[i].attributes["thumbnail"] = '<%= asset_path "icons/" %>' + (i+1) + ".gif";
     }
     layer.addFeatures(features);
     layer.map.zoomToExtent(layer.getDataExtent());

@@ -51,7 +51,7 @@
                       %input{:type=>"checkbox", :name=>"locations[]", :value => "#{location.id}"}
                     %td.name
                       - if location.name.length > 40
-                        = image_tag("/assets/images/warning-icon.png")
+                        = image_tag("warning-icon.png")
                       = link_to location.name, edit_location_path(location)
                     %td= location.city_name
                     %td= location.tags.map {|t| t.category.french}.join(", ") || ""
