@@ -7,5 +7,5 @@ tmp/**/*
 .idea/
 tmp/
 ?/
-public/assets/
+public/assets/**/*
 public/system/
