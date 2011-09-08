@@ -1,0 +1,4 @@
+git add -A
+git commit -m "$2"
+git push
+cap $1 deploy
