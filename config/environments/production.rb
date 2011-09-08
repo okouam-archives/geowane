@@ -10,7 +10,7 @@ Gowane::Application.configure do
   config.action_controller.perform_caching = true
 
   # Specifies the header that your server uses for sending files
-  #config.action_dispatch.x_sendfile_header = "X-Sendfile"
+  config.action_dispatch.x_sendfile_header = "X-Sendfile"
 
   # For nginx:
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect'
@@ -44,7 +44,10 @@ Gowane::Application.configure do
   # the I18n.default_locale when a translation can not be found)
   config.i18n.fallbacks = true
   config.assets.compress = true
+  config.assets.compile = false
   config.assets.js_compressor = :uglifier
+  config.assets.css_compressor = :yui
+  config.assets.digest = true
 
   config.active_support.deprecation = :notify
 end
