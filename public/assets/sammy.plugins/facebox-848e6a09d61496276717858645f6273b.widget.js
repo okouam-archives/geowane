@@ -1,0 +1,1 @@
+(function(a){Sammy=Sammy||{},Sammy.FaceboxWidget=function(b,c){this.helpers({closeFacebox:function(){a(document).trigger("close.facebox")},openFaceboxWidget:function(b,c){jQuery.facebox(b);var d=a("#facebox .content");return d.find("a.cancel").click(function(){this.redirect("#/")}.bind(this)),c&&d.addClass(c),d.addClass("widget")}})}})(jQuery)

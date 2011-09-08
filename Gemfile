@@ -1,13 +1,12 @@
 source 'http://rubygems.org'
 
-gem 'hoptoad_notifier'
 gem 'pg'
 gem 'formtastic'
 gem 'haml'
 gem 'nokogiri'
 gem 'spatial_adapter'
 gem 'aegis', :require => 'aegis'
-gem 'rails', '3.1.0'
+gem 'rails', '3.1.0', :branch => '3-1-stable'
 gem "dbf"
 gem "rgeo"
 gem 'ejs'
@@ -21,11 +20,11 @@ gem 'rmagick'
 gem 'authlogic', :git => 'git://github.com/odorcicd/authlogic.git', :branch => 'rails3'
 gem "kaminari"
 gem 'haml'
+gem 'paperclip'
 gem 'acts_as_commentable'
 gem 'rake'
 gem 'rack'
 gem "resource_controller", :git => "git://github.com/BDQ/resource_controller.git"
-gem 'paperclip'
 gem "columnize"
 gem "enumerated_attribute"
 gem "wirble"
@@ -36,7 +35,6 @@ gem 'uuidtools'
 gem "nested_form"
 gem 'lighthouse-api'
 gem 'addressable'
-gem 'awesome_nested_set'
 gem 'coffee-script'
 gem 'uglifier'
 gem 'tilt', :git => 'git://github.com/thisduck/tilt.git'
@@ -44,6 +42,7 @@ gem 'less-js'
 
 group :production do
   gem 'therubyracer', '>= 0.9.2'
+  gem 'yui-compressor'
 end
 
 group :test do
@@ -57,11 +56,13 @@ group :test do
   gem "rspec-rails"
 end
 
-group :development do
-  gem 'query_trace'
+group :assets do
+  gem 'sass-rails'
+  gem 'coffee-rails'
 end
 
 group :test, :development do
+  gem 'query_trace'
   gem "rack-debug"
   gem "ruby-debug19"
   gem 'capistrano-ext'

@@ -4,8 +4,6 @@
   %head
     %title= "GeoCMS - #{h yield(:title)}"
     = csrf_meta_tag
-    = javascript_include_tag "/assets/application", :debug => Rails.env.development?
-    = yield :javascripts
     = stylesheet_link_tag "/assets/application", :debug => Rails.env.development?
     %script{:type=>"text/javascript"}
       var _gaq = _gaq || [];
@@ -70,3 +68,5 @@
           %p.right
             Powered by
             = link_to "Codeifier Labs", "#"
+    = javascript_include_tag "/assets/application", :debug => Rails.env.development?
+    = yield :javascripts

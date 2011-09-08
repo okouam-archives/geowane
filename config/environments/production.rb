@@ -44,10 +44,10 @@ Gowane::Application.configure do
   # the I18n.default_locale when a translation can not be found)
   config.i18n.fallbacks = true
   config.assets.compress = true
-  config.assets.compile = false
+  config.assets.compile = true
   config.assets.js_compressor = :uglifier
   config.assets.css_compressor = :yui
   config.assets.digest = true
-
+  config.assets.precompile << 'init.js'
   config.active_support.deprecation = :notify
 end

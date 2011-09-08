@@ -44,4 +44,5 @@ after 'deploy:update_code', 'bundler:bundle_new_release'
 
 after 'bundler:bundle_new_release' do
   run "cd #{release_path}; RAILS_ENV=production rake assets:precompile"
+  run "cd #{release_path}; RAILS_ENV=production rake geocms:assets"
 end

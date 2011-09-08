@@ -1,7 +1,7 @@
 $.Class.extend('Carto',
 {
   build: function() {
-    OpenLayers.ImgPath = '<%= asset_path "OpenLayers/" %>';
+    OpenLayers.ImgPath = '/assets/OpenLayers/';
     OpenLayers.IMAGE_RELOAD_ATTEMPTS = 3;
     this.map = new OpenLayers.Map("mappanel", {
       theme: null,
