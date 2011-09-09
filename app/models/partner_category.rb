@@ -1,5 +1,5 @@
 class PartnerCategory < ActiveRecord::Base
-  validates_presence_of :french, :english
+  validate :name_must_be_provided
   has_many :categories, :through => :mappings
   has_many :mappings
   belongs_to :partner
@@ -7,4 +7,12 @@ class PartnerCategory < ActiveRecord::Base
 
   default_scope :order => 'french ASC'
 
+  def name_must_be_provided
+    if french.blank? && english.blank?
+      errors.add(:english, "All categories must have at least an english or french name")
+      errors.add(:french, "All categories must have at least an english or french name")
+    end
+  end
+
 end
+
