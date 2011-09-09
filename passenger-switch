@@ -1,29 +1,33 @@
 #!/bin/bash
 
 if [ $# -lt 1 ]; then
-	echo "* No Rails environment has been selected"
+	echo " * No Rails environment has been selected"
 	exit -1
 fi
 
 case $1 in 
 'production')
-	echo "* Running rake assets:clean"
+	echo " * Running rake assets:clean"
 	rake assets:clean RAILS_ENV=production
-	echo "* Running rake assets:precompile"
+	echo " * Running rake assets:precompile"
 	rake assets:precompile RAILS_ENV=production
-	echo "* Running rake geocms:assets"
+	echo " * Running rake geocms:assets"
 	rake geocms:assets RAILS_ENV=production
-	echo "* Switching Passenger configuration to production environment"
+	echo " * Switching Passenger configuration to production environment"
 	cd /etc/apache2/sites-enabled
 	sudo rm geocms
 	sudo ln -s ../sites-available/geocms.production geocms	
 	sudo service apache2 restart
 	;;
-'development') 
-   echo "* Switching Passenger configuration to development environment"
-   cd /etc/apache2/sites-enabled
-   sudo rm geocms
-   sudo ln -s ../sites-available/geocms.development geocms   
+'development')
+	echo " * Running rake assets:clean"
+	rake assets:clean
+	echo " * Running rake geocms:assets"
+	rake geocms:assets RAILS_ENV=production
+  echo " * Switching Passenger configuration to development environment"
+  cd /etc/apache2/sites-enabled
+  sudo rm geocms
+  sudo ln -s ../sites-available/geocms.development geocms
 	sudo service apache2 restart
 	;; 
 *) 

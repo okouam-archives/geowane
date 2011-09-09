@@ -40,10 +40,13 @@
                     %td.code
                       = category.code
                     %td.name
-                      = link_to category.french, edit_partner_partner_category_path(object, category)
-                      %br
-                      %div
-                        = category.english
+                      - if category.french
+                        = link_to category.french, edit_partner_partner_category_path(object, category)
+                        %br
+                        %div
+                          = category.english
+                      - else
+                        = link_to category.english, edit_partner_partner_category_path(object, category)
                     %td.categories
                       - if category.categories
                         .inline-list
