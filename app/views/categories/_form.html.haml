@@ -3,12 +3,12 @@
     .portlet
       .portlet-header
         Properties
-      .portlet-content
+      .portlet-content.properties
         = form.input :french
         = form.input :english
         = form.input :code, :required => true
-        = form.input :is_hidden
-        = form.input :is_landmark
+        = form.input :is_hidden, :label => " Is Hidden"
+        = form.input :is_landmark, :label => " Is Landmark"
   .column
     .portlet
       .portlet-header
