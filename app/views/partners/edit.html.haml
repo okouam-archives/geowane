@@ -40,7 +40,7 @@
                     %td.code
                       = category.code
                     %td.name
-                      - if category.french
+                      - if category.french && !category.french.blank?
                         = link_to category.french, edit_partner_partner_category_path(object, category)
                         %br
                         %div
