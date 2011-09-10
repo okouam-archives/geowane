@@ -7,9 +7,11 @@ $.Controller("BulkActions",
    if (rows.length < 1) {
       alert("Please select one or more partners to delete.");
    } else {
-     Partners.remove(this.getIds(rows), function() {
-      rows.remove();
-     });
+     if (confirm("Are you sure you want to remove this partner?")) {
+      Partners.remove(this.getIds(rows), function() {
+        rows.remove();
+      });
+     }
    }
   },
 

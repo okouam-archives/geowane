@@ -1,13 +1,11 @@
 = content_for :title, "New Category"
 
 - content_for :javascripts do
-  = javascript_include_tag "/assets/mvc/categories/init", :debug => Rails.env.development?
+  = javascript_include_tag "/assets/mvc/categories/edit/init", :debug => Rails.env.development?
 
 .block
   .block_head
     %h2
       New Category
       = link_to "Back", categories_path(page: params[:page], per_page: params[:per_page])
-  .block_content
-    = semantic_form_for object, :html => { :enctype => "multipart/form-data"} do |form|
-      = render :partial => "form", :locals => {:form => form}
+  = render :partial => "form"

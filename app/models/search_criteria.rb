@@ -25,6 +25,8 @@ class SearchCriteria < ActiveRecord::Base
 
     query = query.where(:status => status) unless status.blank?
 
+    query = query.on_street(street_name) unless street_name.blank?
+
     query = filter_on_category_presence(query, category_missing == "1", category_present == "1", category_id)
 
     query = filter_on_change(query, confirmed_by, audited_by, modified_by)

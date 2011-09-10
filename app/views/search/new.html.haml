@@ -33,7 +33,7 @@
               Localization (City)
             .portlet-content
               = form.input :city_id, :as => :select, :collection => @all_cities, :required => false, :label => "City"
-              = form.input :radius, :required => false
+              = form.input :street_name, :label => "Street Name", :required => false
               = form.input :bbox, :as => :hidden
         .column
           .portlet.categorization

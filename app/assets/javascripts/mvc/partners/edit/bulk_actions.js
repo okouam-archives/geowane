@@ -7,10 +7,12 @@ $.Controller("BulkActions",
    if (rows.length < 1) {
       alert("Please select one or more categories to delete.");
    } else {
-     var partner_id = $("tbody").data("partner-id");
-     PartnerCategories.remove(this.getIds(rows), partner_id, function() {
-      rows.remove();
-     });
+     if (confirm("Are you sure you want to remove this category?")) {
+       var partner_id = $("tbody").data("partner-id");
+       PartnerCategories.remove(this.getIds(rows), partner_id, function() {
+        rows.remove();
+       });
+     }
    }
   },
 

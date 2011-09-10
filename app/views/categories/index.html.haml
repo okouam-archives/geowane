@@ -1,12 +1,15 @@
 = content_for :title, "Categories"
 
+- content_for :javascripts do
+  = javascript_include_tag "/assets/mvc/categories/index/init", :debug => Rails.env.development?
+
 .block
   .block_head
     %h2
       Categories
       - if current_user.may_create_category?
-        = link_to "New Category", new_category_path, :class=> "heading-action"
-      = link_to "Category Field Collection", "#", :class=> "heading-action"
+        = link_to "New Category", new_category_path
+      = link_to "Category Field Collection", "#"
   .block_content
     #portlets
       .bulk-actions
@@ -53,6 +56,4 @@
                     %td.checked= linked_figure(category.field_checked_locations, "/locations?s[category_id]=#{category.id}&s[status]=field+checked")
           = render :partial => "shared/paging", :locals => {:collection => @categories}
 
-:javascript
-  $("table.main").checkboxes();
 

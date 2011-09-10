@@ -2,9 +2,17 @@
 
 .block
   .block_head
-    %h2 Cities
+    %h2
+      Cities
+      = link_to "New City", new_city_path(page: params[:page], per_page: params[:per_page])
   .block_content
     #portlets
+      .bulk-actions
+        %select
+          %option Bulk Actions
+          %option Delete
+        %input.button{:type=>"button", :value=>"Apply"}
+      .clear
       .portlet
         .portlet-header
           Listing
@@ -12,6 +20,7 @@
           %table{:cellspacing => "0", :cellpadding => "0", :style => "width: 100%; margin-left: 0px"}
             %thead
               %tr
+                %th.selector= check_box_tag 'selector'
                 %th City
                 %th.total_POI Total
                 %th.pending New
@@ -22,6 +31,7 @@
                 %th.categorized Untagged
             %tfoot
               %tr
+                %td
                 %td
                 %td.total_POI
                   = linked_figure(@cities.inject(0) {|total, city| total + city.total_locations.to_i }, nil)
@@ -40,7 +50,8 @@
             %tbody
               - @cities.each do |city|
                 %tr
-                  %td= city.name
+                  %td.selector= check_box_tag 'selector'
+                  %td= link_to city.name, edit_city_path(city)
                   %td.total_POI= linked_figure(city.total_locations || 0, "/locations?s[city_id]=#{city.id}")
                   %td.new= linked_figure(city.new_locations || 0, ("/locations?s[city_id]=#{city.id}" ? ("/locations?s[city_id]=#{city.id}&s[status]=new") : nil))
                   %td.invalid= linked_figure(city.invalid_locations || 0, ("/locations?s[city_id]=#{city.id}" ? ("/locations?s[city_id]=#{city.id}&s[status]=invalid") : nil))

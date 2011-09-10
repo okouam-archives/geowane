@@ -39,6 +39,11 @@ class Location < ActiveRecord::Base
     joins({:tags => {:category => {:mappings => :classification}}}).where("classifications.id = #{classification}")
   }
 
+  scope :on_street, lambda {|name|
+    joins("JOIN roads ON ST_DWithin(locations.feature::geography, roads.the_geom::geography, 100)")
+      .where("roads.label ilike ?", "%#{name}%")
+  }
+
   scope :named, lambda {|name| where("locations.searchable_name ILIKE '%#{name}%'")}
 
   enum_attr :status, %w(new invalid corrected audited field_checked), :init => :new, :nil => false
