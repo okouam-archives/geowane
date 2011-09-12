@@ -1,9 +1,8 @@
 class Road  < ActiveRecord::Base
-  set_primary_key :gid
 
   scope :closest, lambda {|longitude, latitude|
-    where("ST_DWithin(ST_GeographyFromText('SRID=4326;Point(#{longitude} #{latitude})'), roads.the_geom::geometry, 500)")
-    .order("ST_Distance(ST_GeographyFromText('SRID=4326;Point(#{longitude} #{latitude})'), roads.the_geom::geometry)")
+    where("ST_DWithin(ST_GeographyFromText('SRID=4326;Point(#{longitude} #{latitude})'), roads.the_geom::geography, 500)")
+    .order("ST_Distance(ST_GeographyFromText('SRID=4326;Point(#{longitude} #{latitude})'), roads.the_geom::geography)")
     .limit(1)
   }
 

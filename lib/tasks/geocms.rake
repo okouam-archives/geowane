@@ -18,6 +18,18 @@ namespace :geocms do
     FileUtils.cp_r(icons, File.join(Rails.root, "public/assets/icons"))
   end
 
+  desc "Update geolocatable data for all locations"
+  task :geolocation => :environment do
+    Rails.logger = Logger.new(STDOUT)
+    count = Location.where("road_id IS NULL").count
+    counter = 1
+    Location.where("road_id IS NULL").each do |location|
+      location.update_dynamic_attributes
+      location.save!
+      puts "#{counter}/#{count} #{location.road_id ? "True" : "False"}"
+      counter = counter + 1
+    end
+  end
 
   desc "Pulls down the production database into the development database"
   task :pull do
