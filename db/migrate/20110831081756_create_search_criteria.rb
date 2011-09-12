@@ -29,6 +29,7 @@ class CreateSearchCriteria < ActiveRecord::Migration
       t.integer :location_level_3
       t.integer :location_level_4
       t.string :street_name
+      t.string :sort_order
     end
   end
 end

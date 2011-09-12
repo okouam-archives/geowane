@@ -35,6 +35,12 @@ Gowane::Application.routes.draw do
   resource :account, :controller => "account"
   resource :user_sessions
 
+  resources :cities do
+    collection do
+      post :collection_delete
+    end
+  end
+
   resources :users, :cities, :counters, :conversions, :boundaries, :features, :samples, :audits, :roads
 
   resources :partners do

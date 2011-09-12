@@ -16,4 +16,9 @@ class CitiesController < ApplicationController
     redirect_to cities_path
   end
 
+  def collection_delete
+    City.destroy(params[:collection])
+    head :ok
+  end
+
 end

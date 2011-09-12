@@ -13,8 +13,8 @@ class Search < ActiveRecord::Base
     elsif criteria.nil? && search_token
       search = Search.find_by_persistence_token(search_token)
     else
-      # Put sort order back in place at some point
       search.criteria = SearchCriteria.new(criteria)
+      search.criteria.sort_order = sort_order
     end
     search.save!
     search

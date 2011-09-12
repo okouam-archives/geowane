@@ -5,7 +5,7 @@ class SearchCriteria < ActiveRecord::Base
 
     query = Location.scoped
 
-    query = sort ? query.order("#{sort} ASC") : query.order("locations.name")
+    query = sort_order ? query.order("#{sort_order} ASC") : query.order("locations.name")
 
     query = query
     .select(%{DISTINCT locations.id, longitude, latitude, locations.name,

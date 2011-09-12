@@ -1,5 +1,8 @@
 = content_for :title, "Cities"
 
+- content_for :javascripts do
+  = javascript_include_tag "/assets/mvc/cities/index/init.js", :debug => Rails.env.development?
+
 .block
   .block_head
     %h2
@@ -17,7 +20,7 @@
         .portlet-header
           Listing
         .portlet-content.nopadding
-          %table{:cellspacing => "0", :cellpadding => "0", :style => "width: 100%; margin-left: 0px"}
+          %table.main
             %thead
               %tr
                 %th.selector= check_box_tag 'selector'
@@ -49,7 +52,7 @@
                   = linked_figure(@cities.inject(0) {|total, city| total + (city.total_locations.to_i - city.categorized_locations.to_i) }, nil)
             %tbody
               - @cities.each do |city|
-                %tr
+                %tr{:"data-id" => city.id}
                   %td.selector= check_box_tag 'selector'
                   %td= link_to city.name, edit_city_path(city)
                   %td.total_POI= linked_figure(city.total_locations || 0, "/locations?s[city_id]=#{city.id}")
