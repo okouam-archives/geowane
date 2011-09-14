@@ -1,13 +1,13 @@
 .block
   .block_head
     %h2
-      Profile
-      = link_to "Edit", edit_account_path
+      =t :profile
+      = link_to t('edit'), edit_account_path
   .block_content
     #portlets
       .portlet
         .portlet-header
-          Listing
+          =t :listing
         .portlet-content
           %ul
             %li
@@ -20,9 +20,15 @@
               %b Skype Alias:
               = object.skype_alias
             %li
-              %b Home Country:
+              %b 
+                =t('home_country')
               = object.home_country
             %li
-              %b Mobile Number:
+              %b 
+                =t ('mobile_number')
               = object.mobile_number
+            %li
+              %b
+                =t ('language')
+              = object.locale
 
