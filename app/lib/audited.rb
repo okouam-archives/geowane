@@ -10,7 +10,7 @@ module Audited
 
       return if self.included_modules.include?(Audited::InstanceMethods)
 
-      class_inheritable_reader :non_audited_columns
+      class_attribute :non_audited_columns
 
       except = [self.primary_key, inheritance_column, 'lock_version', 'created_at', 'updated_at', 'created_on', 'updated_on', 'searchable_name', 'feature']
 
