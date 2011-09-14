@@ -13,6 +13,7 @@ class CreateUsersTable < ActiveRecord::Migration
         t.string :mobile_number
         t.string :skype_alis
         t.string :home_country
+        t.string :locale, :default => "en"
         t.timestamps
       end
   end

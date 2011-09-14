@@ -24,10 +24,12 @@ class Permissions < Aegis::Permissions
     action :change_status_of do
 
       allow :collector do |new_status|
-        if new_status
-          (object.is_invalid? && object.username == user.login && new_status == :corrected) || new_status == object.status
+        if object.user_id != user.id
+          false
+        elsif new_status
+          (object.is_invalid? && new_status == :corrected) || new_status == object.status
         else
-          object.status == :invalid
+          object.is_invalid?
         end
       end
 

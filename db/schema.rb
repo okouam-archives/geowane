@@ -201,12 +201,12 @@ ActiveRecord::Schema.define(:version => 20110902115612) do
   create_table "mappings", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "category_id",       :null => false
-    t.integer  "classification_id", :null => false
+    t.integer  "category_id",         :null => false
+    t.integer  "partner_category_id", :null => false
   end
 
   add_index "mappings", ["category_id"], :name => "idx_mappings_on_category_id"
-  add_index "mappings", ["classification_id"], :name => "idx_mappings_on_classification_id"
+  add_index "mappings", ["partner_category_id"], :name => "idx_mappings_on_partner_category_id"
 
   create_table "model_changes", :force => true do |t|
     t.string   "old_value"
@@ -344,6 +344,7 @@ ActiveRecord::Schema.define(:version => 20110902115612) do
     t.string   "mobile_number"
     t.string   "skype_alis"
     t.string   "home_country"
+    t.string   "locale",            :default => "en"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

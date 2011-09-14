@@ -5,15 +5,17 @@ Spork.prefork do
   require "rails/application"
   Spork.trap_method(Rails::Application, :reload_routes!)
   require File.expand_path("../../config/environment", __FILE__)
-  require 'rspec/rails'
   require 'aegis/spec/matchers'
+  require 'rspec/rails'
   require 'factory_girl'
   require 'capybara/rspec'
   require 'database_cleaner'
+  require 'ruby-debug'
 
   RSpec.configure do |config|
 
     config.use_transactional_fixtures = false
+    config.include Aegis::Spec::Matchers, :type => :controller
 
     config.before(:suite) do
       DatabaseCleaner.strategy = :transaction

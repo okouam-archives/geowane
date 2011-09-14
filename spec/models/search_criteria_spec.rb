@@ -11,7 +11,7 @@ describe SearchCriteria do
 
     it "returns all locations" do
       Factory(:location)
-      query = SearchCriteria.create_sql
+      query = SearchCriteria.new.create_query
       query.count.should == 1
     end
 
@@ -23,7 +23,7 @@ describe SearchCriteria do
       Factory(:location, :name => "K")
       Factory(:location, :name => "D")
       Factory(:location, :name => "H")
-      query = SearchCriteria.create_sql(nil, "locations.name")
+      query = SearchCriteria.new(nil, "locations.name").create_query
       query.first.name.should == "D"
     end
 
@@ -34,7 +34,7 @@ describe SearchCriteria do
     london = Factory(:city, :name => "London")
     Factory(:location, :city => paris)
     Factory(:location, :city => london)
-    query = SearchCriteria.create_sql({:city_id => paris.id})
+    query = SearchCriteria.new({:city_id => paris.id}).create_query
     query.all.size.should == 1
     query.first.city_name.should == "Paris"
   end
@@ -42,9 +42,9 @@ describe SearchCriteria do
   it "searches by classification" do
     hotels = Factory(:category)
     hotels.locations << Factory(:location)
-    classification = Factory(:classification)
-    classification.categories << hotels
-    query = SearchCriteria.create_sql({:classification_id => classification.id})
+    partner_category = Factory(:partner_category)
+    partner_category.categories << hotels
+    query = SearchCriteria.new({:partner_category_id => partner_category.id}).create_query
     query.all.size.should == 1
   end
 
@@ -59,7 +59,7 @@ describe SearchCriteria do
       Factory(:location)
       hotel = Factory(:location)
       hotel.update_attributes(:longitude => 12)
-      query = SearchCriteria.create_sql({:modified_by => @user.id})
+      query = SearchCriteria.new({:modified_by => @user.id}).create_query
       query.all.size.should == 1
     end
 
@@ -67,7 +67,7 @@ describe SearchCriteria do
       Factory(:location)
       hotel = Factory(:location)
       hotel.update_attributes(:status => "audited")
-      query = SearchCriteria.create_sql({:audited_by => @user.id})
+      query = SearchCriteria.new({:audited_by => @user.id}).create_query
       query.all.size.should == 1
     end
 
@@ -75,7 +75,7 @@ describe SearchCriteria do
      Factory(:location)
       hotel = Factory(:location)
       hotel.update_attributes(:status => "field_checked")
-      query = SearchCriteria.create_sql({:confirmed_by => @user.id})
+      query = SearchCriteria.new({:confirmed_by => @user.id}).create_query
       query.all.size.should == 1
     end
 
@@ -83,28 +83,12 @@ describe SearchCriteria do
 
   context "when filtering by category" do
 
-    it "can search for locations with no categories" do
-      hotels = Factory(:category)
-      hotels.locations << Factory(:location)
-      Factory(:location)
-      query = SearchCriteria.create_sql({:category_missing => "1"})
-      query.all.size.should == 1
-    end
-
-    it "can search for locations belongong to any category" do
-      hotels = Factory(:category)
-      hotels.locations << Factory(:location)
-      Factory(:location)
-      query = SearchCriteria.create_sql({:category_present => "1"})
-      query.all.size.should == 1
-    end
-
     it "filters by category when a category ID is provided" do
       hotels = Factory(:category)
       bars = Factory(:category)
       hotels.locations << Factory(:location)
       bars.locations << Factory(:location)
-      query = SearchCriteria.create_sql({:category_id => hotels.id})
+      query = SearchCriteria.new({:category_id => hotels.id}).create_query
       query.all.size.should == 1
     end
 
@@ -113,21 +97,21 @@ describe SearchCriteria do
   it "can search for locations created after a certain date" do
     Factory(:location, :created_at => DateTime.now + 3.days)
     Factory(:location)
-    query = SearchCriteria.create_sql({:added_on_after => (DateTime.now + 2.days).to_s})
+    query = SearchCriteria.new({:added_on_after => (DateTime.now + 2.days).to_s}).create_query
     query.all.size.should == 1
   end
 
   it "can search for locations created before a certain date" do
     Factory(:location, :created_at => DateTime.now + 3.days)
     Factory(:location)
-    query = SearchCriteria.create_sql({:added_on_before => (DateTime.now + 2.days).to_s})
+    query = SearchCriteria.new({:added_on_before => (DateTime.now + 2.days).to_s}).create_query
     query.all.size.should == 1
   end
 
   it "can filter by name" do
     Factory(:location, :name => "Residence Eburnea")
     Factory(:location, :name => "Sococe")
-    query = SearchCriteria.create_sql({:name=> "ebur"})
+    query = SearchCriteria.new({:name=> "ebur"}).create_query
     query.all.size.should == 1
   end
 
@@ -135,7 +119,7 @@ describe SearchCriteria do
     Factory(:location)
     location = Factory(:location)
     location.labels << Label.new(:key => "IMPORTED FROM", :value => "4", :classification => "SYSTEM")
-    query = SearchCriteria.create_sql({:import_id=> "4"})
+    query = SearchCriteria.new({:import_id=> "4"}).create_query
     query.all.size.should == 1
   end
 
@@ -146,7 +130,7 @@ describe SearchCriteria do
       hotel.update_attributes(:level_0 => 384, :level_1 => 3944, :level_3 => 23)
       bar = Factory(:location)
       bar.update_attributes(:level_0 => 384)
-      query = SearchCriteria.create_sql({:location_level_1=> 3944, :location_level_0 => 384})
+      query = SearchCriteria.new({:location_level_1=> 3944, :location_level_0 => 384}).create_query
       query.all.size.should == 1
     end
 
@@ -155,14 +139,14 @@ describe SearchCriteria do
   it "searches by bbox" do
     Factory(:location, :longitude => 2, :latitude => 2)
     Factory(:location, :longitude => 0, :latitude => 0)
-    query = SearchCriteria.create_sql({:bbox => "1,-1,-1,1"})
+    query = SearchCriteria.new({:bbox => "1,-1,-1,1"}).create_query
     query.all.size.should == 1
   end
 
   it "can filter by status" do
     Factory(:location, :status => "invalid")
     Factory(:location, :status => "corrected")
-    query = SearchCriteria.create_sql({:status => "corrected"})
+    query = SearchCriteria.new({:status => "corrected"}).create_query
     query.all.size.should == 1
   end
 
