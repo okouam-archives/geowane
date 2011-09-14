@@ -1,13 +1,13 @@
 .block
   .block_head
     %h2
-      Profile
+      =t :profile
       = link_to "Edit", edit_account_path
   .block_content
     #portlets
       .portlet
         .portlet-header
-          Listing
+          =t :listing
         .portlet-content
           %ul
             %li
@@ -25,4 +25,8 @@
             %li
               %b Mobile Number:
               = object.mobile_number
+            %li
+              %b Locale Language:
+              = object.locale
+
 
