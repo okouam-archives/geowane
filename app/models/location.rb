@@ -27,16 +27,12 @@ class Location < ActiveRecord::Base
   scope :labelled, lambda {|key, value, classification|
     joins(:labels)
       .where("labels.classification ilike ?", classification)
-      .where("labels.key ilike ?", key)
-      .where("labels.value = ?", value)
+      .where("labels.key ilike ?", key.to_s)
+      .where("labels.value ilike ?", value.to_s)
   }
 
   scope :valid, lambda {
     where("status != 'INVALID'")
-  }
-
-  scope :classified_as, lambda {|classification|
-    joins({:tags => {:category => {:mappings => :classification}}}).where("classifications.id = #{classification}")
   }
 
   scope :on_street, lambda {|name|

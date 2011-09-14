@@ -23,12 +23,6 @@ describe Location do
       Audit.count.should == 1
     end
 
-    it "records all the model changes" do
-      location = Factory(:location)
-      location.update_attributes(:status => 'field_checked')
-      pending
-    end
-
   end
 
   context "when searching for surrounding landmarks" do
@@ -80,38 +74,6 @@ describe Location do
       end
       poi = Factory(:location, :longitude => 0, :latitude => 0)
       poi.surrounding_landmarks.length.should == 10
-    end
-
-    it "orders retrieved landmarks by distance from the location" do
-      pending
-    end
-
-  end
-
-  context "when creating GeoJSON representation" do
-
-    it "does not add an icon if not in a category" do
-      pending
-    end
-
-    it "adds the icon of the category to which it belongs" do
-      pending
-    end
-
-    it "adds the city name if attached to a city" do
-      pending
-    end
-
-    it "adds the location's main attributes" do
-      pending
-    end
-
-    it "adds the username of the owner if the property is availabe" do
-      pending
-    end
-
-    it "adds the name of ther owner if there is no username property available" do
-      pending
     end
 
   end

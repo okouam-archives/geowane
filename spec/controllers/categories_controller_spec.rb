@@ -17,12 +17,6 @@ describe CategoriesController do
         response.status.should == 200
       end
 
-      it "assigns the retrieved categories to the view" do
-        Category.stub_chain(:find_by_sql, :paginate).and_return("A RESULT")
-        get :index
-        assigns(:categories).should == "A RESULT"
-      end
-
       it "renders the #index template" do
         get :index
         response.should render_template("index")

@@ -12,11 +12,6 @@ describe Category do
 
   end
 
-  it "can output a JSON representation" do
-    category = Category.create!(:id => 23, :icon => "D", :english => "IF", :french => "POS")
-    category.json_object.should == {:id => category.id, :icon => "D", :name => "POS"}
-  end
-
   it "can output its bilingual name" do
     category = Category.new(:french => "A", :english => "B")
     category.bilingual_name.should == "A / B"

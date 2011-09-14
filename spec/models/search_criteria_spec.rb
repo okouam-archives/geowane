@@ -39,15 +39,6 @@ describe SearchCriteria do
     query.first.city_name.should == "Paris"
   end
 
-  it "searches by classification" do
-    hotels = Factory(:category)
-    hotels.locations << Factory(:location)
-    partner_category = Factory(:partner_category)
-    partner_category.categories << hotels
-    query = SearchCriteria.new({:partner_category_id => partner_category.id}).create_query
-    query.all.size.should == 1
-  end
-
   context "when filtering by model change" do
 
     before(:each) do

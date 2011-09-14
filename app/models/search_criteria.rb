@@ -15,8 +15,6 @@ class SearchCriteria < ActiveRecord::Base
     .joins("LEFT JOIN boundaries ON locations.level_0 = boundaries.id")
     .joins("LEFT JOIN cities ON cities.id = locations.city_id")
 
-    query = query.classified_as(classification_id) unless classification_id.blank?
-
     query = query.in_bbox(bbox.split(",")) unless bbox.blank?
 
     query = query.labelled("IMPORTED FROM", import_id, "SYSTEM") unless import_id.blank?
