@@ -3,6 +3,24 @@
 # contributor: Sebastien Grosjean - ZenCocoon.com
 
 fr:
+  hello: "Bonjour Monde"
+  edit_details: "Modifier Vos Details"
+  back: "Retour"
+  profile: "profil"
+  listing: "Liste"
+  title: "Titre"
+  resolved_issues: "Dernières Mises à Jour"
+  author: "Auteur"
+  opened: "Debut"
+  closed: "Fin"
+  status: "Statut"
+  edit: "Modifier"
+  language: "Langue:"
+  mobile_number: "Numéro de portable:"
+  home_country: "Pays d'origine:"
+    
+    
+    
   date:
     formats:
       default: "%d/%m/%Y"
@@ -137,4 +155,3 @@ fr:
         odd: "doit être impair"
         even: "doit être pair"
         record_invalid: "La validation a échoué : {{errors}}"
-

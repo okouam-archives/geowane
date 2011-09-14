@@ -10,19 +10,19 @@
         #left.column
           .portlet
             .portlet-header
-              Latest Resolved Issues
+              =t :resolved_issues
             .portlet-content.nopadding
               %table
                 %thead
                   %tr
                     %th
-                      Title
+                      =t :titre
                     %th
-                      Raised By
+                      =t :author
                     %th
-                      Opened
+                      =t :opened
                     %th
-                      Closed
+                      =t :closed
                 - for ticket in @resolved
                   %tr
                     %td
@@ -42,13 +42,13 @@
                 %thead
                   %tr
                     %th
-                      Title
+                      =t :title
                     %th
-                      Raised By
+                      =t :author
                     %th
-                      Opened
+                      =t :opened
                     %th
-                      Status
+                      =t :status
                 - for ticket in @outstanding
                   %tr
                     %td

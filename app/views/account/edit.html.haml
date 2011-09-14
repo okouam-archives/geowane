@@ -1,6 +1,6 @@
 .block
   .block_head
     %h2
-      Edit Details
-      = link_to "Back", users_path
+      =t :edit_details
+      = link_to t('back'), users_path
   = render :partial => 'form'

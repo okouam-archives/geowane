@@ -3,3 +3,17 @@
 
 en:
   hello: "Hello world"
+  edit_details: "Edit Details"
+  back: "Back"
+  profile: "Profile"
+  listing: "Listing"
+  title: "Title"
+  resolved_issues: "Latest Resolved Issues"
+  author: "Author"
+  opened: "Opened"
+  closed: "Closed"
+  status: "Status"
+  edit: "Edit"
+  language: "Language:"
+  mobile_number: "Mobile Number:"
+  home_country: "Home Country:"
