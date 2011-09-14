@@ -3,16 +3,6 @@
 # contributor: Sebastien Grosjean - ZenCocoon.com
 
 fr:
-  hello: "Bonjour Monde"
-  edit_details: "Modifier Vos Details"
-  back: "Retour"
-  profile: "profil"
-  listing: "Liste"
-  title: "Titre"
-  resolved_issues: "Dernières Mises à Jour"
-    
-    
-    
   date:
     formats:
       default: "%d/%m/%Y"

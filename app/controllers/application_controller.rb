@@ -1,6 +1,5 @@
 class ApplicationController < ActionController::Base
   before_filter :require_user
-  before_filter :set_locale
   cache_sweeper :audit_sweeper
   helper :all
   around_filter :convert_permission_error
@@ -10,14 +9,6 @@ class ApplicationController < ActionController::Base
 
   private
  
-  def set_locale
-    if current_user
-      I18n.locale = current_user.locale
-    else
-      I18n.default_locale
-    end
-  end
-  
   def convert_permission_error
     yield
   rescue Aegis::AccessDenied
