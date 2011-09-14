@@ -32,9 +32,9 @@ Spork.prefork do
 end
 
 Spork.each_run do
+  FactoryGirl.definition_file_paths = [File.join(Rails.root, 'spec', 'factories')]
+  FactoryGirl.find_definitions
   Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
-  Factory.definition_file_paths = [File.join(Rails.root, 'spec', 'factories')]
-  Factory.find_definitions
 end
 
 def current_user(stubs = {})

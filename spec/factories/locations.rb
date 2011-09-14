@@ -8,6 +8,6 @@ end
 Factory.define :invalid_location, :class => Location do |f|
 end
 
-Factory.sequence(:place_name, %w[hotel bar bookclub cornershop]) do |name, i|
-  "#{name}_#{i}"
+Factory.sequence :place_name do |n|
+  "poi_#{n}"
 end

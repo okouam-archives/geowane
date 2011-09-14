@@ -28,6 +28,6 @@ end
 Factory.define :invalid_user, :class => User do |f|
 end
 
-Factory.sequence(:username, %w[username]) do |name, i|
-  "#{name}_#{i}"
+Factory.sequence :username do |n|
+  "user_#{n}"
 end
