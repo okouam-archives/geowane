@@ -9,7 +9,7 @@ describe Location do
   context "when valid" do
 
     it "can be saved" do
-      Factory(:location)
+      Factory.create(:location)
     end
 
   end

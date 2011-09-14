@@ -4,7 +4,7 @@ gem 'pg'
 gem 'formtastic'
 gem 'haml'
 gem 'nokogiri'
-gem 'spatial_adapter'
+gem 'spatial_adapter', :git => 'https://github.com/Empact/spatial_adapter.git'
 gem 'aegis', :require => 'aegis'
 gem 'rails', '3.1.0', :branch => '3-1-stable'
 gem "dbf"

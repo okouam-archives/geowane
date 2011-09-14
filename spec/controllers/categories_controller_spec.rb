@@ -17,13 +17,6 @@ describe CategoriesController do
         response.status.should == 200
       end
 
-      it "paginates the retrieved categories" do
-        categories = mock('Categories')
-        Category.stub(:find_by_sql).and_return(categories)
-        categories.should_receive(:paginate).with(:page => 54, :per_page => 10)
-        get :index, :page => 54
-      end
-
       it "assigns the retrieved categories to the view" do
         Category.stub_chain(:find_by_sql, :paginate).and_return("A RESULT")
         get :index

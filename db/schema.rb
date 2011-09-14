@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(:version => 20110902115612) do
     t.string   "name",                          :null => false
     t.integer  "level",                         :null => false
     t.string   "classification",                :null => false
+    t.integer  "parent_id"
     t.geometry "feature",        :limit => nil,                 :srid => 4326
   end
 
@@ -39,12 +40,10 @@ ActiveRecord::Schema.define(:version => 20110902115612) do
   create_table "categories", :force => true do |t|
     t.string   "french",       :limit => 200,                    :null => false
     t.string   "english",      :limit => 200,                    :null => false
-    t.string   "shape",                                          :null => false
     t.string   "code",         :limit => 200
     t.string   "icon",         :limit => 200
     t.boolean  "is_hidden",                   :default => false
     t.integer  "numeric_code",                :default => 0
-    t.boolean  "is_leaf",                     :default => true
     t.boolean  "is_landmark",                 :default => false
     t.integer  "tags_count"
     t.datetime "created_at"
@@ -180,7 +179,7 @@ ActiveRecord::Schema.define(:version => 20110902115612) do
     t.integer  "level_2"
     t.integer  "level_3"
     t.integer  "level_4"
-    t.string   "emaile"
+    t.string   "email"
     t.string   "telephone"
     t.string   "website"
     t.string   "postal_address"
@@ -282,6 +281,8 @@ ActiveRecord::Schema.define(:version => 20110902115612) do
     t.integer  "location_level_2"
     t.integer  "location_level_3"
     t.integer  "location_level_4"
+    t.string   "street_name"
+    t.string   "sort_order"
   end
 
   create_table "searches", :force => true do |t|
@@ -331,22 +332,15 @@ ActiveRecord::Schema.define(:version => 20110902115612) do
   add_index "tags", ["location_id", "category_id", "id"], :name => "idx_tags_locations"
 
   create_table "users", :force => true do |t|
-    t.string   "login",                                 :null => false
-    t.string   "email",                                 :null => false
-    t.string   "crypted_password",                      :null => false
-    t.string   "password_salt",                         :null => false
-    t.string   "persistence_token",                     :null => false
-    t.string   "single_access_token",                   :null => false
-    t.string   "perishable_token",                      :null => false
-    t.integer  "login_count",         :default => 0,    :null => false
-    t.integer  "failed_login_count",  :default => 0,    :null => false
-    t.datetime "last_request_at"
-    t.datetime "current_login_at"
+    t.string   "login",                               :null => false
+    t.string   "email",                               :null => false
+    t.string   "crypted_password",                    :null => false
+    t.string   "password_salt",                       :null => false
+    t.string   "persistence_token",                   :null => false
     t.datetime "last_login_at"
-    t.string   "current_login_ip"
     t.string   "last_login_ip"
     t.string   "role_name"
-    t.boolean  "is_active",           :default => true, :null => false
+    t.boolean  "is_active",         :default => true, :null => false
     t.string   "mobile_number"
     t.string   "skype_alis"
     t.string   "home_country"
