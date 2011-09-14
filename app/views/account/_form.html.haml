@@ -6,4 +6,5 @@
     = form.input :skype_alias, :input_html => { :class => "text" }
     = form.input :home_country, :as => :string, :input_html => { :class => "text" }
     = form.input :mobile_number, :input_html => { :class => "text" }
+    = form.input :locale, :as => :select, :collection => ["en","fr"], :required => true, :label => "Language"
     = form.commit_button :button_html => { :class => "submit long" }
