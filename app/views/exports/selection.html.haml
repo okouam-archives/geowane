@@ -32,7 +32,7 @@
               Partner Categories
               %span{:style=>"margin-right: 0"}
                 Partner:
-                = select_tag("", options_for_select(@all_partners, @selected_partner.id))
+                = select_tag("export[partner_id]", options_for_select(@all_partners, @selected_partner.id))
             .portlet-content.nopadding{:style=>"height: 300px; overflow-y: scroll"}
               %table.main
                 %thead

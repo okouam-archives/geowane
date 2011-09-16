@@ -34,7 +34,7 @@ class ExportsController < ApplicationController
         locations.id IN (#{parameters[:locations].join(",")})
         AND partners.id = #{parameters[:partner_id]}
     }
-    object.execute Location.find_by_sql()
+    object.execute Location.find_by_sql(sql)
     object.description = parameters[:description]
     object.output_format = ".SHP"
     object.save!

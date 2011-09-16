@@ -30,27 +30,27 @@ class Export < ActiveRecord::Base
       return {locations: [], description: "No filter criteria were selected", partner_id: -1}
     end
 
-    description = []
+    description = ["With partner: #{partner_id}"]
     query = Location.scoped.select("distinct locations.id")
 
     if statuses
       query = query.where(:status => statuses)
-      description << "With statuses: " + statuses
+      description << "With statuses: #{statuses}"
     end
 
     if countries
       query = query.where(:level_0 => countries)
-      description << "With countries: " + countries
+      description << "With countries: #{countries}"
     end
 
     if users
       query = query.where(:user_id => users)
-      description << "With users: " + users
+      description << "With users: #{users}"
     end
 
     if categories
       query = query.joins(:categories => [:partner_categories]).where("partner_categories.id" => categories)
-      description << "With categories: " + categories
+      description << "With categories: #{categories}"
     end
 
     {locations: query.map {|l| l.id}, description: description, partner_id: partner_id}
@@ -121,7 +121,7 @@ class Export < ActiveRecord::Base
       label = windows_encode(label)
       city = windows_encode(city) if city
       region = windows_encode(region) if region
-      country = windows_encode(country)
+      country = windows_encode(country) if country
       partner = windows_encode(partner)
     end
     GeoRuby::Shp4r::ShpRecord.new(location.feature,
