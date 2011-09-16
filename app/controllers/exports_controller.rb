@@ -5,9 +5,10 @@ class ExportsController < ApplicationController
   PAGER = :exports_index_page
 
   create.after do
+    parameters = session[:selection]
     object.user = current_user
-    object.locations_count = session[:locations].size
-    object.execute Location.find_by_sql(%{
+    object.locations_count = parameters[:locations].size
+    sql = %{
       SELECT DISTINCT
         locations.id,
         cities.name as city,
@@ -30,8 +31,11 @@ class ExportsController < ApplicationController
         JOIN partner_categories ON partner_categories.id = mappings.partner_category_id
         JOIN partners ON partners.id = partner_categories.partner_id
       WHERE
-        locations.id IN (#{session[:locations].join(",")})
-    })
+        locations.id IN (#{parameters[:locations].join(",")})
+        AND partners.id = #{parameters[:partner_id]}
+    }
+    object.execute Location.find_by_sql()
+    object.description = parameters[:description]
     object.output_format = ".SHP"
     object.save!
   end
@@ -56,11 +60,19 @@ class ExportsController < ApplicationController
   end
 
   def count
-    render :text => Export.locate(params[:export]).count
+    render :text => Export.locate(params[:export])[:locations].count
   end
 
   def prepare
-    session[:locations] =  params[:export] ? Export.locate(params[:export]).map{|loc| loc.id} : params[:locations]
+    if params[:export]
+      session[:selection] = Export.locate(params[:export])
+    else
+      session[:selection] = {
+        locations: params[:locations],
+        partner_id: Partner.find_by_name("0-One").id,
+        description: "Manual selection"
+      }
+    end
     redirect_to :action => :new
   end
 

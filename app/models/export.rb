@@ -19,19 +19,42 @@ class Export < ActiveRecord::Base
   end
 
   def self.locate(query)
+
     countries = query["countries"]
     statuses = query[:statuses]
     users = query[:users]
     categories = query[:categories]
+    partner_id = query[:partner_id]
+
+    unless statuses || countries || categories || users
+      return {locations: [], description: "No filter criteria were selected", partner_id: -1}
+    end
+
+    description = []
     query = Location.scoped.select("distinct locations.id")
-    return query.where("1 = 2") unless statuses || countries || categories || users
-    query = query.where(:status => statuses) if statuses
-    query = query.where(:level_0 => countries) if countries
-    query = query.where(:user_id => users) if users
+
+    if statuses
+      query = query.where(:status => statuses)
+      description << "With statuses: " + statuses
+    end
+
+    if countries
+      query = query.where(:level_0 => countries)
+      description << "With countries: " + countries
+    end
+
+    if users
+      query = query.where(:user_id => users)
+      description << "With users: " + users
+    end
+
     if categories
       query = query.joins(:categories => [:partner_categories]).where("partner_categories.id" => categories)
+      description << "With categories: " + categories
     end
-    query
+
+    {locations: query.map {|l| l.id}, description: description, partner_id: partner_id}
+
   end
 
   private
