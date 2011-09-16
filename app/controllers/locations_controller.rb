@@ -4,6 +4,27 @@ class LocationsController < ApplicationController
   layout "admin"
   before_filter :assign_form_data, :only => [:create, :edit]
 
+
+  def page_entries_info(collection, options = {})
+    locations = options[:locations] || (collection.empty?? 'entry' : collection.first.class.name.underscore.sub('_', ' '))
+
+    if collection.num_pages < 2
+      case collection.size
+      when 0; info = "No #{locations.pluralize} found"
+      when 1; info = "Displaying <strong>1</strong> #{locations}"
+      else;   info = "Displaying <strong>all #{collection.size}</strong> #{locations.pluralize}"
+      end
+    else
+      info = %{Displaying #{locations.pluralize} <strong>%d&ndash;%d</strong> of <strong>%d</strong> in total}% [
+        collection.offset_value + 1,
+        collection.offset_value + collection.length,
+        collection.total_count
+      ]
+    end
+    info.html_safe
+  end
+
+
   def index
     @search = Search.construct(params[:s], params[:sort], params[:page], params[:per_page], session[:search_token], current_user)
     @search.save_to_session(session)
@@ -11,6 +32,7 @@ class LocationsController < ApplicationController
       format.html do
         @locations = @search.execute
         @per_page = @search.per_page
+        @page_entries_info = page_entries_info(@locations)
       end
       format.json { render :json => @search.execute.to_a.to_geojson }
     end

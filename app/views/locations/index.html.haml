@@ -59,5 +59,7 @@
                     %td= location.created_at.strftime("%d-%m-%Y")
                     %td= location.updated_at.strftime("%d-%m-%Y")
                     %td= location.status.to_s.humanize.upcase
-            = render :partial => "shared/paging", :locals => {:collection => @locations, :page_size => @per_page}
+            = render :partial => "shared/paging", :locals => {:collection => @locations, :page_size => @entries_per_page}
+            = @page_entries_info
+
 
