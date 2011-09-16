@@ -67,6 +67,8 @@ class Location < ActiveRecord::Base
       :updated_at => updated_at.to_s,
       :status => status,
       :website => website,
+      :acronym => acronym,
+      :geographical_address => geographical_address,
       :email => email,
       :opening_hours => opening_hours,
       :telephone => telephone,

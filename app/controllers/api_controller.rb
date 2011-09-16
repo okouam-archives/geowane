@@ -6,20 +6,25 @@ class ApiController < ApplicationController
 
   def categories
     if params[:client]
-        query = Category
+        query = Location
         .scoped
         .select("partner_categories.id, partner_categories.french, partner_categories.icon, count(*) as count")
         .where("partners.name ilike ?", "%#{params[:client]}%")
+        .where("NOT categories.is_hidden")
         .group("partner_categories.id, partner_categories.french, partner_categories.icon")
         .order("partner_categories.french ASC")
-        .joins(:mappings)
-        .joins(:partner_categories => [:partner])
+        .joins(:categories => [:partner_categories => [:partner]])
     else
       query = Category
         .scoped
         .select("categories.id, categories.french, categories.icon, count(*) as count")
         .group("categories.id, categories.french, categories.icon")
         .order("categories.french ASC")
+    end
+    if params[:country]
+      query = query
+        .joins(:administrative_unit_0)
+        .where("boundaries.name like ?", "%#{params[:country]}%")
     end
     render :json => query.to_json, :callback => params[:callback]
   end
