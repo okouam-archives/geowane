@@ -1,28 +1,36 @@
-= content_for :title, "Collectors"
+= content_for :title, t('collectors')
 
 .block
   .block_head
     %h2
-      Collectors
-      = link_to "Collector Field Collection", "#", :class=> "heading-action"
+      =t('collectors')
+      = link_to t('collector_collection'), "#", :class=> "heading-action"
   .block_content
     #portlets
       .portlet
         .portlet-header
-          Listing
+          =t('listing')
         .portlet-content.nopadding
           %table
             %thead
               %tr
-                %th Collector
-                %th.total_POI Total
-                %th.new New
-                %th.audited Audited
-                %th.invalid Invalid
-                %th.corrected Corrected
-                %th.checked Checked
+                %th 
+                  =t('collector')
+                %th.total_POI 
+                  =t('total')
+                %th.new 
+                  =t('_new')
+                %th.corrected 
+                  =t('corrected')
+                %th.invalid 
+                  =t('_invalid')
+                %th.audited 
+                  =t('audited')
+                %th.checked 
+                  =t('checked')
                 %th.uncategorized
-                  %i Uncategorized
+                  %i 
+                    =t('uncategorized')
             %tbody
               - @counters.each do |counter|
                 %tr
@@ -55,5 +63,4 @@
                   = linked_figure(@counters.inject(0) {|total, city| total + city.field_checked_locations.to_i }, nil)
                 %td.uncategorized
                   = linked_figure(@counters.inject(0) {|total, counter| total + (counter.total_locations.to_i - counter.categorized_locations.to_i) }, nil)
-
 

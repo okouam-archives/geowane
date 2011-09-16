@@ -4,25 +4,25 @@
       #left.column
         .portlet
           .portlet-header
-            Properties
+            =t('properties')
           .portlet-content.properties
-            = form.input :french
-            = form.input :english
-            = form.input :code, :required => true
-            = form.input :is_hidden, :label => " Is Hidden"
-            = form.input :is_landmark, :label => " Is Landmark"
+            = form.input :french, :label => t('french')
+            = form.input :english, :label => t('english')
+            = form.input :code, :required => true, :label => t('code')
+            = form.input :is_hidden, :label => t('is_hidden')
+            = form.input :is_landmark, :label => t('is_landmark')
       .column
         .portlet
           .portlet-header
-            Icon
+            =t('icon')
           .portlet-content
             %p
-              Please use of the icons found at
+              =t('icon_usage_mess1')
               = link_to "http://mapicons.nicolasmollet.com", "http://mapicons.nicolasmollet.com"
-              or use an existing icon. This icon will be used for displaying this category on the map.
-            = form.input :icon, :as => :file, :label => "Upload Icon"
+              =t('icon_usage_mess2')
+            = form.input :icon, :as => :file, :label => t('upload_icon')
             %label{:style=>"margin-top: 13px"}
-              Current Icon
+              =t('cur_icon')
             = image_tag(object.icon.url)
         .clear
         %div.form_commit

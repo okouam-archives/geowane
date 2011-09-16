@@ -1,26 +1,30 @@
-= content_for :title, "View Categories"
+= content_for :title, t('view_cat')
 
 %div.block
   %div.block_head
     %h2
-      Users
-      = link_to "New User", "#", :class=> "heading-action"
+      =t('users')
+      = link_to t('new_user'), "#", :class=> "heading-action"
   %div.block_content
     %form{:method => "post"}
       #portlets
         .portlet
           .portlet-header
-            Listing
+            =t('listing')
           .portlet-content.nopadding
             %table.main
               %thead
                 %tr
                   %th.selector
                     %input{:type=>"checkbox"}
-                  %th Name
-                  %th{:style=>"width: 150px"} Last Logged In At
-                  %th{:style=>"width: 80px; text-align: center"} Active
-                  %th{:style=>"width: 70px"} Role
+                  %th 
+                    =t('name')
+                  %th{:style=>"width: 150px"} 
+                    =t('last_logged')
+                  %th{:style=>"width: 80px; text-align: center"} 
+                    =t('_active')
+                  %th{:style=>"width: 70px"} 
+                    =t('_role')
               %tbody
               - for user in @users
                 %tr
@@ -32,4 +36,3 @@
                     %input{:type=>"checkbox", :checked => user.is_active, :disabled => "true"}
                   %td= user.role_name
             = render :partial => "shared/paging", :locals => {:collection => @users, :page_size => @per_page}
-

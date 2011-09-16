@@ -1,11 +1,12 @@
-= content_for :title, "New Import"
+= content_for :title, t('new_import')
 
 .block
   .block_head
-    %h2 New Import
+    %h2 
+      =t('new_import')
   .block_content
     = semantic_form_for @import, :html => { :enctype => "multipart/form-data"} do |f|
-      = f.input :input, :as => :file, :label => "Data File"
-      = f.input :user_id, :as => :select, :label => "Author", :collection => @all_users
+      = f.input :input, :as => :file, :label => t('data_file')
+      = f.input :user_id, :as => :select, :label => t('author'), :collection => @all_users
       = f.semantic_errors :input
-      = f.commit_button :button_html => { :class => "submit long" }, :label => "Process File"
+      = f.commit_button :button_html => { :class => "submit long" }, :label => t('file_process')

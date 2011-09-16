@@ -1,4 +1,4 @@
-= content_for :title, "New Search"
+= content_for :title, t('new_search')
 
 - content_for :javascripts do
   = javascript_include_tag "/assets/mvc/search/new/init", :debug => Rails.env.development?
@@ -6,61 +6,61 @@
 .block
   .block_head
     %h2
-      Search
+      =t('search')
   .block_content
     = semantic_form_for :s, url: "/locations", method: "get" do |form|
       #portlets
         #left.column
           .portlet.map
             .portlet-header
-              Map
+              =t('map')
               %span
                 %input#draw{:type=>"checkbox"}
-                Check to select bounds for the search
+                =t('check_for_search')
             .portlet-content.nopadding
               #mappanel
           .portlet.boundaries
             .portlet-header
-              Boundaries
+              =t('boundaries')
             .portlet-content
               = form.input :level_id, :as => :hidden
               %div.boundary
                 %label
-                  Country
+                  =t('country')
                 = select_tag("level_0", options_for_select([""] + @all_level_0))
           .portlet
             .portlet-header
-              Localization (City)
+              =t('location_city')
             .portlet-content
-              = form.input :city_id, :as => :select, :collection => @all_cities, :required => false, :label => "City"
-              = form.input :street_name, :label => "Street Name", :required => false
+              = form.input :city_id, :as => :select, :collection => @all_cities, :required => false, :label => t('city')
+              = form.input :street_name, :label => t('street_name'), :required => false
               = form.input :bbox, :as => :hidden
         .column
           .portlet.categorization
             .portlet-header
-              Categorization
+              =t('categorization')
             .portlet-content
-              = form.input :name, :required => false, :label => "Location Name"
+              = form.input :name, :required => false, :label => t('location_name')
               %table.main
-              = form.input :category_id, :as => :select, :collection => @all_categories, :required => false, :label => "Category"
+              = form.input :category_id, :as => :select, :collection => @all_categories, :required => false, :label => t('category')
           .portlet
             .portlet-header
-              Auditing
+              =t('auditing')
             .portlet-content
-              = form.input :added_by, :as => :select, :collection => @all_users, :label => "Added By", :required => false
-              = form.input :corrected_by, :as => :select, :label => "Corrected By", :collection => @all_users, :required => false
-              = form.input :invalidated_by, :as => :select, :label => "Invalidated By", :collection => @all_users, :required => false
-              = form.input :confirmed_by, :as => :select, :label => "Field Checked By", :collection => @all_users, :required => false
-              = form.input :audited_by, :as => :select, :label => "Audited By", :collection => @all_users, :required => false
-              = form.input :modified_by, :as => :select, :label => "Modified By", :collection => @all_users, :required => false
+              = form.input :added_by, :as => :select, :collection => @all_users, :label => t('added_by'), :required => false
+              = form.input :corrected_by, :as => :select, :label => t('corrected_by'), :collection => @all_users, :required => false
+              = form.input :invalidated_by, :as => :select, :label => t('invalidated_by'), :collection => @all_users, :required => false
+              = form.input :confirmed_by, :as => :select, :label => t('field_check'), :collection => @all_users, :required => false
+              = form.input :audited_by, :as => :select, :label => t('audited_by'), :collection => @all_users, :required => false
+              = form.input :modified_by, :as => :select, :label => t('modify_by'), :collection => @all_users, :required => false
           .portlet
             .portlet-header
-              Workflow
+              =t('workflow')
             .portlet-content
-              = form.input :added_on_before, :required => false, :label => "Added Before", :input_html => { :class => 'date_picker' }
-              = form.input :added_on_after, :required => false, :label => "Added After", :input_html => { :class => 'date_picker' }
-              = form.input :status, :as => :select, :collection => Location.new.enums(:status).select_options.map {|x| [x[0].upcase, x[1]]}   , :required => false
+              = form.input :added_on_before, :required => false, :label => t('add_before'), :input_html => { :class => 'date_picker' }
+              = form.input :added_on_after, :required => false, :label => t('add_after'), :input_html => { :class => 'date_picker' }
+              = form.input :status, :as => :select, :collection => Location.new.enums(:status).select_options.map {|x| [x[0].upcase, x[1]]} , :required => false, :label => t('status')
           .clear
-          %input{:class=>"button long", :style=>"float: right; margin-bottom: 20px", :type=>"submit", :value=>"Search"}
+          %input{:class=>"button long", :style=>"float: right; margin-bottom: 20px", :type=>"submit", :value=> t('search')}
 
 

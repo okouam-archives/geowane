@@ -1,28 +1,29 @@
-= content_for :title, "Dashboard"
+= content_for :title, t('dashboard')
 
 .features.summary
   .block
     %br
     .block_head
-      %h2 Dashboard
+      %h2 
+        =t('dashboard')
     .block_content
       #portlets
         #left.column
           .portlet
             .portlet-header
-              =t :resolved_issues
+              =t('resolved_issues')
             .portlet-content.nopadding
               %table
                 %thead
                   %tr
                     %th
-                      =t :titre
+                      =t('title')
                     %th
-                      =t :author
+                      =t('author')
                     %th
-                      =t :opened
+                      =t('opened')
                     %th
-                      =t :closed
+                      =t('closed')
                 - for ticket in @resolved
                   %tr
                     %td
@@ -36,19 +37,19 @@
         .column
           .portlet
             .portlet-header
-              Oustanding Issues
+              =t('oustanding_issues')
             .portlet-content.nopadding
               %table
                 %thead
                   %tr
                     %th
-                      =t :title
+                      =t('title')
                     %th
-                      =t :author
+                      =t('author')
                     %th
-                      =t :opened
+                      =t('opened')
                     %th
-                      =t :status
+                      =t('status')
                 - for ticket in @outstanding
                   %tr
                     %td

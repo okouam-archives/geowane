@@ -1,30 +1,38 @@
-= content_for :title, "Show User"
+= content_for :title, t('show_user')
 
 %div.block
   %div.block_head
     %h2
-      User Details
-      = link_to "Edit", edit_user_path(object)
+      =t('user_details')
+      = link_to t('edit'), edit_user_path(object)
   .block_content
     #portlets
       .portlet
         .portlet-header
-          Listing
+          =t('listing')
         .portlet-content
           %ul
             %li
-              %b Username:
+              %b 
+                =t('username')
               = object.login
             %li
-              %b Email:
+              %b 
+                =t('email')
               = object.email
             %li
-              %b Skype Alias:
+              %b 
+                =t('skype_alias')
               = object.skype_alias
             %li
-              %b Home Country:
+              %b
+                =t('home_country')
               = object.home_country
             %li
-              %b Mobile Number:
+              %b 
+                =t('mobile_number')
               = object.mobile_number
-
+            %li
+              %b
+                =t('language')
+              = object.locale

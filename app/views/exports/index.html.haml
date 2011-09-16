@@ -1,23 +1,27 @@
-= content_for :title, "View Exports"
+= content_for :title, t('view_exports')
 .block
   .block_head
     %h2
-      Exports
-      = link_to "Create Selection", "/exports/selection"
+      =t('exports')
+      = link_to t('create_selection'), "/exports/selection"
   .block_content
     #portlets
       .portlet
         .portlet-header
-          Listing
+          =t('listing')
         .portlet-content.nopadding
           - if @exports && @exports.count > 0
             %table{:cellspacing => "0", :cellpadding => "0", :style => "width: 100%; margin-left: 0px"}
               %thead
                 %tr
-                  %th Name
-                  %th{:style=>"width: 100px"} Export Format
-                  %th{:style=>"width: 100px"} Date Exported
-                  %th{:style=>"width: 100px"} Location Count
+                  %th
+                    =t('name')
+                  %th{:style=>"width: 100px"} 
+                    =t('export_format')
+                  %th{:style=>"width: 100px"} 
+                    =t('date_exported')
+                  %th{:style=>"width: 100px"} 
+                    =t('location_count')
               %tbody
                 - @exports.each do |export|
                   %tr
@@ -31,5 +35,5 @@
           - else
             %p
               %br
-              No exports are currently available
+                =t('no_exports')
           %br

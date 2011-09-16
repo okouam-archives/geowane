@@ -1,4 +1,4 @@
-= content_for :title, "Cities"
+= content_for :title, t('cities')
 
 - content_for :javascripts do
   = javascript_include_tag "/assets/mvc/cities/index/init.js", :debug => Rails.env.development?
@@ -6,32 +6,42 @@
 .block
   .block_head
     %h2
-      Cities
-      = link_to "New City", new_city_path(page: params[:page], per_page: params[:per_page])
+      =t('cities')
+      = link_to t('new_city'), new_city_path(page: params[:page], per_page: params[:per_page])
   .block_content
     #portlets
       .bulk-actions
         %select
-          %option Bulk Actions
-          %option Delete
+          %option 
+            =t('bulk_action')
+          %option 
+            =t('delete')
         %input.button{:type=>"button", :value=>"Apply"}
       .clear
       .portlet
         .portlet-header
-          Listing
+          =t('listing')
         .portlet-content.nopadding
           %table.main
             %thead
               %tr
                 %th.selector= check_box_tag 'selector'
-                %th City
-                %th.total_POI Total
-                %th.pending New
-                %th.invalid Invalid
-                %th.pending Corrected
-                %th.audited Audited
-                %th.checked Checked
-                %th.categorized Untagged
+                %th 
+                  =t('city')
+                %th.total_POI 
+                  =t('total')
+                %th.new 
+                  =t('_new')
+                %th.corrected 
+                  =t('corrected')
+                %th.invalid 
+                  =t('_invalid')
+                %th.audited 
+                  =t('audited')
+                %th.checked 
+                  =t('checked')
+                %th.categorized
+                  =t('untagged')
             %tfoot
               %tr
                 %td

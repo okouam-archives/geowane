@@ -1,11 +1,11 @@
 %div.block_content
   = semantic_form_for object, :url => "/account", :as => :user, :html => { :enctype => "multipart/form-data"} do |form|
     <!-- = form.error_messages -->
-    = form.input :email 
-    = form.input :password, :input_html => { :class => "text" }
-    = form.input :password_confirmation, :input_html => { :class => "text" }
-    = form.input :skype_alias, :input_html => { :class => "text" }
-    = form.input :home_country, :as => :string, :input_html => { :class => "text" }
-    = form.input :mobile_number, :input_html => { :class => "text" }
-    = form.input :locale, :as => :select, :collection => ["en","fr"], :required => true, :label => "Language"
-    = form.commit_button :button_html => { :class => "submit long" }
+    = form.input :email, :label => t('email')
+    = form.input :password, :input_html => { :class => "text" }, :label => t('password')
+    = form.input :password_confirmation, :input_html => { :class => "text" }, :label => t('pass_conf')
+    = form.input :skype_alias, :input_html => { :class => "text" }, :label => t('skype_alias')
+    = form.input :home_country, :as => :string, :input_html => { :class => "text" }, :label => t('home_country')
+    = form.input :mobile_number, :input_html => { :class => "text" }, :label => t('mobile_number')
+    = form.input :locale, :as => :select, :collection => ["en","fr"], :required => true, :label => t('language')
+    = form.commit_button :button_html => { :class => "submit long" }, :label => t('update_user')

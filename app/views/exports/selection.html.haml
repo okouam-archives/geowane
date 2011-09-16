@@ -1,25 +1,27 @@
-= content_for :title, "Export Selection"
+= content_for :title, t('export_selection')
 
 - content_for :javascripts do
   = javascript_include_tag "/assets/mvc/exports/init", :debug => Rails.env.development?
 
 .block
   .block_head
-    %h2 Create Selection
+    %h2 
+      =t('create_selection')
   .block_content
     = semantic_form_for :s, :url => "/exports/prepare" do |form|
       #portlets
         #left.column
           .portlet.countries
             .portlet-header
-              Boundaries
+              =t('boundaries')
             .portlet-content.nopadding
               %table.main
                 %thead
                   %tr
                     %th.selector
                       %input{:type=>"checkbox"}
-                    %th Country
+                    %th 
+                      =t('country')
                 %tbody
                   - for country in @all_countries
                     %tr
@@ -29,9 +31,9 @@
                         = country[0]
           .portlet.categories
             .portlet-header
-              Partner Categories
+              =t('partner_cat')
               %span{:style=>"margin-right: 0"}
-                Partner:
+                =t('partner')
                 = select_tag("", options_for_select(@all_partners, @selected_partner.id))
             .portlet-content.nopadding{:style=>"height: 300px; overflow-y: scroll"}
               %table.main
@@ -39,7 +41,8 @@
                   %tr
                     %th.selector
                       %input{:type=>"checkbox"}
-                    %th Category
+                    %th
+                      =t('category')
                 %tbody
                   - for category in @all_categories
                     %tr
@@ -50,14 +53,15 @@
         .column
           .portlet.workflow
             .portlet-header
-              Workflow
+              =t('workflow')
             .portlet-content.nopadding
               %table.main
                 %thead
                   %tr
                     %th.selector
                       %input{:type=>"checkbox"}
-                    %th Status
+                    %th 
+                      =t('status')
                 %tbody
                   - for status in @all_statuses
                     %tr
@@ -67,14 +71,15 @@
                         = status[0]
           .portlet.users
             .portlet-header
-              Users
+              =t('users')
             .portlet-content.nopadding{:style=>"height: 412px; overflow-y: scroll"}
               %table.main
                 %thead
                   %tr
                     %th.selector
                       %input{:type=>"checkbox"}
-                    %th Username
+                    %th 
+                      =t('username_')
                 %tbody
                   - for user in @all_users
                     %tr
@@ -85,5 +90,5 @@
       %div{:style=>"float: right; font-size: 16px; margin-left: 15px; margin-top: 10px"}
         %b.location#count
           0
-        locations will be exported.
+          =t('location_exported')
         %input{:class=>"button long", :style=>"margin-right: 15px; position: relative; top: -3px; margin-bottom: 20px; margin-left: 10px",:type=>"submit", :value=>"Export"}

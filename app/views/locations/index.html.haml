@@ -1,49 +1,56 @@
-= content_for :title, "Points of Interest"
+= content_for :title, t('point_of_interest')
 
 - content_for :javascripts do
   = javascript_include_tag "/assets/mvc/locations/index/init", :debug => Rails.env.development?
 
 .block
   .block_head
-    %h2 Points of Interest
+    %h2 
+      =t('point_of_interest')
   .block_content
     #portlets
       .portlet.map
         .portlet-header
-          Map
+          =t('map')
         .portlet-content.nopadding
           #mappanel
       .map-footer
         .contents
           %ul
           .clear
-        .tab show
+        .tab
+          =t('show')
       .clear{:style=>"height: 10px"}
       .bulk-actions
         %select
-          %option Bulk Actions
-          %option Delete
-          %option Export
-          %option{:selected=>"selected"} Edit
+          %option 
+            =t('bulk_action')
+          %option
+            =t('delete')
+          %option 
+            =t('export')
+          %option{:selected=>"selected"}
+            =t('edit')
         %input.button{:type=>"button", :value=>"Apply"}
       .clear
       = semantic_form_for :locations, :url => new_export_path do
         .portlet
           .portlet-header
-            Listing
+            =t('listing')
           .portlet-content.nopadding
             %table.main
               %thead
                 %tr
                   %th
                     %input{:type=>"checkbox"}
-                  %th= link_to "Name", "#", :"data-sort" => "name"
-                  %th= link_to "City", "#", :"data-sort" => "city_name"
-                  %th.tags Tags
-                  %th.added_by= link_to "Added By", "#", :"data-sort" => "username"
-                  %th.date_added= link_to "Date Added", "#", :"data-sort" => "created_at"
-                  %th.last_changed= link_to "Last Changed", "#", :"data-sort" => "updated_at"
-                  %th.status= link_to "Status", "#", :"data-sort" => "status"
+                  %th= link_to t('name'), "#", :"data-sort" => "name"
+                  %th= link_to t('city'), "#", :"data-sort" => "city_name"
+                  %th.tags 
+                    =t('tags')
+                  %th.added_by= link_to t('added_by'), "#", :"data-sort" => "username"
+                  %th.date_added= link_to t('date_added'), "#", :"data-sort" => "created_at"
+                  %th.last_changed= link_to t('last_change'), "#", :"data-sort" => "updated_at"
+                  %th.status= link_to t('status'), "#", :"data-sort" => "status"
               %tbody
                 - for location in @locations
                   %tr{:"data-id" => location.id, :"data-name" => location.name, :"data-longitude" => location.longitude, :"data-latitude" => location.latitude}
@@ -60,4 +67,5 @@
                     %td= location.updated_at.strftime("%d-%m-%Y")
                     %td= location.status.to_s.humanize.upcase
             = render :partial => "shared/paging", :locals => {:collection => @locations, :page_size => @per_page}
-
+            
+            

@@ -1,18 +1,22 @@
-= content_for :title, "Imports"
+= content_for :title, t('imports')
 .block
   .block_head
     %h2
-      Imports
-      = link_to "New Import", new_import_url
+      =t ('imports')
+      = link_to t('new_import'), new_import_url
   .block_content
     - if @imports && @imports.count > 0
       %table{:cellspacing => "0", :cellpadding => "0", :style => "width: 100%; margin-left: 0px"}
         %thead
           %tr
-            %th Input File
-            %th{:style=>"width: 140px"} Locations Imported
-            %th{:style=>"width: 100px"} User
-            %th{:style=>"width: 100px"} Date Imported
+            %th 
+              =t ('input_file')
+            %th{:style=>"width: 140px"} 
+              =t ('location_imported')
+            %th{:style=>"width: 100px"}
+              =t ('user')
+            %th{:style=>"width: 100px"} 
+              =t ('date_imported')
         %tbody
           - @imports.each do |import|
             %tr
@@ -26,5 +30,5 @@
     - else
       %p
         %br
-        No imports are currently available
+          =t ('no_imports')
     %br

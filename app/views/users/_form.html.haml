@@ -2,16 +2,17 @@
   #portlets
     .portlet
       .portlet-header
-        Listing
+        =t('listing')
       .portlet-content
         = semantic_form_for @user, :html => { :enctype => "multipart/form-data"} do |form|
-          = form.input :login, :input_html => { :class => "text" }
-          = form.input :email, :input_html => { :class => "text" }
-          = form.input :password, :input_html => { :class => "text" }
-          = form.input :password_confirmation, :input_html => { :class => "text" }
-          = form.input :role_name, :as => :select, :collection => ["administrator", "collector", "auditor"], :required => false, :label => "Role"
-          = form.input :skype_alias, :input_html => { :class => "text" }
-          = form.input :home_country, :as => :string, :input_html => { :class => "text" }
-          = form.input :mobile_number, :input_html => { :class => "text" }
-          = form.input :is_active, :label => " Is Allowed To Login"
-          = form.commit_button :button_html => { :class => "submit long" }
+          = form.input :login, :input_html => { :class => "text" }, :label => t('login')
+          = form.input :email, :input_html => { :class => "text" }, :label => t('email')
+          = form.input :password, :input_html => { :class => "text" }, :label => t('password')
+          = form.input :password_confirmation, :input_html => { :class => "text" }, :label => t('pass_conf')
+          = form.input :role_name, :as => :select, :collection => ["administrator", "collector", "auditor"], :required => false, :label => t('_role')
+          = form.input :skype_alias, :input_html => { :class => "text" }, :label => t('skype_alias')
+          = form.input :home_country, :as => :string, :input_html => { :class => "text" }, :label => t('home_country')
+          = form.input :mobile_number, :input_html => { :class => "text" }, :label => t('mobile_number')
+          = form.input :is_active, :label => t('allow_login')
+          = form.input :locale, :as => :select, :collection => ["en","fr"], :required => true, :label => t('language')
+          = form.commit_button :button_html => { :class => "submit long" }, :label => t('update_user')

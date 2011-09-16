@@ -3,22 +3,178 @@
 # contributor: Sebastien Grosjean - ZenCocoon.com
 
 fr:
-  hello: "Bonjour Monde"
+  
+  #ACCOUNT/EDIT   --------------------------------------------
   edit_details: "Modifier Vos Details"
   back: "Retour"
+  
+  #ACCOUNT        --------------------------------------------
   profile: "profil"
   listing: "Liste"
-  title: "Titre"
-  resolved_issues: "Dernières Mises à Jour"
-  author: "Auteur"
-  opened: "Debut"
-  closed: "Fin"
-  status: "Statut"
   edit: "Modifier"
   language: "Langue:"
   mobile_number: "Numéro de portable:"
   home_country: "Pays d'origine:"
+  username: "Nom d'utilisateur:"
+  username_: "Username"
+  email: "Email:"
+  skype_alias: "Alias Skype:"
+  
+  #DASHBOARD        --------------------------------------------
+  title: "Titre"
+  resolved_issues: "Dernières Mises à Jour"
+  author: "Auteur"
+  opened: "Ouvert"
+  closed: "Fermé"
+  status: "Statut"
+  oustanding_issues: "Bugs Encours de Résolution"
+  dashboard: "Tableau de Bord"
     
+  #LAYOUTS          --------------------------------------------
+  search: "Recherche"
+  point_of_interest: "Points d'Intérêt"
+  categories: "Catégories"
+  collectors: "Collectionneurs"
+  boundaries: "Limites"
+  cities: "Villes"
+  partners: "Partenaires"
+  road_network: "Réseau routier"
+  geospatial_database: "BD Géospatiales"                           #"Base de Données Géospatiales"
+  data_management: "Gestion des données"
+  import_data: "Importer des données"
+  export_data: "Exporter des données"
+  compare_map_providers: "Comparer les fournisseurs de cartes"     #translation to long to fit
+  auditing_trails: "Trail audit"                                   #have to check that
+  administration: "Administration"
+  your_account: "Votre Compte"
+  users: "Utilisateurs"
+  _support: "Support"
+  wiki: "Wiki"
+  tickets: "Billets"
+  logs: "Journaux"
+  exceptions: "Exceptions"
+  hello: "Salut,"
+  logout: "Déconnexion"
+  confirmation: "Etes-vous sûr de vouloir vous déconnecter?"
+  
+  #USERS            --------------------------------------------
+  new_user: "Nouvel utilisateur"
+  name: "Nom"
+  last_logged: "Dernière connexion à"
+  _active: "Actif"
+  _role: "Role"
+  user_details: "Détails de l'utilisateur"
+  edit_user: "Modifier l'utilisateur"
+  view_cat: "Afficher les Catégories"
+  show_user: "Utilisateur"
+  allow_login: " Autorisé à se Connecter"
+  update_user: "Sauver"
+  login: "Login"
+  password: "Mot de Passe"
+  pass_conf: "Confirmer Mot de Passe"
+  
+  #SEARCH           --------------------------------------------
+  new_search: "Nouvelle Recherche"
+  map: "Carte"
+  check_for_search: "Cocher pour sélectionner des bornes pour la recherche"
+  country: "Pays"
+  location_city: "Localisation (Pays)"
+  categorization: "Catégorisation"
+  auditing: "Audit"
+  workflow: "Flux de données"
+  street_name: "Nom de la rue"
+  location_name: "Nom du lieu"
+  added_by: "Ajouté par"
+  corrected_by: "Rectifié par"
+  invalidated_by: "Invalidée par"
+  field_check: "Terrain vérifié par"
+  audited_by: "Vérifiés par"
+  modify_by: "Modifié par"
+  add_before: "Ajouté avant" 
+  add_after: "Ajouté après" 
+  category: "Catégorie"
+  
+  #CATEGORIES       --------------------------------------------
+  new_category: "Nouvelle Catégorie"
+  categories_collection: "Collection Champ de Catégorie"
+  _new: "Nouveau"
+  _invalid: "Invalides"
+  audited: "Examinés"
+  checked: "Vérifiés"
+  total: "Totale"
+  corrected: "Corrigés"
+  edit_category: "Modifier Catégorie"
+  properties: "Propriétés"
+  french: "Français"
+  english: "Anglais"
+  code: "Code"
+  is_hidden: " est masqué"
+  is_landmark: " Est Point de Repère"
+  icon: "Icône"
+  icon_usage_mess1: "S'il vous plaît utiliser les icônes disponibles sur"
+  icon_usage_mess2: " ou utiliser une icône existante. Cette icône sera utilisée pour l'affichage de cette catégorie sur la carte."
+  cur_icon: "Icône actuelle"
+  upload_icon: "Charger Icône"
+  create_cat: "Creer Catégorie"
+  
+  
+  #COUNTERS         --------------------------------------------
+  collector_collection: "Collection champ de capteurs"
+  collector: "Collectionneur"
+  uncategorized: "Non classé"
+  
+  #BOUNDARIES       --------------------------------------------
+  country_collection: "Collection champ Pays"
+  level_change: "Changer le niveau"
+  level_0: "Niveau 0"
+  level_1: "Niveau 1"
+  level_2: "Niveau 2"
+  level_3: "Niveau 3" 
+  untagged: "Sans étiquette"
+  
+  #CITIES           --------------------------------------------
+  new_city: "Nouvelle Ville"
+  bulk_action: "Actions en vrac"
+  delete: "Supprimer"
+  city: "Ville"
+  edit_city: "Modifier Ville"
+  
+  #ROADS            --------------------------------------------
+  roads: "Routes"
+  
+  #IMPORTS          --------------------------------------------
+  imports: "Importations"
+  new_import: "Nouvelle Importation"
+  input_file: "Fichier d'Entrée"
+  location_imported: "Emplacements Importés"
+  date_imported: "Date d'Importation"
+  no_imports: "Aucune importation n'est actuellement disponible"
+  user: "Utilisateur"
+  data_file: "Fichier de données"
+  file_process: "Importer Fichier"
+  
+  #EXPORTS          --------------------------------------------
+  exports: "Exportations"
+  new_export: "Nouvelle Exportation"
+  create_selection: "Créer Sélection"
+  view_exports: "Voir Exportations"
+  export_format: "Format d'Exportation"
+  date_exported: "Date d'Exportation"
+  location_count: "Nombre d'Endrois"
+  no_exports: "Aucune exportations n'est actuellement disponible"
+  export_poi: "Exporter POI"
+  output: "Sortie"
+  export: "Exporter"
+  export_selection: "Exporter Sélection"
+  partner_cat: "Catégories partenaire"
+  partner: "Partenaire:"
+  location_exported: "Emplacements seront exportés."
+  
+  #LOCATIONS        --------------------------------------------
+  last_change: "Dernier changement"
+  tags: "Etiquette"
+  show: "Montrer"
+  date_added: "Date d'Ajout"
     
     
   date:

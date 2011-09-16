@@ -7,21 +7,24 @@
     #portlets
       .portlet
         .portlet-header
-          =t :listing
+          =t ('listing')
         .portlet-content
           %ul
             %li
-              %b Username:
+              %b 
+                =t ('username')
               = object.login
             %li
-              %b Email:
+              %b 
+                =t ('email')
               = object.email
             %li
-              %b Skype Alias:
+              %b 
+                =t ('skype_alias')
               = object.skype_alias
             %li
               %b 
-                =t('home_country')
+                =t ('home_country')
               = object.home_country
             %li
               %b 

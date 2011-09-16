@@ -1,15 +1,16 @@
-= content_for :title, "New Export"
+= content_for :title, =('new_export')
 
 .block
   .block_head
-    %h2 Export POI
+    %h2
+      =t('export_poi')
   .block_content
     #portlets
       .portlet
         .portlet-header
-          Output
+          =t('output')
         .portlet-content
           = semantic_form_for object, :html => { :enctype => "multipart/form-data"} do |f|
             = f.input :name, :class => "text"
             = f.input :output_platform, :collection => object.enums(:output_platform).select_options.map {|option| [option[0].upcase, option[1].upcase]}
-            = f.commit_button :label => "Export"
+            = f.commit_button :label => t('export')

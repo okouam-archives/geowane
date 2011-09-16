@@ -23,44 +23,44 @@
           %h1= link_to "GeoCMS", dashboard_path
           %ul#nav
             %li
-              = link_to "Geospatial Database", dashboard_path
+              = link_to t('geospatial_database'), dashboard_path
               %ul
-                %li= link_to "Search", new_search_path
-                %li= link_to "Points of Interest", locations_path(:s => :reset)
-                %li= link_to "Categories", categories_path(:page => 1)
-                %li= link_to "Collectors", counters_path
-                %li= link_to "Boundaries", boundaries_path
-                %li= link_to "Cities", cities_path
-                %li= link_to "Partners", partners_path
-                %li=link_to "Road Network", roads_path
+                %li= link_to t('search'), new_search_path
+                %li= link_to t('point_of_interest'), locations_path(:s => :reset)
+                %li= link_to t('categories'), categories_path(:page => 1)
+                %li= link_to t('collectors'), counters_path
+                %li= link_to t('boundaries'), boundaries_path
+                %li= link_to t('cities'), cities_path
+                %li= link_to t('partners'), partners_path
+                %li=link_to t('road_network'), roads_path
             %li
-              = link_to "Data Management", "#"
+              = link_to t('data_management'), "#"
               %ul
                 - unless current_user.has_role?("collector")
-                  %li= link_to "Import Data", imports_path
+                  %li= link_to t('import_data'), imports_path
                   - if current_user.has_role?("administrator")
-                    %li= link_to "Export Data", exports_path
-                  %li= link_to "Compare Map Providers", map_path
-                  %li= link_to "Auditing Trail", audits_path
+                    %li= link_to t('export_data'), exports_path
+                  %li= link_to t('compare_map_providers'), map_path
+                  %li= link_to t('auditing_trails'), audits_path
             %li
-              = link_to "Administration", "#"
+              = link_to t('administration'), "#"
               %ul
-                %li= link_to "Your Account", account_path
+                %li= link_to t('your_account'), account_path
                 - if current_user.has_role?("administrator")
-                  %li= link_to "Users", users_path
+                  %li= link_to t('users'), users_path
             %li
-              = link_to "Support", "#"
+              = link_to t('_support'), "#"
               %ul
-                %li= link_to "Wiki", "http://wiki.0-one.net"
-                %li= link_to "Tickets", "https://codeifier.lighthouseapp.com/"
+                %li= link_to t('wiki'), "http://wiki.0-one.net"
+                %li= link_to t('tickets'), "https://codeifier.lighthouseapp.com/"
                 - if current_user.has_role?("administrator")
-                  %li= link_to "Logs", "#"
-                  %li= link_to "Exceptions", "http://codeifier.hoptoadapp.com/"
+                  %li= link_to t('logs'), "#"
+                  %li= link_to t('exceptions'), "http://codeifier.hoptoadapp.com/"
           %p.user
-            Hello,
+            =t('hello')
             = link_to @current_user.login, "#"
             |
-            = link_to "Logout", user_sessions_path, :method => :delete, :confirm => "Are you sure you want to logout?"
+            = link_to t('logout'), user_sessions_path, :method => :delete, :confirm => t('confirmation')
         = yield
         #footer
           %p.left

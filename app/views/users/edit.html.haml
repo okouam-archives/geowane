@@ -1,8 +1,8 @@
-= content_for :title, "Edit User"
+= content_for :title, t('edit_user')
 
 %div.block
   %div.block_head
     %h2
-      Edit User
-      =link_to "Back", users_path
+      =t ('edit_user')
+      =link_to t('back'), users_path
   = render :partial => 'form'

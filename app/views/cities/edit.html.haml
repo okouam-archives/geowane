@@ -1,8 +1,8 @@
-= content_for :title, "Edit City"
+= content_for :title, t('edit_city')
 
 .block
   .block_head
     %h2
-      Edit City
-      = link_to "Back", cities_path(page: params[:page], per_page: params[:per_page])
+      =t('edit_city')
+      = link_to t('back'), cities_path(page: params[:page], per_page: params[:per_page])
   = render :partial => "form"
