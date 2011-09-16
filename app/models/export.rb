@@ -23,7 +23,7 @@ class Export < ActiveRecord::Base
     statuses = query[:statuses]
     users = query[:users]
     categories = query[:categories]
-    query = Location.scoped.select("locations.id")
+    query = Location.scoped.select("distinct locations.id")
     return query.where("1 = 2") unless statuses || countries || categories || users
     query = query.where(:status => statuses) if statuses
     query = query.where(:level_0 => countries) if countries
