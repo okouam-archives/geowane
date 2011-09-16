@@ -13,8 +13,7 @@ class ApiController < ApplicationController
         .group("partner_categories.id, partner_categories.french, partner_categories.icon")
         .order("partner_categories.french ASC")
         .joins(:mappings)
-        .joins(:categories)
-        .joins(:partners)
+        .joins(:partner_categories => [:partner])
     else
       query = Category
         .scoped
@@ -86,7 +85,9 @@ class ApiController < ApplicationController
   def fetch_locations(bounds, classification, name)
     query = Location.valid.includes(:administrative_unit_0, :city).limit(99).in_bbox(bounds.split(","))
     if classification
-      query = query.classified_as(classification)
+      query = query
+      .joins(:categories => [:partner_categories])
+      .where("partner_categories.id = ?", classification)
     elsif name
       query = query.named(name)
     else
