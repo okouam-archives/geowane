@@ -3,6 +3,10 @@
     = select_tag "pages", options_for_select([ "10", "20", "50", "100", "1000", "5000"], params[:per_page])
     = paginate collection, :params => params, :window => 4
 .clear
+#pagination-counter{:style=>"text-align: right; margin-right: 20px; margin-top: 5px; margin-bottom: 10px"}
+  %span
+    = page_entries_info(collection)
+.clear
 .clear
 .page-size
 
