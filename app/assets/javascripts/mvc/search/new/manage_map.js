@@ -5,14 +5,14 @@ $.Controller("ManageMap",
     Carto.addCommonControls(this.map);
     this.layer = Carto.createDrawingLayer("Features", this.map);
     this.setupControls();
-    this.map.zoomTo(0);
+    this.map.zoomTo(1);
     $("input[type='submit']").click(this.buildBoundingBox.bind(this));
   },
 
   buildBoundingBox: function() {
     if (this.layer.features.length > 0) {
       var searchBox = this.layer.features[0].geometry.bounds.toBBOX();
-      $("#search_criteria_bbox").val(searchBox);
+      $("#s_bbox").val(searchBox);
     }
     return true;
   },
