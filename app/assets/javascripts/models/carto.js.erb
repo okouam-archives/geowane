@@ -88,7 +88,7 @@ $.Class.extend('Carto',
       function(data) {
         var locations = new OpenLayers.Format.GeoJSON().read(data);
         for(var i = 0; i < locations.length; i++) {
-          locations[i].attributes["thumbnail"] = "/system/icons/" + locations[i].attributes["icon"]
+           locations[i].attributes["thumbnail"] = locations[i].attributes["icon"].url
         }
         layer.addFeatures(locations);
       }
