@@ -4,7 +4,7 @@ class CategoriesController < ApplicationController
   permissions :categories, :except => [:index, :change_icon]
 
   def index
-    query = Category.scoped.from("reports.categories")
+    query = Category.order("french").scoped.from("reports.categories")
     @categories = query.page(page = params[:page] || 1).per(per_page = params[:per_page] || 10)
     flash[:paging] = {page: page, per_page: per_page }
   end
