@@ -7,6 +7,8 @@ $.Controller("ManageMap",
     this.landmark_layer = Carto.createLayer("Landmarks", this.map);
     this.setupControls();
     this.location_id = options.location_id;
+    this.map.events.register('zoomend', this, this.handleZoomEnd);
+    this.map.events.register('moveend', this, this.handleMoveEnd);
     $.getJSON("/locations/" + this.location_id, this.update.bind(this));
   },
 
@@ -31,13 +33,26 @@ $.Controller("ManageMap",
     this.hideActions();
   },
 
+  handleMoveEnd: function() {
+    if (this.map.zoom > 10) {
+      this.landmark_layer.destroyFeatures();
+      var searchBox = this.layer.getExtent().toBBOX();
+      Carto.displayLandmarkFeatures([this.location_id], searchBox, this.landmark_layer);
+    }
+  },
+
+  handleZoomEnd: function() {
+    if (this.map.zoom < 11) {
+      this.landmark_layer.destroyFeatures();
+    }
+  },
+
   update: function(data) {
     var locations = new OpenLayers.Format.GeoJSON().read(data);
     locations[0].attributes["thumbnail"] = "/assets/icons/1.gif";
     this.layer.addFeatures(locations);
     this.original_geometry = this.layer.getDataExtent().getCenterLonLat();
     this.map.setCenter(this.original_geometry, 6);
-    Carto.displayLandmarkFeatures(this.location_id, this.landmark_layer);
   },
 
   showActions: function() {

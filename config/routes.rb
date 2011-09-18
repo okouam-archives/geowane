@@ -4,7 +4,7 @@ Gowane::Application.routes.draw do
   match'/locations/edit' => 'locations#collection_edit', :via => [:get, :post] 
   match'/locations' => 'locations#collection_update', :via => :put 
   match '/api/:action', :controller => 'api'
-  match '/landmarks/:id' => 'landmarks#show', :as => "show_landmarks", :via => :get
+  match '/landmarks' => 'landmarks#show', :as => "show_landmarks", :via => :get
 
   resources :locations do
     resources :comments, :tags
