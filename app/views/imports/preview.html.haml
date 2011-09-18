@@ -3,8 +3,7 @@
   .block_head
     %h2
       Imports - Preview Changes
-    %ul
-      %li.nobg.back= link_to "Apply Updates", "#"
+      = link_to "Apply Updates", "#"
   .block_content
     = semantic_form_for :changes, :url => execute_import_path(object) do
       %table{:style=>"width: 100%"}
@@ -33,21 +32,22 @@
 :css
   .change {display: inline-block; width: 50px}
 
-:javascript
-  $(document).ready(function() {
+- content_for :javascripts do
+  :javascript
+    $(document).ready(function() {
 
-    $("th input[type=checkbox]").click(function() {
-      var master = $(this);
-      var isChecked = master.attr("checked");
-      $("td input[type=checkbox]").attr("checked", isChecked);
-    });
+      $("th input[type=checkbox]").click(function() {
+        var master = $(this);
+        var isChecked = master.attr("checked");
+        $("td input[type=checkbox]").attr("checked", isChecked);
+      });
 
-    $(".block_head a").click(function() {
-      if ($("td input[type=checkbox]:checked").length < 1) {
-        alert("Please select one or more changes to make");
+      $(".block_head a").click(function() {
+        if ($("td input[type=checkbox]:checked").length < 1) {
+          alert("Please select one or more changes to make");
+          return false;
+        }
+        $("form").submit();
         return false;
-      }
-      $("form").submit();
-      return false;
+      });
     });
-  });
