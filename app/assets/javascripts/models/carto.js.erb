@@ -7,7 +7,7 @@ $.Class.extend('Carto',
       theme: null,
       maxResolution: 0.02197265625,
       numZoomLevels: 14,
-      restrictedExtent: new OpenLayers.Bounds(-18.598705491875, -0.72081361875, 5.065845289375, 26.4046746625),
+      restrictedExtent:  new OpenLayers.Bounds(-18.598705491875, -0.72081361875, 5.065845289375, 26.4046746625),
       maxExtent: new OpenLayers.Bounds(-62.6428949, -11.4905018, 49.85710501, 35.844773),
       controls: []
     });
@@ -83,8 +83,15 @@ $.Class.extend('Carto',
     layer.map.zoomToExtent(layer.getDataExtent());
   },
 
-  displayLandmarkFeatures: function(visibleLocations, bbox, layer) {
-    $.getJSON("/landmarks?visible=" + visibleLocations + "&bbox=" + bbox,
+  displayLandmarkFeatures: function(bbox, layer, features) {
+    var visibleLocations = $.map(features, function(value) {
+      if (value.onScreen()) return value.attributes.id;
+      else return null;
+    });
+    visibleLocations = $.grep(visibleLocations, function(value) {
+      return value != null;
+    });
+    $.getJSON("/api/landmarks?visible=" + visibleLocations + "&bbox=" + bbox,
       function(data) {
         var locations = new OpenLayers.Format.GeoJSON().read(data);
         for(var i = 0; i < locations.length; i++) {

@@ -76,6 +76,23 @@ class ApiController < ApplicationController
     render :json => fetch_locations(params[:bounds], params["classification"], params["name"]), :callback => params[:callback]
   end
 
+  def landmarks
+    bbox = params[:bbox]
+    visible = []
+    params[:visible].split(",").each do |location|
+      visible << location
+    end
+    landmarks = Location.scoped
+      .in_bbox(bbox.split(","))
+      .joins(:tags => [:category])
+      .where("categories.is_landmark")
+      .where("NOT categories.is_hidden")
+    unless visible.empty?
+      landmarks = landmarks.where("locations.id NOT IN  (?)", ([] << visible).flatten)
+    end
+    render :json => landmarks.to_geojson, :callback => params[:callback]
+  end
+
   private
 
   def find_route(x1, y1, x2, y2)

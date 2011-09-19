@@ -37,7 +37,7 @@ $.Controller("ManageMap",
     if (this.map.zoom > 10) {
       this.landmark_layer.destroyFeatures();
       var searchBox = this.layer.getExtent().toBBOX();
-      Carto.displayLandmarkFeatures([this.location_id], searchBox, this.landmark_layer);
+      Carto.displayLandmarkFeatures(searchBox, this.landmark_layer, this.layer.features);
     }
   },
 
