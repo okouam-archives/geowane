@@ -4,6 +4,10 @@
     = paginate collection, :params => params, :window => 4
     = page_entries_info collection, :class => "paggination right"
 .clear
+#pagination-counter{:style=>"text-align: right; margin-right: 20px; margin-top: 5px; margin-bottom: 10px"}
+  %span
+    = page_entries_info(collection)
+.clear
 .clear
 .page-size
 

@@ -33,8 +33,6 @@ $.Controller("AddCategory",
     var html = $(JST['templates/tag_template'](tag));
     var id = tag.location_id;
     var wrapper = this.coordinator.getRow(id).find(".tags .list");
-    html.appendTo(wrapper).find("a.tag_delete").bind("ajax:complete", function() {
-      $(this).parent().remove();
-    });
+    html.appendTo(wrapper);
   }
 });

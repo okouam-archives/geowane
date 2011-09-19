@@ -20,16 +20,14 @@ $.Controller("AddCategoryInline",
     Categories.add(locations, category, this.update.bind(this));
   },
 
-  "tbody a.delete-category click": function() {
+  "tbody a.delete-category click": function(el) {
     if (confirm("Are you sure you want to delete this category?")) {
-      var a = $(this);
+      var a = $(el);
       $.ajax({
-        type: 'POST',
-        url: $(this).attr("href"),
-        dataType: 'script',
-        data: {'_method': 'delete'},
+        type: 'DELETE',
+        url: a.attr("href"),
         success: function() {
-          a.closest("tr").remove();
+          a.closest("span").remove();
           return false;
         }
       });
@@ -54,8 +52,6 @@ $.Controller("AddCategoryInline",
   redraw: function(tag) {
     var html = $(JST['templates/tag_template'](tag));
     var wrapper = this.parent.prev().find(".tags .list");
-    html.appendTo(wrapper).find("a.tag_delete").bind("ajax:complete", function() {
-      $(this).parent().remove();
-    });
+    html.appendTo(wrapper);
   }
 });

@@ -79,14 +79,15 @@
       .clear
       %br
 
-:javascript
-  (function($) {
-    _.each(#{@locations_cache}, function(value) {
-      Location.add(new Location(value));
-    })
-    _.each(#{@comments_cache}, function(value) {
-      Comment.add(new Comment(value));
-    })
-  })(jQuery);
+- content_for :javascripts do
+  :javascript
+    (function($) {
+      _.each(#{@locations_cache}, function(value) {
+        Location.add(new Location(value));
+      })
+      _.each(#{@comments_cache}, function(value) {
+        Comment.add(new Comment(value));
+      })
+    })(jQuery);
 
 

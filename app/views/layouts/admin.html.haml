@@ -32,7 +32,6 @@
                 %li= link_to "Boundaries", boundaries_path
                 %li= link_to "Cities", cities_path
                 %li= link_to "Partners", partners_path
-                %li=link_to "Road Network", roads_path
             %li
               = link_to "Data Management", "#"
               %ul
@@ -40,8 +39,6 @@
                   %li= link_to "Import Data", imports_path
                   - if current_user.has_role?("administrator")
                     %li= link_to "Export Data", exports_path
-                  %li= link_to "Compare Map Providers", map_path
-                  %li= link_to "Auditing Trail", audits_path
             %li
               = link_to "Administration", "#"
               %ul

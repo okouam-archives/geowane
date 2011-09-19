@@ -77,7 +77,7 @@ class LocationsController < ApplicationController
   end
 
   edit.before do
-    @categories = ["", ""] + Category.order("french").map{|c| [c.french, c.id]}
+    @categories = Category.dropdown_items
     @comments = object.comments.map {|c| c.to_hash}
   end
 
