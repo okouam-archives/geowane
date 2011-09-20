@@ -6,6 +6,16 @@ describe Location do
     Location.new.should be_an_instance_of(Location)
   end
 
+  it "can save photos" do
+    location = Factory(:location)
+    photo = Photo.new
+    photo.image = File.open(File.expand_path(File.dirname(__FILE__) + '/../fixtures/photo.png'))
+    location.photos << photo
+    location.save!
+    location.reload
+    location.photos.count.should == 1
+  end
+
   context "when valid" do
 
     it "can be saved" do

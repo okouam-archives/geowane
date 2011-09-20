@@ -1,6 +1,6 @@
 class Import < ActiveRecord::Base
   has_attached_file :input
-  validates_format_of :input_file_name, :with => /\.(mp|gpx)/
+  validates_format_of :input_file_name, :with => /\.(mp|gpx|csv)/
   validates_attachment_presence :input
   belongs_to :user
   has_many :locations
@@ -10,13 +10,6 @@ class Import < ActiveRecord::Base
 
   def execute(selected_items)
     importer_for(self.input.path).execute(self, selected_items)
-  end
-
-  def labelled_locations
-    Location.joins(:labels)
-      .where("labels.classification ilike 'SYSTEM'")
-      .where("labels.key ilike 'IMPORTED FROM'")
-      .where("labels.value = '#{id}'").count
   end
 
   private
