@@ -3,7 +3,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe Conversion do
 
   before(:all) do
-    @example_file = File.expand_path(File.join(File.dirname(__FILE__), "../samples/sample.mp"))
+    @example_file = File.expand_path(File.join(File.dirname(__FILE__), "../fixtures/sample.mp"))
   end
 
   describe "when executing a conversion" do

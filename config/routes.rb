@@ -7,7 +7,7 @@ Gowane::Application.routes.draw do
   match '/landmarks' => 'landmarks#show', :as => "show_landmarks", :via => :get
 
   resources :locations do
-    resources :comments, :tags
+    resources :comments, :tags, :photos
     member do
       get :next, :previous, :surrounding_landmarks
     end

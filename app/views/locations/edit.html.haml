@@ -17,6 +17,7 @@
         #left.column
           = render :partial => "locations/portlets/feature", :locals => {:form_data => @form_data}
           = render :partial => "locations/portlets/coordinates", :locals => {:location => @location}
+          = render :partial => "locations/portlets/photos", :locals => {:location => @location}
           = render :partial => "locations/portlets/comments", :locals => {:location => @location, :comments => @comments}
         .column
           = render :partial => "locations/portlets/information"

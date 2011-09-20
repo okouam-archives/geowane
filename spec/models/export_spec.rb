@@ -11,11 +11,11 @@ describe Export do
       end
 
       it "returns an empty set" do
-        @result[:query].count.should == 0
+        @result[:locations].count.should == 0
       end
 
       it "returns a message explaining no filter critera were provided" do
-         @result[:query].count.should == 0
+         @result[:locations].count.should == 0
       end
 
     end
