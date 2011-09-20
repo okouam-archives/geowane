@@ -40,4 +40,6 @@
         categories.id,
         categories.french,
         categories.english,
-        categories.icon;
+        categories.icon
+      ORDER BY
+        categories.french;
