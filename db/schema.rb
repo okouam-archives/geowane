@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110920100926) do
+ActiveRecord::Schema.define(:version => 20110921101713) do
 
   create_table "audits", :force => true do |t|
     t.datetime "created_at"
@@ -198,6 +198,13 @@ ActiveRecord::Schema.define(:version => 20110920100926) do
   add_index "locations", ["name"], :name => "idx_locations_name"
   add_index "locations", ["status"], :name => "idx_locations_status"
   add_index "locations", ["user_id"], :name => "idx_locations_user_id"
+
+  create_table "logos", :force => true do |t|
+    t.string   "image"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "location_id"
+  end
 
   create_table "mappings", :force => true do |t|
     t.datetime "created_at"

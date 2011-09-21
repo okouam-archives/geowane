@@ -4,6 +4,7 @@ class LocationsController < ApplicationController
   layout "admin"
   before_filter :assign_form_data, :only => [:create, :edit]
 
+     
   def index
     @search = Search.construct(params[:s], params[:sort], params[:page], params[:per_page], session[:search_token], current_user)
     @search.save_to_session(session)
