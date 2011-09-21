@@ -1,3 +1,4 @@
+# encoding: UTF-8
 require 'RMagick'
 
 class ApiController < ApplicationController
@@ -9,11 +10,14 @@ class ApiController < ApplicationController
         query = Location
         .scoped
         .select("partner_categories.id, partner_categories.french, partner_categories.icon, count(*) as count")
-        .where("partners.name ilike ?", "%#{params[:client]}%")
+        .where("partners.name ilike ?", "%#{params[:client].force_encoding('UTF-8')}%")
         .where("NOT categories.is_hidden")
         .group("partner_categories.id, partner_categories.french, partner_categories.icon")
         .order("partner_categories.french ASC")
+        .valid
+        .where("boundaries.name LIKE 'Côte d''Ivoire'")
         .joins(:categories => [:partner_categories => [:partner]])
+        .joins(:administrative_unit_0)
     else
       query = Category
         .scoped
@@ -21,23 +25,19 @@ class ApiController < ApplicationController
         .group("categories.id, categories.french, categories.icon")
         .order("categories.french ASC")
     end
-    if params[:country]
-      query = query
-        .joins(:administrative_unit_0)
-        .where("boundaries.name like ?", "%#{params[:country]}%")
-    end
     render :json => query.to_json, :callback => params[:callback]
   end
 
   def features
     query = Location
       .includes(:tags, :administrative_unit_0)
-      .where("locations.searchable_name ilike '%#{params[:q]}%'")
+      .where("locations.searchable_name ilike '%#{params[:q].force_encoding('UTF-8')}%'")
+      .where("boundaries.name LIKE 'Côte d''Ivoire'")
       .where("status != 'INVALID'")
       .limit(99)
 
     if bounds = params[:bounds]
-      box = bounds.split(',')
+      box = bounds.force_encoding('UTF-8').split(',')
       query =  query.where("ST_Intersects(SetSRID('BOX(#{box[0]} #{box[1]},#{box[2]} #{box[3]})'::box2d::geometry, 4326), locations.feature)")
     end
 
@@ -46,12 +46,12 @@ class ApiController < ApplicationController
     unless results.size > 98
       query = Road
         .includes(:administrative_unit_0)
-        .where("label ilike '%#{params[:q]}%'")
+        .where("label ilike '%#{params[:q].force_encoding('UTF-8')}%'")
         .limit(99 - results.size)
         .select("id, label, the_geom, country_id, centroid")
 
       if bounds = params[:bounds]
-        box = bounds.split(',')
+        box = bounds.force_encoding('UTF-8').split(',')
         query = query.where("ST_Intersects(SetSRID('BOX(#{box[0]} #{box[1]},#{box[2]} #{box[3]})'::box2d::geometry, 4326), roads.centroid)")
       end
 
@@ -86,6 +86,7 @@ class ApiController < ApplicationController
       .in_bbox(bbox.split(","))
       .joins(:tags => [:category])
       .where("categories.is_landmark")
+      .valid
       .where("NOT categories.is_hidden")
     unless visible.empty?
       landmarks = landmarks.where("locations.id NOT IN  (?)", ([] << visible).flatten)
@@ -105,13 +106,18 @@ class ApiController < ApplicationController
   end
 
   def fetch_locations(bounds, classification, name)
-    query = Location.valid.includes(:administrative_unit_0, :city).limit(99).in_bbox(bounds.split(","))
+    query = Location.scoped
+      .valid
+      .includes(:administrative_unit_0, :city)
+      .where("boundaries.name LIKE 'Côte d''Ivoire'")
+      .limit(99)
+      .in_bbox(bounds.split(","))
     if classification
       query = query
       .joins(:categories => [:partner_categories])
       .where("partner_categories.id = ?", classification)
     elsif name
-      query = query.named(name)
+      query = query.named(name.force_encoding('UTF-8'))
     else
       raise "No filtering criteria have been provided"
     end
