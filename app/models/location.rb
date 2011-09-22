@@ -41,7 +41,7 @@ class Location < ActiveRecord::Base
       .where("roads.label ilike ?", "%#{name}%")
   }
 
-  scope :named, lambda {|name| where("locations.searchable_name ILIKE '%#{name}%'")}
+  scope :named, lambda {|name| where("locations.name ILIKE '%#{name}%'")}
 
   enum_attr :status, %w(new invalid corrected audited field_checked), :init => :new, :nil => false
 

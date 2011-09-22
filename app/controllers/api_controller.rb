@@ -31,7 +31,7 @@ class ApiController < ApplicationController
   def features
     query = Location
       .includes(:tags, :administrative_unit_0)
-      .where("locations.searchable_name ilike '%#{params[:q].force_encoding('UTF-8')}%'")
+      .where("locations.name ilike '%#{params[:q].force_encoding('UTF-8')}%'")
       .where("boundaries.name LIKE 'Côte d''Ivoire'")
       .where("status != 'INVALID'")
       .limit(99)
