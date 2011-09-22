@@ -86,7 +86,6 @@ class Location < ActiveRecord::Base
 
   def name=(name)
     self[:name] = name
-    self.searchable_name = name
   end
 
 end

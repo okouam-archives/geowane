@@ -14,7 +14,7 @@ class SearchController < ApplicationController
             FROM locations
             LEFT JOIN cities ON locations.city_id = cities.id
             LEFT JOIN boundaries ON boundaries.id = locations.level_0
-            WHERE searchable_name ilike '%#{params[:q]}%' LIMIT #{params[:limit]}"
+            WHERE name ilike '%#{params[:q]}%' LIMIT #{params[:limit]}"
     results = Location.connection.execute(sql)
     render :json => results
 end

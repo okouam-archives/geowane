@@ -11,7 +11,6 @@ class CreateLocationsTable < ActiveRecord::Migration
       t.references :import, :foreign_key => true, :dependent => :restrict
       t.references :road, :foreign_key => true, :dependent => :restrict
       t.string :long_name
-      t.string :searchable_name
       t.geometry :feature, :srid => 4326
       t.integer :level_0
       t.integer :level_1
