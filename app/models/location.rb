@@ -2,7 +2,7 @@ class Location < ActiveRecord::Base
   include Audited
   include Geolocatable
   has_many :photos, :autosave => true
-  has_one :logo, :autosave => true
+  has_many :logos, :autosave => true
   acts_as_commentable
   acts_as_audited
   validates_presence_of :name
