@@ -1,5 +1,5 @@
 class LogosController < ApplicationController
-  resource_controller
+  resource_controller :singleton
   belongs_to :location
 
   create.wants.html do

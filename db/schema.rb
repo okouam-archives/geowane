@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110920100926) do
+ActiveRecord::Schema.define(:version => 20110927100228) do
 
   create_table "audits", :force => true do |t|
     t.datetime "created_at"
@@ -31,7 +31,7 @@ ActiveRecord::Schema.define(:version => 20110920100926) do
     t.integer  "level",                         :null => false
     t.string   "classification",                :null => false
     t.integer  "parent_id"
-    t.geometry "feature",        :limit => nil,                 :srid => 4326
+    t.geometry "feature",        :limit => nil
   end
 
   add_index "boundaries", ["feature"], :name => "idx_administrative_units_feature", :spatial => true
@@ -52,8 +52,8 @@ ActiveRecord::Schema.define(:version => 20110920100926) do
 
   create_table "cities", :force => true do |t|
     t.string   "name"
-    t.geometry "feature", :limit => nil, :srid => 4326
-    t.geometry "centre",  :limit => nil, :srid => 4326
+    t.geometry "feature", :limit => nil
+    t.geometry "centre",  :limit => nil
   end
 
   add_index "cities", ["centre"], :name => "idx_cities_centre", :spatial => true
@@ -92,23 +92,23 @@ ActiveRecord::Schema.define(:version => 20110920100926) do
   end
 
   create_table "edges", :primary_key => "gid", :force => true do |t|
-    t.integer     "road_id"
-    t.string      "label"
-    t.float       "to_cost"
-    t.float       "cost"
-    t.float       "reverse_cost"
-    t.integer     "source"
-    t.integer     "target"
-    t.float       "length"
-    t.float       "x1"
-    t.float       "x2"
-    t.float       "y1"
-    t.float       "y2"
-    t.float       "cost_multiplier"
-    t.boolean     "is_one_way"
-    t.text        "rule"
-    t.line_string "the_geom",        :limit => nil, :srid => 4326
-    t.point       "centroid",        :limit => nil, :srid => 4326
+    t.integer  "road_id"
+    t.string   "label"
+    t.float    "to_cost"
+    t.float    "cost"
+    t.float    "reverse_cost"
+    t.integer  "source"
+    t.integer  "target"
+    t.float    "length"
+    t.float    "x1"
+    t.float    "x2"
+    t.float    "y1"
+    t.float    "y2"
+    t.float    "cost_multiplier"
+    t.boolean  "is_one_way"
+    t.text     "rule"
+    t.geometry "the_geom",        :limit => nil
+    t.geometry "centroid",        :limit => nil
   end
 
   create_table "exports", :force => true do |t|
@@ -135,7 +135,7 @@ ActiveRecord::Schema.define(:version => 20110920100926) do
     t.integer  "road_class"
     t.integer  "speed"
     t.integer  "type"
-    t.geometry "geom",       :limit => nil, :srid => 4326
+    t.geometry "geom",       :limit => nil
   end
 
   add_index "features", ["geom"], :name => "idx_features_geom", :spatial => true
@@ -190,7 +190,7 @@ ActiveRecord::Schema.define(:version => 20110920100926) do
     t.text     "miscellanous"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.geometry "feature",              :limit => nil, :srid => 4326
+    t.geometry "feature",              :limit => nil
   end
 
   add_index "locations", ["city_id"], :name => "idx_locations_city_id"
@@ -198,6 +198,13 @@ ActiveRecord::Schema.define(:version => 20110920100926) do
   add_index "locations", ["name"], :name => "idx_locations_name"
   add_index "locations", ["status"], :name => "idx_locations_status"
   add_index "locations", ["user_id"], :name => "idx_locations_user_id"
+
+  create_table "logos", :force => true do |t|
+    t.string   "image"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "location_id"
+  end
 
   create_table "mappings", :force => true do |t|
     t.datetime "created_at"
@@ -250,14 +257,14 @@ ActiveRecord::Schema.define(:version => 20110920100926) do
   end
 
   create_table "roads", :id => false, :force => true do |t|
-    t.integer     "id",                              :null => false
-    t.string      "label"
-    t.integer     "country_id"
-    t.boolean     "is_one_way"
-    t.string      "route_parameters", :limit => 100
-    t.integer     "road_category_id"
-    t.line_string "the_geom",         :limit => nil,                 :srid => 4326
-    t.point       "centroid",         :limit => nil,                 :srid => 4326
+    t.integer  "id",                              :null => false
+    t.string   "label"
+    t.integer  "country_id"
+    t.boolean  "is_one_way"
+    t.string   "route_parameters", :limit => 100
+    t.integer  "road_category_id"
+    t.geometry "the_geom",         :limit => nil
+    t.geometry "centroid",         :limit => nil
   end
 
   create_table "search_criteria", :force => true do |t|
