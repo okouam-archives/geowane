@@ -2,8 +2,11 @@
   .portlet-header
     Logos
   .portlet-content
-    = image_tag(@location.logo.image.url, :height => "100")
-    = form_for :logo, :html => {:multipart => true}, :url => {:action => "create", :controller => "logos", :location_id => location.id} do |f|
-      = file_field :logo, "image"
-      = f.submit
-
+    - if @location.logo.nil?
+      = form_for :logo, :html => {:multipart => true}, :url => {:action => "create", :controller => "logos", :location_id => location.id} do |f|
+        = file_field :logo, "image"
+        = f.submit
+    - else
+      = image_tag(@location.logo.image.url, :height => "50")
+      = form_for :logo, :url => {:action => "delete", :controller => "logos", :location_id => location.id} do |f|
+        = f.submit "Delete Logo"
