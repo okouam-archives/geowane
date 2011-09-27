@@ -78,14 +78,11 @@ class Location < ActiveRecord::Base
       :latitude => latitude.to_s,
       :boundaries => boundaries
     }
+    attrs[:photos] = photos.map {|photo| photo.image.url} if photos.size > 0
     attrs[:city_name] = city.name if city
     attrs[:username] = respond_to?(:username) ? username : user.login
     attrs[:icon] = tags.first.category.icon if !tags.empty? && tags.first.category.icon
     attrs
-  end
-
-  def name=(name)
-    self[:name] = name
   end
 
 end

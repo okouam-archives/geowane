@@ -7,7 +7,9 @@ class CreateLocationsTable < ActiveRecord::Migration
       t.decimal :latitude
       t.enum :status
       t.references :city, :foreign_key => true, :dependent => :restrict
+      t.string :city_name
       t.references :user, :foreign_key => true, :dependent => :restrict
+      t.string :user_login
       t.references :import, :foreign_key => true, :dependent => :restrict
       t.references :road, :foreign_key => true, :dependent => :restrict
       t.string :long_name
@@ -18,6 +20,8 @@ class CreateLocationsTable < ActiveRecord::Migration
       t.integer :level_3
       t.integer :level_4
       t.string :email
+      t.text :metadata
+      t.text :boundaries
       t.string :telephone
       t.string :website
       t.string :postal_address

@@ -2,6 +2,8 @@ class UserSessionsController < ApplicationController
   before_filter :require_user, :except => [:new, :create]
 
   def new
+
+
     @user_session = UserSession.new
     render :layout => false
   end

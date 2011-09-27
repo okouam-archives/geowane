@@ -30,7 +30,7 @@ class ApiController < ApplicationController
 
   def features
     query = Location
-      .includes(:tags, :administrative_unit_0)
+      .includes(:tags, :administrative_unit_0, :photos)
       .where("locations.name ilike '%#{params[:q].force_encoding('UTF-8')}%'")
       .where("boundaries.name LIKE 'Côte d''Ivoire'")
       .where("status != 'INVALID'")
@@ -69,7 +69,7 @@ class ApiController < ApplicationController
 
   def location
     id = params[:id]
-    render :json => Location.find(id).to_geojson, :callback => params[:callback]
+    render :json => Location.find(id).to_geojson(request.root_url), :callback => params[:callback]
   end
 
   def locations
@@ -108,7 +108,7 @@ class ApiController < ApplicationController
   def fetch_locations(bounds, classification, name)
     query = Location.scoped
       .valid
-      .includes(:administrative_unit_0, :city)
+      .includes(:administrative_unit_0, :city, :photos)
       .where("boundaries.name LIKE 'Côte d''Ivoire'")
       .limit(99)
       .in_bbox(bounds.split(","))
