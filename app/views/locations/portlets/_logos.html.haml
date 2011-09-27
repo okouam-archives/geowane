@@ -1,0 +1,10 @@
+.logos.portlet
+  .portlet-header
+    Logos
+  .portlet-content
+    - @location.logo do |logo|
+      = image_tag(logo.image.url, :height => "100")
+    = form_for :logo, :html => {:multipart => true}, :url => {:action => "create", :controller => "logos", :location_id => location.id} do |f|
+      = file_field :logo, "image"
+      = f.submit
+

@@ -8,6 +8,7 @@ Gowane::Application.routes.draw do
 
   resources :locations do
     resources :comments, :tags, :photos
+    resource :logo
     member do
       get :next, :previous, :surrounding_landmarks
     end

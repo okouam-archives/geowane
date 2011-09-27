@@ -4,6 +4,7 @@ class Location < ActiveRecord::Base
   has_many :photos, :autosave => true
   acts_as_commentable
   acts_as_audited
+  has_one :logo, :autosave => true
   validates_presence_of :name
   belongs_to :user
   belongs_to :city
