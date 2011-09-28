@@ -1,11 +1,7 @@
-
-require "open-uri"
-
 class Category < ActiveRecord::Base
   has_many :locations, :through => :tags
-  has_many :mappings
   has_many :tags
-  has_many :partner_categories, :through => :mappings
+  belongs_to :classification
   validates_presence_of :french, :english
   mount_uploader :icon, IconUploader
 

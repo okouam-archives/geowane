@@ -1,11 +1,6 @@
-class PartnerCategory < ActiveRecord::Base
+class Classification < ActiveRecord::Base
+  has_many :categories
   validate :name_must_be_provided
-  has_many :categories, :through => :mappings
-  has_many :mappings
-  belongs_to :partner
-  mount_uploader :icon, IconUploader
-
-  default_scope :order => 'french ASC'
 
   def name_must_be_provided
     if french.blank? && english.blank?
@@ -14,5 +9,8 @@ class PartnerCategory < ActiveRecord::Base
     end
   end
 
-end
+  def self.dropdown_items
+    Classification.order("name ASC").map {|classification| [classification.name, classification.id]}
+  end
 
+end
