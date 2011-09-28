@@ -6,7 +6,6 @@ class MappingsController < ApplicationController
     render :json => object
   end
 
-
   create.wants.json do
     result = object.attributes
     result[:name] = object.category.french

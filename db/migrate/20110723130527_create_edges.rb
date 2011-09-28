@@ -19,10 +19,10 @@ class CreateEdges < ActiveRecord::Migration
         cost_multiplier double precision,
         is_one_way boolean,
         rule text,
-        CONSTRAINT edges_pkey PRIMARY KEY (gid)
+        CONSTRAINT pkey_edges PRIMARY KEY (gid)
       );
+      CREATE INDEX idx_edges_road_id ON edges(road_id);
       SELECT AddGeometryColumn('edges', 'the_geom', 4326, 'LINESTRING', 2);
-      SELECT AddGeometryColumn('edges', 'centroid', 4326, 'POINT', 2);
     }
   end
 end

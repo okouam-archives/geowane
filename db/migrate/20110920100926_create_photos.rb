@@ -1,12 +1,23 @@
 class CreatePhotos < ActiveRecord::Migration
+
   def up
-    create_table :photos do |t|
-      t.string :image
-      t.timestamps
-      t.references :location
-    end
+    execute %{
+      CREATE TABLE photos
+      (
+        id serial,
+        location_id integer REFERENCES locations(id)
+        image character varying(255),
+        created_at timestamp without time zone,
+        updated_at timestamp without time zone,
+        CONSTRAINT pk_photos PRIMARY KEY (id)
+      );
+    }
   end
 
   def down
+    execute %{
+      DROP TABLE photos;
+    }
   end
+
 end

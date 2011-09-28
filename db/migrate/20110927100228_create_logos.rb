@@ -1,14 +1,24 @@
 class CreateLogos < ActiveRecord::Migration
 
   def up
-    create_table :logos do |t|
-      t.string :image
-      t.timestamps
-      t.references :location
-    end
+    execute %{
+      CREATE TABLE logos
+      (
+        id serial,
+        location_id integer REFERENCES locations(id)
+        image character varying(255),
+        created_at timestamp without time zone,
+        updated_at timestamp without time zone,
+        CONSTRAINT pk_logos PRIMARY KEY (id)
+      );
+    }
   end
 
   def down
+    execute %{
+      DROP TABLE logos;
+    }
   end
+
 end
 
