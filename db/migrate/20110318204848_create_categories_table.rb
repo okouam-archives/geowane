@@ -4,12 +4,11 @@ class CreateCategoriesTable < ActiveRecord::Migration
       t.string :french, :limit => 200, :null => false
       t.string :english, :limit => 200, :null => false
       t.string :code, :limit => 200
-      t.string :icon, :limit => 200
       t.boolean :is_hidden, :default => false
-      t.integer :numeric_code, :default => 0
       t.boolean :is_landmark, :default => false
-      t.integer :tags_count
       t.timestamps
     end
+    add_index :idx_categories, [:is_landmark], :name => 'idx_categories_is_landmark'
+    add_index :idx_categories, [:is_hidden], :name => 'idx_categories_is_hidden'
   end
 end

@@ -1,5 +1,6 @@
 class Category < ActiveRecord::Base
   has_many :locations, :through => :tags
+  has_many :roads
   has_many :tags
   belongs_to :classification
   validates_presence_of :french, :english

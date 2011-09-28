@@ -1,4 +1,5 @@
 class Road  < ActiveRecord::Base
+  belongs_to :category
 
   scope :closest, lambda {|longitude, latitude|
     where("ST_DWithin(ST_GeographyFromText('SRID=4326;Point(#{longitude} #{latitude})'), roads.the_geom::geography, 500)")
