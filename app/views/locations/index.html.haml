@@ -27,7 +27,7 @@
           %option{:selected=>"selected"} Edit
         %input.button{:type=>"button", :value=>"Apply"}
       .clear
-      = semantic_form_for :locations, :url => new_export_path do
+      = form_for :locations, :url => new_export_path do
         .portlet
           .portlet-header
             Listing
@@ -37,13 +37,22 @@
                 %tr
                   %th
                     %input{:type=>"checkbox"}
-                  %th= link_to "Name", "#", :"data-sort" => "name"
-                  %th= link_to "City", "#", :"data-sort" => "city_name"
+                  %th= link_to "Name", url_for(@sort_params.merge({:sort => "name"}))
+                  %th= link_to "City", url_for(@sort_params.merge({:sort => "city_name"}))
                   %th.tags Tags
-                  %th.added_by= link_to "Added By", "#", :"data-sort" => "username"
-                  %th.date_added= link_to "Date Added", "#", :"data-sort" => "created_at"
-                  %th.last_changed= link_to "Last Changed", "#", :"data-sort" => "updated_at"
-                  %th.status= link_to "Status", "#", :"data-sort" => "status"
+                  %th.added_by= link_to "Added By", url_for(@sort_params.merge({:sort => "added_by"}))
+                  %th.date_added= link_to "Date Added", url_for(@sort_params.merge({:sort => "created_at"}))
+                  %th.last_changed= link_to "Last Changed", url_for(@sort_params.merge({:sort => "updated_at"}))
+                  %th.status= link_to "Status", url_for(@sort_params.merge({:sort => "status"}))
+                  %th{:style=>"display: none"} Long Name
+                  %th{:style=>"display: none"} Street Name
+                  %th{:style=>"display: none"} Comments
+                  %th{:style=>"display: none"} Longitude
+                  %th{:style=>"display: none"} Latitude
+                  %th{:style=>"display: none"} Level 0
+                  %th{:style=>"display: none"} Level 1
+                  %th{:style=>"display: none"} Level 2
+                  %th{:style=>"display: none"} Level 3
               %tbody
                 - for location in @locations
                   %tr{:"data-id" => location.id, :"data-name" => location.name, :"data-longitude" => location.longitude, :"data-latitude" => location.latitude}
@@ -52,12 +61,21 @@
                     %td.name
                       - if location.name.length > 40
                         = image_tag("warning-icon.png")
-                      = link_to location.name, edit_location_path(location)
+                      = link_to location.name, edit_location_path(location, @navigation_params.merge({id: location.id}))
                     %td= location.city_name
-                    %td= location.tags.map {|t| t.category.french}.join(", ") || ""
+                    %td= location.tag_list
                     %td= location.username
                     %td= location.created_at.strftime("%d-%m-%Y")
                     %td= location.updated_at.strftime("%d-%m-%Y")
                     %td= location.status.to_s.humanize.upcase
-            = render :partial => "shared/paging", :locals => {:collection => @locations, :page_size => @per_page}
+                    %td{:style=>"display: none"}= location.long_name
+                    %td{:style=>"display: none"}
+                    %td{:style=>"display: none"}= location.num_comments
+                    %td{:style=>"display: none"}= location.longitude
+                    %td{:style=>"display: none"}= location.latitude
+                    %td{:style=>"display: none"}= location.boundary_0
+                    %td{:style=>"display: none"}= location.boundary_1
+                    %td{:style=>"display: none"}= location.boundary_2
+                    %td{:style=>"display: none"}= location.boundary_3
+            = render :partial => "shared/paging2", :locals => {:collection => @locations, :page_size => @per_page}
 

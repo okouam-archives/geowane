@@ -3,8 +3,8 @@ class City < ActiveRecord::Base
   has_many :locations
 
   def self.dropdown_items
-    sql = "SELECT id, name FROM cities ORDER BY name ASC"
-    City.connection.select_all(sql).map {|rs| [rs["name"], rs["id"]]}
+    connection = ActiveRecord::Base.connection
+    connection.select_rows("SELECT name, id FROM cities ORDER BY name ASC")
   end
 
 end

@@ -2,7 +2,7 @@ class Category < ActiveRecord::Base
   has_many :locations, :through => :tags
   has_many :roads
   has_many :tags
-  belongs_to :classification
+  has_many :classifications, :through => :mappings
   validates_presence_of :french, :english
   mount_uploader :icon, IconUploader
 
@@ -19,7 +19,8 @@ class Category < ActiveRecord::Base
   end
 
   def self.dropdown_items
-    Category.select("french, id").order(:french).map {|category| [category.french, category.id]}
+    connection = ActiveRecord::Base.connection
+    connection.select_rows("SELECT french, id FROM categories ORDER BY french ASC")
   end
 
 end

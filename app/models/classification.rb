@@ -1,5 +1,5 @@
 class Classification < ActiveRecord::Base
-  has_many :categories
+  has_many :categories, :through => :mappings
   validate :name_must_be_provided
 
   def name_must_be_provided

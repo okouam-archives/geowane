@@ -49,7 +49,7 @@ $.Controller("ManageMap",
 
   update: function(data) {
     var locations = new OpenLayers.Format.GeoJSON().read(data);
-    locations[0].attributes["thumbnail"] = "/assets/icons/1.gif";
+    locations[0].attributes["counter"] = 1;
     this.layer.addFeatures(locations);
     this.original_geometry = this.layer.getDataExtent().getCenterLonLat();
     this.map.setCenter(this.original_geometry, 6);

@@ -30,7 +30,7 @@ $.Controller("ManageMap",
     var wrapper = contents.children("ul").empty();
     var template = $.template(null,
       "<li> \
-        <span><img src='${attributes.thumbnail}' style='height: 18px' /></span> \
+        <span style='font-weight: bold'>${attributes.counter}. </span> \
         <span class='name'>${attributes.name}</span> \
       </li>"
     );

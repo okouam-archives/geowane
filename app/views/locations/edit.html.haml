@@ -7,9 +7,9 @@
   .block_head
     %h2
       Edit Location #{@location.id}
-      = link_to "Back", locations_path(:page => session[:search_page], :per_page => session[:search_page_size])
-      = link_to "Previous POI", previous_location_path(@location)
-      = link_to "Next POI", next_location_path(@location)
+      = link_to "Back", url_for(@navigation_params)
+      = link_to "Previous POI", url_for(@cycling_params.merge({action: :previous}))
+      = link_to "Next POI", url_for(@cycling_params.merge({action: :next}))
   .block_content
     #portlets
       .editor-content{:"data-id" => @location.id, :"data-name" => @location.name, :"data-longitude" => @location.longitude, :"data-latitude" => @location.latitude}

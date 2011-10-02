@@ -52,11 +52,8 @@ class ExportsController < ApplicationController
 
   def selection
     @all_countries = Boundary.dropdown_items(0)
-    @selected_partner = Partner.where(:name => "0-One") .first
-    @all_categories = @selected_partner.partner_categories
     @all_users = User.dropdown_items
     @all_statuses = Location.new.enums(:status).select_options
-    @all_partners = Partner.dropdown_items
   end
 
   def count

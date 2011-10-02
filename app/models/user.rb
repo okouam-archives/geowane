@@ -7,7 +7,8 @@ class User < ActiveRecord::Base
   scope :active, :conditions => {:is_active => true}
 
   def self.dropdown_items
-    User.select("login, id").order("login ASC").map {|user| [user.login, user.id]}
+    connection = ActiveRecord::Base.connection
+    connection.select_rows("select login, id from users order by login ASC")
   end
 
 end

@@ -1,6 +1,5 @@
 class ApplicationController < ActionController::Base
-  before_filter :require_user
-  before_filter :set_locale
+  before_filter :require_user, :set_locale, :remove_snowman
   cache_sweeper :audit_sweeper
   helper :all
   around_filter :convert_permission_error
@@ -17,7 +16,11 @@ class ApplicationController < ActionController::Base
       I18n.default_locale
     end
   end
-  
+
+  def remove_snowman
+    params.delete(:utf8)
+  end
+
   def convert_permission_error
     yield
   rescue Aegis::AccessDenied

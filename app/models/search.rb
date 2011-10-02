@@ -1,33 +1,42 @@
-require 'uuidtools'
+class Search
 
-class Search < ActiveRecord::Base
-  belongs_to :user
-  validates_presence_of :user
-  before_save :generate_persistence_token
-  has_one :criteria, :class_name => "SearchCriteria"
-
-  def self.construct(criteria, sort_order, page, page_size, search_token, user)
-    search = Search.new(:user => user, :per_page => page_size || 10, :page => page || 1)
-    if criteria && criteria["reset"]
-      search.criteria = SearchCriteria.new(Hash.new)
-    elsif criteria.nil? && search_token
-      search = Search.find_by_persistence_token(search_token)
-    else
-      search.criteria = SearchCriteria.new(criteria)
-      search.criteria.sort_order = sort_order
-    end
-    search.save!
-    search
+  def initialize(query)
+    @criteria = SearchCriteria.new(query)
   end
 
   def save_to_session(session)
-    session[:search_token] = persistence_token
     session[:search_page] = page
     session[:search_page_size] = per_page
   end
 
-  def execute
-    query = criteria.create_query.page(self.page).per(self.per_page)
+  def execute(page, per_page)
+    sql = %{
+      SELECT
+        id, city_id,
+        longitude,
+        latitude,
+        pois.name,
+        long_name,
+        status,
+        pois.updated_at,
+        pois.created_at,
+        (select users.login from users where users.id = pois.user_id) as username,
+        (select cities.name from cities where cities.id = pois.city_id) as city_name,
+        array_to_string(array(select categories.french from categories join tags on categories.id = tags.category_id and tags.location_id = pois.id), ', ') as tag_list,
+        (select name from boundaries where boundaries.id = pois.level_0) as boundary_0,
+        (select name from boundaries where boundaries.id = pois.level_1) as boundary_1,
+        (select name from boundaries where boundaries.id = pois.level_2) as boundary_2,
+        (select name from boundaries where boundaries.id = pois.level_3) as boundary_3,
+        (select name from boundaries where boundaries.id = pois.level_4) as boundary_4,
+        (select count(*) from comments where commentable_id = pois.id and commentable_type = 'Location') as num_comments
+      FROM
+        locations as pois
+      WHERE
+        EXISTS (#{@criteria.create_query.to_sql} AND pois.id = locations.id)
+    }
+    query = @criteria.create_query
+    total_entries = query.count()
+    Location.paginate_by_sql sql, {:page => page, :per_page => per_page, :total_entries => total_entries}
   end
 
   def next(id)
@@ -44,15 +53,12 @@ class Search < ActiveRecord::Base
     locations[new_index]
   end
 
-  def generate_persistence_token
-    self.persistence_token = UUIDTools::UUID.timestamp_create.to_s
-  end
-
   private
 
   def current_range_and_index(id)
-    locations = criteria.create_query.select("locations.id").all.map{|l|l.id}
-    index = locations.index id.to_i
+    connection = ActiveRecord::Base.connection
+    locations = connection.select_values(@criteria.create_query.select("locations.id").to_sql)
+    index = locations.index id
     return locations, index
   end
 

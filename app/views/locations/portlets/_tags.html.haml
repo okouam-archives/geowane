@@ -5,8 +5,8 @@
       = link_to "(+)", "#/category/add", :class => "pick-category"
   .portlet-content.nopadding
     %div.tags{:style=>"padding: 10px"}
-      .list{:class=>"tags_for_#{object.id}"}
-        = render :partial => "tags/collection", :locals => {:items => object.tags.map {|c| {:name => c.category.french, :delete_link => location_tag_url(c.location_id, c.id)}}}
+      .list{:class=>"tags_for_#{@location.id}"}
+        = render :partial => "tags/collection", :locals => {:items => @location.tags.map {|c| {:name => c.category.french, :delete_link => location_tag_url(c.location_id, c.id)}}}
     .category-picker{:style=>"background-color: #efefef; padding: 10px; display: none"}
       = select_tag "add_category", options_for_select(@categories), :style=>"width: 310px; margin-right: 3px"
       %input.button.ok{:type=>"button", :value=>"Add"}

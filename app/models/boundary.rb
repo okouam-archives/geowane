@@ -6,7 +6,8 @@ class Boundary < ActiveRecord::Base
   belongs_to :parent, :class_name => 'Boundary'
 
   def self.dropdown_items(depth)
-    Boundary.select("name, id").order("name").where(:level => depth).map {|boundary| [boundary.name, boundary.id]}
+    connection = ActiveRecord::Base.connection
+    connection.select_rows("SELECT name, id FROM boundaries WHERE level = #{depth} ORDER BY name ASC")
   end
 
   def self.find_enclosing(longitude, latitude, depth)

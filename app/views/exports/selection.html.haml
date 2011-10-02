@@ -32,7 +32,7 @@
               Partner Categories
               %span{:style=>"margin-right: 0"}
                 Partner:
-                = select_tag("export[partner_id]", options_for_select(@all_partners, @selected_partner.id))
+
             .portlet-content.nopadding{:style=>"height: 300px; overflow-y: scroll"}
               %table.main
                 %thead
@@ -40,13 +40,7 @@
                     %th.selector
                       %input{:type=>"checkbox"}
                     %th Category
-                %tbody
-                  - for category in @all_categories
-                    %tr
-                      %td.selector
-                        %input{:type=>"checkbox", :value=>category.id, :name => "export[categories][]"}
-                      %td
-                        = "#{category.french || "-" } / #{category.english || "-" }"
+
         .column
           .portlet.workflow
             .portlet-header

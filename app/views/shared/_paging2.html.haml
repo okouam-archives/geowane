@@ -1,0 +1,103 @@
+#pagination-wrapper{:style=>"margin-top: 10px"}
+  - unless collection.nil? || collection.empty?
+    = select_tag "pages", options_for_select([ "10", "20", "50", "100", "1000", "5000"], page_size), :style => "width: 70px; padding: 2px; float: left"
+    = will_paginate collection, :params => @params, :class => "paggination"
+    %span.flicker
+      %a#view_3{:href=>"#"}
+        &#x25CE;
+    %span.flicker
+      %a#view_2{:href=>"#"}
+        &#x25CE;
+    %span.flicker
+      %a#view_1.selected{:href=>"#"}
+        &#x25C9;
+
+.clear
+
+- content_for :javascripts do
+  :javascript
+    $(document).ready(function() {
+      var changeView = function(el, start, end) {
+        $(".flicker a")
+          .html("&#x25CE;")
+          .removeClass("selected");
+        el.addClass("selected")
+          .html("&#x25C9;");
+        var headers = $("table th");
+        headers.slice(2).hide();
+        headers.slice(start, end).show();
+        $("table tbody tr").each(function(i, item) {
+          var cells = $(item).find("td");
+          cells.slice(2).hide();
+          cells.slice(start, end).show();
+        });
+        return false;
+      }
+
+      $("#view_1").click(function() {
+        return changeView($(this), 2, 8);
+      });
+
+      $("#view_2").click(function() {
+        return changeView($(this), 8, 11);
+      });
+
+      $("#view_3").click(function() {
+        return changeView($(this), 11, 17);
+      });
+
+      $("#pages").change(function() {
+        window.location = $.param.querystring(window.location.href, {per_page: $(this).val(), page: 1});
+      });
+    });
+
+:css
+  .flicker {
+    font-size: 22px; float: right; margin-left: 10px; font-weight: bold
+  }
+
+  .flicker a {
+    color: #aaa
+  }
+
+  .flicker a:hover {
+    color: orange
+  }
+
+  .flicker a.selected {
+    color: #006699
+  }
+
+  table td.name {width: 190px}
+  table td.selector {width: 10px}
+
+  .block .paggination {
+  font-size: 10px;
+  font-weight: bold;
+  padding-bottom: 15px;
+  float: left;
+  display: inline;
+  margin-left: 20px
+  }
+
+  .block .paggination a, .block .paggination span.current, .block .paggination span.disabled {
+  border: 1px solid #ccc;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  padding: 3px 6px;
+  margin: 0 1px;
+  }
+
+  .block .paggination a.active, .block .paggination span.current {
+  background: #39a3e6;
+  border: 1px solid #0082d5;
+  color: #fff;
+  }
+
+  .block .paggination a:hover {
+  color: #fff;
+  background: #ec8526;
+  border: 1px solid #d77011;
+  }
+

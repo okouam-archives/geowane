@@ -1,31 +1,33 @@
 class LocationsController < ApplicationController
   include Aegis::Controller
-  resource_controller
   layout "admin"
-  before_filter :assign_form_data, :only => [:create, :edit]
+
+  def per_page
+    @per_page = params[:per_page] || 10
+  end
+
+  def page
+    params[:page] || 1
+  end
 
   def index
-    @search = Search.construct(params[:s], params[:sort], params[:page], params[:per_page], session[:search_token], current_user)
-    @search.save_to_session(session)
+    search = Search.new(params[:s])
     respond_to do |format|
       format.html do
-        @locations = @search.execute
-        @per_page = @search.per_page
+        @locations = search.execute(page, per_page)
+        @sort_params = params.merge({controller: "locations", action: "index"}).except(:page, :per_page)
+        @navigation_params =  params.merge({controller: "locations", action: "edit"})
       end
-      format.json { render :json => @search.execute.to_a.to_geojson }
+      format.json { render :json => search.execute.to_a.to_geojson }
     end
   end
 
   def next
-    search = Search.find_by_persistence_token(session[:search_token])
-    url = search ? edit_location_path(search.next(params[:id])) : locations_path
-    redirect_to url
+    redirect_to edit_location_path(Search.new(params[:s]).next(params[:id]), :page => page, :per_page => per_page)
   end
 
   def previous
-    search = Search.find_by_persistence_token(session[:search_token])
-    url = search ? edit_location_path(search.previous(params[:id])) : locations_path
-    redirect_to url
+    redirect_to edit_location_path(Search.new(params[:s]).previous(params[:id]), :page => page, :per_page => per_page)
   end
 
   def collection_delete
@@ -35,22 +37,17 @@ class LocationsController < ApplicationController
   end
 
   def collection_edit
-    if request.post?
-      session[:collection] = params[:locations]
-      redirect_to "/locations/edit"
-    else
-      @locations = Location.includes(:comments, :tags, :user).find(session[:collection], :order => "name")
-      respond_to do |format|
-        format.json do
-          render :json => @locations.to_geojson
-        end
-        format.html do
-          @categories = ["", ""] + Category.order("french").map{|c| [c.french, c.id]}
-          @comments_cache = @locations.map do |loc|
-            loc.comments.map {|x| {location_id: x.commentable_id, created_at: x.created_at, text: x.comment, user: x.user.login}}
-          end.reject{|x| x.empty?}.flatten.to_json
-          @locations_cache = @locations.map {|location| location.to_geojson}.to_json
-        end
+    @locations = Location.includes(:comments, :tags, :user).find(params[:locations].split(","), :order => "name")
+    respond_to do |format|
+      format.json do
+        render :json => @locations.to_geojson
+      end
+      format.html do
+        @categories = Category.dropdown_items
+        @comments_cache = @locations.map do |loc|
+          loc.comments.map {|x| {location_id: x.commentable_id, created_at: x.created_at, text: x.comment, user: x.user.login}}
+        end.reject{|x| x.empty?}.flatten.to_json
+        @locations_cache = @locations.to_geojson
       end
     end
   end
@@ -60,8 +57,7 @@ class LocationsController < ApplicationController
       locations = []
       params[:locations].values.each do |attributes|
         location = Location.find(attributes.delete(:id))
-        location.update_attributes(attributes)
-        location.save!
+        location.update_attributes!(attributes)
         locations << location
       end
       if request.xhr?
@@ -75,29 +71,33 @@ class LocationsController < ApplicationController
     end
   end
 
-  edit.before do
+  def show
+    respond_to do |format|
+      format.json do
+        @items = Location.find(params[:id].split(","))
+        render :json => @items.to_a.to_geojson
+      end
+    end
+  end
+
+  def edit
+    @location = Location.find(params[:id])
     @categories = Category.dropdown_items
-    @comments = object.comments.map {|c| c.to_hash}
+    @comments = @location.comments.map {|c| c.to_hash}
+    @navigation_params =  params.except(:id).merge({controller: "locations", action: "index"})
+    @cycling_params =params.merge({controller: "locations"})
   end
 
-  show do
-    wants.json do
-      @items = Location.find(params[:id].split(","))
-      render :json => @items.to_a.to_geojson
+  def create
+    @categories = Category.dropdown_items
+  end
+
+  def update
+    location = Location.find(params[:id])
+    if location.update_attributes(params[:location])
+      render :json => location.to_geojson
+    else
+      render :text => location.errors
     end
   end
-
-  update do
-    wants.html do
-      redirect_to locations_path(:page => session[:search_page], :per_page => session[:search_page_size])
-    end
-    wants.json do
-      render :json => object.to_geojson
-    end
-  end
-
-  def assign_form_data
-    @form_data = {"categories" => Category.order("french")}
-  end
-
 end
