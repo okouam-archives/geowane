@@ -7,7 +7,7 @@ class CreateRoads < ActiveRecord::Migration
         id integer,
         label character varying(255),
         country_id integer REFERENCES boundaries(id),
-        is_one_way boolean NOT NULL default ,
+        is_one_way boolean NOT NULL,
         route_parameters character varying(100),
         category_id integer REFERENCES categories(id),
         created_at timestamp without time zone,
