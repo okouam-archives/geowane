@@ -1,7 +1,8 @@
 class Search
 
-  def initialize(query)
+  def initialize(query, sort_order)
     @criteria = SearchCriteria.new(query)
+    @sort_order = sort_order || "pois.name"
   end
 
   def execute(page, per_page)
@@ -28,6 +29,7 @@ class Search
         locations as pois
       WHERE
         EXISTS (#{@criteria.create_query.to_sql} AND pois.id = locations.id)
+      ORDER BY #{@sort_order}
     }
     query = @criteria.create_query
     total_entries = query.count()

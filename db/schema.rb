@@ -13,7 +13,40 @@
 
 ActiveRecord::Schema.define(:version => 20110927100228) do
 
-  create_table "audits", :force => true do |t|
+  create_table "boundaries", :force => true do |t|
+    t.string   "name",                          :null => false
+    t.integer  "level",                         :null => false
+    t.string   "classification",                :null => false
+    t.integer  "parent_id"
+    t.geometry "feature",        :limit => nil,                 :srid => 4326
+  end
+
+  add_index "boundaries", ["feature"], :name => "idx_administrative_units_feature", :spatial => true
+  add_index "boundaries", ["level"], :name => "idx_administrative_units_level"
+
+  create_table "categories", :force => true do |t|
+    t.string   "french"
+    t.string   "english"
+    t.string   "icon"
+    t.boolean  "is_hidden",   :default => false, :null => false
+    t.boolean  "is_landmark", :default => false, :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "categories", ["is_hidden"], :name => "idx_categories_is_hidden"
+  add_index "categories", ["is_landmark"], :name => "idx_categories_is_landmark"
+
+  create_table "changes", :force => true do |t|
+    t.string   "old_value"
+    t.integer  "changeset_id"
+    t.string   "new_value"
+    t.string   "datum"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "changesets", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "auditable_id"
@@ -22,38 +55,14 @@ ActiveRecord::Schema.define(:version => 20110927100228) do
     t.string   "action"
   end
 
-  add_index "audits", ["auditable_id", "auditable_type"], :name => "auditable_index"
-  add_index "audits", ["created_at"], :name => "index_audits_on_created_at"
-  add_index "audits", ["user_id"], :name => "user_index"
-
-  create_table "boundaries", :force => true do |t|
-    t.string   "name",                          :null => false
-    t.integer  "level",                         :null => false
-    t.string   "classification",                :null => false
-    t.integer  "parent_id"
-    t.geometry "feature",        :limit => nil
-  end
-
-  add_index "boundaries", ["feature"], :name => "idx_administrative_units_feature", :spatial => true
-  add_index "boundaries", ["level"], :name => "idx_administrative_units_level"
-
-  create_table "categories", :force => true do |t|
-    t.string   "french",       :limit => 200,                    :null => false
-    t.string   "english",      :limit => 200,                    :null => false
-    t.string   "code",         :limit => 200
-    t.string   "icon",         :limit => 200
-    t.boolean  "is_hidden",                   :default => false
-    t.integer  "numeric_code",                :default => 0
-    t.boolean  "is_landmark",                 :default => false
-    t.integer  "tags_count"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
+  add_index "changesets", ["auditable_id", "auditable_type"], :name => "auditable_index"
+  add_index "changesets", ["created_at"], :name => "index_changesets_on_created_at"
+  add_index "changesets", ["user_id"], :name => "user_index"
 
   create_table "cities", :force => true do |t|
     t.string   "name"
-    t.geometry "feature", :limit => nil
-    t.geometry "centre",  :limit => nil
+    t.geometry "feature", :limit => nil, :srid => 4326
+    t.geometry "centre",  :limit => nil, :srid => 4326
   end
 
   add_index "cities", ["centre"], :name => "idx_cities_centre", :spatial => true
@@ -92,24 +101,25 @@ ActiveRecord::Schema.define(:version => 20110927100228) do
   end
 
   create_table "edges", :primary_key => "gid", :force => true do |t|
-    t.integer  "road_id"
-    t.string   "label"
-    t.float    "to_cost"
-    t.float    "cost"
-    t.float    "reverse_cost"
-    t.integer  "source"
-    t.integer  "target"
-    t.float    "length"
-    t.float    "x1"
-    t.float    "x2"
-    t.float    "y1"
-    t.float    "y2"
-    t.float    "cost_multiplier"
-    t.boolean  "is_one_way"
-    t.text     "rule"
-    t.geometry "the_geom",        :limit => nil
-    t.geometry "centroid",        :limit => nil
+    t.integer     "road_id"
+    t.string      "label"
+    t.float       "to_cost"
+    t.float       "cost"
+    t.float       "reverse_cost"
+    t.integer     "source"
+    t.integer     "target"
+    t.float       "length"
+    t.float       "x1"
+    t.float       "x2"
+    t.float       "y1"
+    t.float       "y2"
+    t.float       "cost_multiplier"
+    t.boolean     "is_one_way"
+    t.text        "rule"
+    t.line_string "the_geom",        :limit => nil, :srid => 4326
   end
+
+  add_index "edges", ["road_id"], :name => "idx_edges_road_id"
 
   create_table "exports", :force => true do |t|
     t.integer  "locations_count"
@@ -135,7 +145,7 @@ ActiveRecord::Schema.define(:version => 20110927100228) do
     t.integer  "road_class"
     t.integer  "speed"
     t.integer  "type"
-    t.geometry "geom",       :limit => nil
+    t.geometry "geom",       :limit => nil, :srid => 4326
   end
 
   add_index "features", ["geom"], :name => "idx_features_geom", :spatial => true
@@ -152,35 +162,26 @@ ActiveRecord::Schema.define(:version => 20110927100228) do
     t.datetime "updated_at"
   end
 
-  create_table "labels", :force => true do |t|
-    t.string   "key",            :null => false
-    t.string   "value",          :null => false
-    t.string   "classification"
-    t.integer  "location_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "labels", ["classification"], :name => "idx_labels_classification"
-  add_index "labels", ["key"], :name => "idx_labels_key"
-
   create_table "locations", :force => true do |t|
     t.string   "name"
     t.decimal  "longitude"
     t.decimal  "latitude"
     t.string   "status"
     t.integer  "city_id"
+    t.string   "city_name"
     t.integer  "user_id"
+    t.string   "user_login"
     t.integer  "import_id"
     t.integer  "road_id"
     t.string   "long_name"
-    t.string   "searchable_name"
     t.integer  "level_0"
     t.integer  "level_1"
     t.integer  "level_2"
     t.integer  "level_3"
     t.integer  "level_4"
     t.string   "email"
+    t.text     "metadata"
+    t.text     "boundaries"
     t.string   "telephone"
     t.string   "website"
     t.string   "postal_address"
@@ -190,7 +191,7 @@ ActiveRecord::Schema.define(:version => 20110927100228) do
     t.text     "miscellanous"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.geometry "feature",              :limit => nil
+    t.geometry "feature",              :limit => nil, :srid => 4326
   end
 
   add_index "locations", ["city_id"], :name => "idx_locations_city_id"
@@ -200,72 +201,34 @@ ActiveRecord::Schema.define(:version => 20110927100228) do
   add_index "locations", ["user_id"], :name => "idx_locations_user_id"
 
   create_table "logos", :force => true do |t|
+    t.integer  "location_id"
     t.string   "image"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "location_id"
-  end
-
-  create_table "mappings", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "category_id",         :null => false
-    t.integer  "partner_category_id", :null => false
-  end
-
-  add_index "mappings", ["category_id"], :name => "idx_mappings_on_category_id"
-  add_index "mappings", ["partner_category_id"], :name => "idx_mappings_on_partner_category_id"
-
-  create_table "model_changes", :force => true do |t|
-    t.string   "old_value"
-    t.integer  "audit_id"
-    t.string   "new_value"
-    t.string   "datum"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "partner_categories", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "french"
-    t.string   "english"
-    t.string   "icon"
-    t.string   "code"
-    t.integer  "partner_id"
-  end
-
-  add_index "partner_categories", ["partner_id"], :name => "idx_partner_categories_partner_id"
-
-  create_table "partners", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "name"
   end
 
   create_table "photos", :force => true do |t|
-    t.string   "image"
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.integer  "location_id"
-  end
-
-  create_table "road_categories", :force => true do |t|
-    t.string   "name"
+    t.string   "image"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "roads", :id => false, :force => true do |t|
-    t.integer  "id",                              :null => false
-    t.string   "label"
-    t.integer  "country_id"
-    t.boolean  "is_one_way"
-    t.string   "route_parameters", :limit => 100
-    t.integer  "road_category_id"
-    t.geometry "the_geom",         :limit => nil
-    t.geometry "centroid",         :limit => nil
+    t.integer     "id",                              :null => false
+    t.string      "label"
+    t.integer     "country_id"
+    t.boolean     "is_one_way",                      :null => false
+    t.string      "route_parameters", :limit => 100
+    t.integer     "category_id"
+    t.datetime    "created_at"
+    t.datetime    "updated_at"
+    t.line_string "the_geom",         :limit => nil,                 :srid => 4326
+    t.point       "centroid",         :limit => nil,                 :srid => 4326
   end
+
+  add_index "roads", ["category_id"], :name => "idx_roads_category_id"
+  add_index "roads", ["country_id"], :name => "idx_roads_country_id"
 
   create_table "search_criteria", :force => true do |t|
     t.datetime "created_at"
@@ -363,5 +326,12 @@ ActiveRecord::Schema.define(:version => 20110927100228) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_foreign_key "logos", "locations", :name => "logos_location_id_fkey"
+
+  add_foreign_key "photos", "locations", :name => "photos_location_id_fkey"
+
+  add_foreign_key "roads", "boundaries", :name => "roads_country_id_fkey", :column => "country_id"
+  add_foreign_key "roads", "categories", :name => "roads_category_id_fkey"
 
 end

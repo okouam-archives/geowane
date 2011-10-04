@@ -16,7 +16,7 @@ module Audited
 
       write_inheritable_attribute :non_audited_columns, except
 
-      has_many :audits, :as => :auditable
+      has_many :changesets, :as => :auditable
 
       before_update :audit_update
       before_destroy :audit_destroy
@@ -44,7 +44,7 @@ module Audited
 
     def audit_update
       unless (model_changes = audited_changes).empty?
-        audit = self.audits.create :action => 'update'
+        audit = self.changesets.create :action => 'update'
         model_changes.each do |key, value|
           old_value = value[0]
           new_value = value[1]
@@ -53,20 +53,20 @@ module Audited
             old_value = Category.find(value[0]).bilingual_name unless value[0].blank?
             new_value = Category.find(value[1]).bilingual_name unless value[1].blank?
           end
-          audit.model_changes.create(:datum => key, :old_value => old_value, :new_value => new_value)
+          audit.changes.create(:datum => key, :old_value => old_value, :new_value => new_value)
         end
       end
     end
 
     def audit_destroy
-      audit = self.audits.create :action => 'destroy'
+      audit = self.changesets.create :action => 'destroy'
       audited_attributes.each do |key, value|
         old_value = value
         begin
           old_value = Category.find(value).bilingual_name if key == "category_id"
         rescue
         end
-        audit.model_changes.create(:datum => key, :old_value => old_value, :new_value => '')
+        audit.changes.create(:datum => key, :old_value => old_value, :new_value => '')
       end
     end
 

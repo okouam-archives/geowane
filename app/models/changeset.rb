@@ -1,5 +1,4 @@
 class Changeset < ActiveRecord::Base
-  set_table_name "audits"
   belongs_to :auditable, :polymorphic => true
   belongs_to :user
   has_many :changes

@@ -7,36 +7,14 @@ describe SearchCriteria do
     Location.delete_all
   end
 
-  context "when searching with so parameters" do
+  context "when searching with no parameters" do
 
     it "returns all locations" do
       Factory(:location)
-      query = SearchCriteria.new.create_query
+      query = SearchCriteria.new({}).create_query
       query.count.should == 1
     end
 
-  end
-
-  context "when requesting a result ordering" do
-
-    it "orders the results" do
-      Factory(:location, :name => "K")
-      Factory(:location, :name => "D")
-      Factory(:location, :name => "H")
-      query = SearchCriteria.new(nil, "locations.name").create_query
-      query.first.name.should == "D"
-    end
-
-  end
-
-  it "searches by city" do
-    paris = Factory(:city, :name => "Paris")
-    london = Factory(:city, :name => "London")
-    Factory(:location, :city => paris)
-    Factory(:location, :city => london)
-    query = SearchCriteria.new({:city_id => paris.id}).create_query
-    query.all.size.should == 1
-    query.first.city_name.should == "Paris"
   end
 
   context "when filtering by model change" do
@@ -50,7 +28,7 @@ describe SearchCriteria do
       Factory(:location)
       hotel = Factory(:location)
       hotel.update_attributes(:longitude => 12)
-      query = SearchCriteria.new({:modified_by => @user.id}).create_query
+      query = SearchCriteria.new({:modified_by => [@user.id]}).create_query
       query.all.size.should == 1
     end
 
@@ -58,7 +36,7 @@ describe SearchCriteria do
       Factory(:location)
       hotel = Factory(:location)
       hotel.update_attributes(:status => "audited")
-      query = SearchCriteria.new({:audited_by => @user.id}).create_query
+      query = SearchCriteria.new({:audited_by => [@user.id]}).create_query
       query.all.size.should == 1
     end
 
@@ -66,7 +44,7 @@ describe SearchCriteria do
      Factory(:location)
       hotel = Factory(:location)
       hotel.update_attributes(:status => "field_checked")
-      query = SearchCriteria.new({:confirmed_by => @user.id}).create_query
+      query = SearchCriteria.new({:confirmed_by => [@user.id]}).create_query
       query.all.size.should == 1
     end
 
@@ -79,7 +57,7 @@ describe SearchCriteria do
       bars = Factory(:category)
       hotels.locations << Factory(:location)
       bars.locations << Factory(:location)
-      query = SearchCriteria.new({:category_id => hotels.id}).create_query
+      query = SearchCriteria.new({:categories => [hotels.id]}).create_query
       query.all.size.should == 1
     end
 
@@ -106,26 +84,15 @@ describe SearchCriteria do
     query.all.size.should == 1
   end
 
-  it "searches by label" do
-    Factory(:location)
-    location = Factory(:location)
-    location.labels << Label.new(:key => "IMPORTED FROM", :value => "4", :classification => "SYSTEM")
-    query = SearchCriteria.new({:import_id=> "4"}).create_query
-    query.all.size.should == 1
-  end
-
-  context "when searching by boundary" do
-
-    it "considers the most specific boundary" do
+    it "can search by boundary" do
       hotel = Factory(:location)
-      hotel.update_attributes(:level_0 => 384, :level_1 => 3944, :level_3 => 23)
+      hotel.update_attributes(:level_0 => 384)
       bar = Factory(:location)
-      bar.update_attributes(:level_0 => 384)
-      query = SearchCriteria.new({:location_level_1=> 3944, :location_level_0 => 384}).create_query
+      bar.update_attributes(:level_0 => 3944)
+      query = SearchCriteria.new({:level_id=> 3944}).create_query
       query.all.size.should == 1
     end
 
-  end
 
   it "searches by bbox" do
     Factory(:location, :longitude => 2, :latitude => 2)
@@ -137,7 +104,7 @@ describe SearchCriteria do
   it "can filter by status" do
     Factory(:location, :status => "invalid")
     Factory(:location, :status => "corrected")
-    query = SearchCriteria.new({:status => "corrected"}).create_query
+    query = SearchCriteria.new({:statuses => ["corrected"]}).create_query
     query.all.size.should == 1
   end
 

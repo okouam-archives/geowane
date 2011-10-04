@@ -11,7 +11,7 @@ class LocationsController < ApplicationController
   end
 
   def index
-    search = Search.new(params[:s])
+    search = Search.new(params[:s], params[:sort])
     respond_to do |format|
       format.html do
         @locations = search.execute(page, per_page)

@@ -27,10 +27,10 @@ describe Location do
   context "when updated" do
 
     it "creates an audit trail of changes" do
-      Audit.count.should == 0
+      Changeset.count.should == 0
       location = Factory(:location)
       location.update_attributes(:status => 'audited')
-      Audit.count.should == 1
+      Changeset.count.should == 1
     end
 
   end

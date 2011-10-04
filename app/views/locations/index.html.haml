@@ -40,9 +40,9 @@
                   %th= link_to "Name", url_for(@sort_params.merge({:sort => "name"}))
                   %th= link_to "City", url_for(@sort_params.merge({:sort => "city_name"}))
                   %th.tags Tags
-                  %th.added_by= link_to "Added By", url_for(@sort_params.merge({:sort => "added_by"}))
-                  %th.date_added= link_to "Date Added", url_for(@sort_params.merge({:sort => "created_at"}))
-                  %th.last_changed= link_to "Last Changed", url_for(@sort_params.merge({:sort => "updated_at"}))
+                  %th.added_by= link_to "Added By", url_for(@sort_params.merge({:sort => "username"}))
+                  %th.date_added= link_to "Date Added", url_for(@sort_params.merge({:sort => "pois.created_at"}))
+                  %th.last_changed= link_to "Last Changed", url_for(@sort_params.merge({:sort => "pois.updated_at"}))
                   %th.status= link_to "Status", url_for(@sort_params.merge({:sort => "status"}))
                   %th{:style=>"display: none"} Long Name
                   %th{:style=>"display: none"} Street Name
