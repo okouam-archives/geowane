@@ -19,6 +19,7 @@ gem "minitar"
 gem 'rmagick'
 gem 'authlogic', :git => 'git://github.com/odorcicd/authlogic.git', :branch => 'rails3'
 gem "kaminari"
+gem 'autotest-standalone'
 gem "will_paginate", :git => "https://github.com/p7r/will_paginate.git", :branch => "rails3"
 gem 'haml'
 gem 'paperclip'

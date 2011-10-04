@@ -34,8 +34,10 @@
           %ul
             - unless current_user.has_role?("collector")
               %li= link_to "Import Data", imports_path
+              %li= link_to "Import Rules", imports_path
               - if current_user.has_role?("administrator")
                 %li= link_to "Export Data", exports_path
+                %li= link_to "Export Rules", exports_path
         %li
           = link_to "Administration", "#"
           %ul

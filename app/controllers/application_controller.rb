@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   before_filter :require_user, :set_locale, :remove_snowman
-  cache_sweeper :audit_sweeper
+  cache_sweeper :auditor
   helper :all
   around_filter :convert_permission_error
   helper_method :current_user

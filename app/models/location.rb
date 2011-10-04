@@ -11,8 +11,7 @@ class Location < ActiveRecord::Base
   belongs_to :road
   has_many :categories, :through => :tags
   has_many :tags, :autosave => true
-  has_many :labels, :autosave => true
-  has_many :model_changes, :through => :audits
+  has_many :changes, :through => :changesets
 
   scope :not_geolocated, lambda {
     where(:level_0 => nil).where(:level_1 => nil).where(:level_2 => nil).where(:level_3 => nil)
@@ -24,13 +23,6 @@ class Location < ActiveRecord::Base
 
   scope :in_bbox, lambda {|bbox|
     where("ST_Intersects(SetSRID('BOX(#{bbox[0]} #{bbox[1]},#{bbox[2]} #{bbox[3]})'::box2d::geometry, 4326), locations.feature)")
-  }
-
-  scope :labelled, lambda {|key, value, classification|
-    joins(:labels)
-      .where("labels.classification ilike ?", classification)
-      .where("labels.key ilike ?", key.to_s)
-      .where("labels.value ilike ?", value.to_s)
   }
 
   scope :valid, lambda {

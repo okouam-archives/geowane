@@ -4,11 +4,6 @@ class Search
     @criteria = SearchCriteria.new(query)
   end
 
-  def save_to_session(session)
-    session[:search_page] = page
-    session[:search_page_size] = per_page
-  end
-
   def execute(page, per_page)
     sql = %{
       SELECT

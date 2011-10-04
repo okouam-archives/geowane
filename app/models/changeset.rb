@@ -1,7 +1,8 @@
-class Audit < ActiveRecord::Base
+class Changeset < ActiveRecord::Base
+  set_table_name "audits"
   belongs_to :auditable, :polymorphic => true
   belongs_to :user
-  has_many :model_changes
+  has_many :changes
 
   before_create :set_audit_user
 
