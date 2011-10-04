@@ -13,6 +13,8 @@ development: &development
 test:
   <<: *development
   database: geocms_test
+  username: deployment
+  password: FireDrake[1981]
 
 staging:
   <<: *development

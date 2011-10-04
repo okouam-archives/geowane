@@ -47,7 +47,7 @@ group :production do
   gem 'yui-compressor'
 end
 
-group :test do
+group :test, :staging do
   gem "faker"
   gem 'capybara'
   gem 'factory_girl'
@@ -55,7 +55,6 @@ group :test do
   gem 'spork', '~> 0.9.0rc7'
   gem 'autotest-standalone'
   gem 'database_cleaner'
-  gem "rspec-rails"
 end
 
 group :assets do
@@ -63,11 +62,12 @@ group :assets do
   gem 'coffee-rails'
 end
 
-group :test, :development do
+group :test, :development, :staging do
   gem 'query_trace'
   gem "rack-debug"
   gem "ruby-debug19"
   gem 'capistrano-ext'
   gem 'addressable'
+  gem "rspec-rails"
   gem 'capistrano'
 end
