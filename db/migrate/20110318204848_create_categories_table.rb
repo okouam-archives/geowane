@@ -7,6 +7,7 @@ class CreateCategoriesTable < ActiveRecord::Migration
         id serial,
         french character varying(255),
         english character varying(255),
+        icon character varying(255),
         is_hidden boolean NOT NULL default false,
         is_landmark boolean NOT NULL default false,
         created_at timestamp without time zone,
