@@ -6,3 +6,4 @@ require 'rake'
 require 'rack-debug/tasks' if Rails.env.development?
 
 Gowane::Application.load_tasks
+spec_prereq = :noop
