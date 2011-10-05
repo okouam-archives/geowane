@@ -10,6 +10,9 @@ development: &development
   min_messages: warning
   template: template_postgis
 
-test:
+test: &test
   <<: *development
   database: geocms_test
+
+cucumber:
+  <<: *test

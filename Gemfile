@@ -47,11 +47,13 @@ group :production, :staging do
   gem 'yui-compressor'
 end
 
-group :test, :ci do
+group :test do
   gem "faker"
   gem 'capybara'
   gem 'factory_girl'
   gem 'rcov'
+  gem 'cucumber'
+  gem 'cucumber-rails'
   gem 'spork', '~> 0.9.0rc7'
   gem 'autotest-standalone'
   gem 'database_cleaner'
@@ -62,7 +64,7 @@ group :assets do
   gem 'coffee-rails'
 end
 
-group :test, :development, :ci do
+group :test, :development do
   gem 'query_trace'
   gem "rack-debug"
   gem "ruby-debug19"
