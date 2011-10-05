@@ -13,18 +13,3 @@ development: &development
 test:
   <<: *development
   database: geocms_test
-  username: deployment
-  password: FireDrake[1981]
-
-staging:
-  <<: *development
-  database: geocms_staging
-  username: deployment
-  password: FireDrake[1981]
-
-production:
-  <<: *development
-  host: galileo.codeifier.com
-  database: cms_production
-  username: deployment
-  password: FireDrake[1981]

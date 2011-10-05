@@ -42,12 +42,12 @@ gem 'uglifier'
 gem 'tilt', :git => 'git://github.com/thisduck/tilt.git'
 gem 'less-js'
 
-group :production do
+group :production, :staging do
   gem 'therubyracer', '>= 0.9.2'
   gem 'yui-compressor'
 end
 
-group :test, :staging do
+group :test, :ci do
   gem "faker"
   gem 'capybara'
   gem 'factory_girl'
@@ -62,11 +62,10 @@ group :assets do
   gem 'coffee-rails'
 end
 
-group :test, :development, :staging do
+group :test, :development, :ci do
   gem 'query_trace'
   gem "rack-debug"
   gem "ruby-debug19"
-  gem 'capistrano-ext'
   gem 'addressable'
   gem "rspec-rails"
   gem 'capistrano'

@@ -10,18 +10,18 @@ set :stages, ["production"]
 set :default_stage, "production"
 set :deploy_via, :remote_cache
 set :user, "deployment"
-set :ssh_options, { :forward_agent => true }
 set :deploy_to, "/home/deployment/apps/geocms/production"
 set :rake, "/var/lib/gems/1.8/bin/rake"
-role :web, "galileo.codeifier.com"
-role :app, "galileo.codeifier.com"
-role :db,  "galileo.codeifier.com", :primary => true
+role :app, "localhost"
 
 default_run_options[:pty] = true
 
 namespace :deploy do
-  task :start do ; end
-  task :stop do ; end
+  task :local, :roles => :app do
+
+  end
+  task :start do end
+  task :stop do end
   task :restart, :roles => :app, :except => { :no_release => true } do
     run "touch #{File.join(current_path,'tmp','restart.txt')}"
   end
