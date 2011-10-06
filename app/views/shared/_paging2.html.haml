@@ -2,15 +2,15 @@
   - unless collection.nil? || collection.empty?
     = select_tag "pages", options_for_select([ "10", "20", "50", "100", "1000", "5000"], page_size), :style => "width: 70px; padding: 2px; float: left"
     = will_paginate collection, :params => @params, :class => "paggination"
-    %span.flicker
+    %span.flicker{:style=>"margin-bottom: 8px; position: relative; margin-left: 23px"}
       %a#view_3{:href=>"#"}
-        &#x25CE;
-    %span.flicker
+        = image_tag("Helveticons-147.gif")
+    %span.flicker{:style=>"margin-bottom: 8px; position: relative; margin-left: 25px"}
       %a#view_2{:href=>"#"}
-        &#x25CE;
-    %span.flicker
+        = image_tag("Helveticons-198.gif")
+    %span.flicker{:style=>"margin-bottom: 8px; position: relative; margin-left: 25px"}
       %a#view_1.selected{:href=>"#"}
-        &#x25C9;
+        = image_tag("Helveticons-411.gif")
 
 .clear
 

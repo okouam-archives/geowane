@@ -3,7 +3,7 @@ $(function () {
   // CSS tweaks
   $('#header #nav li:last').addClass('nobg');
   $('.block_head ul').each(function() { $('li:first', this).addClass('nobg'); });
-  $('.block table tr:odd').css('background-color', '#fbfbfb');
+  $('.block table tbody tr:odd').css('background-color', '#fbfbfb');
   $('.block form input[type=file]').addClass('file');
 
   $('a[rel*=facebox]').facebox();

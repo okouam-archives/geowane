@@ -5,7 +5,7 @@
 
 .block
   .block_head
-    %h2 Update Locations
+    %h2 Edit Points of Interest
   .block_content
     #portlets
       .portlet.map
@@ -41,12 +41,10 @@
       .clear
       = form_for "locations", :url => "/locations", :html=>{:method=>:put} do |form|
         .portlet
-          .portlet-header
-            Details
-          .portlet-content.nopadding
+          .portlet-content.nopadding{:style=>"border-top-width: 0 ! important"}
             %table.list.updates.main
               %thead
-                %tr
+                %tr{:style=>"background-color: #efefef ! important; opacity: 1; border-bottom: 2px solid #ddd"}
                   %th
                     %input{:type=>"checkbox"}
                   %th Name
@@ -56,24 +54,24 @@
                   %th Categories
                   %th Comments
               %tbody
-              - @locations.each_with_index do |location, i|
-                %tr{:"data-id" => location.id, :"data-name" => location.name, :"data-longitude" => location.longitude, :"data-latitude" => location.latitude}
-                  %td.selector
-                    %input{:type=>"checkbox"}
-                  %td.name= form.text_field "[#{i}][name]", :value => location.name
-                  %td.long_name= form.text_field "[#{i}][long_name]", :value => location.long_name
-                  %td.status
-                    =select_tag "locations[#{i}][status]", options_for_select(workflow_actions(current_user, location), location.status)
-                    =form.hidden_field "[#{i}][id]", :value => location.id
-                  %td.city
-                    = select_tag "locations[#{i}][city_id]", options_for_select([""] + City.dropdown_items, location.city_id), :style=>"width: 150px"
-                  %td.tags
-                    %span.list
-                      = render :partial => "tags/collection", :locals => {:items => location.tags.map {|c| {:name => c.category.french, :delete_link => location_tag_url(c.location_id, c.id)}}}
-                    = link_to "(+)", "#", :class => "add-category-inline"
-                  %td.comments
-                    = link_to location.comments.count, "#/comments/single/#{location.id}", :class => "comment_count"
-                    = link_to "(+)", "#", :class => "add-comment-inline"
+                - @locations.each_with_index do |location, i|
+                  %tr{:"data-id" => location.id, :"data-name" => location.name, :"data-longitude" => location.longitude, :"data-latitude" => location.latitude}
+                    %td.selector
+                      %input{:type=>"checkbox"}
+                    %td.name= form.text_field "[#{i}][name]", :value => location.name
+                    %td.long_name= form.text_field "[#{i}][long_name]", :value => location.long_name
+                    %td.status
+                      =select_tag "locations[#{i}][status]", options_for_select(workflow_actions(current_user, location), location.status)
+                      =form.hidden_field "[#{i}][id]", :value => location.id
+                    %td.city
+                      = select_tag "locations[#{i}][city_id]", options_for_select([""] + City.dropdown_items, location.city_id), :style=>"width: 150px"
+                    %td.tags
+                      %span.list
+                        = render :partial => "tags/collection", :locals => {:items => location.tags.map {|c| {:name => c.category.french, :delete_link => location_tag_url(c.location_id, c.id)}}}
+                      = link_to "(+)", "#", :class => "add-category-inline"
+                    %td.comments
+                      = link_to location.comments.count, "#/comments/single/#{location.id}", :class => "comment_count"
+                      = link_to "(+)", "#", :class => "add-comment-inline"
         #actions{:style=>"text-align: right; margin-right: 15px; margin-bottom: 20px; width: 100%"}
           = submit_tag "Apply Changes", :class => "button"
       .clear

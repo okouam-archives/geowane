@@ -17,7 +17,6 @@
           - @imports.each do |import|
             %tr
               %td= link_to import.input.original_filename, import.input.url
-              %td= link_to import.labelled_locations, "/locations?s[import_id]=#{import.id}"
               %td= import.user.login
               %td= import.created_at.strftime("%d-%m-%Y")
       %br

@@ -17,46 +17,48 @@
       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
   %body{class: "#{controller.controller_name} #{controller.action_name}"}
-    #header
-      %h1= link_to "GeoCMS", dashboard_path
-      %ul#nav
-        %li
-          = link_to "Geospatial Database", dashboard_path
-          %ul
-            %li= link_to "Search", new_search_path
-            %li= link_to "Points of Interest", locations_path
-            %li= link_to "Categories", categories_path(:page => 1)
-            %li= link_to "Collectors", counters_path
-            %li= link_to "Boundaries", boundaries_path
-            %li= link_to "Cities", cities_path
-        %li
-          = link_to "Data Management", "#"
-          %ul
-            - unless current_user.has_role?("collector")
-              %li= link_to "Import Data", imports_path
-              %li= link_to "Import Rules", imports_path
+    #header{:style=>"text-align: center"}
+      .container{:style=>"width: 950px; margin: auto"}
+        %h1
+          = image_tag("logo.png")
+        %ul#nav
+          %li
+            = link_to "Geospatial Database", dashboard_path
+            %ul
+              %li= link_to "Search", new_search_path
+              %li= link_to "Points of Interest", locations_path
+              %li= link_to "Categories", categories_path(:page => 1)
+              %li= link_to "Collectors", counters_path
+              %li= link_to "Boundaries", boundaries_path
+              %li= link_to "Cities", cities_path
+          %li
+            = link_to "Data Management", "#"
+            %ul
+              - unless current_user.has_role?("collector")
+                %li= link_to "Import Data", imports_path
+                - if current_user.has_role?("administrator")
+                  %li= link_to "Export Data", exports_path
+                %li= link_to "Manage Rules", rulesets_path
+          %li
+            = link_to "Administration", "#"
+            %ul
+              %li= link_to "Your Account", account_path
               - if current_user.has_role?("administrator")
-                %li= link_to "Export Data", exports_path
-                %li= link_to "Export Rules", exports_path
-        %li
-          = link_to "Administration", "#"
-          %ul
-            %li= link_to "Your Account", account_path
-            - if current_user.has_role?("administrator")
-              %li= link_to "Users", users_path
-        %li
-          = link_to "Support", "#"
-          %ul
-            %li= link_to "Wiki", "http://wiki.0-one.net"
-            %li= link_to "Tickets", "https://codeifier.lighthouseapp.com/"
-            - if current_user.has_role?("administrator")
-              %li= link_to "Logs", "#"
-              %li= link_to "Exceptions", "http://codeifier.hoptoadapp.com/"
-      %p.user
-        Hello,
-        = link_to @current_user.login, "#"
-        |
-        = link_to "Logout", user_sessions_path, :method => :delete, :confirm => "Are you sure you want to logout?"
+                %li= link_to "Users", users_path
+          %li
+            = link_to "Support", "#"
+            %ul
+              %li= link_to "Wiki", "http://wiki.0-one.net"
+              %li= link_to "Tickets", "https://codeifier.lighthouseapp.com/"
+              - if current_user.has_role?("administrator")
+                %li= link_to "Logs", "#"
+                %li= link_to "Exceptions", "http://codeifier.hoptoadapp.com/"
+        %p.user{:style=>"margin-right: 20px"}
+          Hello,
+          = link_to @current_user.login, "#"
+          |
+          = link_to "Logout", user_sessions_path, :method => :delete, :confirm => "Are you sure you want to logout?"
+        .clear
     #hld
       .wrapper
 

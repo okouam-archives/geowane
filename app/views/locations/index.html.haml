@@ -9,9 +9,7 @@
   .block_content
     #portlets
       .portlet.map
-        .portlet-header
-          Map
-        .portlet-content.nopadding
+        .portlet-content.nopadding{:style=>"border-top-width: 0 ! important"}
           #mappanel
       .map-footer
         .contents
@@ -29,12 +27,10 @@
       .clear
       = form_for :locations, :url => new_export_path do
         .portlet
-          .portlet-header
-            Listing
-          .portlet-content.nopadding
+          .portlet-content.nopadding{:style=>"border-top-width: 0 ! important"}
             %table.main
               %thead
-                %tr
+                %tr{:style=>"background-color: #efefef ! important; opacity: 1; border-bottom: 1px solid #ddd"}
                   %th
                     %input{:type=>"checkbox"}
                   %th= link_to "Name", url_for(@sort_params.merge({:sort => "name"}))
@@ -54,7 +50,7 @@
                   %th{:style=>"display: none"} Level 2
                   %th{:style=>"display: none"} Level 3
               %tbody
-                - for location in @locations
+                - @locations.each_with_index do |location, i|
                   %tr{:"data-id" => location.id, :"data-name" => location.name, :"data-longitude" => location.longitude, :"data-latitude" => location.latitude}
                     %td.selector
                       %input{:type=>"checkbox", :name=>"locations[]", :value => "#{location.id}"}
