@@ -19,64 +19,36 @@
                 Check to select bounds for the search
             .portlet-content.nopadding
               #mappanel
-          .portlet.boundaries
-            .portlet-header
-              Boundaries
-            .portlet-content
-              = form.hidden_field :level_id
-              %div.boundary
-                %label
-                  Country
-                = select_tag("level_0", options_for_select(@all_level_0))
-          .portlet
-            .portlet-header
-              Localization
-            .portlet-content
-              = form.label "Street Name"
-              = form.text_field :street_name
-              = form.hidden_field :bbox, :as => :hidden
-          .portlet
-            .portlet-header
-              Cities
-            .portlet-content.nopadding{:style=>"overflow-y: scroll; height: 100px"}
-              %table.main
-                %tbody
-                  - for city in @all_cities
-                    %tr
-                      %td.selector{:style=>"width: 20px"}
-                        %input{:type=>"checkbox", :value=>city[1], :name => "s[cities][]"}
-                      %td
-                        = city[0]
-          .portlet
-            .portlet-header
-              Workflow
-            .portlet-content.nopadding{:style=>"overflow-y: scroll; height: 100px"}
-              %table.main
-                %tbody
-                  - for status in Location.new.enums(:status).select_options.map {|x| [x[0].upcase, x[1]]}
-                    %tr
-                      %td.selector{:style=>"width: 20px"}
-                        %input{:type=>"checkbox", :value=>status[1], :name => "s[statuses][]"}
-                      %td
-                        = status[0]
-          .portlet.categorization
-            .portlet-header
-              Categorization
-            .portlet-content
-              = form.label "Location Name"
-              = form.text_field :name
-          .portlet
-            .portlet-header
-              Categories
-            .portlet-content.nopadding{:style=>"overflow-y: scroll; height: 100px"}
-              %table.main
-                %tbody
-                  - for category in @all_categories
-                    %tr
-                      %td.selector{:style=>"width: 20px"}
-                        %input{:type=>"checkbox", :value=>category[1], :name => "s[categories][]"}
-                      %td
-                        = category[0]
+          = form.hidden_field :level_id
+          %div.boundary
+            %label
+              Country
+            = select_tag("level_0", options_for_select(@all_level_0))
+          %br
+          = form.label "Street Name"
+          = form.text_field :street_name
+          = form.hidden_field :bbox, :as => :hidden
+          %br
+          %br
+          %label
+            Cities
+          = select_tag  "s[cities][]", options_for_select([""] + @all_cities), :"data-placeholder" => "Choose a city", :multiple => true
+          %br
+          %br
+          %label
+            Workflow
+          = select_tag  "s[statuses][]", options_for_select([""] + Location.new.enums(:status).select_options.map {|x| [x[0].upcase, x[1]]}), :"data-placeholder" => "Choose a status", :multiple => true
+          %br
+          %br
+          = form.label "Location Name"
+          = form.text_field :name
+          %br
+          %br
+          %label
+            Categories
+          = select_tag  "s[categories][]", options_for_select([""] + @all_categories), :"data-placeholder" => "Choose a category", :multiple => true
+          %br
+          %br
         .column
           = render :partial => "user", :locals => {:title => "Corrected By", :field_title => "corrected_by"}
           = render :partial => "user", :locals => {:title => "Invalidated By", :field_title => "invalidated_by"}
@@ -84,17 +56,16 @@
           = render :partial => "user", :locals => {:title => "Modified By", :field_title => "modified_by"}
           = render :partial => "user", :locals => {:title => "Audited By", :field_title => "audited_by"}
           = render :partial => "user", :locals => {:title => "Added By", :field_title => "added_by"}
-          .portlet
-            .portlet-header
-              Workflow
-            .portlet-content
-              = form.label "Added Before"
-              = form.text_field :added_on_before, :label => "Added Before", :input_html => { :class => 'date_picker' }
-              = form.label "Added After"
-              = form.text_field :added_on_after, :label => "Added After", :input_html => { :class => 'date_picker' }
+          = form.label "Added Before"
+          = form.text_field :added_on_before, :label => "Added Before", :input_html => { :class => 'date_picker' }
+          %br
+          %br
+          = form.label "Added After"
+          = form.text_field :added_on_after, :label => "Added After", :input_html => { :class => 'date_picker' }
           .clear
-          %input{:class=>"button long", :style=>"float: right; margin-bottom: 20px", :type=>"submit", :value=>"Search"}
+          %input{:class=>"button long", :style=>"float: right; margin-bottom: 20px; margin-right: 22px; margin-top: 10px", :type=>"submit", :value=>"Search"}
 
 :css
   table tr td {padding: 4px}
+  .search-choice span {font-size: 10px}
 

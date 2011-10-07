@@ -1,12 +1,5 @@
-.portlet
-  .portlet-header
-    = title
-  .portlet-content.nopadding{:style=>"overflow-y: scroll; height: 100px"}
-    %table.main
-      %tbody
-        - for user in @all_users
-          %tr
-            %td.selector{:style=>"width: 20px"}
-              %input{:type=>"checkbox", :value=>user[1], :name => "s[#{field_title}][]"}
-            %td
-              = user[0]
+%label
+  = title
+= select_tag  "s[#{title.downcase.gsub(" ", "_")}][]", options_for_select([""] + @all_users), :"data-placeholder" => "Choose one or more users", :multiple => true
+%br
+%br

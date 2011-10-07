@@ -3,7 +3,7 @@
     History
   .portlet-content
     %p
-    - @location.audits.each do |audit|
+    - @location.changesets.each do |audit|
       .audit
         .author{:style=>"width: 150px; float: left"}
           = image_tag("http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(audit.user.login)}?d=identicon&s=25", :style => "float: left; border: 1px solid #777")
@@ -13,7 +13,7 @@
             #{audit.user.login}
         .change{:style=>"margin-left: 150px"}
           %ul
-            - audit.model_changes.each do |model_change|
+            - audit.changes.each do |model_change|
               %li= "Changed #{model_change.datum} from #{model_change.old_value} to #{model_change.new_value}"
       .clear{:style=>"height: 20px"}
     .audit

@@ -1,19 +1,18 @@
 #pagination-wrapper
   - unless collection.nil? || collection.empty?
-    %div
-      = select_tag "pages", options_for_select([ "10", "20", "50", "100", "1000", "5000"], page_size)
-      = will_paginate collection, :params => @params, :outer_window => 1, :inner_window => 1, :class => "paggination"
-      %span#pagination-counter
-        = page_entries_info(collection)
-      %a.section#view_3{:href=>"#"}
-        = image_tag("Helveticons-147.gif", :style=>"position: relative; top: 8px; margin-right: 3px")
-        Location
-      %a.section#view_2{:href=>"#"}
-        = image_tag("Helveticons-198.gif", :style=>"position: relative; top: 8px; margin-right: 3px")
-        Naming
-      %a.section#view_1.selected{:href=>"#"}
-        = image_tag("Helveticons-411.gif", :style=>"position: relative; top: 8px; margin-right: 3px")
-        General
+    = select_tag "pages", options_for_select([ "10", "20", "50", "100", "1000", "5000"], page_size)
+    = will_paginate collection, :params => @params, :outer_window => 1, :inner_window => 1, :class => "paggination"
+    %span#pagination-counter
+      = page_entries_info(collection)
+    %a.section#view_3{:href=>"#"}
+      = image_tag("Helveticons-147.gif", :style=>"position: relative; top: 8px; margin-right: 3px")
+      Location
+    %a.section#view_2{:href=>"#"}
+      = image_tag("Helveticons-198.gif", :style=>"position: relative; top: 8px; margin-right: 3px")
+      Naming
+    %a.section#view_1.selected{:href=>"#"}
+      = image_tag("Helveticons-411.gif", :style=>"position: relative; top: 8px; margin-right: 3px")
+      General
 .clear
 
 - content_for :javascripts do
@@ -47,35 +46,4 @@
         window.location = $.param.querystring(window.location.href, {per_page: $(this).val(), page: 1});
       });
     });
-
-:css
-  .block .paggination {
-  font-size: 10px;
-  font-weight: bold;
-  padding-bottom: 15px;
-  float: left;
-  display: inline;
-  margin-left: 20px
-  }
-
-  .block .paggination a, .block .paggination span.current, .block .paggination span.disabled {
-  border: 1px solid #ccc;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-  padding: 3px 6px;
-  margin: 0 1px;
-  }
-
-  .block .paggination a.active, .block .paggination span.current {
-  background: #39a3e6;
-  border: 1px solid #0082d5;
-  color: #fff;
-  }
-
-  .block .paggination a:hover {
-  color: #fff;
-  background: #ec8526;
-  border: 1px solid #d77011;
-  }
 

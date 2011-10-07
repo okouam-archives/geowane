@@ -38,7 +38,7 @@
                   %th.tags Tags
                   %th.added_by= link_to "Added By", url_for(@sort_params.merge({:sort => "username"}))
                   %th.date_added= link_to "Added", url_for(@sort_params.merge({:sort => "pois.created_at"}))
-                  %th.last_changed= link_to "Last Modified", url_for(@sort_params.merge({:sort => "pois.updated_at"}))
+                  %th.last_changed= link_to "Updated", url_for(@sort_params.merge({:sort => "pois.updated_at"}))
                   %th.status= link_to "Status", url_for(@sort_params.merge({:sort => "status"}))
                   %th.long_name{:style=>"display: none"} Long Name
                   %th.street_name{:style=>"display: none"} Street Name
