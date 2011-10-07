@@ -39,7 +39,7 @@ $.Controller("BulkActions",
   },
 
   collect: function() {
-    return  $(".selector input:checked").map(function(i, el) {
+    return  $("td.selector input:checked").map(function(i, el) {
       return $(el).val();
     });
   }

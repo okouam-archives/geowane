@@ -9,24 +9,6 @@ module ApplicationHelper
     end
   end
 
-  def page_entries_info(collection, options = {})
-    locations = options[:locations] || (collection.empty?? 'entry' : collection.first.class.name.underscore.sub('_', ' '))
-    if collection.num_pages < 2
-      case collection.size
-      when 0; info = "No #{locations.pluralize} found"
-      when 1; info = "Displaying <strong>1</strong> #{locations}"
-      else; info = "Displaying <strong>all #{collection.size}</strong> #{locations.pluralize}"
-      end
-    else
-      info = %{Displaying #{locations.pluralize} <strong>%d&ndash;%d</strong> of <strong>%d</strong> in total}% [
-        collection.offset_value + 1,
-        collection.offset_value + collection.length,
-        collection.total_count
-      ]
-    end
-    info.html_safe
-  end
-
   def administrative_unit_finder(depth, row)
     case
       when depth >= 3 && row.level_3_id

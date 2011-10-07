@@ -31,18 +31,18 @@
             %table.main
               %thead
                 %tr{:style=>"background-color: #efefef ! important; opacity: 1; border-bottom: 1px solid #ddd"}
-                  %th
+                  %th.selector
                     %input{:type=>"checkbox"}
-                  %th= link_to "Name", url_for(@sort_params.merge({:sort => "name"}))
-                  %th= link_to "City", url_for(@sort_params.merge({:sort => "city_name"}))
+                  %th.name= link_to "Name", url_for(@sort_params.merge({:sort => "name"}))
+                  %th.city_name= link_to "City", url_for(@sort_params.merge({:sort => "city_name"}))
                   %th.tags Tags
                   %th.added_by= link_to "Added By", url_for(@sort_params.merge({:sort => "username"}))
-                  %th.date_added= link_to "Date Added", url_for(@sort_params.merge({:sort => "pois.created_at"}))
-                  %th.last_changed= link_to "Last Changed", url_for(@sort_params.merge({:sort => "pois.updated_at"}))
+                  %th.date_added= link_to "Added", url_for(@sort_params.merge({:sort => "pois.created_at"}))
+                  %th.last_changed= link_to "Last Modified", url_for(@sort_params.merge({:sort => "pois.updated_at"}))
                   %th.status= link_to "Status", url_for(@sort_params.merge({:sort => "status"}))
-                  %th{:style=>"display: none"} Long Name
-                  %th{:style=>"display: none"} Street Name
-                  %th{:style=>"display: none"} Comments
+                  %th.long_name{:style=>"display: none"} Long Name
+                  %th.street_name{:style=>"display: none"} Street Name
+                  %th.comments{:style=>"display: none"} Comments
                   %th{:style=>"display: none"} Longitude
                   %th{:style=>"display: none"} Latitude
                   %th{:style=>"display: none"} Level 0
@@ -73,5 +73,5 @@
                     %td{:style=>"display: none"}= location.boundary_1
                     %td{:style=>"display: none"}= location.boundary_2
                     %td{:style=>"display: none"}= location.boundary_3
-            = render :partial => "shared/paging2", :locals => {:collection => @locations, :page_size => @per_page}
+            = render :partial => "paging", :locals => {:collection => @locations, :page_size => @per_page}
 

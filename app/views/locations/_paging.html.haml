@@ -1,26 +1,25 @@
-#pagination-wrapper{:style=>"margin-top: 10px"}
+#pagination-wrapper
   - unless collection.nil? || collection.empty?
-    = select_tag "pages", options_for_select([ "10", "20", "50", "100", "1000", "5000"], page_size), :style => "width: 70px; padding: 2px; float: left"
-    = will_paginate collection, :params => @params, :class => "paggination"
-    %span.flicker{:style=>"margin-bottom: 8px; position: relative; margin-left: 23px"}
-      %a#view_3{:href=>"#"}
-        = image_tag("Helveticons-147.gif")
-    %span.flicker{:style=>"margin-bottom: 8px; position: relative; margin-left: 25px"}
-      %a#view_2{:href=>"#"}
-        = image_tag("Helveticons-198.gif")
-    %span.flicker{:style=>"margin-bottom: 8px; position: relative; margin-left: 25px"}
-      %a#view_1.selected{:href=>"#"}
-        = image_tag("Helveticons-411.gif")
-
+    %div
+      = select_tag "pages", options_for_select([ "10", "20", "50", "100", "1000", "5000"], page_size)
+      = will_paginate collection, :params => @params, :outer_window => 1, :inner_window => 1, :class => "paggination"
+      %span#pagination-counter
+        = page_entries_info(collection)
+      %a.section#view_3{:href=>"#"}
+        = image_tag("Helveticons-147.gif", :style=>"position: relative; top: 8px; margin-right: 3px")
+        Location
+      %a.section#view_2{:href=>"#"}
+        = image_tag("Helveticons-198.gif", :style=>"position: relative; top: 8px; margin-right: 3px")
+        Naming
+      %a.section#view_1.selected{:href=>"#"}
+        = image_tag("Helveticons-411.gif", :style=>"position: relative; top: 8px; margin-right: 3px")
+        General
 .clear
 
 - content_for :javascripts do
   :javascript
     $(document).ready(function() {
       var changeView = function(el, start, end) {
-        $(".flicker a")
-          .removeClass("selected");
-        el.addClass("selected")
         var headers = $("table th");
         headers.slice(2).hide();
         headers.slice(start, end).show();
@@ -50,25 +49,6 @@
     });
 
 :css
-  .flicker {
-    font-size: 22px; float: right; margin-left: 10px; font-weight: bold
-  }
-
-  .flicker a {
-    color: #aaa
-  }
-
-  .flicker a:hover {
-    color: orange
-  }
-
-  .flicker a.selected {
-    color: #006699
-  }
-
-  table td.name {width: 190px}
-  table td.selector {width: 10px}
-
   .block .paggination {
   font-size: 10px;
   font-weight: bold;

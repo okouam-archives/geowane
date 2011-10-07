@@ -12,8 +12,8 @@ class CreateRules < ActiveRecord::Migration
         updated_at timestamp without time zone,
         CONSTRAINT pkey_rules PRIMARY KEY (id)
       );
-      CREATE INDEX idx_rules_category_id ON rulesets(category_id);
-      CREATE INDEX idx_rules_ruleset_id ON rulesets(ruleset_id);
+      CREATE INDEX idx_rules_category_id ON rules(category_id);
+      CREATE INDEX idx_rules_ruleset_id ON rules(ruleset_id);
     }
   end
 

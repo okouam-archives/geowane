@@ -18,9 +18,8 @@ gem 'carrierwave'
 gem "minitar"
 gem 'rmagick'
 gem 'authlogic', :git => 'git://github.com/odorcicd/authlogic.git', :branch => 'rails3'
-gem "kaminari"
 gem 'autotest-standalone'
-gem "will_paginate", :git => "https://github.com/p7r/will_paginate.git", :branch => "rails3"
+gem "will_paginate", :git => 'git@github.com:okouam/will_paginate.git'
 gem 'haml'
 gem 'paperclip'
 gem 'acts_as_commentable'
@@ -40,7 +39,6 @@ gem 'addressable'
 gem 'coffee-script'
 gem 'uglifier'
 gem 'tilt', :git => 'git://github.com/thisduck/tilt.git'
-gem 'less-js'
 
 group :production, :staging do
   gem 'therubyracer', '>= 0.9.2'
@@ -65,10 +63,7 @@ group :assets do
 end
 
 group :test, :development do
-  gem 'query_trace'
-  gem "rack-debug"
   gem "ruby-debug19"
   gem 'addressable'
   gem "rspec-rails"
-  gem 'capistrano'
 end
