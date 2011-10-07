@@ -19,10 +19,8 @@
     $(document).ready(function() {
       var changeView = function(el, start, end) {
         $(".flicker a")
-          .html("&#x25CE;")
           .removeClass("selected");
         el.addClass("selected")
-          .html("&#x25C9;");
         var headers = $("table th");
         headers.slice(2).hide();
         headers.slice(start, end).show();
