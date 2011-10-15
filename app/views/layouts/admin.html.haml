@@ -4,7 +4,7 @@
   %head
     %title= "GeoCMS - #{h yield(:title)}"
     = csrf_meta_tag
-    = stylesheet_link_tag "/assets/application", :debug => Rails.env.development?
+    = stylesheet_link_tag "application", :debug => Rails.env.development?
     %script{:type=>"text/javascript"}
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-25526195-1']);
@@ -39,6 +39,8 @@
                 - if current_user.has_role?("administrator")
                   %li= link_to "Export Data", exports_path
                 %li= link_to "Manage Rules", rulesets_path
+                %li= link_to "Change Requests", rulesets_path
+                %li= link_to "Change History", rulesets_path
           %li
             = link_to "Administration", "#"
             %ul
@@ -69,5 +71,5 @@
           %p.right
             Powered by
             = link_to "Codeifier Labs", "#"
-    = javascript_include_tag "/assets/application", :debug => Rails.env.development?
+    = javascript_include_tag "application", :debug => Rails.env.development?
     = yield :javascripts

@@ -1,5 +1,8 @@
 = content_for :title, "Boundaries"
 
+- content_for :javascripts do
+  = javascript_include_tag "mvc/boundaries/index/init.js", :debug => Rails.env.development?
+
 .block
   .block_head
     %h2
@@ -8,11 +11,11 @@
     #portlets
       .bulk-actions
         %select
-          %option Change Level
-          %option Level 0
-          %option Level 1
-          %option Level 2
-          %option Level 3
+          %option{:value=>"-1"} Change Level
+          %option{:value=>"0"} Level 0
+          %option{:value=>"1"} Level 1
+          %option{:value=>"2"} Level 2
+          %option{:value=>"3"} Level 3
         %input.button{:type=>"button", :value=>"Change"}
       .clear
       .portlet

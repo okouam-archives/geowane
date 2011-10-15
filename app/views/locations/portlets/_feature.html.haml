@@ -5,11 +5,14 @@
       = link_to "Save", "#"
   .portlet-content
     = form_for @location do |form|
-      = form.input :name, :input_html => {:class => "text"}, :required => false
-      = form.input :long_name, :input_html => {:class => "text"}
-      = form.input :city, :as => :select, :collection => City.dropdown_items, :required => false, :label => "City"
+      = form.label "Name"
+      = form.text_field :name, :input_html => {:class => "text"}, :required => false
+      = form.label "Long Name"
+      = form.text_field :long_name, :input_html => {:class => "text"}
+      = form.label "City"
+      = form.text_field :city, :as => :select, :collection => City.dropdown_items, :required => false, :label => "City"
       - if @location.persisted? && current_user.may_change_status_of_location?(@location, nil)
-        = form.input :status, :collection => workflow_actions(current_user, @location), :include_blank => false
+        = form.select :status, :collection => workflow_actions(current_user, @location), :include_blank => false
 
 - if @location.persisted?
   = render :partial => "locations/portlets/tags", :locals => {:location => @location}

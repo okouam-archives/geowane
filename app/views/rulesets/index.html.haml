@@ -1,0 +1,37 @@
+= content_for :title, "Rulesets"
+
+- content_for :javascripts do
+  = javascript_include_tag "mvc/rulesets/index/init.js", :debug => Rails.env.development?
+
+.block
+  .block_head
+    %h2
+      Rulesets
+    %a{:style=>"float: right; font-size: 11px", :href=> new_ruleset_path(page: params[:page], per_page: params[:per_page])}
+      = image_tag("Helveticons-306.gif", :style=>"height: 20px; position: relative; top: 5px")
+      New Rules
+  .block_content
+    #portlets
+      .bulk-actions
+        %select
+          %option Bulk Actions
+          %option Delete
+        %input.button{:type=>"button", :value=>"Apply"}
+      .clear
+      .portlet
+        .portlet-content.nopadding.table
+          %table.main
+            %thead
+              %tr
+                %th.selector= check_box_tag 'selector'
+                %th.name Name
+                %th.rules Rule Count
+                %th.created_at Created On
+            %tbody
+              - @rulesets.each do |ruleset|
+                %tr
+                  %td.selector
+                    %input{:type=>"checkbox"}
+                  %td.name= link_to ruleset.name, edit_ruleset_path(ruleset)
+                  %td.rules= ruleset.rules.count
+                  %td.created_at= ruleset.created_at

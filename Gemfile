@@ -8,7 +8,8 @@ gem 'aegis', :require => 'aegis'
 gem 'rails', '3.1.0', :branch => '3-1-stable'
 gem "dbf"
 gem "rgeo"
-gem 'ejs'             #
+gem 'ejs'
+gem 'foreigner'
 gem 'paperclip'
 gem "activerecord-postgis-adapter"
 gem "rgeo-activerecord"
@@ -47,6 +48,8 @@ group :test do
   gem "faker"
   gem 'capybara'
   gem 'factory_girl'
+  gem 'cucumber'
+  gem 'cucumber-rails'
   gem 'rcov'
   gem 'steak'
   gem 'spork', '~> 0.9.0rc7'

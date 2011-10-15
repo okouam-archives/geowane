@@ -1,7 +1,7 @@
 = content_for :title, "Points of Interest"
 
 - content_for :javascripts do
-  = javascript_include_tag "/assets/mvc/locations/index/init", :debug => Rails.env.development?
+  = javascript_include_tag "mvc/locations/index/init", :debug => Rails.env.development?
 
 .block
   .block_head
@@ -70,8 +70,8 @@
                     %td{:style=>"display: none"}= location.long_name
                     %td{:style=>"display: none"}
                     %td{:style=>"display: none"}= location.num_comments
-                    %td{:style=>"display: none"}= location.longitude
-                    %td{:style=>"display: none"}= location.latitude
+                    %td{:style=>"display: none"}= location.longitude.round(7)
+                    %td{:style=>"display: none"}= location.latitude.round(7)
                     %td{:style=>"display: none"}= location.boundary_0
                     %td{:style=>"display: none"}= location.boundary_1
                     %td{:style=>"display: none"}= location.boundary_2
