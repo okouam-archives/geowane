@@ -8,7 +8,8 @@ gem 'aegis', :require => 'aegis'
 gem 'rails', '3.1.0', :branch => '3-1-stable'
 gem "dbf"
 gem "rgeo"
-gem 'ejs'
+gem 'ejs'             #
+gem 'paperclip'
 gem "activerecord-postgis-adapter"
 gem "rgeo-activerecord"
 gem "rgeo-geojson"
@@ -47,6 +48,7 @@ group :test do
   gem 'capybara'
   gem 'factory_girl'
   gem 'rcov'
+  gem 'steak'
   gem 'spork', '~> 0.9.0rc7'
   gem 'autotest-standalone'
   gem 'database_cleaner'

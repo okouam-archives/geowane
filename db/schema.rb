@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110927100228) do
+ActiveRecord::Schema.define(:version => 20111005181026) do
 
   create_table "boundaries", :force => true do |t|
     t.string   "name",                          :null => false
@@ -230,6 +230,26 @@ ActiveRecord::Schema.define(:version => 20110927100228) do
   add_index "roads", ["category_id"], :name => "idx_roads_category_id"
   add_index "roads", ["country_id"], :name => "idx_roads_country_id"
 
+  create_table "rules", :id => false, :force => true do |t|
+    t.integer  "id",          :null => false
+    t.string   "french"
+    t.string   "english"
+    t.integer  "category_id"
+    t.integer  "ruleset_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "rules", ["category_id"], :name => "idx_rules_category_id"
+  add_index "rules", ["ruleset_id"], :name => "idx_rules_ruleset_id"
+
+  create_table "rulesets", :id => false, :force => true do |t|
+    t.integer  "id",         :null => false
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "search_criteria", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -262,18 +282,6 @@ ActiveRecord::Schema.define(:version => 20110927100228) do
     t.string   "street_name"
     t.string   "sort_order"
   end
-
-  create_table "searches", :force => true do |t|
-    t.text     "sql"
-    t.integer  "page"
-    t.integer  "per_page"
-    t.string   "persistence_token"
-    t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "searches", ["persistence_token"], :name => "idx_searches_persistence_token"
 
   create_table "selections", :force => true do |t|
     t.string   "name",        :null => false
@@ -326,12 +334,5 @@ ActiveRecord::Schema.define(:version => 20110927100228) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  add_foreign_key "logos", "locations", :name => "logos_location_id_fkey"
-
-  add_foreign_key "photos", "locations", :name => "photos_location_id_fkey"
-
-  add_foreign_key "roads", "boundaries", :name => "roads_country_id_fkey", :column => "country_id"
-  add_foreign_key "roads", "categories", :name => "roads_category_id_fkey"
 
 end
