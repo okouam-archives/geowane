@@ -7,7 +7,7 @@ class Search < ActiveRecord::Base
   has_one :criteria, :class_name => "SearchCriteria"
 
   def self.construct(criteria, sort_order, page, page_size, search_token, user)
-    search = Search.new(:user => user, :per_page => page_size || 10, :page => page || 1)
+    search = Search.new(:user => user)
     if criteria && criteria["reset"]
       search.criteria = SearchCriteria.new(Hash.new)
     elsif criteria.nil? && search_token
@@ -16,6 +16,8 @@ class Search < ActiveRecord::Base
       search.criteria = SearchCriteria.new(criteria)
       search.criteria.sort_order = sort_order
     end
+    search.per_page = page_size || 10
+    search.page = page || 1
     search.save!
     search
   end
