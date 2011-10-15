@@ -47,8 +47,6 @@ group :test do
   gem 'capybara'
   gem 'factory_girl'
   gem 'rcov'
-  gem 'cucumber'
-  gem 'cucumber-rails'
   gem 'spork', '~> 0.9.0rc7'
   gem 'autotest-standalone'
   gem 'database_cleaner'
