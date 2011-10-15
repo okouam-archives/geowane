@@ -1,7 +1,7 @@
 class CategoriesController < ApplicationController
   resource_controller
   include Aegis::Controller
-  permissions :categories, :except => [:index, :change_icon]
+  permissions :categories, :except => [:index]
 
   def index
     query = Category.scoped.from("reports.categories")

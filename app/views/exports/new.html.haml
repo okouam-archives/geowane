@@ -9,7 +9,7 @@
         .portlet-header
           Output
         .portlet-content
-          = semantic_form_for object, :html => { :enctype => "multipart/form-data"} do |f|
+          = form_for object, :html => { :enctype => "multipart/form-data"} do |f|
             = f.input :name, :class => "text"
             = f.input :output_platform, :collection => object.enums(:output_platform).select_options.map {|option| [option[0].upcase, option[1].upcase]}
             = f.commit_button :label => "Export"

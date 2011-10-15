@@ -4,7 +4,7 @@
     %span
       = link_to "Save", "#"
   .portlet-content
-    = semantic_form_for @location do |form|
+    = form_for @location do |form|
       = form.input :email, :required => false, :input_html => { :class => "text" }
       = form.input :telephone, :required => false, :input_html => { :class => "text" }
       = form.input :fax, :required => false, :input_html => { :class => "text" }

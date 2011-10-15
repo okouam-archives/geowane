@@ -5,7 +5,7 @@
       Imports - Preview Changes
       = link_to "Apply Updates", "#"
   .block_content
-    = semantic_form_for :changes, :url => execute_import_path(object) do
+    = form_for :changes, :url => execute_import_path(object) do
       %table{:style=>"width: 100%"}
         %tr
           %th

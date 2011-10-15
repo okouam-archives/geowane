@@ -1,5 +1,5 @@
 %div.block_content
-  = semantic_form_for object, :url => "/account", :as => :user, :html => { :enctype => "multipart/form-data"} do |form|
+  = form_for object, :url => "/account", :as => :user, :html => { :enctype => "multipart/form-data"} do |form|
     = form.input :email
     = form.input :password, :input_html => { :class => "text" }
     = form.input :password_confirmation, :input_html => { :class => "text" }

@@ -6,8 +6,7 @@ class UsersController < ApplicationController
 
   def index
     current_user.may_list_users!
-    per_page = params[:per_page] || "10"
-    @users = User.order("login").page(params[:page]).per(per_page)
+    @users = User.order("login").paginate(:page => params[:page] || 1, :per_page => params[:per_page] || 10)
   end
 
   def new

@@ -7,5 +7,7 @@
   .block_head
     %h2
       Edit Category
-      = link_to "Back", categories_path(page: params[:page], per_page: params[:per_page])
+    %a{:style=>"float: right; font-size: 11px", :href=> categories_path(page: params[:page], per_page: params[:per_page])}
+      = image_tag("Helveticons-394.gif", :style=>"height: 20px; position: relative; top: 8px")
+      Back
   = render :partial => "form"

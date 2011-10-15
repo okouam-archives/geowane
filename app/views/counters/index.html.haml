@@ -4,16 +4,15 @@
   .block_head
     %h2
       Collectors
-      = link_to "Collector Field Collection", "#", :class=> "heading-action"
   .block_content
     #portlets
       .portlet
-        .portlet-header
-          Listing
-        .portlet-content.nopadding
+        .portlet-content.nopadding.table
           %table
             %thead
               %tr
+                %th.selector
+                  %input{:type=>"checkbox"}
                 %th Collector
                 %th.total_POI Total
                 %th.new New
@@ -21,25 +20,24 @@
                 %th.invalid Invalid
                 %th.corrected Corrected
                 %th.checked Checked
-                %th.uncategorized
-                  %i Uncategorized
             %tbody
               - @counters.each do |counter|
                 %tr
+                  %td.selector
+                    %input{:type=>"checkbox"}
                   %td
-                    = image_tag("http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(counter.user.login)}?d=identicon&s=15", :style => "float: left; border: 1px solid #fff; margin-right: 10px")
+                    = image_tag("http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(counter.username)}?d=identicon&s=15", :style => "float: left; border: 1px solid #fff; margin-right: 10px")
                     %span{:style=>"position: relative; top: 1px"}
-                      = counter.user.login
-                  %td.total_POI= linked_figure(counter.total_locations, "/locations?s[added_by]=#{counter.user.id}")
-                  %td.new= linked_figure(counter.new_locations, "/locations?s[added_by]=#{counter.user.id}&s[status]=new")
-                  %td.audited= linked_figure(counter.audited_locations, "/locations?s[added_by]=#{counter.user.id}&s[status]=audited")
-                  %td.invalid= linked_figure(counter.invalid_locations, "/locations?s[added_by]=#{counter.user.id}&s[status]=invalid")
-                  %td.corrected= linked_figure(counter.corrected_locations, "/locations?s[added_by]=#{counter.user.id}&s[status]=corrected")
-                  %td.checked= linked_figure(counter.field_checked_locations, "/locations?s[added_by]=#{counter.user.id}&s[status]=field+checked")
-                  %td{:style=>"text-align: right"}
-                    %i= linked_figure(counter.total_locations - counter.categorized_locations, "/locations?s[added_by]=#{counter.user.id}&s[category_missing]=1")
+                      = counter.username
+                  %td.total_POI= linked_figure(counter.total_locations, "/locations?s[added_by]=#{counter.user_id}")
+                  %td.new= linked_figure(counter.new_locations, "/locations?s[added_by]=#{counter.user_id}&s[status]=new")
+                  %td.audited= linked_figure(counter.audited_locations, "/locations?s[added_by]=#{counter.user_id}&s[status]=audited")
+                  %td.invalid= linked_figure(counter.invalid_locations, "/locations?s[added_by]=#{counter.user_id}&s[status]=invalid")
+                  %td.corrected= linked_figure(counter.corrected_locations, "/locations?s[added_by]=#{counter.user_id}&s[status]=corrected")
+                  %td.checked= linked_figure(counter.field_checked_locations, "/locations?s[added_by]=#{counter.user_id}&s[status]=field+checked")
             %tfoot
               %tr
+                %td
                 %td
                 %td.total_POI
                   = linked_figure(@counters.inject(0) {|total, city| total + city.total_locations.to_i }, nil)
@@ -53,7 +51,6 @@
                   = linked_figure(@counters.inject(0) {|total, city| total + city.audited_locations.to_i }, nil)
                 %td.checked
                   = linked_figure(@counters.inject(0) {|total, city| total + city.field_checked_locations.to_i }, nil)
-                %td.uncategorized
-                  = linked_figure(@counters.inject(0) {|total, counter| total + (counter.total_locations.to_i - counter.categorized_locations.to_i) }, nil)
+          = render :partial => "shared/paging", :locals => {:collection => @counters}
 
 

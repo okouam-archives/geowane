@@ -4,7 +4,6 @@
   .block_head
     %h2
       Boundaries
-      = link_to "Country Field Collection", "#", :class=> "heading-action"
   .block_content
     #portlets
       .bulk-actions
@@ -17,12 +16,12 @@
         %input.button{:type=>"button", :value=>"Change"}
       .clear
       .portlet
-        .portlet-header
-          Listing
-        .portlet-content.nopadding
+        .portlet-content.nopadding.table
           %table.main
             %thead
               %tr
+                %th.selector
+                  %input{:type=>"checkbox"}
                 %th.level Level 0
                 - if @depth >= 1
                   %th.level  Level 1
@@ -39,6 +38,7 @@
                 %th.uncategorized Untagged
             %tfoot
               %tr
+                %td
                 %td
                 - if @depth >= 1
                   %td
@@ -63,6 +63,8 @@
             %tbody
               - @collection.each do |row|
                 %tr
+                  %td.selector
+                    %input{:type=>"checkbox"}
                   %td= row.level_0
                   - if @depth >= 1
                     %td= row.level_1

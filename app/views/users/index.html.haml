@@ -4,15 +4,15 @@
   %div.block_head
     %h2
       Users
-      = link_to "New User", "#", :class=> "heading-action"
+    %a{:style=>"float: right; font-size: 11px", :href=> new_user_path(page: params[:page], per_page: params[:per_page])}
+      = image_tag("Helveticons-306.gif", :style=>"height: 20px; position: relative; top: 5px")
+      New User
   %div.block_content
     %form{:method => "post"}
       #portlets
         .portlet
-          .portlet-header
-            Listing
-          .portlet-content.nopadding
-            %table.main
+          .portlet-content.nopadding.table
+            %table
               %thead
                 %tr
                   %th.selector
@@ -22,14 +22,14 @@
                   %th{:style=>"width: 80px; text-align: center"} Active
                   %th{:style=>"width: 70px"} Role
               %tbody
-              - for user in @users
-                %tr
-                  %td
-                    %input{:type=>"checkbox"}
-                  %td= link_to user.login, user_path(user)
-                  %td= user.last_login_at
-                  %td{:style=>"text-align: center"}
-                    %input{:type=>"checkbox", :checked => user.is_active, :disabled => "true"}
-                  %td= user.role_name
+                - for user in @users
+                  %tr
+                    %td.selector
+                      %input{:type=>"checkbox"}
+                    %td= link_to user.login, user_path(user)
+                    %td= user.last_login_at
+                    %td{:style=>"text-align: center"}
+                      %input{:type=>"checkbox", :checked => user.is_active, :disabled => "true"}
+                    %td= user.role_name
             = render :partial => "shared/paging", :locals => {:collection => @users, :page_size => @per_page}
 

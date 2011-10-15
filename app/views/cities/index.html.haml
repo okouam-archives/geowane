@@ -7,7 +7,9 @@
   .block_head
     %h2
       Cities
-      = link_to "New City", new_city_path(page: params[:page], per_page: params[:per_page])
+    %a{:style=>"float: right; font-size: 11px", :href=> new_city_path(page: params[:page], per_page: params[:per_page])}
+      = image_tag("Helveticons-306.gif", :style=>"height: 20px; position: relative; top: 5px")
+      New City
   .block_content
     #portlets
       .bulk-actions
@@ -17,9 +19,7 @@
         %input.button{:type=>"button", :value=>"Apply"}
       .clear
       .portlet
-        .portlet-header
-          Listing
-        .portlet-content.nopadding
+        .portlet-content.nopadding.table
           %table.main
             %thead
               %tr

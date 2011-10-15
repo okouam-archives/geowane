@@ -1,5 +1,5 @@
 CREATE OR REPLACE VIEW reports.collectors AS
-     SELECT boundaries.name AS "Country", users.login AS "User", sum(
+     SELECT boundaries.name AS country, users.login as username, user.id as user_id, sum(
             CASE
                 WHEN locations.status::text = 'new'::text THEN 1
                 ELSE 0

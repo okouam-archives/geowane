@@ -1,13 +1,9 @@
 .block_content
   #portlets
-    = semantic_form_for object, :html => { :enctype => "multipart/form-data"} do |form|
-      .portlet
-        .portlet-header
-          Listing
-        .portlet-content
-          = form.input :name, :input_html => { :class => "text", :style=>"width: 890px" }
+    = form_for object, :html => { :enctype => "multipart/form-data"} do |form|
+      = form.text_field 'name', :class => "text", :style=>"width: 860px; margin-bottom: 10px"
       .clear
       .form_commit
-        = form.commit_button
+        = submit_tag
 
 

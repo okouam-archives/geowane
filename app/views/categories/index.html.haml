@@ -7,9 +7,10 @@
   .block_head
     %h2
       Categories
-      - if current_user.may_create_category?
-        = link_to "New Category", new_category_path
-      = link_to "Category Field Collection", "#"
+    - if current_user.may_create_category?
+      %a{:style=>"float: right; font-size: 11px", :href=> new_category_path(page: params[:page], per_page: params[:per_page])}
+        = image_tag("Helveticons-306.gif", :style=>"height: 20px; position: relative; top: 5px")
+        New Category
   .block_content
     #portlets
       .bulk-actions
@@ -20,11 +21,9 @@
         %input.button{:type=>"button", :value=>"Apply"}
       .clear
       .portlet
-        .portlet-header
-          Listing
-        .portlet-content.nopadding
+        .portlet-content.nopadding.table
           %table.main
-            %tbody
+            %thead
               %tr
                 %th.selector
                   %input{:type=>"checkbox"}
@@ -35,25 +34,26 @@
                 %th.invalid Invalid
                 %th.audited Audited
                 %th.checked Checked
-                - for category in @categories
-                  %tr
-                    %td
-                      %input{:type=>"checkbox"}
-                    %td
-                      - if category.icon
-                        = image_tag category.icon.url, :style=>"float: left; margin-right: 10px"
-                      - if current_user.may_update_category? @categories.first
-                        = link_to category.french, edit_category_path(category, page: params[:page], per_page: params[:per_page])
-                      - else
-                        = category.french
-                      %br
-                      %div{:style=>"font-style: italic; padding-top: 3px"}=category.english
-                    %td.total_POI= linked_figure(category.total_locations, "/locations?s[category_id]=#{category.id}")
-                    %td.new= linked_figure(category.new_locations, "/locations?s[category_id]=#{category.id}&s[status]=new")
-                    %td.corrected= linked_figure(category.corrected_locations, "/locations?s[category_id]=#{category.id}&s[status]=corrected")
-                    %td.invalid= linked_figure(category.invalid_locations, "/locations?s[category_id]=#{category.id}&s[status]=invalid")
-                    %td.audited= linked_figure(category.audited_locations, "/locations?s[category_id]=#{category.id}&s[status]=audited")
-                    %td.checked= linked_figure(category.field_checked_locations, "/locations?s[category_id]=#{category.id}&s[status]=field+checked")
+            %tbody
+              - for category in @categories
+                %tr
+                  %td.selector
+                    %input{:type=>"checkbox"}
+                  %td
+                    - if category.icon
+                      = image_tag category.icon.url, :style=>"float: left; margin-right: 10px"
+                    - if current_user.may_update_category? @categories.first
+                      = link_to category.french, edit_category_path(category, page: params[:page], per_page: params[:per_page])
+                    - else
+                      = category.french
+                    %br
+                    %div{:style=>"font-style: italic; padding-top: 3px"}=category.english
+                  %td.total_POI= linked_figure(category.total_locations, "/locations?s[category_id]=#{category.id}")
+                  %td.new= linked_figure(category.new_locations, "/locations?s[category_id]=#{category.id}&s[status]=new")
+                  %td.corrected= linked_figure(category.corrected_locations, "/locations?s[category_id]=#{category.id}&s[status]=corrected")
+                  %td.invalid= linked_figure(category.invalid_locations, "/locations?s[category_id]=#{category.id}&s[status]=invalid")
+                  %td.audited= linked_figure(category.audited_locations, "/locations?s[category_id]=#{category.id}&s[status]=audited")
+                  %td.checked= linked_figure(category.field_checked_locations, "/locations?s[category_id]=#{category.id}&s[status]=field+checked")
           = render :partial => "shared/paging", :locals => {:collection => @categories}
 
 

@@ -41,11 +41,11 @@
       .clear
       = form_for "locations", :url => "/locations", :html=>{:method=>:put} do |form|
         .portlet
-          .portlet-content.nopadding{:style=>"border-top-width: 0 ! important"}
+          .portlet-content.nopadding.table
             %table.list.updates.main
               %thead
-                %tr{:style=>"background-color: #efefef ! important; opacity: 1; border-bottom: 2px solid #ddd"}
-                  %th
+                %tr
+                  %th.selector
                     %input{:type=>"checkbox"}
                   %th Name
                   %th Long Name

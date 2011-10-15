@@ -6,6 +6,9 @@
 .block
   .block_head
     %h2 Points of Interest
+    %a{:style=>"float: right; font-size: 11px", :href=>"/locations/new"}
+      = image_tag("Helveticons-306.gif", :style=>"height: 20px; position: relative; top: 5px")
+      New Point of Interest
   .block_content
     #portlets
       .portlet.map
@@ -27,10 +30,10 @@
       .clear
       = form_for :locations, :url => new_export_path do
         .portlet
-          .portlet-content.nopadding{:style=>"border-top-width: 0 ! important"}
+          .portlet-content.nopadding.table
             %table.main
               %thead
-                %tr{:style=>"background-color: #efefef ! important; opacity: 1; border-bottom: 1px solid #ddd"}
+                %tr
                   %th.selector
                     %input{:type=>"checkbox"}
                   %th.name= link_to "Name", url_for(@sort_params.merge({:sort => "name"}))

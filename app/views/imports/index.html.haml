@@ -3,27 +3,34 @@
   .block_head
     %h2
       Imports
-      = link_to "New Import", new_import_url
+    %a{:style=>"float: right; font-size: 11px", :href=> new_import_path(page: params[:page], per_page: params[:per_page])}
+      = image_tag("Helveticons-306.gif", :style=>"height: 20px; position: relative; top: 5px")
+      New Import
   .block_content
-    - if @imports && @imports.count > 0
-      %table{:cellspacing => "0", :cellpadding => "0", :style => "width: 100%; margin-left: 0px"}
-        %thead
-          %tr
-            %th Input File
-            %th{:style=>"width: 140px"} Locations Imported
-            %th{:style=>"width: 100px"} User
-            %th{:style=>"width: 100px"} Date Imported
-        %tbody
-          - @imports.each do |import|
-            %tr
-              %td= link_to import.input.original_filename, import.input.url
-              %td= import.user.login
-              %td= import.created_at.strftime("%d-%m-%Y")
-      %br
-        %div
-          = render :partial => "shared/paging", :locals => {:collection => @imports, :page_size => @per_page}
-    - else
-      %p
-        %br
-        No imports are currently available
-    %br
+    #portlets
+      .bulk-actions
+        %select
+          %option Bulk Actions
+          %option Delete
+        %input.button{:type=>"button", :value=>"Apply"}
+      .clear
+      .portlet
+        .portlet-content.nopadding.table
+          - if @imports && @imports.count > 0
+            %table
+              %thead
+                %tr
+                  %th.selector
+                    %input{:type=>"checkbox"}
+                  %th Input File
+                  %th{:style=>"width: 100px"} User
+                  %th{:style=>"width: 100px"} Date Imported
+              %tbody
+                - @imports.each do |import|
+                  %tr
+                    %td.selector
+                      %input{:type=>"checkbox"}
+                    %td= link_to import.input.original_filename, import.input.url
+                    %td= import.user.login
+                    %td= import.created_at.strftime("%d-%m-%Y")
+            = render :partial => "shared/paging", :locals => {:collection => @imports, :page_size => @per_page}

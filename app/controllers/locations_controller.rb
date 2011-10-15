@@ -52,6 +52,10 @@ class LocationsController < ApplicationController
     end
   end
 
+  def new
+
+  end
+
   def collection_update
     if params[:commit]
       locations = []

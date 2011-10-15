@@ -1,7 +1,6 @@
 source 'http://rubygems.org'
 
 gem 'pg'
-gem 'formtastic'
 gem 'haml'
 gem 'nokogiri'
 gem 'spatial_adapter', :git => 'https://github.com/Empact/spatial_adapter.git'
@@ -21,7 +20,6 @@ gem 'authlogic', :git => 'git://github.com/odorcicd/authlogic.git', :branch => '
 gem 'autotest-standalone'
 gem "will_paginate", :git => 'git@github.com:okouam/will_paginate.git'
 gem 'haml'
-gem 'paperclip'
 gem 'acts_as_commentable'
 gem 'rake'
 gem 'rack'
@@ -30,7 +28,6 @@ gem "columnize"
 gem "enumerated_attribute"
 gem "wirble"
 gem "hirb"
-gem "foreigner"
 gem 'diff-lcs'
 gem 'uuidtools'
 gem "nested_form"

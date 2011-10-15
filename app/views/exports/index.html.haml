@@ -3,33 +3,33 @@
   .block_head
     %h2
       Exports
-      = link_to "Create Selection", "/exports/selection"
   .block_content
     #portlets
+      .bulk-actions
+        %select
+          %option Bulk Actions
+          %option Delete
+        %input.button{:type=>"button", :value=>"Apply"}
+      .clear
       .portlet
-        .portlet-header
-          Listing
-        .portlet-content.nopadding
+        .portlet-content.nopadding.table
           - if @exports && @exports.count > 0
-            %table{:cellspacing => "0", :cellpadding => "0", :style => "width: 100%; margin-left: 0px"}
+            %table
               %thead
                 %tr
+                  %th.selector= check_box_tag 'selector'
                   %th Name
+                  %th{:style=>"width: 100px"} User
                   %th{:style=>"width: 100px"} Export Format
                   %th{:style=>"width: 100px"} Date Exported
                   %th{:style=>"width: 100px"} Location Count
               %tbody
                 - @exports.each do |export|
                   %tr
+                    %td.selector= check_box_tag 'selector'
                     %td= link_to export.name, export.output.url
+                    %td= export.user.login
                     %td= export.output_format
                     %td= export.created_at.strftime("%d-%m-%Y")
                     %td= export.locations_count
-            %br
-              %div
-                = render :partial => "shared/paging", :locals => {:collection => @exports, :page_size => @per_page}
-          - else
-            %p
-              %br
-              No exports are currently available
-          %br
+          = render :partial => "shared/paging", :locals => {:collection => @exports, :page_size => @per_page}

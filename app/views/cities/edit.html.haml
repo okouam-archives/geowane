@@ -4,5 +4,7 @@
   .block_head
     %h2
       Edit City
-      = link_to "Back", cities_path(page: params[:page], per_page: params[:per_page])
+    %a{:style=>"float: right; font-size: 11px", :href=> cities_path(page: params[:page], per_page: params[:per_page])}
+      = image_tag("Helveticons-394.gif", :style=>"height: 20px; position: relative; top: 8px")
+      Back
   = render :partial => "form"

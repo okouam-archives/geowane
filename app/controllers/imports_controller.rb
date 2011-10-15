@@ -8,8 +8,7 @@ class ImportsController < ApplicationController
   end
 
   def index
-    setup_paging(:imports_index_page, params)
-    @imports = Import.page(session[:imports_index_page]).per(@per_page)
+    @imports = Import.paginate(:page => params[:page] || 1, :per_page => params[:per_page] || 10)
   end
 
   create.before do
@@ -27,13 +26,6 @@ class ImportsController < ApplicationController
 
   create.wants.html do
     redirect_to preview_import_path(object.id)
-  end
-
-  private
-
-  def setup_paging(key, options, page_size = 10)
-    session[key] = options[:page] || session[key]
-    @per_page = options[:per_page] || page_size
   end
 
 end
