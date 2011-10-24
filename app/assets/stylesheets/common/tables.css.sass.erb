@@ -1,0 +1,57 @@
+=table-cell
+  border-bottom: 1px solid #ddd
+  padding: 10px 5px
+  padding-right: 10px
+  padding-left: 0
+  line-height: normal
+  text-align: left
+
+table
+  border-collapse: collapse
+  width: 100%
+  text-align: left
+  margin-bottom: 15px
+  .inline-list
+    display: inline
+  th.selector
+    width: 15px
+  tr td
+    +table-cell
+  tr th
+    +table-cell
+  th.selector, td.selector
+    input
+      margin-left: 7px
+    width: 29px
+  thead
+    background-color: #efefef
+    opacity: 1
+    border-bottom: 1px solid #ddd
+
+=inline-picker
+  padding: 0
+  .inline-picker-wrapper
+    padding: 10px
+    padding-left: 43px
+    padding-top: 30px
+    padding-bottom: 30px
+    background-color: white
+    border-bottom: 1px solid #ccc
+    border-top: 1px solid #ccc
+
+tr.inline-category-picker
+  td
+    +inline-picker
+    select
+      width: 715px
+      margin-right: 10px
+    input
+      margin-left: 3px
+
+tr.inline-comment-picker
+  td
+    +inline-picker
+
+.inline-delete
+  position: relative
+  top: 3px

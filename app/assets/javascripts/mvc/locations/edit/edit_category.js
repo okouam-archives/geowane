@@ -2,19 +2,11 @@ $.Controller("EditCategory",
 {
   init: function(el, options) {
     this.location_id = options.location_id;
+     $(el).chosen().change(function() {
+       alert("hello");
+     });
   },
 
-  ".cancel click": function() {
-    this.hideCategoryPicker();
-  },
-
-  ".ok click": function() {
-    this.addCategory(this.element.find("select").val());
-  },
-
-  ".pick-category click": function() {
-    this.showCategoryPicker();
-  },
 
   "a.delete-category click": function(el) {
     if (confirm("Are you sure you want to delete this category?")) {

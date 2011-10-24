@@ -1,15 +1,10 @@
 //= require ./libraries/jquery-1.6.1.min
 //= require ./libraries/OpenLayers
 //= require_tree ./jquery.plugins
-//= require_tree ./theme
+//= require init
 //= require ./libraries/rails
 //= require ./libraries/helpers
-//= require ./libraries/sammy-latest.min
 //= require ./libraries/js-model-0.10.0.min
-//= require ./libraries/nested_form
 //= require ./libraries/jquerymx-1.0.custom.min
-//= require ./libraries/chosen/chosen/chosen.jquery
+//= require ./libraries/underscore-min
 //= require_tree ./models
-//= require_tree ./sammy.plugins
-//= require_tree ./helpers
-//= require_tree ./templates

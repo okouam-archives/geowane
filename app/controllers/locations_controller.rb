@@ -87,7 +87,6 @@ class LocationsController < ApplicationController
   def edit
     @location = Location.find(params[:id])
     @categories = Category.dropdown_items
-    @comments = @location.comments.map {|c| c.to_hash}
     @navigation_params =  params.except(:id).merge({controller: "locations", action: "index"})
     @cycling_params =params.merge({controller: "locations"})
   end

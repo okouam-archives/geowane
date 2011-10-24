@@ -4,7 +4,6 @@ $(function () {
   $('#header #nav li:last').addClass('nobg');
   $('.block_head ul').each(function() { $('li:first', this).addClass('nobg'); });
   $('.block table tbody tr:odd').css('background-color', '#fbfbfb');
-  $('.block form input[type=file]').addClass('file');
 
   $('a[rel*=facebox]').facebox();
   $(".close-facebox").live('click', function() {

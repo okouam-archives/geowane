@@ -16,13 +16,11 @@
         = render :partial => "locations/portlets/map"
         #left.column
           = render :partial => "locations/portlets/feature", :locals => {:form_data => @form_data}
-          = render :partial => "locations/portlets/coordinates", :locals => {:location => @location}
           = render :partial => "locations/portlets/logos", :locals => {:location => @location}
           = render :partial => "locations/portlets/photos", :locals => {:location => @location}
-          = render :partial => "locations/portlets/comments", :locals => {:location => @location, :comments => @comments}
         .column
+          = render :partial => "locations/portlets/tags", :locals => {:location => @location}
           = render :partial => "locations/portlets/information"
-          = render :partial => "locations/portlets/history", :locals => {:location => @location}
         .clear
       %br
       %br

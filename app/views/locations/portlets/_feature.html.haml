@@ -1,29 +1,20 @@
 .feature.portlet
   .portlet-header
     Feature
-    %span
-      = link_to "Save", "#"
   .portlet-content
     = form_for @location do |form|
       = form.label "Name"
-      = form.text_field :name, :input_html => {:class => "text"}, :required => false
+      = form.text_field :name
       = form.label "Long Name"
-      = form.text_field :long_name, :input_html => {:class => "text"}
+      = form.text_field :long_name
       = form.label "City"
-      = form.text_field :city, :as => :select, :collection => City.dropdown_items, :required => false, :label => "City"
+      = select_tag  :city, options_for_select(City.dropdown_items)
       - if @location.persisted? && current_user.may_change_status_of_location?(@location, nil)
-        = form.select :status, :collection => workflow_actions(current_user, @location), :include_blank => false
+        = form.label "Status"
+        = form.select :status, options_for_select(workflow_actions(current_user, @location)), :include_blank => false
+      = form.submit "Update", :style=>"float: right; margin-top: 5px"
+      .clear
 
-- if @location.persisted?
-  = render :partial => "locations/portlets/tags", :locals => {:location => @location}
-
-- if @location.persisted?
-  .portlet.ui-widget.ui-widget-content.ui-helper-clearfix.ui-corner-all
-    .portlet-header.ui-widget-header.ui-corner-top
-      Labels
-    .portlet-content
-      %div.tags
-        %label
 
 
 

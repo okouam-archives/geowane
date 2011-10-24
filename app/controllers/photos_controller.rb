@@ -6,4 +6,8 @@ class PhotosController < ApplicationController
     redirect_to edit_location_url(params[:location_id])
   end
 
+  destroy.wants.html do
+    redirect_to edit_location_url(params[:location_id])
+  end
+
 end

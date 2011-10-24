@@ -3,6 +3,5 @@
 
 require File.expand_path('../config/application', __FILE__)
 require 'rake'
-require 'rack-debug/tasks' if Rails.env.development?
 
 Gowane::Application.load_tasks

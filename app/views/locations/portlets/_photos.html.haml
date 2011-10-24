@@ -3,7 +3,9 @@
     Photos
   .portlet-content
     - @location.photos.each do |photo|
-      = image_tag(photo.image.url, :height => "100")
+      .location-image
+        = image_tag(photo.image.url)
+        = button_to "DELETE", {:action => "destroy", :controller=>"photos", :location_id => @location.id, :id => photo.id}, :method => :delete, :confirm => "Are you sure?"
     = form_for :photo, :html => {:multipart => true}, :url => {:action => "create", :controller => "photos", :location_id => location.id} do |f|
       = file_field :photo, "image"
       = f.submit

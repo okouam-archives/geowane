@@ -48,8 +48,6 @@ group :test do
   gem "faker"
   gem 'capybara'
   gem 'factory_girl'
-  gem 'cucumber'
-  gem 'cucumber-rails'
   gem 'rcov'
   gem 'steak'
   gem 'spork', '~> 0.9.0rc7'

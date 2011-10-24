@@ -1,20 +1,41 @@
 .information.portlet
   .portlet-header
     Information
-    %span
-      = link_to "Save", "#"
   .portlet-content
     = form_for @location do |form|
-      = form.input :email, :required => false, :input_html => { :class => "text" }
-      = form.input :telephone, :required => false, :input_html => { :class => "text" }
-      = form.input :fax, :required => false, :input_html => { :class => "text" }
-      = form.input :website, :required => false, :input_html => { :class => "text" }
-      = form.input :postal_address, :required => false, :input_html => { :class => "text" }
-      = form.input :geographical_address, :required => false, :input_html => { :class => "text"}
-      = form.input :opening_hours, :required => false, :input_html => { :class => "text" }
-      = form.input :user_rating, :required => false, :input_html => { :class => "text"}
-      = form.input :acronym, :required => false, :input_html => { :class => "text"}
-      = form.input :miscellaneous, :label => "Other", :required => false, :input_html => { :class => "text"}
+      = feature_information_wrapper(:email, @location) do
+        = form.label "Email"
+        = form.text_field :email, :required => false, :input_html => { :class => "text" }
+      = feature_information_wrapper(:telephone, @location) do
+        = form.label "Telephone"
+        = form.text_field :telephone, :required => false, :input_html => { :class => "text" }
+      = feature_information_wrapper(:fax, @location) do
+        = form.label "Fax"
+        = form.text_field :fax, :required => false, :input_html => { :class => "text" }
+      = feature_information_wrapper(:website, @location) do
+        = form.label "Website"
+        = form.text_field :website, :required => false, :input_html => { :class => "text" }
+      = feature_information_wrapper(:postal_address, @location) do
+        = form.label "Postal Address"
+        = form.text_field :postal_address, :required => false, :input_html => { :class => "text" }
+      = feature_information_wrapper(:geographical_address, @location) do
+        = form.label "Geographical Address"
+        = form.text_field :geographical_address, :required => false, :input_html => { :class => "text"}
+      = feature_information_wrapper(:opening_hours, @location) do
+        = form.label "Opening Hours"
+        = form.text_field :opening_hours, :required => false, :input_html => { :class => "text" }
+      = feature_information_wrapper(:user_rating, @location) do
+        = form.label "User Rating"
+        = form.text_field :user_rating, :required => false, :input_html => { :class => "text"}
+      = feature_information_wrapper(:acronym, @location) do
+        = form.label "Acronym"
+        = form.text_field :acronym, :required => false, :input_html => { :class => "text"}
+      = feature_information_wrapper(:miscellaneous, @location) do
+        = form.label "Other"
+        = form.text_field :miscellaneous, :label => "Other", :required => false, :input_html => { :class => "text"}
+      = select_tag "Add Field", options_for_select(["Add field", "Email", "Telephone", "Fax", "Geographical Address", "Postal Address", "Opening Hours", "User Rating"]), :style => "width: 100px; float: left; margin-top: 5px"
+      = form.submit "Update", :style=>"float: right; margin-top: 5px"
+      .clear
 
 - content_for :javascripts do
   :javascript

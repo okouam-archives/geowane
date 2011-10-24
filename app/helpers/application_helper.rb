@@ -30,4 +30,8 @@ module ApplicationHelper
     @deferred_content << capture(&block)
   end
 
+  def javascript_page_include
+
+  end
+
 end
