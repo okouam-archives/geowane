@@ -4,7 +4,7 @@ module LocationsHelper
   def feature_information_wrapper(attribute, location, &block)
     value = location.send(attribute)
     display = value.nil? || value.empty? ? "none" : "block"
-    html = "<div style='display: #{display}'>" + capture(&block) + "</div>"
+    html = "<div style='display: #{display}' id='#{attribute}'>" + capture(&block) + "</div>"
     html.html_safe
   end
 

@@ -8,7 +8,7 @@
       = form.label "Long Name"
       = form.text_field :long_name
       = form.label "City"
-      = select_tag  :city, options_for_select(City.dropdown_items)
+      = select_tag  :city, options_for_select([""] + City.dropdown_items)
       - if @location.persisted? && current_user.may_change_status_of_location?(@location, nil)
         = form.label "Status"
         = form.select :status, options_for_select(workflow_actions(current_user, @location)), :include_blank => false

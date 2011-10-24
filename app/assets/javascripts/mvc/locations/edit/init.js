@@ -7,6 +7,4 @@ $(function() {
   $(".feature.portlet").edit_feature({location_id: location_id});
   $(".comments.portlet").edit_comments({location_id: location_id});
   $(".map.portlet").manage_map({location_id: location_id});
-  $('#logo_image').customFileInput();
-  $('#photo_image').customFileInput();
 });

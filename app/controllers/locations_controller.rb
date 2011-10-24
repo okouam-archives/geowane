@@ -53,7 +53,13 @@ class LocationsController < ApplicationController
   end
 
   def new
-
+    @location = Location.new
+    @location.name = "Change Me"
+    @location.longitude = -4
+    @location.latitude = 5
+    @location.user = current_user
+    @location.save!
+    redirect_to edit_location_path(@location)
   end
 
   def collection_update
@@ -86,6 +92,7 @@ class LocationsController < ApplicationController
 
   def edit
     @location = Location.find(params[:id])
+    @selected_categories = @location.categories.map {|category| category.id.to_s}
     @categories = Category.dropdown_items
     @navigation_params =  params.except(:id).merge({controller: "locations", action: "index"})
     @cycling_params =params.merge({controller: "locations"})
@@ -98,9 +105,20 @@ class LocationsController < ApplicationController
   def update
     location = Location.find(params[:id])
     if location.update_attributes(params[:location])
-      render :json => location.to_geojson
+      respond_to do |format|
+        format.json do
+          render :json => location.to_geojson
+        end
+        format.html do
+          redirect_to edit_location_path(location.id)
+        end
+      end
     else
-      render :text => location.errors
+      respond_to do |format|
+        format.json do
+          render :text => location.errors
+        end
+      end
     end
   end
 end

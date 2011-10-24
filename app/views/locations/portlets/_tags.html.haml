@@ -2,4 +2,4 @@
   .portlet-header
     Categories
   .portlet-content.nopadding
-    = select_tag "category_picker", options_for_select(@categories), :"data-placeholder" => "Click here to choose one or more categories", :multiple => true
+    = select_tag "category_picker", options_for_select(@categories, @selected_categories), :"data-placeholder" => "Click here to choose one or more categories", :multiple => true

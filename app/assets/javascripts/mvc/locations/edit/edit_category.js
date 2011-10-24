@@ -2,47 +2,24 @@ $.Controller("EditCategory",
 {
   init: function(el, options) {
     this.location_id = options.location_id;
-     $(el).chosen().change(function() {
-       alert("hello");
-     });
+     $(el).chosen().change(function(evt, item) {
+       if (item.options_index) {
+          this.addCategory(item.value);
+       } else {
+          this.deleteCategory($(item).val());
+       }
+
+     }.bind(this));
   },
 
-
-  "a.delete-category click": function(el) {
+  deleteCategory: function(category_id) {
     if (confirm("Are you sure you want to delete this category?")) {
-      var a = $(el);
-      $.ajax({
-        type: 'DELETE',
-        url: a.attr("href"),
-        success: function() {
-          a.closest("span").remove();
-          return false;
-        }
-      });
+      Categories.remove([this.location_id], category_id);
     }
     return false;
   },
 
   addCategory: function(category_id) {
-    Categories.add([this.location_id], category_id, this.update.bind(this));
-  },
-
-  hideCategoryPicker: function() {
-    this.element.find(".category-picker").hide();
-  },
-
-  showCategoryPicker: function() {
-    this.element.find(".category-picker").show();
-  },
-
-  update: function(tag) {
-    this.redraw(tag);
-    this.hideCategoryPicker();
-  },
-
-  redraw: function(tag) {
-    var html = $(JST['templates/tag_template'](tag[0]));
-    var wrapper = this.element.find(".tags .list");
-    html.appendTo(wrapper);
+    Categories.add([this.location_id], category_id);
   }
 });

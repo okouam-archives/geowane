@@ -33,7 +33,7 @@
       = feature_information_wrapper(:miscellaneous, @location) do
         = form.label "Other"
         = form.text_field :miscellaneous, :label => "Other", :required => false, :input_html => { :class => "text"}
-      = select_tag "Add Field", options_for_select(["Add field", "Email", "Telephone", "Fax", "Geographical Address", "Postal Address", "Opening Hours", "User Rating"]), :style => "width: 100px; float: left; margin-top: 5px"
+      = select_tag "Add Field", options_for_select(["Add field", "email", "telephone", "fax", "geographical_address", "postal_address", "opening_hours", "user_rating"]), :style => "width: 100px; float: left; margin-top: 5px"
       = form.submit "Update", :style=>"float: right; margin-top: 5px"
       .clear
 
