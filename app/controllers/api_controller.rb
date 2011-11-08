@@ -9,11 +9,10 @@ class ApiController < ApplicationController
     if params[:client]
         query = Location
         .scoped
-        .select("partner_categories.id, partner_categories.french, partner_categories.icon, count(*) as count")
-        .where("partners.name ilike ?", "%#{params[:client].force_encoding('UTF-8')}%")
+        .select("categories.id, categories.french, categories.icon, count(*) as count")
         .where("NOT categories.is_hidden")
-        .group("partner_categories.id, partner_categories.french, partner_categories.icon")
-        .order("partner_categories.french ASC")
+        .group("categories.id, categories.french, categories.icon")
+        .order("categories.french ASC")
         .valid
         .where("boundaries.name LIKE 'Côte d''Ivoire'")
         .joins(:categories => [:partner_categories => [:partner]])
