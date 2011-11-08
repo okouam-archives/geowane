@@ -23,7 +23,7 @@
             = form.input :icon, :as => :file, :label => "Upload Icon"
             %label{:style=>"margin-top: 13px"}
               Current Icon
-            = image_tag(object.icon.url)
+            = image_tag(object.icon.url, :style => "height: 37px; width: 32px")
         .clear
         %div.form_commit
           = form.commit_button

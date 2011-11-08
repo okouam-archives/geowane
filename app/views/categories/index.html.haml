@@ -41,7 +41,7 @@
                       %input{:type=>"checkbox"}
                     %td
                       - if category.icon
-                        = image_tag category.icon.url, :style=>"float: left; margin-right: 10px"
+                        = image_tag category.icon.url, :style=>"float: left; margin-right: 10px; height: 37px; width: 32px"
                       - if current_user.may_update_category? @categories.first
                         = link_to category.french, edit_category_path(category, page: params[:page], per_page: params[:per_page])
                       - else
