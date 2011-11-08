@@ -9,7 +9,6 @@
       Categories
       - if current_user.may_create_category?
         = link_to "New Category", new_category_path
-      = link_to "Category Field Collection", "#"
   .block_content
     #portlets
       .bulk-actions
@@ -20,8 +19,6 @@
         %input.button{:type=>"button", :value=>"Apply"}
       .clear
       .portlet
-        .portlet-header
-          Listing
         .portlet-content.nopadding
           %table.main
             %tbody

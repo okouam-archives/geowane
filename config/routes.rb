@@ -44,18 +44,6 @@ Gowane::Application.routes.draw do
 
   resources :users, :cities, :counters, :conversions, :boundaries, :features, :samples, :audits, :roads
 
-  resources :partners do
-    collection do
-      post :collection_delete
-    end
-    resources :partner_categories do
-      collection do
-        post :collection_delete
-      end
-      resources :mappings
-    end
-  end
-
   resources :exports do
     collection do
       get :selection

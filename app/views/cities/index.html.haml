@@ -17,14 +17,12 @@
         %input.button{:type=>"button", :value=>"Apply"}
       .clear
       .portlet
-        .portlet-header
-          Listing
         .portlet-content.nopadding
           %table.main
             %thead
               %tr
                 %th.selector= check_box_tag 'selector'
-                %th City
+                %th Name
                 %th.total_POI Total
                 %th.pending New
                 %th.invalid Invalid

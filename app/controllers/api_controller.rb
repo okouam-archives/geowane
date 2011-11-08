@@ -15,8 +15,7 @@ class ApiController < ApplicationController
         .order("categories.french ASC")
         .valid
         .where("boundaries.name LIKE 'Côte d''Ivoire'")
-        .joins(:categories => [:partner_categories => [:partner]])
-        .joins(:administrative_unit_0)
+        .joins(:administrative_unit_0, :categories)
     else
       query = Category
         .scoped
@@ -113,8 +112,8 @@ class ApiController < ApplicationController
       .in_bbox(bounds.split(","))
     if classification
       query = query
-      .joins(:categories => [:partner_categories])
-      .where("partner_categories.id = ?", classification)
+      .joins(:categories)
+      .where("categories.id = ?", classification)
     elsif name
       query = query.named(name.force_encoding('UTF-8'))
     else
