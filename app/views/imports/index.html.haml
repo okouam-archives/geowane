@@ -6,22 +6,20 @@
       = link_to "New Import", new_import_url
   .block_content
     - if @imports && @imports.count > 0
-      %table{:cellspacing => "0", :cellpadding => "0", :style => "width: 100%; margin-left: 0px"}
-        %thead
-          %tr
-            %th Input File
-            %th{:style=>"width: 140px"} Locations Imported
-            %th{:style=>"width: 100px"} User
-            %th{:style=>"width: 100px"} Date Imported
-        %tbody
-          - @imports.each do |import|
-            %tr
-              %td= link_to import.input.original_filename, import.input.url
-              %td= link_to import.labelled_locations, "/locations?s[import_id]=#{import.id}"
-              %td= import.user.login
-              %td= import.created_at.strftime("%d-%m-%Y")
-      %br
-        %div
+      .portlet
+        .portlet-content.nopadding
+          %table{:cellspacing => "0", :cellpadding => "0", :style => "width: 100%; margin-left: 0px"}
+            %thead
+              %tr
+                %th Source
+                %th{:style=>"width: 100px"} User
+                %th{:style=>"width: 100px"} Date Imported
+            %tbody
+              - @imports.each do |import|
+                %tr
+                  %td= link_to import.input.original_filename, import.input.url
+                  %td= import.user.login
+                  %td= import.created_at.strftime("%d-%m-%Y")
           = render :partial => "shared/paging", :locals => {:collection => @imports, :page_size => @per_page}
     - else
       %p

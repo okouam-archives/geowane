@@ -20,9 +20,9 @@ class CreateLocationsTable < ActiveRecord::Migration
       t.integer :level_3
       t.integer :level_4
       t.string :email
-      t.text :metadata
       t.text :boundaries
       t.string :telephone
+      t.string :source
       t.string :website
       t.string :postal_address
       t.string :opening_hours
@@ -31,6 +31,7 @@ class CreateLocationsTable < ActiveRecord::Migration
       t.text :miscellanous
       t.timestamps
     end
+    add_column :locations, :fid, :uuid
     add_index :locations, ["user_id"], :name => "idx_locations_user_id"
     add_index :locations, ["city_id"], :name => "idx_locations_city_id"
     add_index :locations, ["feature"], :name => "idx_locations_feature", :spatial => true

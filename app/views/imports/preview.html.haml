@@ -5,29 +5,31 @@
       Imports - Preview Changes
       = link_to "Apply Updates", "#"
   .block_content
-    = semantic_form_for :changes, :url => execute_import_path(object) do
-      %table{:style=>"width: 100%"}
-        %tr
-          %th
-            %input{:type=>"checkbox"}
-          %th ID
-          %th Name
-          %th{:style=>"width: 150px"} Longitude
-          %th{:style=>"width: 150px"} Latitude
-        - @selections.each do |selection|
-          %tr
-            %td
-              %input{:type=>"checkbox", :name=>"selected[]", :value => "#{selection.id}"}
-            - if selection.original
-              %td= selection.original.id
-              %td= "<b class='change'>Before:</b> #{selection.original.name} <br/> <b class='change'>After:</b> #{selection.name}".html_safe
-              %td= "<b class='change'>Before:</b> #{selection.original.longitude} <br/> <b class='change'>After:</b> #{selection.longitude}".html_safe
-              %td= "<b class='change'>Before:</b> #{selection.original.latitude} <br/> <b class='change'>After:</b> #{selection.latitude}".html_safe
-            - else
-              %td NEW
-              %td= selection.name
-              %td= selection.longitude
-              %td= selection.latitude
+    .portlet
+      .portlet-content.nopadding
+        = semantic_form_for :changes, :url => execute_import_path(object) do
+          %table{:style=>"width: 100%"}
+            %tr
+              %th
+                %input{:type=>"checkbox"}
+              %th ID
+              %th Name
+              %th{:style=>"width: 150px"} Longitude
+              %th{:style=>"width: 150px"} Latitude
+            - @selections.each do |selection|
+              %tr
+                %td
+                  %input{:type=>"checkbox", :name=>"selected[]", :value => "#{selection.id}"}
+                - if selection.original
+                  %td= selection.original.id
+                  %td= "<b class='change'>Before:</b> #{selection.original.name} <br/> <b class='change'>After:</b> #{selection.name}".html_safe
+                  %td= "<b class='change'>Before:</b> #{selection.original.longitude} <br/> <b class='change'>After:</b> #{selection.longitude}".html_safe
+                  %td= "<b class='change'>Before:</b> #{selection.original.latitude} <br/> <b class='change'>After:</b> #{selection.latitude}".html_safe
+                - else
+                  %td NEW
+                  %td= selection.name
+                  %td= selection.longitude
+                  %td= selection.latitude
 
 :css
   .change {display: inline-block; width: 50px}
