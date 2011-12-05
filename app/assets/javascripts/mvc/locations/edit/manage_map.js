@@ -79,7 +79,7 @@ $.Controller("ManageMap",
       highlightOnly: true,
       overFeature: function(feature) {
         Carto.showLabel(feature);
-        $("body").css({cursor: "pointer"});
+        $("body").css("cursor", "pointer");
       },
       outFeature: function() {
         $("body").css({cursor: "default"});

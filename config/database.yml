@@ -1,10 +1,10 @@
 development: &development
   adapter: postgresql
-  database: geocms_development
-  host: localhost
+  database: cms_production
+  host: galileo.codeifier.com
   pool: 5
-  username: o1
-  password: com99123
+  username: deployment
+  password: FireDrake[1981]
   timeout: 5000
   encoding: utf8
   min_messages: warning

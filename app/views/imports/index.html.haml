@@ -1,9 +1,15 @@
+- content_for :search do
+  %form{:enctype => "multipart/form-data"}
+    = image_tag "logo.png", :style=>"height: 30px; margin-top: 10px"
+    %input{:type=>"file", :style=>"margin-left: 120px"}
+    %button{:style=>"margin-left: 30px"}
+      Import
+
 = content_for :title, "Imports"
 .block
   .block_head
     %h2
       Imports
-      = link_to "New Import", new_import_url
   .block_content
     - if @imports && @imports.count > 0
       .portlet

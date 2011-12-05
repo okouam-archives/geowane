@@ -1,0 +1,11 @@
+#search-bar
+  .wrapper
+    %form{:method=>"get", :action=>"/locations"}
+      = image_tag "logo.png", :style=>"height: 30px; margin-top: 10px"
+      %input{:type=>"text", :id=>"s[name]", :name=>"s[name]"}
+      %div{:style=>"display: inline-block; position: relative; left: -22px"}
+        .aoq
+      %button#submit
+        %div
+          =image_tag "search_white.png"
+      = link_to "Advanced Search", new_search_path, :style => "font-size: 10px; position: relative; top: -8px; margin-left: 10px"
