@@ -1,5 +1,5 @@
 - content_for :search do
-  = render :partial => "shared/dropdown_search_bar", :locals => {:action => "/locations", :show_advanced => true, :title => "Locations"}
+  = render :partial => "shared/generic_search_bar", :locals => {:action => "/dashboard", :show_advanced => false, :title => "Issues"}
 
 = content_for :title, "Dashboard"
 
@@ -7,56 +7,27 @@
   .block
     .block_content
       #portlets
-        #left.column
-          .portlet
-            .portlet-header
-              =t :resolved_issues
-            .portlet-content.nopadding
-              %table
-                %thead
-                  %tr
-                    %th
-                      =t :titre
-                    %th
-                      =t :author
-                    %th
-                      =t :opened
-                    %th
-                      =t :closed
-                - for ticket in @resolved
-                  %tr
-                    %td
-                      =link_to ticket.title, ticket.url
-                    %td
-                      = ticket.creator_name
-                    %td
-                      = DateTime.parse(ticket.created_at).strftime("%d-%m-%Y")
-                    %td
-                      = DateTime.parse(ticket.updated_at).strftime("%d-%m-%Y")
-        .column
-          .portlet
-            .portlet-header
-              Oustanding Issues
-            .portlet-content.nopadding
-              %table
-                %thead
-                  %tr
-                    %th
-                      =t :title
-                    %th
-                      =t :author
-                    %th
-                      =t :opened
-                    %th
-                      =t :status
-                - for ticket in @outstanding
-                  %tr
-                    %td
-                      =link_to ticket.title, ticket.url
-                    %td
-                      = ticket.creator_name
-                    %td
-                      = DateTime.parse(ticket.created_at).strftime("%d-%m-%Y")
-                    %td
-                      = ticket.state
+        .portlet
+          .portlet-content.nopadding
+            %table
+              %thead
+                %tr
+                  %th
+                    =t :title
+                  %th
+                    =t :author
+                  %th
+                    =t :opened
+                  %th
+                    =t :status
+              - for ticket in @tickets
+                %tr
+                  %td
+                    =link_to ticket.title, ticket.url
+                  %td
+                    = ticket.creator_name
+                  %td
+                    = DateTime.parse(ticket.created_at).strftime("%d-%m-%Y")
+                  %td
+                    = ticket.state
     .clear

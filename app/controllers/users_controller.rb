@@ -6,8 +6,12 @@ class UsersController < ApplicationController
 
   def index
     current_user.may_list_users!
+    @sort_params = params.merge({controller: "users", action: "index"}).except(:page, :per_page)
     per_page = params[:per_page] || "10"
-    @users = User.order("login").paginate(:page => params[:page], :per_page => per_page)
+    order = params[:sort] || "login"
+    query = User.order(order)
+    query = query.where("users.login ILIKE ?", "%#{params[:s][:name]}%") if params[:s]
+    @users = query.paginate(:page => params[:page], :per_page => per_page)
   end
 
   def new

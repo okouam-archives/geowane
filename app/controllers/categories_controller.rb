@@ -5,6 +5,7 @@ class CategoriesController < ApplicationController
 
   def index
     query = Category.scoped.from("reports.categories")
+    query = query.where("french ILIKE ? OR english ILIKE ?", "%#{params[:s][:name]}%", "%#{params[:s][:name]}%") if params[:s]
     @categories = query.paginate(:page => params[:page] || 1, :per_page => params[:per_page] || 10)
   end
 

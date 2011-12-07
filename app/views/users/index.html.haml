@@ -14,17 +14,17 @@
                 %tr
                   %th.selector
                     %input{:type=>"checkbox"}
-                  %th Name
-                  %th{:style=>"width: 150px"} Last Logged In At
-                  %th{:style=>"width: 80px; text-align: center"} Active
-                  %th{:style=>"width: 70px"} Role
+                  %th= link_to "Name", url_for(@sort_params.merge({:sort => "login"}))
+                  %th= link_to "Last Logged In At", url_for(@sort_params.merge({:sort => "last_login_at"}))
+                  %th= link_to "Active", url_for(@sort_params.merge({:sort => "is_active"}))
+                  %th= link_to "Role", url_for(@sort_params.merge({:sort => "role_name"}))
               %tbody
               - for user in @users
                 %tr
                   %td
                     %input{:type=>"checkbox"}
                   %td= link_to user.login, user_path(user)
-                  %td= user.last_login_at
+                  %td= user.last_login_at ? time_ago_in_words(user.last_login_at) : "never"
                   %td{:style=>"text-align: center"}
                     %input{:type=>"checkbox", :checked => user.is_active, :disabled => "true"}
                   %td= user.role_name

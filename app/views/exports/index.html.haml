@@ -1,9 +1,21 @@
 = content_for :title, "View Exports"
+
+- content_for :search do
+  #search-bar
+    .wrapper
+      .clear
+      %form{:method=>"get", :style=>"padding-top: 17px; width: 700px; display: inline"}
+        %h1{:style=>"float: left; color: #434343; margin-left: 20px; width: 140px"}
+          Exports
+        %input{:type=>"text", :id=>"s[name]", :name=>"s[name]", :style => "width: 385px"}
+        %button#submit.nodropdown
+          %div
+            =image_tag "search_white.png"
+      %form{:method=>"get", :action => "/exports/selection", :style=>"padding-top: 17px; display: inline; width: 150px"}
+        %button.action-button
+          %div
+            Create selection
 .block
-  .block_head
-    %h2
-      Exports
-      = link_to "Create Selection", "/exports/selection"
   .block_content
     #portlets
       .portlet

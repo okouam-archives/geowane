@@ -41,9 +41,11 @@ class ExportsController < ApplicationController
   end
 
   def index
-    session[PAGER] = params[:page] || session[PAGER]
+    page = params[:page] || 1
     @per_page = params[:per_page] || 10
-    @exports = Export.order("created_at desc").paginate(:page => session[PAGER], :per_page => @per_page)
+    query = Export.order("created_at desc")
+    query = query.where("name ilike ?", "%#{params[:s][:name]}%") if params[:s]
+    @exports = query.paginate(:page => page, :per_page => @per_page)
   end
   
   create.wants.html do

@@ -42,7 +42,7 @@ Gowane::Application.routes.draw do
     end
   end
 
-  resources :users, :cities, :counters, :conversions, :boundaries, :features, :samples, :audits
+  resources :users, :cities, :collectors, :conversions, :boundaries, :features, :samples, :audits
   resources :change_requests, :roads , :partner_categories
 
   resources :exports do

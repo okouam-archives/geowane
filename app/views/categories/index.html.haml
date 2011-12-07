@@ -4,7 +4,7 @@
   = javascript_include_tag "/assets/mvc/categories/index/init", :debug => Rails.env.development?
 
 - content_for :search do
-  = render :partial => "shared/generic_search_bar", :locals => {:action => "/categories", :title => "Categories"}
+  = render :partial => "action_bar"
 
 .block
   .block_content

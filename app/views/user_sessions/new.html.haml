@@ -6,22 +6,22 @@
     = stylesheet_link_tag "/assets/application", :debug => Rails.env.development?
   %body
     #hld
-      .wrapper
-        .block.small.center.login
-          .block_head
-            %h2 Login
-          .block_content{:style=>"width: auto; padding: 20px"}
-            = form_for @user_session do |f|
+      .wrapper{:style=>"padding-top: 150px"}
+        .block.small.center.login{:style=>"background-color: white; width: 570px; background-image: none; border-top: 1px solid #ccc; margin-top: 0"}
+          = form_for @user_session do |f|
+            %div{:style=>"float: left; width: 100px; height: 45px"}
+              = image_tag "logo.png", :style=>"margin-left: 10px; margin-top: 3px"
+            %div{:style=>"float: left; width: 455px"}
               - if f.object.errors.any?
                 %ul
                   - f.object.errors.full_messages.each do |msg|
                     %li.error_message= msg
-              = f.label :login
-              = f.text_field :login, :class => "text", :style=>"width: 97%"
-              %br
-              %br
-              = f.label :password
-              = f.password_field :password, :class => "text", :style=>"width: 97%"
-              %br
-              %br
-              = f.submit "Login", :class => "submit", :style=>"float: right"
+              %div{:style=>"float: left; width: 200px"}
+                = f.label :login
+                = f.text_field :login, :class => "text", :style=>"width: 170px"
+              %div{:style=>"float: left; width: 200px"}
+                = f.label :password
+                = f.password_field :password, :class => "text", :style=>"width: 170px"
+              = f.submit "Login", :class => "submit", :style=>"float: left; margin-top: 17px"
+          .clear
+          %br

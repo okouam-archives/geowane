@@ -1,17 +1,15 @@
 - content_for :search do
   #search-bar
     .wrapper
-      %form{:enctype => "multipart/form-data"}
-        = image_tag "logo.png", :style=>"height: 30px; margin-top: 10px"
-        %input{:type=>"file", :style=>"margin-left: 120px"}
+      %form{:enctype => "multipart/form-data", :style=>"padding-top: 17px"}
+        %h1{:style=>"float: left; color: #434343; margin-left: 20px; width: 140px"}
+          Imports
+        %input{:type=>"file", :style=>"margin-left: 45px"}
         %button#submit{:style=>"margin-left: 30px"}
           Import
 
 = content_for :title, "Imports"
 .block
-  .block_head
-    %h2
-      Imports
   .block_content
     - if @imports && @imports.count > 0
       .portlet

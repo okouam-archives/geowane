@@ -1,0 +1,16 @@
+#search-bar
+  .wrapper
+    .clear
+    %form{:method=>"get", :style=>"padding-top: 17px; width: 725px; display: inline"}
+      %h1{:style=>"float: left; color: #434343; margin-left: 20px; width: 140px"}
+        Locations
+      %input{:type=>"text", :id=>"s[name]", :name=>"s[name]"}
+      %div{:style=>"display: inline-block; position: relative; left: -22px"}
+        .aoq
+      %button#submit
+        %div
+          = image_tag "search_white.png"
+    %form{:method=>"get", :style=>"padding-top: 17px; display: inline; width: 150px"}
+      %button.action-button
+        %div
+          New location

@@ -1,0 +1,55 @@
+= content_for :title, "Collectors"
+
+- content_for :search do
+  = render :partial => "shared/generic_search_bar", :locals => {:action => "/collectors", :title => "Collectors"}
+
+.block
+  .block_content
+    #portlets
+      .portlet
+        .portlet-content.nopadding
+          %table
+            %thead
+              %tr
+                %th Name
+                %th.total_POI Total
+                %th.new New
+                %th.audited Audited
+                %th.invalid Invalid
+                %th.corrected Corrected
+                %th.checked Checked
+                %th.uncategorized
+                  %i Uncategorized
+            %tbody
+              - @collectors.each do |counter|
+                %tr
+                  %td
+                    = image_tag("http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(counter.login)}?d=identicon&s=15", :style => "float: left; border: 1px solid #fff; margin-right: 10px")
+                    %span{:style=>"position: relative; top: 1px"}
+                      = counter.login
+                  %td.total_POI= linked_figure(counter.total_locations, "/locations?s[added_by]=#{counter.user_id}")
+                  %td.new= linked_figure(counter.new_locations, "/locations?s[added_by]=#{counter.user_id}&s[status]=new")
+                  %td.audited= linked_figure(counter.audited_locations, "/locations?s[added_by]=#{counter.user_id}&s[status]=audited")
+                  %td.invalid= linked_figure(counter.invalid_locations, "/locations?s[added_by]=#{counter.user_id}&s[status]=invalid")
+                  %td.corrected= linked_figure(counter.corrected_locations, "/locations?s[added_by]=#{counter.user_id}&s[status]=corrected")
+                  %td.checked= linked_figure(counter.field_checked_locations, "/locations?s[added_by]=#{counter.user_id}&s[status]=field+checked")
+                  %td{:style=>"text-align: right"}
+                    %i= linked_figure(counter.total_locations.to_i - counter.categorized_locations.to_i, "/locations?s[added_by]=#{counter.user_id}&s[category_missing]=1")
+            %tfoot
+              %tr
+                %td
+                %td.total_POI
+                  = linked_figure(@collectors.inject(0) {|total, city| total + city.total_locations.to_i }, nil)
+                %td.new
+                  = linked_figure(@collectors.inject(0) {|total, city| total + city.new_locations.to_i }, nil)
+                %td.invalid
+                  = linked_figure(@collectors.inject(0) {|total, city| total + city.audited_locations.to_i }, nil)
+                %td.corrected
+                  = linked_figure(@collectors.inject(0) {|total, city| total + city.invalid_locations.to_i }, nil)
+                %td.audited
+                  = linked_figure(@collectors.inject(0) {|total, city| total + city.corrected_locations.to_i }, nil)
+                %td.checked
+                  = linked_figure(@collectors.inject(0) {|total, city| total + city.field_checked_locations.to_i }, nil)
+                %td.uncategorized
+                  = linked_figure(@collectors.inject(0) {|total, counter| total + (counter.total_locations.to_i - counter.categorized_locations.to_i) }, nil)
+        = render :partial => "shared/paging", :locals => {:collection => @collectors, :page_size => @per_page}
