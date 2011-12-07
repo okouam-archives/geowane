@@ -1,12 +1,11 @@
 class CategoriesController < ApplicationController
   resource_controller
   include Aegis::Controller
-  permissions :categories, :except => [:index, :change_icon]
+  permissions :categories, :except => [:index]
 
   def index
     query = Category.scoped.from("reports.categories")
-    @categories = query.page(page = params[:page] || 1).per(per_page = params[:per_page] || 10)
-    flash[:paging] = {page: page, per_page: per_page }
+    @categories = query.paginate(:page => params[:page] || 1, :per_page => params[:per_page] || 10)
   end
 
   def show

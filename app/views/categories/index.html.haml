@@ -3,12 +3,10 @@
 - content_for :javascripts do
   = javascript_include_tag "/assets/mvc/categories/index/init", :debug => Rails.env.development?
 
+- content_for :search do
+  = render :partial => "shared/generic_search_bar", :locals => {:action => "/categories", :title => "Categories"}
+
 .block
-  .block_head
-    %h2
-      Categories
-      - if current_user.may_create_category?
-        = link_to "New Category", new_category_path
   .block_content
     #portlets
       .bulk-actions

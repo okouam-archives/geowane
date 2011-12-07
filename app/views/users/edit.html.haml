@@ -1,8 +1,11 @@
 = content_for :title, "Edit User"
 
+- content_for :search do
+  #search-bar
+    .wrapper
+      %form{:method=>"get", :style=>"padding-top: 17px"}
+        %h1{:style=>"float: left; color: #434343; margin-left: 20px"}
+          Edit User
+
 %div.block
-  %div.block_head
-    %h2
-      Edit User
-      =link_to "Back", users_path
   = render :partial => 'form'

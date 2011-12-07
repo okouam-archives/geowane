@@ -23,9 +23,9 @@
           %h1= link_to "GeoCMS", dashboard_path
           %ul#nav
             %li
-              = link_to "Geospatial Database", dashboard_path
+              = link_to "0-One Database", dashboard_path
               %ul
-                %li= link_to "Points of Interest", locations_path(:s => :reset)
+                %li= link_to "Points of Interest", locations_path
                 %li= link_to "Categories", categories_path(:page => 1)
                 %li= link_to "Collectors", counters_path
                 %li= link_to "Boundaries", boundaries_path

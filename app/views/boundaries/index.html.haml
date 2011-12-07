@@ -1,9 +1,9 @@
 = content_for :title, "Boundaries"
 
+- content_for :search do
+  = render :partial => "shared/dropdown_search_bar", :locals => {:show_advanced => false, :title => "Boundaries", :action => "/cities"}
+
 .block
-  .block_head
-    %h2
-      Boundaries
   .block_content
     #portlets
       .bulk-actions

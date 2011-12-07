@@ -1,0 +1,13 @@
+#search-bar
+  .wrapper
+    %form{:method=>"get", :action=> action, :style=>"padding-top: 17px"}
+      %h1{:style=>"float: left; color: #434343; margin-left: 20px"}
+        = title
+      %input{:type=>"text", :id=>"s[name]", :name=>"s[name]"}
+      %div{:style=>"display: inline-block; position: relative; left: -22px"}
+        .aoq
+      %button#submit
+        %div
+          =image_tag "search_white.png"
+      - if show_advanced
+        = link_to "Advanced Search", new_search_path, :style => "font-size: 10px; position: relative; top: -8px; margin-left: 10px"

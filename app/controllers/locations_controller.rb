@@ -4,16 +4,34 @@ class LocationsController < ApplicationController
   layout "admin"
   before_filter :assign_form_data, :only => [:create, :edit]
 
+  def per_page
+    @per_page = params[:per_page] || 10
+  end
+
+  def page
+    params[:page] || 1
+  end
+
   def index
-    @search = Search.construct(params[:s], params[:sort], params[:page], params[:per_page], session[:search_token], current_user)
-    @search.save_to_session(session)
+    search = Search.new(params[:s], params[:sort])
     respond_to do |format|
       format.html do
-        @locations = @search.execute
-        @per_page = @search.per_page
+        @locations = search.execute(page, per_page)
+        @sort_params = params.merge({controller: "locations", action: "index"}).except(:page, :per_page)
+        @navigation_params = params.merge({controller: "locations", action: "edit"})
       end
-      format.json { render :json => @search.execute.to_a.to_geojson }
+      format.json { render :json => search.execute.to_a.to_geojson }
     end
+  end
+
+  def new
+    @location = Location.new
+    @location.name = "Change Me"
+    @location.longitude = -4
+    @location.latitude = 5
+    @location.user = current_user
+    @location.save!
+    redirect_to edit_location_path(@location)
   end
 
   def next

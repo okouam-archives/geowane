@@ -1,8 +1,7 @@
 class SearchController < ApplicationController
-  resource_controller :singleton
   layout "admin"
 
-  new_action.before do
+  def new
     @all_users = User.dropdown_items
     @all_cities = City.dropdown_items
     @all_level_0 = Boundary.dropdown_items(0)
@@ -17,6 +16,6 @@ class SearchController < ApplicationController
             WHERE locations.name ilike '%#{params[:q]}%' LIMIT #{params[:limit]}"
     results = Location.connection.execute(sql)
     render :json => results
-end
+  end
 
 end

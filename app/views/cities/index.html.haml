@@ -3,61 +3,59 @@
 - content_for :javascripts do
   = javascript_include_tag "/assets/mvc/cities/index/init.js", :debug => Rails.env.development?
 
+- content_for :search do
+  = render :partial => "shared/dropdown_search_bar", :locals => {:show_advanced => false, :title => "Cities", :action => "/cities"}
+
 .block
-  .block_head
-    %h2
-      Cities
-      = link_to "New City", new_city_path(page: params[:page], per_page: params[:per_page])
-  .block_content
-    #portlets
-      .bulk-actions
-        %select
-          %option Bulk Actions
-          %option Delete
-        %input.button{:type=>"button", :value=>"Apply"}
-      .clear
-      .portlet
-        .portlet-content.nopadding
-          %table.main
-            %thead
-              %tr
-                %th.selector= check_box_tag 'selector'
-                %th Name
-                %th.total_POI Total
-                %th.pending New
-                %th.invalid Invalid
-                %th.pending Corrected
-                %th.audited Audited
-                %th.checked Checked
-                %th.categorized Untagged
-            %tfoot
-              %tr
-                %td
-                %td
-                %td.total_POI
-                  = linked_figure(@cities.inject(0) {|total, city| total + city.total_locations.to_i }, nil)
-                %td.new
-                  = linked_figure(@cities.inject(0) {|total, city| total + city.new_locations.to_i }, nil)
-                %td.invalid
-                  = linked_figure(@cities.inject(0) {|total, city| total + city.invalid_locations.to_i }, nil)
-                %td.corrected
-                  = linked_figure(@cities.inject(0) {|total, city| total + city.corrected_locations.to_i }, nil)
-                %td.audited
-                  = linked_figure(@cities.inject(0) {|total, city| total + city.audited_locations.to_i }, nil)
-                %td.checked
-                  = linked_figure(@cities.inject(0) {|total, city| total + city.field_checked_locations.to_i }, nil)
-                %td.uncategorized
-                  = linked_figure(@cities.inject(0) {|total, city| total + (city.total_locations.to_i - city.categorized_locations.to_i) }, nil)
-            %tbody
-              - @cities.each do |city|
-                %tr{:"data-id" => city.id}
-                  %td.selector= check_box_tag 'selector'
-                  %td= link_to city.name, edit_city_path(city)
-                  %td.total_POI= linked_figure(city.total_locations || 0, "/locations?s[city_id]=#{city.id}")
-                  %td.new= linked_figure(city.new_locations || 0, ("/locations?s[city_id]=#{city.id}" ? ("/locations?s[city_id]=#{city.id}&s[status]=new") : nil))
-                  %td.invalid= linked_figure(city.invalid_locations || 0, ("/locations?s[city_id]=#{city.id}" ? ("/locations?s[city_id]=#{city.id}&s[status]=invalid") : nil))
-                  %td.corrected= linked_figure(city.corrected_locations || 0, ("/locations?s[city_id]=#{city.id}" ? ("/locations?s[city_id]=#{city.id}&s[status]=corrected") : nil))
-                  %td.audited= linked_figure(city.audited_locations || 0, ("/locations?s[city_id]=#{city.id}" ? ("/locations?s[city_id]=#{city.id}&s[status]=audited") : nil))
-                  %td.checked= linked_figure(city.field_checked_locations || 0, ("/locations?s[city_id]=#{city.id}" ? ("/locations?s[city_id]=#{city.id}&s[status]=field_checked") : nil))
-                  %td.uncategorized= linked_figure((city.total_locations.to_i - city.categorized_locations.to_i) || 0, ("/locations?s[city_id]=#{city.id}" ? ("/locations?s[city_id]=#{city.id}&s[category_missing]=1") : nil))
-          = render :partial => "shared/paging", :locals => {:collection => @cities, :page_size => @per_page}
+  #portlets
+    .bulk-actions
+      %select
+        %option Bulk Actions
+        %option Delete
+      %input.button{:type=>"button", :value=>"Apply"}
+    .clear
+    .portlet
+      .portlet-content.nopadding
+        %table.main
+          %thead
+            %tr
+              %th.selector= check_box_tag 'selector'
+              %th Name
+              %th.total_POI Total
+              %th.pending New
+              %th.invalid Invalid
+              %th.pending Corrected
+              %th.audited Audited
+              %th.checked Checked
+              %th.categorized Untagged
+          %tfoot
+            %tr
+              %td
+              %td
+              %td.total_POI
+                = linked_figure(@cities.inject(0) {|total, city| total + city.total_locations.to_i }, nil)
+              %td.new
+                = linked_figure(@cities.inject(0) {|total, city| total + city.new_locations.to_i }, nil)
+              %td.invalid
+                = linked_figure(@cities.inject(0) {|total, city| total + city.invalid_locations.to_i }, nil)
+              %td.corrected
+                = linked_figure(@cities.inject(0) {|total, city| total + city.corrected_locations.to_i }, nil)
+              %td.audited
+                = linked_figure(@cities.inject(0) {|total, city| total + city.audited_locations.to_i }, nil)
+              %td.checked
+                = linked_figure(@cities.inject(0) {|total, city| total + city.field_checked_locations.to_i }, nil)
+              %td.uncategorized
+                = linked_figure(@cities.inject(0) {|total, city| total + (city.total_locations.to_i - city.categorized_locations.to_i) }, nil)
+          %tbody
+            - @cities.each do |city|
+              %tr{:"data-id" => city.id}
+                %td.selector= check_box_tag 'selector'
+                %td= link_to city.name, edit_city_path(city)
+                %td.total_POI= linked_figure(city.total_locations || 0, "/locations?s[city_id]=#{city.id}")
+                %td.new= linked_figure(city.new_locations || 0, ("/locations?s[city_id]=#{city.id}" ? ("/locations?s[city_id]=#{city.id}&s[status]=new") : nil))
+                %td.invalid= linked_figure(city.invalid_locations || 0, ("/locations?s[city_id]=#{city.id}" ? ("/locations?s[city_id]=#{city.id}&s[status]=invalid") : nil))
+                %td.corrected= linked_figure(city.corrected_locations || 0, ("/locations?s[city_id]=#{city.id}" ? ("/locations?s[city_id]=#{city.id}&s[status]=corrected") : nil))
+                %td.audited= linked_figure(city.audited_locations || 0, ("/locations?s[city_id]=#{city.id}" ? ("/locations?s[city_id]=#{city.id}&s[status]=audited") : nil))
+                %td.checked= linked_figure(city.field_checked_locations || 0, ("/locations?s[city_id]=#{city.id}" ? ("/locations?s[city_id]=#{city.id}&s[status]=field_checked") : nil))
+                %td.uncategorized= linked_figure((city.total_locations.to_i - city.categorized_locations.to_i) || 0, ("/locations?s[city_id]=#{city.id}" ? ("/locations?s[city_id]=#{city.id}&s[category_missing]=1") : nil))
+        = render :partial => "shared/paging", :locals => {:collection => @cities, :page_size => @per_page}

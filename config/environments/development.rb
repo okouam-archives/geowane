@@ -1,5 +1,3 @@
-require "rack/debug"
-
 Gowane::Application.configure do
   # Settings specified here will take precedence over those in config/environment.rb
 
@@ -24,8 +22,6 @@ Gowane::Application.configure do
 
   # Only use best-standards-support built into browsers
   config.action_dispatch.best_standards_support = :builtin
-
-  config.middleware.use "Rack::Debug"
   config.assets.compress = false
   config.assets.debug = true
 end

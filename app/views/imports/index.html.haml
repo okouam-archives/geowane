@@ -1,9 +1,11 @@
 - content_for :search do
-  %form{:enctype => "multipart/form-data"}
-    = image_tag "logo.png", :style=>"height: 30px; margin-top: 10px"
-    %input{:type=>"file", :style=>"margin-left: 120px"}
-    %button{:style=>"margin-left: 30px"}
-      Import
+  #search-bar
+    .wrapper
+      %form{:enctype => "multipart/form-data"}
+        = image_tag "logo.png", :style=>"height: 30px; margin-top: 10px"
+        %input{:type=>"file", :style=>"margin-left: 120px"}
+        %button#submit{:style=>"margin-left: 30px"}
+          Import
 
 = content_for :title, "Imports"
 .block

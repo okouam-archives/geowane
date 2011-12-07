@@ -1,10 +1,9 @@
 = content_for :title, "View Categories"
 
+- content_for :search do
+  = render :partial => "shared/generic_search_bar", :locals => {:action => "/users", :title => "Users"}
+
 %div.block
-  %div.block_head
-    %h2
-      Users
-      = link_to "New User", new_user_path, :class=> "heading-action"
   %div.block_content
     %form{:method => "post"}
       #portlets

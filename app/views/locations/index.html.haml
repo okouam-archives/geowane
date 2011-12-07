@@ -1,5 +1,5 @@
 - content_for :search do
-  = render :partial => "shared/location_search_bar"
+  = render :partial => "shared/dropdown_search_bar", :locals => {:action => "/locations", :show_advanced => true, :title => "Locations"}
 
 = content_for :title, "Points of Interest"
 
@@ -7,8 +7,6 @@
   = javascript_include_tag "/assets/mvc/locations/index/init", :debug => Rails.env.development?
 
 .block
-  .block_head
-    %h2 Points of Interest
   .block_content
     #portlets
       .portlet.map
@@ -36,12 +34,12 @@
                 %tr
                   %th
                     %input{:type=>"checkbox"}
-                  %th= link_to "Name", "#", :"data-sort" => "name"
-                  %th= link_to "City", "#", :"data-sort" => "city_name"
+                  %th= link_to "Name", url_for(@sort_params.merge({:sort => "name"}))
+                  %th= link_to "City", url_for(@sort_params.merge({:sort => "city_name"}))
                   %th.tags Tags
-                  %th.added_by= link_to "Added By", "#", :"data-sort" => "username"
-                  %th.date_added= link_to "Date Added", "#", :"data-sort" => "created_at"
-                  %th.last_changed= link_to "Last Changed", "#", :"data-sort" => "updated_at"
+                  %th.added_by= link_to "Added By", url_for(@sort_params.merge({:sort => "username"}))
+                  %th.date_added= link_to "Added", url_for(@sort_params.merge({:sort => "pois.updated_at"}))
+                  %th.last_changed= link_to "Updated", url_for(@sort_params.merge({:sort => "pois.created_at"}))
                   %th.status= link_to "Status", "#", :"data-sort" => "status"
               %tbody
                 - for location in @locations

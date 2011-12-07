@@ -1,8 +1,6 @@
 .block_content
   #portlets
     .portlet
-      .portlet-header
-        Listing
       .portlet-content
         = semantic_form_for @user, :html => { :enctype => "multipart/form-data"} do |form|
           = form.input :login, :input_html => { :class => "text" }

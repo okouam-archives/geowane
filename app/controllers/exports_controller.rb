@@ -43,7 +43,7 @@ class ExportsController < ApplicationController
   def index
     session[PAGER] = params[:page] || session[PAGER]
     @per_page = params[:per_page] || 10
-    @exports = Export.order("created_at desc").page(session[PAGER]).per(@per_page)
+    @exports = Export.order("created_at desc").paginate(:page => session[PAGER], :per_page => @per_page)
   end
   
   create.wants.html do

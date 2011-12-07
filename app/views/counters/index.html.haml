@@ -1,9 +1,9 @@
 = content_for :title, "Collectors"
 
+- content_for :search do
+  = render :partial => "shared/generic_search_bar", :locals => {:action => "/counters", :title => "Collectors"}
+
 .block
-  .block_head
-    %h2
-      Collectors
   .block_content
     #portlets
       .portlet

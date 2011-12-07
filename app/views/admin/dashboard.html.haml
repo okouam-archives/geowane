@@ -1,13 +1,10 @@
 - content_for :search do
-  = render :partial => "shared/location_search_bar"
+  = render :partial => "shared/dropdown_search_bar", :locals => {:action => "/locations", :show_advanced => true, :title => "Locations"}
 
 = content_for :title, "Dashboard"
 
 .features.summary
   .block
-    %br
-    .block_head
-      %h2 Dashboard
     .block_content
       #portlets
         #left.column
@@ -62,3 +59,4 @@
                       = DateTime.parse(ticket.created_at).strftime("%d-%m-%Y")
                     %td
                       = ticket.state
+    .clear
