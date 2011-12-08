@@ -18,11 +18,11 @@ class SearchCriteria
 
     query = query.where(:user_id => @added_by) if @added_by
 
-    query = query.where(:status => @statuses) if @statuses
+    query = query.where(:status => @status) if @status
 
-    query = query.on_street(street_name) if @street_name
+    query = query.on_street(@street_name) unless @street_name.nil? || @street_name.blank?
 
-    query = filter_on_category_presence(query, @categories) if @categories
+    query = filter_on_category_presence(query, [@category_id]) if @category_id
 
     query = filter_on_change(query, @confirmed_by, @audited_by, @modified_by)
 

@@ -1,0 +1,24 @@
+= content_for :title, "New Import"
+
+- content_for :search do
+  #search-bar
+    .wrapper
+      .clear
+      %form{:method=>"get", :style=>"padding-top: 17px; width: 700px; display: inline"}
+        %h1{:style=>"float: left; color: #434343; margin-left: 20px; width: 200px"}
+          New Import
+        Filename:
+        %input{:type=>"file", :id=>"import[input]", :name=>"import[input]", :style => "width: 225px"}
+        Collector:
+        %select{:style=>"width: 200px", :id=>"import[user_id]"}
+        %button.action-button{:style=>"top: 0px; margin-left: 5px"}
+          %div
+            PREVIEW
+
+.block
+  .block_content
+    - if @contents
+    - else
+      Please select a filename above and the collector who gathered the data to preview its contents.
+      %br
+      %br

@@ -1,12 +1,18 @@
 - content_for :search do
   #search-bar
     .wrapper
-      %form{:enctype => "multipart/form-data", :style=>"padding-top: 17px"}
+      .clear
+      %form{:method=>"get", :style=>"padding-top: 17px; width: 700px; display: inline"}
         %h1{:style=>"float: left; color: #434343; margin-left: 20px; width: 140px"}
           Imports
-        %input{:type=>"file", :style=>"margin-left: 45px"}
-        %button#submit{:style=>"margin-left: 30px"}
-          Import
+        %input{:type=>"text", :id=>"s[name]", :name=>"s[name]", :style => "width: 385px"}
+        %button#submit.nodropdown
+          %div
+            =image_tag "search_white.png"
+      %form{:method=>"get", :action => "/imports/new", :style=>"padding-top: 17px; display: inline; width: 150px"}
+        %button.action-button
+          %div
+            Import data
 
 = content_for :title, "Imports"
 .block
