@@ -2,6 +2,8 @@
 //= require ./libraries/OpenLayers
 //= require_tree ./jquery.plugins
 //= require_tree ./theme
+//= require ./libraries/backbone-min
+//= require ./libraries/underscore-min
 //= require ./libraries/rails
 //= require ./libraries/helpers
 //= require ./libraries/sammy-latest.min

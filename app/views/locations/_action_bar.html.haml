@@ -1,16 +1,52 @@
 #search-bar
   .wrapper
     .clear
-    %form{:method=>"get", :style=>"padding-top: 17px; width: 725px; display: inline"}
-      %h1{:style=>"float: left; color: #434343; margin-left: 20px; width: 140px"}
+    %form.search{:method=>"get"}
+      %h1
         Locations
       %input{:type=>"text", :id=>"s[name]", :name=>"s[name]"}
-      %div{:style=>"display: inline-block; position: relative; left: -22px"}
+      .aoq-wrapper
         .aoq
       %button#submit
         %div
           = image_tag "search_white.png"
-    %form{:method=>"get", :style=>"padding-top: 17px; display: inline; width: 150px"}
+    %form.new-location{:method=>"get"}
       %button.action-button
         %div
           New location
+    #advanced
+      %a.close-button
+      %form{:method=>"get"}
+        %label
+          Name
+        %input{:type=>"text"}
+        %label
+          Street Name
+        %input{:type=>"text"}
+        %label
+          Country
+        %select
+        %label
+          Categories
+        %select
+        %label
+          Status
+        %select
+        %button#submit{:style=>"margin-top: 15px; margin-left: -3px"}
+          %div
+            = image_tag "search_white.png"
+      .clear
+
+:css
+  #search-bar h1 {float: left; color: #434343; margin-left: 20px; width: 140px}
+  #search-bar .aoq-wrapper {display: inline-block; position: relative; left: -22px}
+  #search-bar form.new-location {padding-top: 17px; display: inline; width: 150px}
+  #search-bar form.search {padding-top: 17px; width: 725px; display: inline}
+  #search-bar #advanced {width: 425px; border: 1px solid #ccc; position: absolute; top: 41px; left: 200px; background-color: white; z-index: 99999999999999; display: none}
+  #search-bar #advanced form {margin: 20px}
+  #search-bar #advanced .close-button {   background-image: url("//ssl.gstatic.com/ui/v1/icons/common/x_8px.png");
+    cursor: pointer; height: 21px; opacity: 0.4;         padding: 2px;         position: absolute;       right: 0;    top: 4px;     width: 21px}
+  #search-bar #advanced form input {border: 1px solid #ccc}
+  #search-bar #advanced form input {width: 375px; padding: 2px}
+  #search-bar #advanced form select {width: 381px}
+  #search-bar #advanced label {margin-top: 5px; display: block; margin-bottom: 3px}
