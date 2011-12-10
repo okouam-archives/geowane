@@ -10,4 +10,5 @@ $(function() {
     window.location = url;
   });
   $("#search-bar").search();
+  $("table tbody").poi();
 });

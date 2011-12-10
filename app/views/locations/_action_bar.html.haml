@@ -10,31 +10,52 @@
       %button#submit
         %div
           = image_tag "search_white.png"
-    %form.new-location{:method=>"get"}
+    %form.new-location{:method=>"get", :action => "/locations/new"}
       %button.action-button
         %div
           New location
     #advanced
       %a.close-button
-      %form{:method=>"get"}
-        %label
-          Name
-        %input{:type=>"text"}
-        %label
-          Street Name
-        %input{:type=>"text"}
-        %label
-          Country
-        %select
-        %label
-          Categories
-        %select
-        %label
-          Status
-        %select
+      = form_for :s, :method => "get" do |f|
+        .simple-search
+          %label
+            Name
+          = f.text_field :name
+          %label
+            Street Name
+          = f.text_field :street_name
+          %label
+            Country
+          = select(:s, :level_id, [""] + @boundaries, :multiple => "true")
+          %label
+            Categories
+          = select(:s, :category_id, [""] + @categories)
+          %label
+            Status
+          = select(:s, :status, [""] + @statuses)
+        .complex-search{:style=>"display: none"}
+          %label
+            Added By
+          = select(:s, :added_by, [""] + @users)
+          %label
+            Added After
+          = f.text_field :added_after
+          %label
+            Added Before
+          = f.text_field :added_before
+          %label
+            Modified By
+          = select(:s, :modified_by, [""] + @users)
+          %label
+            Modified After
+          = f.text_field :modified_after
+          %label
+            Modified Before
+          = f.text_field :modified_before
         %button#submit{:style=>"margin-top: 15px; margin-left: -3px"}
           %div
             = image_tag "search_white.png"
+        = link_to "More Search Options", "#", :style => "float: right; margin-top: 18px", :class => "more-search"
       .clear
 
 :css

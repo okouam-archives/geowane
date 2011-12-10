@@ -16,6 +16,10 @@ class LocationsController < ApplicationController
     search = Search.new(params[:s], params[:sort])
     respond_to do |format|
       format.html do
+        @categories = Category.dropdown_items
+        @users = User.dropdown_items
+        @boundaries = Boundary.dropdown_items(0)
+        @statuses = Location.new.enums(:status).select_options.map {|x| [x[0].upcase, x[1]]}
         @locations = search.execute(page, per_page)
         @sort_params = params.merge({controller: "locations", action: "index"}).except(:page, :per_page)
         @navigation_params = params.merge({controller: "locations", action: "edit"})
@@ -93,9 +97,11 @@ class LocationsController < ApplicationController
     end
   end
 
-  edit.before do
+  def edit
     @categories = Category.dropdown_items
-    @comments = object.comments.map {|c| c.to_hash}
+    @location = Location.find(params[:id])
+    @comments = @location.comments.map {|c| c.to_hash}
+    render :layout => false
   end
 
   show do

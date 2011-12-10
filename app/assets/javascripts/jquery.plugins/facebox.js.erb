@@ -295,15 +295,16 @@
 
   function showOverlay() {
     if (skipOverlay()) return;
-
-    if ($('facebox_overlay').length == 0) 
+    if ($('facebox_overlay').length == 0)
       $("body").append('<div id="facebox_overlay" class="facebox_hide"></div>');
-
     $('#facebox_overlay').hide().addClass("facebox_overlayBG")
+      .click(function() {
+        $(document).trigger('close.facebox');
+      })
       .css('opacity', $.facebox.settings.opacity)
-      .click(function() { $(document).trigger('close.facebox') })
       .fadeIn(100);
-    return false
+    $('#facebox_overlay')
+    return false;
   }
 
   function hideOverlay() {

@@ -43,7 +43,7 @@
                   %th.status= link_to "Status", "#", :"data-sort" => "status"
               %tbody
                 - for location in @locations
-                  %tr{:"data-id" => location.id, :"data-name" => location.name, :"data-longitude" => location.longitude, :"data-latitude" => location.latitude}
+                  %tr{:"data-id" => location.id, :"data-name" => location.name, :"data-longitude" => location.longitude, :"data-latitude" => location.latitude, :"data-boundary-0" => location.boundary_0, :"data-boundary-1" => location.boundary_1, :"data-boundary-2" => location.boundary_2, :"data-boundary-3" => location.boundary_3, :"data-boundary-4" => location.boundary_4}
                     %td.selector
                       %input{:type=>"checkbox", :name=>"locations[]", :value => "#{location.id}"}
                     %td.name

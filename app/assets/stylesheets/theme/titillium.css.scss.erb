@@ -41,3 +41,71 @@
 	src: url('<%= asset_path("admin/fonts/Titillium_title03.ttf") %>') format('truetype');
 }
 
+  .tabs, .pills {
+    list-style: none outside none;
+    margin: 0 0 18px;
+    padding: 0;
+}
+.tabs:before, .pills:before, .tabs:after, .pills:after {
+    content: "";
+    display: table;
+}
+.tabs:after, .pills:after {
+    clear: both;
+}
+.tabs > li, .pills > li {
+    float: left;
+}
+.tabs > li > a, .pills > li > a {
+    display: block;
+}
+.tabs {
+    border-color: #DDDDDD;
+    border-style: solid;
+    border-width: 0 0 1px;
+}
+.tabs > li {
+    margin-bottom: -1px;
+    position: relative;
+}
+.tabs > li > a {
+    border: 1px solid transparent;
+    border-radius: 4px 4px 0 0;
+    line-height: 34px;
+    margin-right: 2px;
+    padding: 0 15px;
+}
+.tabs > li > a:hover {
+    background-color: #EEEEEE;
+    border-color: #EEEEEE #EEEEEE #DDDDDD;
+    text-decoration: none;
+}
+.tabs .active > a, .tabs .active > a:hover {
+    -moz-border-bottom-colors: none;
+    -moz-border-image: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #FFFFFF;
+    border-color: #DDDDDD #DDDDDD transparent;
+    border-style: solid;
+    border-width: 1px;
+    color: #808080;
+    cursor: default;
+}
+.tabs .menu-dropdown, .tabs .dropdown-menu {
+    border-radius: 0 6px 6px 6px;
+    border-width: 1px;
+    top: 35px;
+}
+.tabs a.menu:after, .tabs .dropdown-toggle:after {
+    border-top-color: #999999;
+    margin-left: 5px;
+    margin-top: 15px;
+}
+.tabs li.open.menu .menu, .tabs .open.dropdown .dropdown-toggle {
+    border-color: #999999;
+}
+.tabs li.open a.menu:after, .tabs .dropdown.open .dropdown-toggle:after {
+    border-top-color: #555555;
+}
