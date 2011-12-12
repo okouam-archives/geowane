@@ -14,11 +14,11 @@ class SearchCriteria
 
     query = query.select('DISTINCT locations.id')
 
-    query = query.in_bbox(@bbox.split(",")) if @bbox
+    query = query.in_bbox(@bbox.split(",")) unless @bbox.nil? || @bbox.blank?
 
-    query = query.where(:user_id => @added_by) if @added_by
+    query = query.where(:user_id => @added_by) unless @added_by.nil? || @added_by.blank?
 
-    query = query.where(:status => @status) if @status
+    query = query.where(:status => @status) unless @status.nil? || @status.blank?
 
     query = query.on_street(@street_name) unless @street_name.nil? || @street_name.blank?
 
@@ -34,7 +34,7 @@ class SearchCriteria
 
     query = query.where("locations.created_at < ?", @added_on_before) if @added_on_before
 
-    query = query.named(@name) if @name
+    query = query.named(@name) unless @name.nil? || @name.blank?
 
     query
 

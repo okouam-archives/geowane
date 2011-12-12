@@ -53,7 +53,7 @@ class LocationsController < ApplicationController
   def collection_delete
     locations = LocationCollection.new(params[:locations])
     locations.destroy_all(current_user)
-    redirect_to locations_path
+    redirect_to locations_path({:s => params[:s]})
   end
 
   def collection_edit

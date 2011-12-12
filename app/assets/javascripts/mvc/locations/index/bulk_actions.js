@@ -11,7 +11,7 @@ $.Controller("BulkActions",
     return false;
   },
 
-  init: function(el) {
+  init: function(el, querystring) {
     var self = this;
     $(el).find("input[type='button']").click(function() {
       var selected = $(el).find("select").val();
@@ -19,7 +19,7 @@ $.Controller("BulkActions",
         case "Edit":
           return self.collection_change('locations/edit');
         case "Delete":
-          return self.collection_change('locations', 'delete');
+          return self.collection_change('locations?' + querystring, 'delete');
         case "Export":
           $("form").attr("action", "/exports/prepare");
           $("form").submit();
