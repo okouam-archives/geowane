@@ -9,4 +9,6 @@ $(function() {
     var url = jQuery.param.querystring(window.location.href, {sort: $(this).data("sort"), page: 1});
     window.location = url;
   });
+  $("#search-bar").search();
+  $("table tbody").poi();
 });

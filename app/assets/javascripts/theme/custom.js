@@ -12,10 +12,10 @@ $(function () {
     return false;
   });
 
-  $(document).bind('loading.facebox', function() {
-    $(document).unbind('keydown.facebox');
-    $('#facebox_overlay').unbind('click');
-  });
+  //$(document).bind('loading.facebox', function() {
+  //  $(document).unbind('keydown.facebox');
+  //  $('#facebox_overlay').unbind('click');
+  //});
 
   $(".close-facebox").click(function() {
     $(document).trigger("close.facebox");

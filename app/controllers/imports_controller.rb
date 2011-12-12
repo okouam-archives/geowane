@@ -9,7 +9,9 @@ class ImportsController < ApplicationController
 
   def index
     setup_paging(:imports_index_page, params)
-    @imports = Import.paginate(:page => params[:page] || 1, :per_page => params[:per_page] || 10)
+    query = Import.scoped
+    query = query.where("input_file_name LIKE ?", "%#{params[:s][:name]}%") if params[:s]
+    @imports = query.paginate(:page => params[:page] || 1, :per_page => params[:per_page] || 10)
   end
 
   create.before do
