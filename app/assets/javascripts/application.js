@@ -6,7 +6,6 @@
 //= require ./libraries/helpers
 //= require ./libraries/sammy-latest.min
 //= require ./libraries/js-model-0.10.0.min
-//= require ./libraries/nested_form
 //= require ./libraries/jquerymx-1.0.custom.min
 //= require_tree ./models
 //= require_tree ./sammy.plugins
