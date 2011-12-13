@@ -22,17 +22,21 @@ class SearchCriteria
 
     query = query.on_street(@street_name) unless @street_name.nil? || @street_name.blank?
 
-    query = filter_on_category_presence(query, [@category_id]) if @category_id
+    query = filter_on_category_presence(query, [@category_id]) unless @category_id.nil? || @category_id.blank?
 
-    query = filter_on_change(query, @confirmed_by, @audited_by, @modified_by)
+    query = filter_on_change(query, @modified_by) unless @modified_by.nil? || @modified_by.blank?
 
     query = filter_on_administrative_unit(query, @level_id)
 
     query = query.where(:city_id => @cities) if @cities
 
-    query = query.where("locations.created_at > ?", @added_on_after) if @added_on_after
+    query = query.where("locations.created_at > ?", @added_after) unless @added_after.nil? || @added_after.blank?
 
-    query = query.where("locations.created_at < ?", @added_on_before) if @added_on_before
+    query = query.where("locations.created_at < ?", @added_before) unless @added_before.nil? || @added_before.blank?
+
+    query = query.where("locations.updated_at > ?", @modified_after) unless @modified_after.nil? || @modified_after.blank?
+
+    query = query.where("locations.updated_at < ?", @modified_before) unless @modified_before.nil? || @modified_before.blank?
 
     query = query.named(@name) unless @name.nil? || @name.blank?
 
@@ -49,17 +53,11 @@ class SearchCriteria
     query
   end
 
-  def filter_on_change(query, confirmed_by, audited_by, modified_by)
-    confirmed_by = confirmed_by.blank? ? nil : confirmed_by
+  def filter_on_change(query, modified_by)
     modified_by = modified_by.blank? ? nil : modified_by
-    audited_by = audited_by.blank? ? nil : audited_by
-    unless confirmed_by.blank? && audited_by.blank? && modified_by.blank?
-      user_id = confirmed_by || audited_by || modified_by
-      query = query.joins(:changesets).where("changesets.user_id = ?", user_id)
-      if audited_by || confirmed_by
-        value = audited_by ? 'audited' : 'field_checked'
-        query = query.joins("JOIN changes ON changesets.id = changes.changeset_id").where("changes.new_value = ?", value)
-      end
+    unless modified_by.blank?
+      user_id = modified_by
+      query = query.joins(:audits).where("audits.user_id = ?", user_id)
     end
     query
   end

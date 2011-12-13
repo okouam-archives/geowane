@@ -101,7 +101,6 @@ class LocationsController < ApplicationController
     @categories = Category.dropdown_items
     @location = Location.find(params[:id])
     @comments = @location.comments.map {|c| c.to_hash}
-    render :layout => false
   end
 
   show do
