@@ -1,6 +1,10 @@
 $.Controller("Search",
 {
-  init: function(el) {
+  init: function() {
+    $("#s_added_after").date_input();
+    $("#s_added_before").date_input();
+    $("#s_modified_after").date_input();
+    $("#s_modified_before").date_input();
   },
 
   ".aoq-wrapper click": function() {

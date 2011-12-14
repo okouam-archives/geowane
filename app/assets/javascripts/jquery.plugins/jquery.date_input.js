@@ -38,7 +38,9 @@ DateInput.prototype = {
     $(".next", yearNav).click(this.bindToObj(function() { this.moveMonthBy(12); }));
     
     var nav = $('<div class="nav"></div>').append(monthNav, yearNav);
-    
+    nav.append('<span class="button close">Close<span>');
+    $(".close", nav).click(this.bindToObj(function() { this.hide(); }));
+
     var tableShell = "<table><thead><tr>";
     $(this.adjustDays(this.short_day_names)).each(function() {
       tableShell += "<th>" + this + "</th>";
@@ -46,17 +48,6 @@ DateInput.prototype = {
     tableShell += "</tr></thead><tbody></tbody></table>";
     
     this.dateSelector = this.rootLayers = $('<div class="date_selector"></div>').append(nav, tableShell).insertAfter(this.input);
-    
-    if ($.browser.msie && $.browser.version < 7) {
-      // The ieframe is a hack which works around an IE <= 6 bug where absolutely positioned elements
-      // appear behind select boxes. Putting an iframe over the top of the select box prevents this.
-      this.ieframe = $('<iframe class="date_selector_ieframe" frameborder="0" src="#"></iframe>').insertBefore(this.dateSelector);
-      this.rootLayers = this.rootLayers.add(this.ieframe);
-      
-      // IE 6 only does :hover on A elements
-      $(".button", nav).mouseover(function() { $(this).addClass("hover") });
-      $(".button", nav).mouseout(function() { $(this).removeClass("hover") });
-    };
     
     this.tbody = $("tbody", this.dateSelector);
     
@@ -84,7 +75,7 @@ DateInput.prototype = {
         if (this.isFirstDayOfWeek(currentDay)) dayCells += "<tr>";
         
         if (currentDay.getMonth() == date.getMonth()) {
-          dayCells += '<td class="selectable_day" date="' + this.dateToString(currentDay) + '">' + currentDay.getDate() + '</td>';
+          dayCells += '<td class="selectable_day" date="' + this.dateToString(currentDay) + '"><a href="javascript:void(0)">' + currentDay.getDate() + '</a></td>';
         } else {
           dayCells += '<td class="unselected_month" date="' + this.dateToString(currentDay) + '">' + currentDay.getDate() + '</td>';
         };
@@ -97,16 +88,11 @@ DateInput.prototype = {
       this.monthNameSpan.empty().append(this.monthName(date));
       this.yearNameSpan.empty().append(this.currentMonth.getFullYear());
       
-      $(".selectable_day", this.tbody).click(this.bindToObj(function(event) {
-        this.changeInput($(event.target).attr("date"));
+      $(".selectable_day a", this.tbody).click(this.bindToObj(function(event) {
+        this.changeInput($(event.target).parent().attr("date"));
       }));
-      
-     $('td[date="' + this.dateToString(new Date()) + '"]', this.tbody).addClass("today");
-      
-      $("td.selectable_day", this.tbody).mouseover(function() { $(this).addClass("hover") });
-      $("td.selectable_day", this.tbody).mouseout(function() { $(this).removeClass("hover") });
     };
-    
+
     $('.selected', this.tbody).removeClass("selected");
     $('td[date="' + this.selectedDateString + '"]', this.tbody).addClass("selected");
   },
@@ -134,7 +120,6 @@ DateInput.prototype = {
   
   show: function() {
     this.rootLayers.css("display", "block");
-    $([window, document.body]).click(this.hideIfClickOutside);
     this.input.unbind("focus", this.show);
     $(document.body).keydown(this.keydownHandler);
     this.setPosition();
@@ -142,30 +127,10 @@ DateInput.prototype = {
   
   hide: function() {
     this.rootLayers.css("display", "none");
-    $([window, document.body]).unbind("click", this.hideIfClickOutside);
     this.input.focus(this.show);
     $(document.body).unbind("keydown", this.keydownHandler);
   },
-  
-  // We should hide the date selector if a click event happens outside of it
-  hideIfClickOutside: function(event) {
-    if (event.target != this.input[0] && !this.insideSelector(event)) {
-      this.hide();
-    };
-  },
-  
-  // Returns true if the given event occurred inside the date selector
-  insideSelector: function(event) {
-    var offset = this.dateSelector.position();
-    offset.right = offset.left + this.dateSelector.outerWidth();
-    offset.bottom = offset.top + this.dateSelector.outerHeight();
-    
-    return event.pageY < offset.bottom &&
-           event.pageY > offset.top &&
-           event.pageX < offset.right &&
-           event.pageX > offset.left;
-  },
-  
+
   // Respond to various different keyboard events
   keydownHandler: function(event) {
     switch (event.keyCode)
@@ -288,12 +253,12 @@ DateInput.prototype = {
   shortMonthNum: function(month_name) {
     return this.indexFor(this.short_month_names, month_name);
   },
-  
+
   // Finds the number of a given day name
   shortDayNum: function(day_name) {
     return this.indexFor(this.short_day_names, day_name);
   },
-  
+
   // Works out the number of days between two dates
   daysBetween: function(start, end) {
     start = Date.UTC(start.getFullYear(), start.getMonth(), start.getDate());

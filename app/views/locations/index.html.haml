@@ -11,13 +11,14 @@
     #portlets
       .portlet.map
         .portlet-content.nopadding
+          %div{:style=>"background-color: #F1F1F1; font-size: 9px;  width: 100%; color: #434343; border-left: 1px solid #ccc; position: relative; left: -1px; border-right: 1px solid #ccc; border-bottom: 1px solid #bbb; opacity: 0.8"}
+            %span.coordinates{:style=>"margin-left: 7px; padding-top: 4px; margin-bottom: 10px"}
+            %span{:style=>"float: right; margin-right: 17px"}
+              %a#map-glossary{:href=>"#", :style=>"color: #434343"} Show Location Glossary +
           #mappanel
-      .map-footer
-        .contents
-          %ul
-          .clear
-        .tab show
-      .clear{:style=>"height: 10px"}
+          %div#map-key{:style=>"height: 297px; display: none; width: 200px; z-index: 999999; position: absolute; right: 20px; top: 29px;  background: rgba(40, 40, 40, 0.8); color: white"}
+            %ul
+      .clear
       .bulk-actions
         %select
           %option Bulk Actions
@@ -38,8 +39,8 @@
                   %th= link_to "City", url_for(@sort_params.merge({:sort => "city_name"}))
                   %th.tags Tags
                   %th.added_by= link_to "Added By", url_for(@sort_params.merge({:sort => "username"}))
-                  %th.date_added= link_to "Added", url_for(@sort_params.merge({:sort => "pois.updated_at"}))
-                  %th.last_changed= link_to "Updated", url_for(@sort_params.merge({:sort => "pois.created_at"}))
+                  %th.date_added= link_to "Added", url_for(@sort_params.merge({:sort => "pois.created_at"}))
+                  %th.last_changed= link_to "Updated", url_for(@sort_params.merge({:sort => "pois.updated_at"}))
                   %th.status= link_to "Status", "#", :"data-sort" => "status"
               %tbody
                 - for location in @locations

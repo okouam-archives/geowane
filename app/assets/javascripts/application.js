@@ -1,4 +1,4 @@
-//= require ./libraries/jquery-1.6.1.min
+//= require ./libraries/jquery-1.7.1.min
 //= require ./libraries/OpenLayers
 //= require_tree ./jquery.plugins
 //= require_tree ./theme

@@ -23,7 +23,7 @@
                 %tr
                   %td
                     %input{:type=>"checkbox"}
-                  %td= link_to user.login, user_path(user)
+                  %td= link_to user.login, edit_user_path(user)
                   %td= user.last_login_at ? time_ago_in_words(user.last_login_at) : "never"
                   %td{:style=>"text-align: center"}
                     %input{:type=>"checkbox", :checked => user.is_active, :disabled => "true"}

@@ -16,30 +16,43 @@ $.Controller("ManageMap",
       highlightOnly: true,
       overFeature: function(feature) {
         Carto.showLabel(feature);
+        $("body").css("cursor", "pointer");
+        $("body").on('click.map', function() {
+          window.location = "/locations/" + feature.attributes["id"] + "/edit";
+        })
       },
       outFeature: function() {
         Carto.hideTipsy();
+        $("body").css("cursor", "auto");
+        $("body").off('click.map');
       }
     });
-    this.map.addControls([tooltip]);
+    var mouseMove = new OpenLayers.Control.MousePosition({
+      autoActivate: true,
+      element: $(".map .coordinates").get(0),
+      numDigits: 6
+    });
+    mouseMove.formatOutput = function(lonLat) {
+      return lonLat.lon.toFixed(5) + "W &nbsp; " + lonLat.lat.toFixed(5) + "N";
+    };
+    this.map.addControls([tooltip, mouseMove]);
     tooltip.activate();
   },
 
   buildInfoTab: function(features, footer) {
-    var contents = footer.find(".contents");
-    var wrapper = contents.children("ul").empty();
+    var wrapper = $("#map-key ul").empty();
     var template = $.template(null,
       "<li> \
-        <span><img src='${attributes.thumbnail}' style='height: 18px' /></span> \
+        <span>${attributes.counter}. </span> \
         <span class='name'>${attributes.name}</span> \
       </li>"
     );
-    var output = $($.tmpl(template, features));
+        var output = $($.tmpl(template, features));
     wrapper.append(output);
-    footer.find(".tab").click(function() {
-      if ($(this).text() == "show") $(this).text("hide");
-      else $(this).text("show");
-      contents.toggle();
+    $("#map-glossary").click(function() {
+      if ($(this).text() == "Show Location Glossary +") $(this).text("Hide Location Glossary -");
+      else $(this).text("Show Location Glossary +");
+      $("#map-key").toggle();
       return false;
     });
   }
