@@ -1,9 +1,5 @@
-.photos.portlet
-  .portlet-header
-    Photos
-  .portlet-content
-    - @location.photos.each do |photo|
-      = image_tag(photo.image.url, :height => "100")
-    = form_for :photo, :html => {:multipart => true}, :url => {:action => "create", :controller => "photos", :location_id => location.id} do |f|
-      = file_field :photo, "image"
-      = f.submit
+- @location.photos.each do |photo|
+  = image_tag(photo.image.url, :height => "100")
+= form_for :photo, :html => {:multipart => true}, :url => {:action => "create", :controller => "photos", :location_id => location.id} do |f|
+  = file_field :photo, "image"
+  = f.submit

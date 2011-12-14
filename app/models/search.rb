@@ -1,11 +1,11 @@
 class Search
 
-  def initialize(query, sort_order)
+  def initialize(query, sort_order = nil)
     @criteria = SearchCriteria.new(query)
     @sort_order = sort_order || "pois.name"
   end
 
-  def execute(page, per_page)
+  def execute(page = nil, per_page = nil)
     sql = %{
       SELECT
       id, city_id,
@@ -23,8 +23,7 @@ class Search
       (select name from boundaries where boundaries.id = pois.level_1) as boundary_1,
       (select name from boundaries where boundaries.id = pois.level_2) as boundary_2,
       (select name from boundaries where boundaries.id = pois.level_3) as boundary_3,
-      (select name from boundaries where boundaries.id = pois.level_4) as boundary_4,
-      (select count(*) from comments where commentable_id = pois.id and commentable_type = 'Location') as num_comments
+      (select name from boundaries where boundaries.id = pois.level_4) as boundary_4
       FROM
       locations as pois
       WHERE
@@ -54,7 +53,23 @@ class Search
 
   def current_range_and_index(id)
     connection = ActiveRecord::Base.connection
-    locations = connection.select_values(@criteria.create_query.select("locations.id").to_sql)
+    sql = %{
+      SELECT
+      id,
+      pois.name,
+      status,
+      pois.updated_at,
+      pois.created_at,
+      (select users.login from users where users.id = pois.user_id) as username,
+      (select cities.name from cities where cities.id = pois.city_id) as city_name
+      FROM
+      locations as pois
+      WHERE
+      EXISTS (#{@criteria.create_query.to_sql} AND pois.id = locations.id)
+      ORDER BY #{@sort_order}
+      }
+    locations = connection.select_values(sql)
+    puts locations
     index = locations.index id
     return locations, index
   end

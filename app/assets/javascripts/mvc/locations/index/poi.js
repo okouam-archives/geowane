@@ -4,11 +4,12 @@ $.Controller("Poi",
   },
 
   "tr .name a click": function(el) {
-    this.showLocation($(el).parents("tr").data("id"));
+    return this.showLocation($(el).parents("tr").data("id"));
   },
 
   showLocation: function(id) {
-    //$.facebox({ajax: "/locations/" + id  + "/edit"});
-    //return false;
+    var url = "/locations/" + id  + "/edit?" +  jQuery.param.querystring();
+    $.facebox({ajax: url});
+    return false;
   }
 });

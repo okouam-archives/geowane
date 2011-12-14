@@ -1,41 +1,35 @@
-.comments.portlet
-  .portlet-header
-    Comments
-    %span
-      =link_to "(+)", "#"
-  .portlet-content
-    .editor
-      %textarea
-      .buttons
-        =link_to "Accept", "#/comments/accept"
-        =link_to "Cancel", "#/comments/cancel"
-      %h3 Preset Comments
-      %ul
-        %li= link_to "Préciser le quartier", "#"
-        %li= link_to "Doublon? sinon préciser le quartier", "#"
-        %li= link_to "Revoir l'orthographe", "#"
-        %li= link_to "Indiquer le nom exact", "#"
-        %li= link_to "Préciser le quartier", "#"
-    %ul.comments
-      - for comment in comments do
-        %li
-          = image_tag(comment[:thumb])
-          .details
-            %span.created_at= comment[:created_at]
-            %br
-            %span.username= comment[:user]
-            %p= comment[:text]
-          .clear
-    :plain
-      <script type="text/x-jquery-tmpl" id="comment-template">
-        <li>
-            <img src="${thumb}" />
-            <div class="details">
-              <span class="created_at">${created_at}</span>
-              <br/>
-              <span class="username">${user}</span>
-              <p>${text}</p>
-            </div>
-            <div class="clear"></div>
-        </li>
-      </script>
+.editor
+  %textarea
+  .buttons
+    =link_to "Accept", "#/comments/accept"
+    =link_to "Cancel", "#/comments/cancel"
+  %h3 Preset Comments
+  %ul
+    %li= link_to "Préciser le quartier", "#"
+    %li= link_to "Doublon? sinon préciser le quartier", "#"
+    %li= link_to "Revoir l'orthographe", "#"
+    %li= link_to "Indiquer le nom exact", "#"
+    %li= link_to "Préciser le quartier", "#"
+%ul.comments
+  - for comment in comments do
+    %li
+      = image_tag(comment[:thumb])
+      .details
+        %span.created_at= comment[:created_at]
+        %br
+        %span.username= comment[:user]
+        %p= comment[:text]
+      .clear
+:plain
+  <script type="text/x-jquery-tmpl" id="comment-template">
+    <li>
+        <img src="${thumb}" />
+        <div class="details">
+          <span class="created_at">${created_at}</span>
+          <br/>
+          <span class="username">${user}</span>
+          <p>${text}</p>
+        </div>
+        <div class="clear"></div>
+    </li>
+  </script>

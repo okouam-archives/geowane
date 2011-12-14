@@ -1,28 +1,49 @@
-= content_for :title, "Edit Location"
-
-- content_for :javascripts do
-  = javascript_include_tag "/assets/mvc/locations/edit/init", :debug => Rails.env.development?
-
-.block.editor
-  .block_head
-    %h2
-      Edit Location #{@location.id}
-      = link_to "Back", locations_path(:page => session[:search_page], :per_page => session[:search_page_size])
-      = link_to "Previous POI", previous_location_path(@location)
-      = link_to "Next POI", next_location_path(@location)
-  .block_content
-    #portlets
-      .editor-content{:"data-id" => @location.id, :"data-name" => @location.name, :"data-longitude" => @location.longitude, :"data-latitude" => @location.latitude}
-        = render :partial => "locations/portlets/map"
-        #left.column
-          = render :partial => "locations/portlets/feature", :locals => {:form_data => @form_data}
-          = render :partial => "locations/portlets/coordinates", :locals => {:location => @location}
-          = render :partial => "locations/portlets/logos", :locals => {:location => @location}
-          = render :partial => "locations/portlets/photos", :locals => {:location => @location}
-          = render :partial => "locations/portlets/comments", :locals => {:location => @location, :comments => @comments}
-        .column
-          = render :partial => "locations/portlets/information"
-          = render :partial => "locations/portlets/history", :locals => {:location => @location}
-        .clear
+.block_head
+  %h2
+    = @location.name
+    = link_to "Previous POI", params.merge(:action => "previous"), :class => "navigate-poi"
+    = link_to "Next POI", params.merge(:action => "next"), :class => "navigate-poi"
+.block_content
+  .editor-content{:"data-id" => @location.id, :"data-name" => @location.name, :"data-longitude" => @location.longitude, :"data-latitude" => @location.latitude}
+    %ul#tabs
+      %li= link_to "Geography", "#geography"
+      %li= link_to "Logo", "#logo"
+      %li= link_to "Photos", "#photos"
+      %li= link_to "Comments", "#comments"
+      %li= link_to "Info", "#info"
+      %li= link_to "History", "#history"
       %br
-      %br
+    #geography.tab
+      = render :partial => "locations/portlets/coordinates", :locals => {:location => @location}
+    #logo.tab
+      = render :partial => "locations/portlets/logos", :locals => {:location => @location}
+    #photos.tab
+      = render :partial => "locations/portlets/photos", :locals => {:location => @location}
+    #comments.tab
+      = render :partial => "locations/portlets/comments", :locals => {:location => @location, :comments => @comments}
+    #info.tab
+      = render :partial => "locations/portlets/information"
+    #history.tab
+      = render :partial => "locations/portlets/history", :locals => {:location => @location}
+    .clear
+
+:javascript
+  $(function() {
+    var location_id = $(".editor-content").data("id");
+    $(".tab:not(:first)").hide();
+    $("#tabs a").click(function() {
+      var ref = $(this).attr("href").split('#')[1];
+      $(".tab:not(#" + ref + ")").hide();
+      $("#" + ref).show();
+      return false;
+    })
+    $(".navigate-poi").click(function() {
+      $.get($(this).attr("href"), function(html) {
+        $("#facebox .content").html(html);
+      })
+      return false;
+    })
+  });
+
+:css
+  #tabs li { float: left; margin-right: 10px}

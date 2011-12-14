@@ -1,20 +1,15 @@
-.information.portlet
-  .portlet-header
-    Information
-    %span
-      = link_to "Save", "#"
-  .portlet-content
-    = semantic_form_for object do |form|
-      = form.input :email, :required => false, :input_html => { :class => "text" }
-      = form.input :telephone, :required => false, :input_html => { :class => "text" }
-      = form.input :fax, :required => false, :input_html => { :class => "text" }
-      = form.input :website, :required => false, :input_html => { :class => "text" }
-      = form.input :postal_address, :required => false, :input_html => { :class => "text" }
-      = form.input :geographical_address, :required => false, :input_html => { :class => "text"}
-      = form.input :opening_hours, :required => false, :input_html => { :class => "text" }
-      = form.input :user_rating, :required => false, :input_html => { :class => "text"}
-      = form.input :acronym, :required => false, :input_html => { :class => "text"}
-      = form.input :miscellaneous, :label => "Other", :required => false, :input_html => { :class => "text"}
+= semantic_form_for object do |form|
+  = form.input :long_name, :input_html => {:class => "text"}
+  = form.input :email, :required => false, :input_html => { :class => "text" }
+  = form.input :telephone, :required => false, :input_html => { :class => "text" }
+  = form.input :fax, :required => false, :input_html => { :class => "text" }
+  = form.input :website, :required => false, :input_html => { :class => "text" }
+  = form.input :postal_address, :required => false, :input_html => { :class => "text" }
+  = form.input :geographical_address, :required => false, :input_html => { :class => "text"}
+  = form.input :opening_hours, :required => false, :input_html => { :class => "text" }
+  = form.input :user_rating, :required => false, :input_html => { :class => "text"}
+  = form.input :acronym, :required => false, :input_html => { :class => "text"}
+  = form.input :miscellaneous, :label => "Other", :required => false, :input_html => { :class => "text"}
 
 - content_for :javascripts do
   :javascript

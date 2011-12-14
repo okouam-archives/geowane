@@ -1,19 +1,17 @@
-.coordinates.portlet
-  .portlet-header
-    Coordinates
-    %span
-  .portlet-content.nopadding
-    %div{:style=>"padding: 10px; padding-top: 5px; padding-bottom: 0"}
-      %ul
-        - location.boundaries.each do |boundary|
-          %li
-            %label= boundary[1][:classification]
-            = boundary[1][:name]
-      %ul
-        %li
-          %label Latitude
-          %span= location.latitude
-        %li
-          %label Longitude
-          %span= location.longitude
-      .clear
+
+#mappanel
+.clear{:style=>"height: 10px"}
+
+%ul
+  - location.boundaries.each do |boundary|
+    %li
+      %label= boundary[1][:classification]
+      = boundary[1][:name]
+%ul
+  %li
+    %label Latitude
+    %span= location.latitude
+  %li
+    %label Longitude
+    %span= location.longitude
+.clear

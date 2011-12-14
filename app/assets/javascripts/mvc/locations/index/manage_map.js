@@ -33,7 +33,7 @@ $.Controller("ManageMap",
       numDigits: 6
     });
     mouseMove.formatOutput = function(lonLat) {
-      return lonLat.lon.toFixed(5) + "W &nbsp; " + lonLat.lat.toFixed(5) + "N";
+      return lonLat.lon.toFixed(5) + "E &nbsp; " + lonLat.lat.toFixed(5) + "N";
     };
     this.map.addControls([tooltip, mouseMove]);
     tooltip.activate();

@@ -11,8 +11,12 @@
     #portlets
       .portlet.map
         .portlet-content.nopadding
-          %div{:style=>"background-color: #F1F1F1; font-size: 9px;  width: 100%; color: #434343; border-left: 1px solid #ccc; position: relative; left: -1px; border-right: 1px solid #ccc; border-bottom: 1px solid #bbb; opacity: 0.8"}
-            %span.coordinates{:style=>"margin-left: 7px; padding-top: 4px; margin-bottom: 10px"}
+          %div{:style=>"background-color: #F1F1F1; font-size: 9px; width: 100%; color: #434343; border-left: 1px solid #ccc; position: relative; left: -1px; border-right: 1px solid #ccc; border-bottom: 1px solid #bbb; opacity: 0.8"}
+            %span.coordinates{:style=>"margin-left: 7px; width: 178px; display: inline-block"}
+            %span.drawing
+              Draw Search Area
+            %span.drawing
+              Clear Search Area
             %span{:style=>"float: right; margin-right: 17px"}
               %a#map-glossary{:href=>"#", :style=>"color: #434343"} Show Location Glossary +
           #mappanel
@@ -50,7 +54,7 @@
                     %td.name
                       - if location.name.length > 40
                         = image_tag("warning-icon.png")
-                      = link_to location.name, edit_location_path(location)
+                      = link_to location.name, edit_location_path(location.id)
                     %td= location.city_name
                     %td= location.tags.map {|t| t.category.french}.join(", ") || ""
                     %td= location.username

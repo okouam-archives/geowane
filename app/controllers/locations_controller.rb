@@ -39,15 +39,11 @@ class LocationsController < ApplicationController
   end
 
   def next
-    search = Search.find_by_persistence_token(session[:search_token])
-    url = search ? edit_location_path(search.next(params[:id])) : locations_path
-    redirect_to url
+    redirect_to edit_location_path(Search.new(params[:s]).next(params[:id]), :page => page, :per_page => per_page, :s => params[:s])
   end
 
   def previous
-    search = Search.find_by_persistence_token(session[:search_token])
-    url = search ? edit_location_path(search.previous(params[:id])) : locations_path
-    redirect_to url
+    redirect_to edit_location_path(Search.new(params[:s]).previous(params[:id]), :page => page, :per_page => per_page, :s => params[:s])
   end
 
   def collection_delete
@@ -101,6 +97,7 @@ class LocationsController < ApplicationController
     @categories = Category.dropdown_items
     @location = Location.find(params[:id])
     @comments = @location.comments.map {|c| c.to_hash}
+    render :layout => false
   end
 
   show do
