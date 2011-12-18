@@ -1,25 +1,30 @@
-.editor
-  %textarea
-  .buttons
-    =link_to "Accept", "#/comments/accept"
-    =link_to "Cancel", "#/comments/cancel"
-  %h3 Preset Comments
-  %ul
-    %li= link_to "Préciser le quartier", "#"
-    %li= link_to "Doublon? sinon préciser le quartier", "#"
-    %li= link_to "Revoir l'orthographe", "#"
-    %li= link_to "Indiquer le nom exact", "#"
-    %li= link_to "Préciser le quartier", "#"
-%ul.comments
-  - for comment in comments do
-    %li
-      = image_tag(comment[:thumb])
-      .details
-        %span.created_at= comment[:created_at]
-        %br
-        %span.username= comment[:user]
-        %p= comment[:text]
-      .clear
+.tab-contents
+  .editor
+    %textarea{:style=>"height: 50px; width: 300px; float: left"}
+    %ul{:style=>"float: left"}
+      %li= link_to "Préciser le quartier", "#"
+      %li= link_to "Doublon? sinon préciser le quartier", "#"
+      %li= link_to "Revoir l'orthographe", "#"
+      %li= link_to "Indiquer le nom exact", "#"
+      %li= link_to "Préciser le quartier", "#"
+  %ul.comments
+    - for comment in comments do
+      %li
+        = image_tag(comment[:thumb])
+        .details
+          %span.created_at= comment[:created_at]
+          %br
+          %span.username= comment[:user]
+          %p= comment[:text]
+        .clear
+.clear
+.actions
+  %button.blue-button
+    %div
+      Accept
+:css
+  .editor ul li a {font-size: 11px}
+
 :plain
   <script type="text/x-jquery-tmpl" id="comment-template">
     <li>

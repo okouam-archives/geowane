@@ -1,17 +1,31 @@
 
-#mappanel
-.clear{:style=>"height: 10px"}
-
-%ul
-  - location.boundaries.each do |boundary|
-    %li
-      %label= boundary[1][:classification]
-      = boundary[1][:name]
-%ul
-  %li
-    %label Latitude
-    %span= location.latitude
-  %li
-    %label Longitude
-    %span= location.longitude
+.tab-contents
+  #faceboxmap
+  #geo-details
+    %ul
+    - location.boundaries.each do |boundary|
+      %li
+        %label= boundary[1][:classification]
+        = boundary[1][:name]
+    %ul
+      %li
+        %label Latitude
+        %span= location.latitude
+      %li
+        %label Longitude
+        %span= location.longitude
 .clear
+.actions
+  %button.blue-button
+    %div
+      Accept
+
+:css
+  #faceboxmap {float: left; width: 300px; border: 1px solid black; height: 300px; margin-right: 15px; margin-left: -5px}
+  #geo-details {float: left; width: 200px}
+
+:javascript
+  $(function() {
+
+
+  });

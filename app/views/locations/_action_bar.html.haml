@@ -7,11 +7,11 @@
       %input{:type=>"text", :id=>"s[name]", :name=>"s[name]"}
       .aoq-wrapper
         .aoq
-      %button#submit
+      %button.search-button
         %div
           = image_tag "search_white.png"
     %form.new-location{:method=>"get", :action => "/locations/new"}
-      %button.action-button
+      %button.red-button
         %div
           New location
     #advanced
@@ -52,7 +52,7 @@
           %label
             Modified Before
           = f.text_field :modified_before
-        %button#submit{:style=>"margin-top: 15px; margin-left: -3px"}
+        %button.search-button{:style=>"margin-top: 15px; margin-left: -3px"}
           %div
             = image_tag "search_white.png"
         = link_to "More Search Options", "#", :style => "float: right; margin-top: 18px", :class => "more-search"

@@ -1,4 +1,4 @@
-class LocationsController < ApplicationController
+ class LocationsController < ApplicationController
   include Aegis::Controller
   resource_controller
   layout "admin"

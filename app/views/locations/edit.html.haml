@@ -1,12 +1,13 @@
 .block_head
-  %h2
-    = @location.name
-    = link_to "Previous POI", params.merge(:action => "previous"), :class => "navigate-poi"
-    = link_to "Next POI", params.merge(:action => "next"), :class => "navigate-poi"
+  %h2{:style=>"color: #434343; font-size: 13px"}
+    %span.location_name
+      = @location.name
+    = link_to " Next", params.merge(:action => "next"), :class => "navigate-poi"
+    = link_to "Previous ", params.merge(:action => "previous"), :class => "navigate-poi"
 .block_content
   .editor-content{:"data-id" => @location.id, :"data-name" => @location.name, :"data-longitude" => @location.longitude, :"data-latitude" => @location.latitude}
-    %ul#tabs
-      %li= link_to "Geography", "#geography"
+    %ul#tabs.tabs
+      %li.active= link_to "Geography", "#geography"
       %li= link_to "Logo", "#logo"
       %li= link_to "Photos", "#photos"
       %li= link_to "Comments", "#comments"
@@ -33,12 +34,17 @@
     $(".tab:not(:first)").hide();
     $("#tabs a").click(function() {
       var ref = $(this).attr("href").split('#')[1];
+      $("#tabs li").removeClass("active");
+      $(this).parents("li").addClass("active");
       $(".tab:not(#" + ref + ")").hide();
       $("#" + ref).show();
       return false;
     })
     $(".navigate-poi").click(function() {
+      $("#facebox .content").css("text-align", "center");
+      $("#facebox .content").html("<img class='loader' src='/assets/facebox/loading.gif' />");
       $.get($(this).attr("href"), function(html) {
+        $("#facebox .content").css("text-align", "left");
         $("#facebox .content").html(html);
       })
       return false;
@@ -46,4 +52,9 @@
   });
 
 :css
-  #tabs li { float: left; margin-right: 10px}
+  #facebox img.loader {margin: auto; margin-top: 40px}
+  #facebox #tabs li { float: left; margin-right: 10px}
+  #facebox li {list-style-type: none}
+  #facebox label {font-weight: bold; display: block; margin-top: 7px; margin-bottom: 2px}
+  #facebox .tabs {margin-top: 20px}
+  #facebox .navigate-poi {float: right; font-size: 11px; margin-left: 15px}

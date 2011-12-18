@@ -2,13 +2,16 @@
 
 $(function() {
   var features = new FeatureReader("table.main").getFeatures();
+
   $(".map.portlet").manage_map({features: features, footer: $(".map-footer")});
-  $("table.main").checkboxes();
+
+  new GeoCMS.Helpers.DataTable({el: "table.main"});
+
+  new GeoCMS.Helpers.SortableTable({el: "table.main"});
+
   $(".bulk-actions").bulk_actions(jQuery.param.querystring());
-  $("th a").click(function() {
-    var url = jQuery.param.querystring(window.location.href, {sort: $(this).data("sort"), page: 1});
-    window.location = url;
-  });
-  $("#search-bar").search();
-  $("table tbody").poi();
+
+  new GeoCMS.Views.LocationSearch({el: "#search-bar"});
+
+  new GeoCMS.Views.LocationSearchResults({el: "table.main tbody"});
 });

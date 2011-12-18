@@ -1,32 +1,21 @@
 $.Controller("ManageMap",
 {
   init: function(el, options) {
-    this.map = Carto.build();
-    Carto.addCommonControls(this.map);
-    this.layer = Carto.createLayer("Features", this.map);
+    this.carto = new Carto();
+    this.map = this.carto.map;
+    this.carto.addCommonControls();
+    this.layer = this.carto.createLayer("Features");
+    new GeoCMS.Maps.Coordinates(this.map);
+    new GeoCMS.Maps.Search(this.map);
+    new GeoCMS.Maps.Signposting(this.layer, function(feature) {
+      window.location = "/locations/" + feature.attributes["id"] + "/edit";
+    });
     this.setupControls();
-    Carto.displayNumberedFeatures(options.features, this.layer);
+    this.carto.displayNumberedFeatures(options.features, this.layer);
     this.buildInfoTab(options.features, options.footer);
   },
 
   setupControls: function() {
-    var tooltip = new OpenLayers.Control.SelectFeature(this.layer, {
-      hover: true,
-      multiple: false,
-      highlightOnly: true,
-      overFeature: function(feature) {
-        Carto.showLabel(feature);
-        $("body").css("cursor", "pointer");
-        $("body").on('click.map', function() {
-          window.location = "/locations/" + feature.attributes["id"] + "/edit";
-        })
-      },
-      outFeature: function() {
-        Carto.hideTipsy();
-        $("body").css("cursor", "auto");
-        $("body").off('click.map');
-      }
-    });
     var mouseMove = new OpenLayers.Control.MousePosition({
       autoActivate: true,
       element: $(".map .coordinates").get(0),
@@ -35,8 +24,7 @@ $.Controller("ManageMap",
     mouseMove.formatOutput = function(lonLat) {
       return lonLat.lon.toFixed(5) + "E &nbsp; " + lonLat.lat.toFixed(5) + "N";
     };
-    this.map.addControls([tooltip, mouseMove]);
-    tooltip.activate();
+    this.map.addControls([mouseMove]);
   },
 
   buildInfoTab: function(features, footer) {

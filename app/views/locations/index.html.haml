@@ -56,7 +56,7 @@
                         = image_tag("warning-icon.png")
                       = link_to location.name, edit_location_path(location.id)
                     %td= location.city_name
-                    %td= location.tags.map {|t| t.category.french}.join(", ") || ""
+                    %td= location.tag_list
                     %td= location.username
                     %td= location.created_at.strftime("%d-%m-%Y")
                     %td= location.updated_at.strftime("%d-%m-%Y")

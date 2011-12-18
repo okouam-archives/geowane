@@ -1,15 +1,22 @@
-= semantic_form_for object do |form|
-  = form.input :long_name, :input_html => {:class => "text"}
-  = form.input :email, :required => false, :input_html => { :class => "text" }
-  = form.input :telephone, :required => false, :input_html => { :class => "text" }
-  = form.input :fax, :required => false, :input_html => { :class => "text" }
-  = form.input :website, :required => false, :input_html => { :class => "text" }
-  = form.input :postal_address, :required => false, :input_html => { :class => "text" }
-  = form.input :geographical_address, :required => false, :input_html => { :class => "text"}
-  = form.input :opening_hours, :required => false, :input_html => { :class => "text" }
-  = form.input :user_rating, :required => false, :input_html => { :class => "text"}
-  = form.input :acronym, :required => false, :input_html => { :class => "text"}
-  = form.input :miscellaneous, :label => "Other", :required => false, :input_html => { :class => "text"}
+.tab-contents
+  = semantic_form_for object do |form|
+    = form.input :long_name, :input_html => {:class => "text"}
+    = form.input :email, :required => false, :input_html => { :class => "text" }
+    = form.input :telephone, :required => false, :input_html => { :class => "text" }
+    = form.input :fax, :required => false, :input_html => { :class => "text" }
+    = form.input :website, :required => false, :input_html => { :class => "text" }
+    = form.input :postal_address, :required => false, :input_html => { :class => "text" }
+    = form.input :geographical_address, :required => false, :input_html => { :class => "text"}
+    = form.input :opening_hours, :required => false, :input_html => { :class => "text" }
+    = form.input :user_rating, :required => false, :input_html => { :class => "text"}
+    = form.input :acronym, :required => false, :input_html => { :class => "text"}
+    = form.input :miscellaneous, :label => "Other", :required => false, :input_html => { :class => "text"}
+
+.actions
+  %button.blue-button
+    %div
+      Accept
+
 
 - content_for :javascripts do
   :javascript
@@ -70,3 +77,4 @@
 
 :css
   label.error {color: red ! important}
+  input[type="text"], input[type="number"], input[type="email"], input[type="tel"], input[type="url"], input[type="password"], textarea {width: 550px}

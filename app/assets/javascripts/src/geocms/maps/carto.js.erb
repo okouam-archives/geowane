@@ -1,9 +1,12 @@
 $.Class.extend('Carto',
 {
-  build: function() {
+},
+{
+  init: function(containerId) {
+    containerId = containerId || "mappanel";
     OpenLayers.ImgPath = '/assets/OpenLayers/';
     OpenLayers.IMAGE_RELOAD_ATTEMPTS = 3;
-    this.map = new OpenLayers.Map("mappanel", {
+    this.map = new OpenLayers.Map(containerId, {
       theme: null,
       maxResolution: 0.02197265625,
       numZoomLevels: 14,
@@ -17,39 +20,10 @@ $.Class.extend('Carto',
       "http://c.maps.geocms.co/tilecache.py?"
     ];
     this.map.addLayer(new OpenLayers.Layer.WMS("base", urls, {layers: "data01", format: "image/png"}));
-    return this.map;
+    return this;
   },
 
-  showLabel: function(feature){
-    var coords = feature.layer.getViewPortPxFromLonLat(feature.geometry.bounds.getCenterLonLat());
-    window["cancel.tipsy"] = true;
-    var widthOffset = ($(document).width() - 940) / 2;
-    var tip = window["active.tipsy"];
-    if (!tip) {
-        tip = $('<div class="tipsy"><div class="tipsy-inner"/></div>');
-        tip.css({position: 'absolute', zIndex: 100000});
-        window["active.tipsy"] = tip;
-    }
-    tip.find('.tipsy-inner')['html'](feature.attributes["name"]);
-
-    var pos = {top: coords.y + 106, left: coords.x + widthOffset, width: 24, height: 24};
-    tip.remove().css({top: 0, left: 0, visibility: 'hidden', display: 'block'}).appendTo(document.body);
-    var actualWidth = tip[0].offsetWidth, actualHeight = tip[0].offsetHeight;
-    tip.css({top: pos.top - actualHeight, left: pos.left + pos.width / 2 - actualWidth / 2}).addClass('tipsy-south');
-    tip.css({visibility: 'visible'});
-  },
-
-  hideTipsy: function () {
-    window["cancel.tipsy"] = false;
-    $("body").css({cursor: "default"});
-    setTimeout(function() {
-        if (window["cancel.tipsy"] || !window["active.tipsy"]) return;
-        var tip = window["active.tipsy"];
-        tip.remove();
-    }, 100);
-  },
-
-  addCommonControls: function(map) {
+  addCommonControls: function() {
     var panZoom = new OpenLayers.Control.PanZoomBar();
     panZoom.zoomWorldIcon = false;
     var controls = [
@@ -58,7 +32,7 @@ $.Class.extend('Carto',
       new OpenLayers.Control.Navigation(),
       panZoom
     ];
-    map.addControls(controls);
+    this.map.addControls(controls);
     $.each(controls, function (index, item) {
       item.activate();
     });
@@ -104,21 +78,18 @@ $.Class.extend('Carto',
     );
   },
 
-  createDrawingLayer: function(name, map) {
+  createDrawingLayer: function(name) {
     var layer = new OpenLayers.Layer.Vector(name);
-    map.addLayer(layer);
+    this.map.addLayer(layer);
     return layer;
   },
 
-  createLayer: function(name, map) {
+  createLayer: function(name) {
     var layer = new OpenLayers.Layer.Vector(name);
     var style = new OpenLayers.Style({externalGraphic: '${thumbnail}', 'pointRadius': 9});
     var style_map = new OpenLayers.StyleMap({'default': style, 'select': style});
     layer.styleMap = style_map;
-    map.addLayer(layer);
+    this.map.addLayer(layer);
     return layer;
   }
-},
-{
-  // no instance methods
 });
