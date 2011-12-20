@@ -51,4 +51,7 @@
                     %td.checked= linked_figure(category.field_checked_locations, "/locations?s[category_id]=#{category.id}&s[status]=field+checked")
           = render :partial => "shared/paging", :locals => {:collection => @categories}
 
-
+:javascript
+  $(function() {
+    new CategoryEditor({el: "table.main"});
+  });
