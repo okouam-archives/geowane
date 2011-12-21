@@ -133,6 +133,7 @@ GEM
     hike (1.2.1)
     hirb (0.5.0)
     i18n (0.6.0)
+    json (1.6.3)
     json_pure (1.6.1)
     libv8 (3.3.10.2)
     lighthouse-api (2.0)
@@ -294,6 +295,7 @@ DEPENDENCIES
   formtastic
   haml
   hirb
+  json
   lighthouse-api
   minitar
   nested_form

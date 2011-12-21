@@ -1,6 +1,6 @@
 %p
 - object.audits.each do |audit|
-  .audit
+  .audit{:style=>"margin-left: 20px; margin-right: 40px"}
     .author{:style=>"width: 150px; float: left"}
       = image_tag("http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(audit.user.login)}?d=identicon&s=25", :style => "float: left; border: 1px solid #777")
       .details{:style=>"margin-left: 10px; float: left"}
@@ -12,7 +12,7 @@
         - audit.model_changes.each do |model_change|
           %li= "Changed #{model_change.datum} from #{model_change.old_value} to #{model_change.new_value}"
   .clear{:style=>"height: 20px"}
-.audit
+.audit{:style=>"margin-left: 20px; margin-right: 40px; margin-bottom: 40px"}
   .author{:style=>"width: 150px; float: left"}
     = image_tag("http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(object.user.login)}?d=identicon&s=25", :style => "float: left; border: 1px solid #777")
     .details{:style=>"margin-left: 10px; float: left"}

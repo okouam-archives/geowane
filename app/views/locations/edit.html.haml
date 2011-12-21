@@ -30,25 +30,7 @@
 
 :javascript
   $(function() {
-    var location_id = $(".editor-content").data("id");
-    $(".tab:not(:first)").hide();
-    $("#tabs a").click(function() {
-      var ref = $(this).attr("href").split('#')[1];
-      $("#tabs li").removeClass("active");
-      $(this).parents("li").addClass("active");
-      $(".tab:not(#" + ref + ")").hide();
-      $("#" + ref).show();
-      return false;
-    })
-    $(".navigate-poi").click(function() {
-      $("#facebox .content").css("text-align", "center");
-      $("#facebox .content").html("<img class='loader' src='/assets/facebox/loading.gif' />");
-      $.get($(this).attr("href"), function(html) {
-        $("#facebox .content").css("text-align", "left");
-        $("#facebox .content").html(html);
-      })
-      return false;
-    })
+    new GeoCMS.Views.LightboxLocationEditor({el: ".editor-content"});
   });
 
 :css

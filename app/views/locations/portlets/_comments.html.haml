@@ -1,16 +1,16 @@
 .tab-contents
   .editor
     %textarea{:style=>"height: 50px; width: 300px; float: left"}
-    %ul{:style=>"float: left"}
+    %ul{:style=>"float: left; margin-left: 20px"}
       %li= link_to "Préciser le quartier", "#"
       %li= link_to "Doublon? sinon préciser le quartier", "#"
       %li= link_to "Revoir l'orthographe", "#"
       %li= link_to "Indiquer le nom exact", "#"
       %li= link_to "Préciser le quartier", "#"
+  .clear
   %ul.comments
     - for comment in comments do
       %li
-        = image_tag(comment[:thumb])
         .details
           %span.created_at= comment[:created_at]
           %br
@@ -24,17 +24,3 @@
       Accept
 :css
   .editor ul li a {font-size: 11px}
-
-:plain
-  <script type="text/x-jquery-tmpl" id="comment-template">
-    <li>
-        <img src="${thumb}" />
-        <div class="details">
-          <span class="created_at">${created_at}</span>
-          <br/>
-          <span class="username">${user}</span>
-          <p>${text}</p>
-        </div>
-        <div class="clear"></div>
-    </li>
-  </script>

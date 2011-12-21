@@ -18,12 +18,7 @@ class Search
       pois.created_at,
       (select users.login from users where users.id = pois.user_id) as username,
       (select cities.name from cities where cities.id = pois.city_id) as city_name,
-      array_to_string(array(select categories.french from categories join tags on categories.id = tags.category_id and tags.location_id = pois.id), ', ') as tag_list,
-      (select name from boundaries where boundaries.id = pois.level_0) as boundary_0,
-      (select name from boundaries where boundaries.id = pois.level_1) as boundary_1,
-      (select name from boundaries where boundaries.id = pois.level_2) as boundary_2,
-      (select name from boundaries where boundaries.id = pois.level_3) as boundary_3,
-      (select name from boundaries where boundaries.id = pois.level_4) as boundary_4
+      array_to_string(array(select categories.french from categories join tags on categories.id = tags.category_id and tags.location_id = pois.id), ', ') as tag_list
       FROM
       locations as pois
       WHERE

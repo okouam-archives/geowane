@@ -6,6 +6,8 @@
     = csrf_meta_tag
     = stylesheet_link_tag "/assets/application", :debug => Rails.env.development?
     %script{:type=>"text/javascript"}
+      window.current_user = {id: #{current_user.id}, login: "#{current_user.login}"};
+    %script{:type=>"text/javascript"}
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-25526195-1']);
       _gaq.push(['_setDomainName', 'none']);

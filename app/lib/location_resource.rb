@@ -1,4 +1,10 @@
+require 'json'
+
 class LocationResource  < Sinatra::Base
+
+  before do
+    content_type :json
+  end
 
   get "/" do
     "Search will go here"
@@ -32,6 +38,14 @@ class LocationResource  < Sinatra::Base
 
   get "/:id/comments" do
     "Commensdfsdfsdfts for location"
+  end
+
+  put "/:id/comments" do
+    location = Location.find(params[:id])
+    puts params
+    location.comments.create!(:comment => params[:comment], :user => User.find(params[:user_id]))
+    latest = location.comments.last
+    {comment: latest.comment, created_at: latest.created_at, login: latest.user.login}.to_json
   end
 
   get "/:id/history" do

@@ -5,8 +5,11 @@ GeoCMS.Views.LocationSearchResults = Backbone.View.extend({
   },
 
   show: function(evt) {
-    var id = $(evt.target).parents("tr").data("id");
-    this.setupEditor(id);
+    var locationInfo = $(evt.target).parents("tr");
+    var id = locationInfo.data("id");
+    var longitude = locationInfo.data("longitude");
+    var latitude = locationInfo.data("latitude");
+    this.setupMapEditor(id, longitude, latitude);
     this.showFacebox(id);
     return false;
   },
@@ -16,12 +19,14 @@ GeoCMS.Views.LocationSearchResults = Backbone.View.extend({
     $.facebox({ajax: url});
   },
 
-  setupEditor: function(id) {
-    if (!window["location-editor"]) {
-      window["location-editor"] = new GeoCMS.Views.LocationEditor();
+  setupMapEditor: function(id, longitude, latitude) {
+    if (!window["lightbox-map-editor"]) {
+      window["lightbox-map-editor"] = new GeoCMS.Views.LightboxMapEditor();
     }
-    var editor = window["location-editor"];
+    var editor = window["lightbox-map-editor"];
     editor.id = id;
+    editor.longitude = longitude;
+    editor.latitude = latitude;
     $(document).bind('afterReveal.facebox', function() {
       editor.render();
       $(document).unbind('afterReveal.facebox');

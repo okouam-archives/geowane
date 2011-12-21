@@ -5,6 +5,7 @@
 //= require ./libraries/underscore-min
 //= require ./libraries/backbone-min
 //= require ./libraries/rails
+//= require ./libraries/droparea
 //= require ./libraries/sammy-latest.min
 //= require ./libraries/js-model-0.10.0.min
 //= require ./libraries/jquerymx-1.0.custom.min

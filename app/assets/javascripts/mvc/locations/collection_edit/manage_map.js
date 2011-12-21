@@ -1,10 +1,11 @@
 $.Controller("ManageMap",
 {
   init: function(el, options) {
-    this.map = Carto.build();
+    this.carto = new Carto();
+    this.map = this.carto.map;
     this.footer = options.footer;
-    Carto.addCommonControls(this.map);
-    this.layer = Carto.createLayer("Features", this.map);
+    this.carto.addCommonControls(this.map);
+    this.layer = this.carto.createLayer("Features");
     this.setupControls();
     this.loadFeatures(options.locations, this.buildInfoTab.bind(this));
   },
@@ -67,7 +68,7 @@ $.Controller("ManageMap",
   },
 
   loadFeatures: function(features, callback) {
-    Carto.displayNumberedFeatures(features, this.layer);
+    this.carto.displayNumberedFeatures(features, this.layer);
     callback(features);
   },
 
