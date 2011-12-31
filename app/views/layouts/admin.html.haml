@@ -18,6 +18,8 @@
       ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
+    = javascript_include_tag "/assets/application", :debug => Rails.env.development?
+    = yield :javascripts
   %body{class: "#{controller.controller_name} #{controller.action_name}"}
     #hld
       #header
@@ -57,5 +59,3 @@
           %p.right
             Powered by
             = link_to "Codeifier Labs", "#"
-    = javascript_include_tag "/assets/application", :debug => Rails.env.development?
-    = yield :javascripts

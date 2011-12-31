@@ -1,6 +1,6 @@
-$.Controller("ManageMap",
-{
-  init: function(el, options) {
+GeoCMS.Views.LocationMap = Backbone.View.extend({
+
+  initialize: function(options) {
     this.carto = new Carto();
     this.map = this.carto.map;
     this.carto.addCommonControls();
@@ -11,8 +11,20 @@ $.Controller("ManageMap",
       window.location = "/locations/" + feature.attributes["id"] + "/edit";
     });
     this.setupControls();
-    this.carto.displayNumberedFeatures(options.features, this.layer);
-    this.buildInfoTab(options.features, options.footer);
+    $("#map-glossary").click(function() {
+      if ($(this).text() == "Show Location Glossary +") $(this).text("Hide Location Glossary -");
+      else $(this).text("Show Location Glossary +");
+      $("#map-key").toggle();
+      return false;
+    });
+    options.locations.bind("reset", this.render, this);
+  },
+
+  render: function(collection) {
+    this.layer.destroyFeatures();
+    var features = collection.asFeatures();
+    this.carto.displayNumberedFeatures(features, this.layer);
+    this.buildInfoTab(features);
   },
 
   setupControls: function() {
@@ -27,7 +39,7 @@ $.Controller("ManageMap",
     this.map.addControls([mouseMove]);
   },
 
-  buildInfoTab: function(features, footer) {
+  buildInfoTab: function(features) {
     var wrapper = $("#map-key ul").empty();
     var template = $.template(null,
       "<li> \
@@ -35,13 +47,7 @@ $.Controller("ManageMap",
         <span class='name'>${attributes.name}</span> \
       </li>"
     );
-        var output = $($.tmpl(template, features));
-    wrapper.append(output);
-    $("#map-glossary").click(function() {
-      if ($(this).text() == "Show Location Glossary +") $(this).text("Hide Location Glossary -");
-      else $(this).text("Show Location Glossary +");
-      $("#map-key").toggle();
-      return false;
-    });
+    var output = $($.tmpl(template, features));
+    wrapper.html(output);
   }
 });

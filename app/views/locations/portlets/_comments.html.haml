@@ -9,14 +9,6 @@
       %li= link_to "Préciser le quartier", "#"
   .clear
   %ul.comments
-    - for comment in comments do
-      %li
-        .details
-          %span.created_at= comment[:created_at]
-          %br
-          %span.username= comment[:user]
-          %p= comment[:text]
-        .clear
 .clear
 .actions
   %button.blue-button

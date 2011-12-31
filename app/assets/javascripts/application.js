@@ -10,10 +10,16 @@
 //= require ./libraries/js-model-0.10.0.min
 //= require ./libraries/jquerymx-1.0.custom.min
 //= require_tree ./sammy.plugins
-//= require_tree ./src/geocms/models
+//= require ./src/geocms/models/geography
+//= require ./src/geocms/models/info
+//= require ./src/geocms/models/location
+//= require ./src/geocms/models/comment
+//= require ./src/geocms/models/search
 //= require_tree ./src/geocms/helpers
-//= require_tree ./src/geocms/collections
+//= require ./src/geocms/collections/comments
+//= require ./src/geocms/collections/locations
 //= require_tree ./src/geocms/maps
+//= require_tree ./src/geocms/views/lightbox
 //= require_tree ./src/geocms/views
 //= require_tree ./src/geocms/templates
 

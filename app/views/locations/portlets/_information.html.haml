@@ -1,16 +1,38 @@
 .tab-contents
-  = semantic_form_for object do |form|
-    = form.input :long_name, :input_html => {:class => "text"}
-    = form.input :email, :required => false, :input_html => { :class => "text" }
-    = form.input :telephone, :required => false, :input_html => { :class => "text" }
-    = form.input :fax, :required => false, :input_html => { :class => "text" }
-    = form.input :website, :required => false, :input_html => { :class => "text" }
-    = form.input :postal_address, :required => false, :input_html => { :class => "text" }
-    = form.input :geographical_address, :required => false, :input_html => { :class => "text"}
-    = form.input :opening_hours, :required => false, :input_html => { :class => "text" }
-    = form.input :user_rating, :required => false, :input_html => { :class => "text"}
-    = form.input :acronym, :required => false, :input_html => { :class => "text"}
-    = form.input :miscellaneous, :label => "Other", :required => false, :input_html => { :class => "text"}
+  %form
+    %label
+      Long Name
+    %input#long_name{:type=>"text"}
+    %label
+      Email
+    %input#email{:type=>"text"}
+    %label
+      Telephone
+    %input#telephone{:type=>"text"}
+    %label
+      Fax
+    %input#fax{:type=>"text"}
+    %label
+      Website
+    %input#website{:type=>"text"}
+    %label
+      Postal Address
+    %input#postal_address{:type=>"text"}
+    %label
+      Geographical Address
+    %input#geographical_address{:type=>"text"}
+    %label
+      Opening Hours
+    %input#opening_hours{:type=>"text"}
+    %label
+      User Rating
+    %input#user_rating{:type=>"text"}
+    %label
+      Acronym
+    %input#acronym{:type=>"text"}
+    %label
+      Miscellaneous
+    %textarea#miscellaneous
 
 .actions
   %button.blue-button

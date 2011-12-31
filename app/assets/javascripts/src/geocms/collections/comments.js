@@ -1,15 +1,13 @@
-$.Class.extend('Comments',
-{
-  add: function(locations, comment, callback) {
-    $.ajax({
-      type: 'POST',
-      dataType: 'json',
-      url: "/comments/collection_create",
-      data: {"comment": comment, "locations": locations},
-      success: callback
-    });
+GeoCMS.Collections.Comments = Backbone.Collection.extend({
+
+  model: GeoCMS.Models.Comment,
+
+  initialize: function(options) {
+    this.location = options.location;
+  },
+
+  url: function() {
+    return "/api/locations/" + this.location.id + "/comments";
   }
-},
-{
-  // no instance methods
+
 });

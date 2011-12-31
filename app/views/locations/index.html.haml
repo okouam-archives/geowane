@@ -4,7 +4,7 @@
 = content_for :title, "Points of Interest"
 
 - content_for :javascripts do
-  = javascript_include_tag "/assets/mvc/locations/index/init", :debug => Rails.env.development?
+  = javascript_include_tag "/assets/mvc/locations/index/bulk_actions", :debug => Rails.env.development?
 
 .block
   .block_content
@@ -20,7 +20,7 @@
             %span{:style=>"float: right; margin-right: 17px"}
               %a#map-glossary{:href=>"#", :style=>"color: #434343"} Show Location Glossary +
           #mappanel
-          %div#map-key{:style=>"height: 297px; display: none; width: 200px; z-index: 999999; position: absolute; right: 20px; top: 29px;  background: rgba(40, 40, 40, 0.8); color: white"}
+          %div#map-key{:style=>"height: 297px; display: none; width: 200px; z-index: 999999; position: absolute; right: 10px; top: 29px;  background: rgba(40, 40, 40, 0.8); color: white"}
             %ul
       .clear
       .bulk-actions
@@ -39,27 +39,28 @@
                 %tr
                   %th
                     %input{:type=>"checkbox"}
-                  %th= link_to "Name", url_for(@sort_params.merge({:sort => "name"}))
-                  %th= link_to "City", url_for(@sort_params.merge({:sort => "city_name"}))
+                  %th= link_to "Name", "#", :"data-sort" => "name"
+                  %th= link_to "City", "#", :"data-sort" => "city_name"
                   %th.tags Tags
-                  %th.added_by= link_to "Added By", url_for(@sort_params.merge({:sort => "username"}))
-                  %th.date_added= link_to "Added", url_for(@sort_params.merge({:sort => "pois.created_at"}))
-                  %th.last_changed= link_to "Updated", url_for(@sort_params.merge({:sort => "pois.updated_at"}))
+                  %th.added_by= link_to "Added By", "#", :"data-sort" => "username"
+                  %th.date_added= link_to "Added", "#",:"data-sort" => "pois.created_at"
+                  %th.last_changed= link_to "Updated", "#",:"data-sort" => "pois.updated_at"
                   %th.status= link_to "Status", "#", :"data-sort" => "status"
               %tbody
-                - for location in @locations
-                  %tr{:"data-id" => location.id, :"data-name" => location.name, :"data-longitude" => location.longitude, :"data-latitude" => location.latitude}
-                    %td.selector
-                      %input{:type=>"checkbox", :name=>"locations[]", :value => "#{location.id}"}
-                    %td.name
-                      - if location.name.length > 40
-                        = image_tag("warning-icon.png")
-                      = link_to location.name, edit_location_path(location.id)
-                    %td= location.city_name
-                    %td= location.tag_list
-                    %td= location.username
-                    %td= location.created_at.strftime("%d-%m-%Y")
-                    %td= location.updated_at.strftime("%d-%m-%Y")
-                    %td= location.status.to_s.humanize.upcase
-            = render :partial => "shared/paging", :locals => {:collection => @locations, :page_size => @per_page}
+            #pagination-wrapper
+
+
+:javascript
+  $(function() {
+    $.App = {};
+    $.App.Search = new GeoCMS.Models.Search({per_page: 10, page: 1})
+    $.App.Locations = new GeoCMS.Collections.Locations(#{@locations.to_json});
+    $.App.Locations.criteria = $.App.Search;
+
+    var results = new GeoCMS.Views.LocationSearchResults({el: "table.main", locations: $.App.Locations});
+    results.render();
+
+    new GeoCMS.Views.LocationSearch({el: "#search-bar"});
+    $(".bulk-actions").bulk_actions(jQuery.param.querystring());
+  });
 

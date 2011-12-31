@@ -1,12 +1,16 @@
 GeoCMS.Helpers.SortableTable = Backbone.View.extend({
 
+  initialize: function(options) {
+    this.callback = options.callback;
+  },
+
   events: {
     "click th a": "sort"
   },
 
-  sort: function() {
-    var url = jQuery.param.querystring(window.location.href, {sort: $(this).data("sort"), page: 1});
-    window.location = url;
+  sort: function(evt) {
+    this.callback($(evt.target).data("sort"));
+    return false;
   }
 
 });

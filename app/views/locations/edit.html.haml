@@ -1,13 +1,12 @@
 .block_head
   %h2{:style=>"color: #434343; font-size: 13px"}
     %span.location_name
-      = @location.name
-    = link_to " Next", params.merge(:action => "next"), :class => "navigate-poi"
-    = link_to "Previous ", params.merge(:action => "previous"), :class => "navigate-poi"
+    = link_to " Next", params.merge(:action => "next"), :class => "navigate-poi next"
+    = link_to "Previous ", params.merge(:action => "previous"), :class => "navigate-poi previous"
 .block_content
-  .editor-content{:"data-id" => @location.id, :"data-name" => @location.name, :"data-longitude" => @location.longitude, :"data-latitude" => @location.latitude}
+  .editor-content
     %ul#tabs.tabs
-      %li.active= link_to "Geography", "#geography"
+      %li.active= link_to "Basic", "#geography"
       %li= link_to "Logo", "#logo"
       %li= link_to "Photos", "#photos"
       %li= link_to "Comments", "#comments"
@@ -15,23 +14,18 @@
       %li= link_to "History", "#history"
       %br
     #geography.tab
-      = render :partial => "locations/portlets/coordinates", :locals => {:location => @location}
+      = render :partial => "locations/portlets/coordinates"
     #logo.tab
-      = render :partial => "locations/portlets/logos", :locals => {:location => @location}
+    //  = render :partial => "locations/portlets/logos"
     #photos.tab
-      = render :partial => "locations/portlets/photos", :locals => {:location => @location}
+    //  = render :partial => "locations/portlets/photos"
     #comments.tab
-      = render :partial => "locations/portlets/comments", :locals => {:location => @location, :comments => @comments}
+      = render :partial => "locations/portlets/comments"
     #info.tab
       = render :partial => "locations/portlets/information"
     #history.tab
-      = render :partial => "locations/portlets/history", :locals => {:location => @location}
+    //  = render :partial => "locations/portlets/history"
     .clear
-
-:javascript
-  $(function() {
-    new GeoCMS.Views.LightboxLocationEditor({el: ".editor-content"});
-  });
 
 :css
   #facebox img.loader {margin: auto; margin-top: 40px}

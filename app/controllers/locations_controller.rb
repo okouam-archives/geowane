@@ -1,4 +1,4 @@
- class LocationsController < ApplicationController
+class LocationsController < ApplicationController
   include Aegis::Controller
   resource_controller
   layout "admin"
@@ -14,17 +14,32 @@
 
   def index
     search = Search.new(params[:s], params[:sort])
+    @locations = search.execute(page, per_page).map do |location|
+      {
+        name: location.name,
+        id: location.id,
+        city: location.city_name,
+        longitude: location.longitude,
+        latitude: location.latitude,
+        created_at: location.created_at.strftime("%d-%m-%Y"),
+        updated_at: location.updated_at.strftime("%d-%m-%Y"),
+        tags: location.tag_list,
+        added_by: location.username,
+        status: location.status.to_s.humanize.upcase
+      }
+    end
     respond_to do |format|
       format.html do
         @categories = Category.dropdown_items
         @users = User.dropdown_items
         @boundaries = Boundary.dropdown_items(0)
         @statuses = Location.new.enums(:status).select_options.map {|x| [x[0].upcase, x[1]]}
-        @locations = search.execute(page, per_page)
         @sort_params = params.merge({controller: "locations", action: "index"}).except(:page, :per_page)
         @navigation_params = params.merge({controller: "locations", action: "edit"})
       end
-      format.json { render :json => search.execute.to_a.to_geojson }
+      format.json do
+        render :json => @locations
+      end
     end
   end
 
@@ -95,8 +110,6 @@
 
   def edit
     @categories = Category.dropdown_items
-    @location = Location.find(params[:id])
-    @comments = @location.comments.map {|c| c.to_hash}
     render :layout => false
   end
 

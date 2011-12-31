@@ -1,10 +1,11 @@
-GeoCMS.Views.LightboxInfoEditor = Backbone.View.extend({
+GeoCMS.Views.Lightbox.InfoEditor = Backbone.View.extend({
 
   events: {
     "click .actions .blue-button": "save"
   },
 
-  initialize: function() {
+  initialize: function(options) {
+    options.location.info.bind("change", this.render, this);
     var country = "#{@location.administrative_unit(0).try(:name)}";
     switch(country) {
       case "Côte d'Ivoire":
@@ -57,6 +58,27 @@ GeoCMS.Views.LightboxInfoEditor = Backbone.View.extend({
         }
       }
     });
+  },
+
+  associate: function(location) {
+    if (this.location) this.location.info.unbind("change", this.render);
+    this.location = location;
+    this.location.info.unbind("change", this.render);
+    this.location.info.bind("change", this.render, this);
+  },
+
+  render: function(model) {
+    $("#long_name").val(model.get("long_name"));
+    $("#email").val(model.get("email"));
+    $("#telephone").val(model.get("telephone"));
+    $("#fax").val(model.get("fax"));
+    $("#website").val(model.get("website"));
+    $("#postal_address").val(model.get("postal_address"));
+    $("#geographical_address").val(model.get("geographical_address"));
+    $("#opening_hours").val(model.get("opening_hours"));
+    $("#user_rating").val(model.get("user_rating"));
+    $("#acronym").val(model.get("acronym"));
+    $("#miscellaneous").val(model.get("miscellaneous"));
   },
 
   save: function() {

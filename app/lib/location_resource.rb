@@ -11,14 +11,16 @@ class LocationResource  < Sinatra::Base
   end
 
   get "/:id" do
-    sql = %{
-      SELECT name, email, telephone, fax, website, postal_address, opening_hours, user_rating
-    }
     results = ActiveRecord::Base.connection.execute("SELECT * FROM locations WHERE id = #{params[:id]}")
     results.to_json
   end
 
-  get "/:id/coordinates" do
+  get "/:id/info" do
+    results = ActiveRecord::Base.connection.execute("SELECT * FROM locations WHERE id = #{params[:id]}")
+    results[0].to_json
+  end
+
+  get "/:id/geography" do
     sql = %{
       SELECT
         longitude,
@@ -33,17 +35,30 @@ class LocationResource  < Sinatra::Base
       WHERE
         locations.id = #{params[:id]}
       }
-    ActiveRecord::Base.connection.execute(sql).to_json
+    ActiveRecord::Base.connection.execute(sql)[0].to_json
   end
 
   get "/:id/comments" do
-    "Commensdfsdfsdfts for location"
+    sql = %{
+      SELECT
+        comment,
+        comments.created_at,
+        users.login
+      FROM comments
+      JOIN users
+        ON users.id = comments.user_id
+      WHERE commentable_id = #{params[:id]}
+        AND commentable_type = 'Location'
+
+    }
+    ActiveRecord::Base.connection.execute(sql).to_json
   end
 
-  put "/:id/comments" do
+  post "/:id/comments" do
     location = Location.find(params[:id])
-    puts params
-    location.comments.create!(:comment => params[:comment], :user => User.find(params[:user_id]))
+    post_params = JSON.parse request.body.read
+    puts post_params
+    location.comments.create!(:comment => post_params[:comment], :user => User.find(post_params[:user_id]))
     latest = location.comments.last
     {comment: latest.comment, created_at: latest.created_at, login: latest.user.login}.to_json
   end

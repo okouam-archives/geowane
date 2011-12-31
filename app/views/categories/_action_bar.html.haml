@@ -5,7 +5,7 @@
       %h1{:style=>"float: left; color: #434343; margin-left: 20px; width: 140px"}
         Categories
       %input{:type=>"text", :id=>"s[name]", :name=>"s[name]"}
-      %button#submit.nodropdown
+      %button.search-button{:style=>"margin-left: 5px"}
         %div
           =image_tag "search_white.png"
     %form{:method=>"get", :action => new_category_path, :style=>"padding-top: 17px; display: inline; width: 150px"}
