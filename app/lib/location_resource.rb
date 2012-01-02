@@ -10,6 +10,28 @@ class LocationResource  < Sinatra::Base
     "Search will go here"
   end
 
+  get "/:id/photos" do
+    sql = %{
+      SELECT
+        id,
+        image,
+        location_id
+      FROM
+        photos
+      WHERE
+        location_id = #{params[:id]}
+    }
+    ActiveRecord::Base.connection.execute(sql).to_json
+  end
+
+  post "/:id/photos" do
+
+  end
+
+  delete "/:id/photos" do
+
+  end
+
   get "/:id" do
     results = ActiveRecord::Base.connection.execute("SELECT * FROM locations WHERE id = #{params[:id]}")
     results.to_json
@@ -38,6 +60,32 @@ class LocationResource  < Sinatra::Base
     ActiveRecord::Base.connection.execute(sql)[0].to_json
   end
 
+  post "/:id/geography" do
+
+  end
+
+  get "/:id/logo" do
+    sql = %{
+      SELECT
+        id,
+        image,
+        location_id
+      FROM
+        logos
+      WHERE
+        location_id = #{params[:id]}
+    }
+    ActiveRecord::Base.connection.execute(sql)[0].to_json
+  end
+
+  post "/:id/logo" do
+
+  end
+
+  delete "/:id/logo" do
+
+  end
+
   get "/:id/comments" do
     sql = %{
       SELECT
@@ -63,8 +111,7 @@ class LocationResource  < Sinatra::Base
     {comment: latest.comment, created_at: latest.created_at, login: latest.user.login}.to_json
   end
 
-  get "/:id/history" do
-    "History of location"
+  get "/:id/audits" do
   end
 
 end

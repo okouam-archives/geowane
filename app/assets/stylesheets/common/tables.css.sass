@@ -18,7 +18,7 @@ table
   tr th
     +table-cell
 
-.block .paggination a, .block .paggination span.current, .block .paggination span.disabled
+#paggination a, #paggination span.current, #paggination span.disabled
   border: 1px solid #ccc
   -webkit-border-radius: 3px
   -moz-border-radius: 3px
@@ -26,14 +26,15 @@ table
   padding: 3px 6px
   margin: 0 1px
 
-.block .paggination a.active, .block .paggination span.current
-  background: #39a3e6
-  border: 1px solid #0082d5
-  color: #fff
+#paggination a.active, #paggination span.current
+  background: none
+  border: none
+  color: #434343
 
 #pagination-wrapper
   font-size: 10px
-  .paggination
+  clear: both
+  #paggination
     font-size: 10px
     font-weight: bold
     padding-bottom: 15px

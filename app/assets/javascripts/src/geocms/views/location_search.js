@@ -7,14 +7,15 @@ GeoCMS.Views.LocationSearch = Backbone.View.extend({
     "click button.search-button": "search"
   },
 
-  initialize: function() {
+  initialize: function(options) {
+    this.criteria = criteria = options.locations.criteria;
     $("#s_added_after").date_input();
     $("#s_added_before").date_input();
     $("#s_modified_after").date_input();
     $("#s_modified_before").date_input();
     $("form.search button.search-button").click(function() {
       var input = $("#query");
-      $.App.Search.set({name: input.val()});
+      criteria.set({name: input.val(), page: 1});
       input.val("");
       return false;
     })
@@ -43,9 +44,10 @@ GeoCMS.Views.LocationSearch = Backbone.View.extend({
       added_by: added_by != "" ? added_by : "",
       modified_by: modified_by != "" ? modified_by : "",
       modified_before: modified_before != "" ? modified_before : "",
-      modified_after: modified_after != "" ? modified_after : ""
+      modified_after: modified_after != "" ? modified_after : "",
+      page: 1
     };
-    $.App.Search.set(criteria);
+    this.criteria.set(criteria);
     this.hide();
     return false;
   },

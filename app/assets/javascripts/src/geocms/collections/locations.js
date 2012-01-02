@@ -13,6 +13,11 @@ GeoCMS.Collections.Locations = Backbone.Collection.extend({
     return url;
   },
 
+  parse: function(results) {
+    this.criteria.set({total_entries: results.total_entries}, {silent: true});
+    return results.locations;
+  },
+
   asFeatures: function() {
     return _.map(this.models, function(location) {
       var point = new OpenLayers.Geometry.Point(location.get("longitude"), location.attributes["latitude"]);

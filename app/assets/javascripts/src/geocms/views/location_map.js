@@ -1,10 +1,12 @@
 GeoCMS.Views.LocationMap = Backbone.View.extend({
 
   initialize: function(options) {
+    this.locations = options.locations;
     this.carto = new Carto();
     this.map = this.carto.map;
     this.carto.addCommonControls();
     this.layer = this.carto.createLayer("Features");
+    this.drawing_layer = this.carto.createDrawingLayer();
     new GeoCMS.Maps.Coordinates(this.map);
     new GeoCMS.Maps.Search(this.map);
     new GeoCMS.Maps.Signposting(this.layer, function(feature) {
@@ -17,7 +19,7 @@ GeoCMS.Views.LocationMap = Backbone.View.extend({
       $("#map-key").toggle();
       return false;
     });
-    options.locations.bind("reset", this.render, this);
+    this.locations.bind("reset", this.render, this);
   },
 
   render: function(collection) {
@@ -27,7 +29,39 @@ GeoCMS.Views.LocationMap = Backbone.View.extend({
     this.buildInfoTab(features);
   },
 
+  createDrawingTools: function() {
+    var canvas = this.drawing_layer;
+    var draw = new OpenLayers.Control.DrawFeature(canvas, OpenLayers.Handler.Polygon);
+
+    draw.events.on({
+      featureadded: function() {
+        draw.deactivate();
+        var area = canvas.features[0].geometry;
+        this.locations.criteria.set({bbox: area.bounds.toBBOX(), page: 1});
+        canvas.destroyFeatures();
+      }.bind(this)
+    });
+
+    $("#drawing-tool").click(function() {
+      if (canvas.features.length < 1) draw.activate();
+    });
+
+    $("#eraser-tool").click(function() {
+      canvas.destroyFeatures();
+      draw.deactivate();
+      this.locations.criteria.set({bbox: ""});
+    }.bind(this));
+
+    return draw;
+  },
+
   setupControls: function() {
+    var draw = this.createDrawingTools();
+    var mouseMove = this.createCoordinatesControl();
+    this.map.addControls([mouseMove, draw]);
+  },
+
+  createCoordinatesControl: function() {
     var mouseMove = new OpenLayers.Control.MousePosition({
       autoActivate: true,
       element: $(".map .coordinates").get(0),
@@ -36,7 +70,7 @@ GeoCMS.Views.LocationMap = Backbone.View.extend({
     mouseMove.formatOutput = function(lonLat) {
       return lonLat.lon.toFixed(5) + "E &nbsp; " + lonLat.lat.toFixed(5) + "N";
     };
-    this.map.addControls([mouseMove]);
+    return mouseMove;
   },
 
   buildInfoTab: function(features) {

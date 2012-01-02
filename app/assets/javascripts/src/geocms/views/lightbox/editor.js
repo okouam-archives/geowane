@@ -11,6 +11,8 @@ GeoCMS.Views.Lightbox.Editor = Backbone.View.extend({
     this.commentEditor= new GeoCMS.Views.Lightbox.CommentEditor({el: "#comments.tab", location: options.current});
     this.mapEditor = new GeoCMS.Views.Lightbox.MapEditor({el: "#geography.tab", location: options.current});
     this.infoEditor = new GeoCMS.Views.Lightbox.InfoEditor({el: "#info.tab", location: options.current});
+    this.photoEditor = new GeoCMS.Views.Lightbox.PhotoEditor({el: "#photos.tab", location: options.current});
+    this.logoEditor = new GeoCMS.Views.Lightbox.LogoEditor({el: "#photos.tab", location: options.current});
     this.associate(options.current, options.collection);
   },
 

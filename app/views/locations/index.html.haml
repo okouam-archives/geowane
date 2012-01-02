@@ -14,9 +14,11 @@
           %div{:style=>"background-color: #F1F1F1; font-size: 9px; width: 100%; color: #434343; border-left: 1px solid #ccc; position: relative; left: -1px; border-right: 1px solid #ccc; border-bottom: 1px solid #bbb; opacity: 0.8"}
             %span.coordinates{:style=>"margin-left: 7px; width: 178px; display: inline-block"}
             %span.drawing
-              Draw Search Area
+              %a#drawing-tool{:href=>"#"}
+                Draw Search Area
             %span.drawing
-              Clear Search Area
+              %a#eraser-tool{:href=>"#"}
+                Clear Search Area
             %span{:style=>"float: right; margin-right: 17px"}
               %a#map-glossary{:href=>"#", :style=>"color: #434343"} Show Location Glossary +
           #mappanel
@@ -48,19 +50,22 @@
                   %th.status= link_to "Status", "#", :"data-sort" => "status"
               %tbody
             #pagination-wrapper
+              #paggination
+              %span#pagination-counter
+            .clear
+            .clear
 
 
 :javascript
   $(function() {
     $.App = {};
-    $.App.Search = new GeoCMS.Models.Search({per_page: 10, page: 1})
-    $.App.Locations = new GeoCMS.Collections.Locations(#{@locations.to_json});
-    $.App.Locations.criteria = $.App.Search;
+    var collection = new GeoCMS.Collections.Locations(#{@locations.to_json});
+    collection.criteria = new GeoCMS.Models.Search({per_page: 10, page: 1, total_entries: #{@total_entries}})
 
-    var results = new GeoCMS.Views.LocationSearchResults({el: "table.main", locations: $.App.Locations});
+    var results = new GeoCMS.Views.LocationSearchResults({el: "table.main", locations: collection});
     results.render();
 
-    new GeoCMS.Views.LocationSearch({el: "#search-bar"});
+    new GeoCMS.Views.LocationSearch({el: "#search-bar", locations: collection});
     $(".bulk-actions").bulk_actions(jQuery.param.querystring());
   });
 

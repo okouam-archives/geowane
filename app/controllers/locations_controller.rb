@@ -14,7 +14,9 @@ class LocationsController < ApplicationController
 
   def index
     search = Search.new(params[:s], params[:sort])
-    @locations = search.execute(page, per_page).map do |location|
+    @locations = search.execute(page, per_page)
+    @total_entries = @locations.total_entries
+    @locations = @locations.map do |location|
       {
         name: location.name,
         id: location.id,
@@ -38,7 +40,7 @@ class LocationsController < ApplicationController
         @navigation_params = params.merge({controller: "locations", action: "edit"})
       end
       format.json do
-        render :json => @locations
+        render :json => {locations: @locations, total_entries: @total_entries}
       end
     end
   end

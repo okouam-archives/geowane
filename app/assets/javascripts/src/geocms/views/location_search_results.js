@@ -27,14 +27,13 @@ GeoCMS.Views.LocationSearchResults = Backbone.View.extend({
   initialize: function(options) {
     this.locations = collection = options.locations;
     collection.bind("reset", this.render, this);
-    $.App.Search.bind("change", function() {
-      collection.criteria = $.App.Search;
+    collection.criteria.bind("change", function() {
       collection.fetch();
     }, this);
-    new GeoCMS.Views.LocationPager({el: $(this.el).find("#pagination-wrapper")});
+    new GeoCMS.Views.LocationPager({el: $("#pagination-wrapper"), locations: collection});
     new GeoCMS.Helpers.DataTable({el: this.el});
     new GeoCMS.Helpers.SortableTable({el: this.el, callback: function(val) {
-        $.App.Search.set({sort: val});
+        collection.criteria.set({sort: val, page: 1});
       }
     });
     this.map = new GeoCMS.Views.LocationMap({el: $("manage_map"), locations: collection});
@@ -42,6 +41,7 @@ GeoCMS.Views.LocationSearchResults = Backbone.View.extend({
   },
 
   render: function() {
+    var self = this;
     $(this.el).find("tbody").html(_.template(this.LOCATION_ROW_TEMPLATE, this.locations));
   },
 
