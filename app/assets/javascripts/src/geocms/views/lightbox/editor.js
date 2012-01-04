@@ -45,10 +45,15 @@ GeoCMS.Views.Lightbox.Editor = Backbone.View.extend({
     return false;
   },
 
+  showWarning: function() {
+    $("#geography .warning").html("The location has been modified. Click 'Accept' to keep changes.").show();
+  },
+
   render: function() {
-    var self = this;
     $(this.el).find("span.location_name").text(this.current.get("name"));
-    $(this.el).find("#basic #name").val(this.current.get("name"));
+
+    var name_input = $(this.el).find("#basic #name");
+    name_input.val(this.current.get("name"));
 
     var city_selector = $(this.el).find("#basic #city");
     var city_id = city_selector.find("option:contains('" + this.current.get("city") + "')").val();
@@ -58,11 +63,19 @@ GeoCMS.Views.Lightbox.Editor = Backbone.View.extend({
     var status_id = status_selector.find("option:contains('" + this.current.get("status") + "')").val();
     status_selector.val(status_id);
 
+    $(this.el).find("input").bind('input', function() {
+      this.showWarning();
+    }.bind(this));
+
+    $(this.el).find("select").change(function() {
+      this.showWarning();
+    }.bind(this));
+
     this.current.comments.fetch();
     this.current.info.fetch();
     this.current.geography.fetch({success: function() {
-      self.current.geography.change();
-    }});
+      this.current.geography.change();
+    }.bind(this)});
     this.setupTabNavigation();
   },
 

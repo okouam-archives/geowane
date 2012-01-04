@@ -7,7 +7,7 @@ GeoCMS.Collections.Comments = Backbone.Collection.extend({
   },
 
   url: function() {
-    return "/api/locations/" + this.location.id + "/comments";
+    return "/locations/" + this.location.id + "/comments";
   }
 
 });

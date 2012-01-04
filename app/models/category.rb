@@ -1,5 +1,4 @@
-
-require "open-uri"
+ require "open-uri"
 
 class Category < ActiveRecord::Base
   has_many :locations, :through => :tags

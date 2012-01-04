@@ -9,12 +9,10 @@
 .block
   .block_content
     #portlets
-      .bulk-actions
-        %select
-          %option Bulk Actions
-          - if @categories && @categories.any? && current_user.may_destroy_category?(@categories.first)
-            %option Delete
-        %input.button{:type=>"button", :value=>"Apply"}
+      - if @categories && @categories.any? && current_user.may_destroy_category?(@categories.first)
+        .toolbar{:style=>"margin-bottom: 10px; float: right"}
+          %button.gray-button
+            %div Delete
       .clear
       .portlet
         .portlet-content.nopadding

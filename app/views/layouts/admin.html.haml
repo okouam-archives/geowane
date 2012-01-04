@@ -34,11 +34,6 @@
                 %li= link_to "Collectors", collectors_path
                 %li= link_to "Boundaries", boundaries_path
                 %li= link_to "Cities", cities_path
-            %li
-              = link_to "Partners", "#"
-              %ul
-                %li= link_to "Categories", partner_categories_path
-                %li= link_to "Change Requests", change_requests_path
             - unless current_user.has_role?("collector")
               %li= link_to "Import", imports_path
               - if current_user.has_role?("administrator")

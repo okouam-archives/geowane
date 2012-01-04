@@ -67,6 +67,7 @@ GeoCMS.Views.Lightbox.MapEditor = Backbone.View.extend({
     var wrapper = $("#geo-details");
     wrapper.empty();
     wrapper.append(template);
+    $("#" + this.el.id).find(".warning").empty();
   },
 
   save: function() {
@@ -75,11 +76,13 @@ GeoCMS.Views.Lightbox.MapEditor = Backbone.View.extend({
 
   prepareMap: function() {
     this.carto.addCommonControls();
-    var layer = this.carto.createLayer("Features");
     var landmark_layer = this.carto.createLayer("Landmarks");
     new GeoCMS.Maps.Signposting(landmark_layer);
+    var layer = this.carto.createLayer("Features");
     var drag = new OpenLayers.Control.DragFeature(layer, {
-      onStart: function() {notifyCoordinateChange(); }
+      onStart: function() {
+        $("#" + this.el.id).find(".warning").html("The location has been modified. Click 'Accept' to keep changes.")
+      }.bind(this)
     });
     var controls = [drag];
     this.carto.map.addControls(controls);

@@ -21,7 +21,6 @@ gem "minitar"
 gem 'rmagick'
 gem 'authlogic', :git => 'git://github.com/odorcicd/authlogic.git', :branch => 'rails3'
 gem 'haml'
-gem 'paperclip'
 gem 'acts_as_commentable'
 gem 'rake'
 gem 'rack'

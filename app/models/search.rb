@@ -27,7 +27,22 @@ class Search
       }
     query = @criteria.create_query
     total_entries = query.count()
-    Location.paginate_by_sql sql, {:page => page, :per_page => per_page, :total_entries => total_entries}
+    locations = Location.paginate_by_sql sql, {:page => page, :per_page => per_page, :total_entries => total_entries}
+    locations = locations.map do |location|
+      {
+        name: location.name,
+        id: location.id,
+        city: location.city_name,
+        longitude: location.longitude,
+        latitude: location.latitude,
+        created_at: location.created_at.strftime("%d-%m-%Y"),
+        updated_at: location.updated_at.strftime("%d-%m-%Y"),
+        tags: location.tag_list,
+        added_by: location.username,
+        status: location.status.to_s.humanize.upcase
+      }
+    end
+    {locations: locations, total_entries: total_entries}
   end
 
   def next(id)

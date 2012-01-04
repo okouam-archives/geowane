@@ -1,12 +1,14 @@
 GeoCMS.Views.Lightbox.LogoEditor = Backbone.View.extend({
 
   initialize: function(options) {
-
-    $(function() {
-      var uploader = new qq.FileUploader({
-        element: document.getElementById('file-uploader'),
-        action: '/api/locations/' + options.location.id + '/logo'
-      });
+    var uploader = new qq.FileUploader({
+      element: document.getElementById('logo-uploader'),
+      action: '/locations/' + options.location.id + '/logo',
+      onComplete: function(id, fileName, response) {
+        if (response.success) {
+          this.location.logo = new Logo(response.logo);
+        }
+      }.bind(this)
     });
   },
 
@@ -18,7 +20,7 @@ GeoCMS.Views.Lightbox.LogoEditor = Backbone.View.extend({
   },
 
   render: function() {
-    this.location
+    console.debug(this.location.logo);
   }
 
 });

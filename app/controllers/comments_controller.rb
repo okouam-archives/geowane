@@ -1,37 +1,30 @@
 class CommentsController < ApplicationController
-  resource_controller
-  layout nil
-  belongs_to :location
 
-  index.wants.html do
-    @show_facebox_actions = true if params[:layout] && params[:layout] == "facebox"
+  def show
+    sql = %{
+      SELECT
+        comment,
+        comments.created_at,
+        users.login
+      FROM comments
+      JOIN users
+        ON users.id = comments.user_id
+      WHERE commentable_id = #{params[:location_id]}
+        AND commentable_type = 'Location'
+
+    }
+    render :json => ActiveRecord::Base.connection.execute(sql)
   end
 
-  create.before do
-    object.user = current_user
-  end
+  def create
+    sql = %{
+      INSERT INTO comments (comment, user_id, commentable_type, commentable_id)
+      VALUES ('#{params[:comment]}', #{current_user.id}, 'Location', #{params[:location_id]}
+        AND commentable_type = 'Location'
 
-  create.wants.html do
-    render :json => {created_at: object.created_at, location_id: object.commentable_id, text: object.comment, user: current_user.login}
-  end
-
-  def collection_create
-    locations = params[:locations]
-    if locations.nil? || locations.size < 1
-      head :bad_request
-      return
-    end
-    comment = params[:comment]
-    if comment.nil? || comment.size < 1
-      head :bad_request
-      return
-    end
-    locations = Location.find(locations)
-    comments = locations.map do |location|
-      location.comments.create!(:comment => comment, :user => current_user)
-    end
-
-    render :json => comments.map {|x| x.to_hash}
+    }
+    ActiveRecord::Base.connection.execute(sql)
+    render :json => {comment: params[:comment], created_at: DateTime.now, login: current_user.login}.to_json
   end
 
 end

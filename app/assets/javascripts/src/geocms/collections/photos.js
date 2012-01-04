@@ -7,7 +7,7 @@ GeoCMS.Collections.Photos = Backbone.Collection.extend({
   },
 
   url: function() {
-    return "/api/locations/" + this.location.id + "/photos";
+    return "/locations/" + this.location.id + "/photos";
   }
 
 });

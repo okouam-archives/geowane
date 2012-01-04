@@ -1,16 +1,29 @@
 Gowane::Application.routes.draw do
 
+  # Backbone API
+
+  match "/locations/:location_id/logo" => "logos#show", :via => "get"
+  match "/locations/:location_id/logo" => "logos#create", :via => "post"
+  match "/locations/:location_id/logo" => "logos#delete", :via => "delete"
+
+  match "/locations/:location_id/photos" => "photos#show", :via => "get"
+  match "/locations/:location_id/photos" => "photos#create", :via => "post"
+  match "/locations/:location_id/photos/:id" => "photos#delete", :via => "delete"
+
+  match "/locations/:location_id/comments" => "comments#show", :via => "get"
+  match "/locations/:location_id/comments" => "comments#create", :via => "post"
+
   match "/api/locations", :to => LocationResource, :anchor => false
 
+  # Server
+
   match'/locations' => 'locations#collection_delete', :via => :delete
-  match'/locations/edit' => 'locations#collection_edit', :via => [:get, :post] 
-  match'/locations' => 'locations#collection_update', :via => :put 
-  #match '/api/:action', :controller => 'api'
+  match'/locations/edit' => 'locations#collection_edit', :via => [:get, :post]
+  match'/locations' => 'locations#collection_update', :via => :put
   match '/landmarks' => 'landmarks#show', :as => "show_landmarks", :via => :get
 
   resources :locations do
-    resources :comments, :tags, :photos
-    resource :logo
+    resources :tags
     member do
       get :next, :previous, :surrounding_landmarks
     end

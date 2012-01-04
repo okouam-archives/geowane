@@ -2,17 +2,19 @@
   #search-bar
     .wrapper
       .clear
-      %form{:method=>"get", :style=>"padding-top: 17px; width: 700px; display: inline"}
-        %h1{:style=>"float: left; color: #434343; margin-left: 20px; width: 140px"}
+      %form.search{:method=>"get"}
+        %h1
           Imports
-        %input{:type=>"text", :id=>"s[name]", :name=>"s[name]", :style => "width: 385px"}
-        %button#submit.nodropdown
+        %input{:type=>"text", :id=>"query", :name=>"s[name]"}
+        .aoq-wrapper
+          .aoq{style: "background: none; cursor: auto"}
+        %button.search-button
           %div
-            =image_tag "search_white.png"
-      %form{:method=>"get", :action => "/imports/new", :style=>"padding-top: 17px; display: inline; width: 150px"}
+            = image_tag "search_white.png"
+      %form.new{:method=>"get", :action => "/imports/new"}
         %button.red-button
           %div
-            Import data
+            Import Data
 
 = content_for :title, "Imports"
 .block

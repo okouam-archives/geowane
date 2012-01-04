@@ -14,30 +14,15 @@ class LocationsController < ApplicationController
 
   def index
     search = Search.new(params[:s], params[:sort])
-    @locations = search.execute(page, per_page)
-    @total_entries = @locations.total_entries
-    @locations = @locations.map do |location|
-      {
-        name: location.name,
-        id: location.id,
-        city: location.city_name,
-        longitude: location.longitude,
-        latitude: location.latitude,
-        created_at: location.created_at.strftime("%d-%m-%Y"),
-        updated_at: location.updated_at.strftime("%d-%m-%Y"),
-        tags: location.tag_list,
-        added_by: location.username,
-        status: location.status.to_s.humanize.upcase
-      }
-    end
+    search_results = search.execute(page, per_page)
+    @total_entries = search_results[:total_entries]
+    @locations = search_results[:locations]
     respond_to do |format|
       format.html do
         @categories = Category.dropdown_items
         @users = User.dropdown_items
         @boundaries = Boundary.dropdown_items(0)
         @statuses = Location.new.enums(:status).select_options.map {|x| [x[0].upcase, x[1]]}
-        @sort_params = params.merge({controller: "locations", action: "index"}).except(:page, :per_page)
-        @navigation_params = params.merge({controller: "locations", action: "edit"})
       end
       format.json do
         render :json => {locations: @locations, total_entries: @total_entries}

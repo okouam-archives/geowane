@@ -1,19 +1,10 @@
 = content_for :title, "Cities"
 
-- content_for :javascripts do
-  = javascript_include_tag "/assets/mvc/cities/index/init.js", :debug => Rails.env.development?
-
 - content_for :search do
-  = render :partial => "shared/dropdown_search_bar", :locals => {:show_advanced => false, :title => "Cities", :action => "/cities"}
+  = render :partial => "shared/generic_search_bar", :locals => {:show_advanced => false, :title => "Cities", :action => "/cities"}
 
 .block
   #portlets
-    .bulk-actions
-      %select
-        %option Bulk Actions
-        %option Delete
-      %input.button{:type=>"button", :value=>"Apply"}
-    .clear
     .portlet
       .portlet-content.nopadding
         %table.main

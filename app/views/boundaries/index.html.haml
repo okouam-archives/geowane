@@ -1,19 +1,29 @@
 = content_for :title, "Boundaries"
 
 - content_for :search do
-  = render :partial => "shared/dropdown_search_bar", :locals => {:show_advanced => false, :title => "Boundaries", :action => "/cities"}
+  #search-bar
+    .wrapper
+      .clear
+      %form.search{:method=>"get"}
+        %h1
+          Boundaries
+
 
 .block
   .block_content
     #portlets
-      .bulk-actions
-        %select
-          %option Change Level
-          %option Level 0
-          %option Level 1
-          %option Level 2
-          %option Level 3
-        %input.button{:type=>"button", :value=>"Change"}
+      .clear
+      .toolbar{:style=>"margin-bottom: 10px; float: right"}
+        %button.gray-button
+          %div Level 0
+        %button.gray-button
+          %div Level 1
+        %button.gray-button
+          %div Level 2
+        %button.gray-button
+          %div Level 3
+        %button.gray-button
+          %div Level 4
       .clear
       .portlet
         .portlet-content.nopadding

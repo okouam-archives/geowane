@@ -10,7 +10,7 @@
       %button.search-button
         %div
           = image_tag "search_white.png"
-    %form.new-location{:method=>"get", :action => "/locations/new"}
+    %form.new{:method=>"get", :action => "/locations/new"}
       %button.red-button
         %div
           New location
@@ -57,17 +57,3 @@
             = image_tag "search_white.png"
         = link_to "More Search Options", "#", :style => "float: right; margin-top: 18px", :class => "more-search"
       .clear
-
-:css
-  #search-bar h1 {float: left; color: #434343; margin-left: 20px; width: 140px}
-  #search-bar .aoq-wrapper {display: inline-block; position: relative; left: -22px}
-  #search-bar form.new-location {padding-top: 17px; display: inline; width: 150px}
-  #search-bar form.search {padding-top: 17px; width: 725px; display: inline}
-  #search-bar #advanced {width: 425px; border: 1px solid #ccc; position: absolute; top: 41px; left: 200px; background-color: white; z-index: 99999999999999; display: none}
-  #search-bar #advanced form {margin: 20px}
-  #search-bar #advanced .close-button {   background-image: url("//ssl.gstatic.com/ui/v1/icons/common/x_8px.png");
-    cursor: pointer; height: 21px; opacity: 0.4;         padding: 2px;         position: absolute;       right: 0;    top: 4px;     width: 21px}
-  #search-bar #advanced form input {border: 1px solid #ccc}
-  #search-bar #advanced form input {width: 375px; padding: 2px}
-  #search-bar #advanced form select {width: 381px}
-  #search-bar #advanced label {margin-top: 5px; display: block; margin-bottom: 3px}

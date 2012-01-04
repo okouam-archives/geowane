@@ -5,6 +5,6 @@ GeoCMS.Models.Logo = Backbone.Model.extend({
   },
 
   url: function() {
-    return "/api/locations/" + this.location.id + "/logo";
+    return "/locations/" + this.location.id + "/logo";
   }
 });

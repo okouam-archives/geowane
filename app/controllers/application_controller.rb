@@ -5,7 +5,6 @@ class ApplicationController < ActionController::Base
   helper :all
   around_filter :convert_permission_error
   helper_method :current_user
-  protect_from_forgery
   layout "admin"
 
   private

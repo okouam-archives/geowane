@@ -79,6 +79,11 @@ GeoCMS.Views.Lightbox.InfoEditor = Backbone.View.extend({
     $("#user_rating").val(model.get("user_rating"));
     $("#acronym").val(model.get("acronym"));
     $("#miscellaneous").val(model.get("miscellaneous"));
+
+    $("#" + this.el.id).find("input").bind('input', function() {
+      $("#" + this.el.id).find(".warning").html("The location has been modified. Click 'Accept' to keep changes.").show();
+    }.bind(this));
+
   },
 
   save: function() {

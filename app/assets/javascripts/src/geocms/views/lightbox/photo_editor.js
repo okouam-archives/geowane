@@ -3,7 +3,7 @@ GeoCMS.Views.Lightbox.PhotoEditor = Backbone.View.extend({
   initialize: function(options) {
     $(function() {
       var uploader = new qq.FileUploader({
-        element: document.getElementById('file-uploader'),
+        element: document.getElementById('photo-uploader'),
         action: '/api/locations/' + options.location.id + '/photos'
       });
     });

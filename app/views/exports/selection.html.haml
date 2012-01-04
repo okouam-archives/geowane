@@ -15,81 +15,98 @@
           %option Mac
         Partner:
         %select{:style=>"width: 160px; padding: 5px 5px 5px 5px;border-radius: 0; top: -2px; position: relative"}
-          %option Navteq
-          %option Navitel
-
-- content_for :javascripts do
-  = javascript_include_tag "/assets/mvc/exports/init", :debug => Rails.env.development?
+          %option 0-One
 
 .block
   .block_content
     = semantic_form_for :s, :url => "/exports/prepare" do |form|
-      #portlets
-        #left.column
-          .portlet.countries
-            .portlet-content.nopadding
-              %table.main
-                %thead
-                  %tr
-                    %th.selector
-                      %input{:type=>"checkbox"}
-                    %th Country
-                %tbody
-                  - for country in @all_countries
-                    %tr
-                      %td.selector
-                        %input{:type=>"checkbox", :value=>country[1], :name => "export[countries][]"}
-                      %td
-                        = country[0]
-          .portlet.categories
-            .portlet-content.nopadding{:style=>"height: 300px; overflow-y: scroll"}
-              %table.main
-                %thead
-                  %tr
-                    %th.selector
-                      %input{:type=>"checkbox"}
-                    %th Category
-                %tbody
-                  - for category in @all_categories
-                    %tr
-                      %td.selector
-                        %input{:type=>"checkbox", :value=>category.id, :name => "export[categories][]"}
-                      %td
-                        = "#{category.french || "-" } / #{category.english || "-" }"
-        .column
-          .portlet.workflow
-            .portlet-content.nopadding
-              %table.main
-                %thead
-                  %tr
-                    %th.selector
-                      %input{:type=>"checkbox"}
-                    %th Status
-                %tbody
-                  - for status in @all_statuses
-                    %tr
-                      %td.selector
-                        %input{:type=>"checkbox", :value=>status[1], :name => "export[statuses][]"}
-                      %td
-                        = status[0]
-          .portlet.users
-            .portlet-content.nopadding{:style=>"height: 412px; overflow-y: scroll"}
-              %table.main
-                %thead
-                  %tr
-                    %th.selector
-                      %input{:type=>"checkbox"}
-                    %th Username
-                %tbody
-                  - for user in @all_users
-                    %tr
-                      %td.selector
-                        %input{:type=>"checkbox", :value=>user[1], :name => "export[users][]"}
-                      %td
-                        = user[0]
+      %ul#tabs.tabs{:style=>"margin: 0"}
+        %li.active= link_to "Country", "#country"
+        %li= link_to "Category", "#category"
+        %li= link_to "User", "#user"
+        %li= link_to "Status", "#status"
+        %br
+
+      #country.tab{:style=>"height: 300px; overflow-y: scroll"}
+        %table.main
+          %thead
+            %tr
+              %th.selector
+                %input{:type=>"checkbox"}
+              %th Country
+          %tbody
+            - for country in @all_countries
+              %tr
+                %td.selector
+                  %input{:type=>"checkbox", :value=>country[1], :name => "export[countries][]"}
+                %td
+                  = country[0]
+
+      #category.tab{:style=>"height: 300px; overflow-y: scroll"}
+        %table.main
+          %thead
+            %tr
+              %th.selector
+                %input{:type=>"checkbox"}
+              %th Category
+          %tbody
+            - for category in @all_categories
+              %tr
+                %td.selector
+                  %input{:type=>"checkbox", :value=>category.id, :name => "export[categories][]"}
+                %td
+                  = "#{category.french || "-" } / #{category.english || "-" }"
+
+      #status.tab
+        %table.main
+          %thead
+            %tr
+              %th.selector
+                %input{:type=>"checkbox"}
+              %th Status
+          %tbody
+            - for status in @all_statuses
+              %tr
+                %td.selector
+                  %input{:type=>"checkbox", :value=>status[1], :name => "export[statuses][]"}
+                %td
+                  = status[0]
+
+      #user.tab{:style=>"height: 300px; overflow-y: scroll"}
+        %table.main
+          %thead
+            %tr
+              %th.selector
+                %input{:type=>"checkbox"}
+              %th Username
+          %tbody
+            - for user in @all_users
+              %tr
+                %td.selector
+                  %input{:type=>"checkbox", :value=>user[1], :name => "export[users][]"}
+                %td
+                  = user[0]
+
       %div{:style=>"float: right; font-size: 16px; margin-left: 15px; margin-top: 10px"}
         %b.location#count
           0
         locations will be exported.
         %input{:class=>"button long", :style=>"margin-right: 15px; position: relative; top: -3px; margin-bottom: 20px; margin-left: 10px",:type=>"submit", :value=>"Export"}
       .clear
+
+:javascript
+  $(function() {
+    $(".tab:first").show();
+    $("#tabs li").removeClass("active");
+    $("#tabs a:first").parents("li").addClass("active");
+    $(".tab:not(:first)").hide();
+
+    $("#tabs a").click(function() {
+      var ref = $(this).attr("href").split('#')[1];
+      $("#tabs li").removeClass("active");
+      $(this).parents("li").addClass("active");
+      $(".tab:not(#" + ref + ")").hide();
+      $("#" + ref).show();
+      return false;
+    })
+  })
