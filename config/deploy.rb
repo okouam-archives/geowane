@@ -2,16 +2,16 @@ require 'capistrano/ext/multistage'
 require File.dirname(__FILE__) + '/boot'
 
 set :application, "geocms"
-set :repository,  "git@github.com:okouam/geocms.git"
+set :repository,  "git@github.com:0-One/GeoCMS.git"
 set :scm, :git
 set :branch, :master
-set :stages, ["production"]
+set :stages, ["staging", "production"]
 
-set :default_stage, "production"
+set :default_stage, "staging"
 set :deploy_via, :remote_cache
 set :user, "deployment"
 set :ssh_options, { :forward_agent => true }
-set :deploy_to, "/home/deployment/apps/geocms/production"
+set :deploy_to, "/home/deployment/apps/geocms/staging"
 set :rake, "/var/lib/gems/1.8/bin/rake"
 role :web, "galileo.codeifier.com"
 role :app, "galileo.codeifier.com"
