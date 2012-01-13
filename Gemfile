@@ -12,11 +12,12 @@ gem 'rails', '3.1.0', :branch => '3-1-stable'
 gem "dbf"
 gem "rgeo"
 gem 'ejs'
+gem 'paperclip'
 gem "activerecord-postgis-adapter"
 gem "rgeo-activerecord"
 gem "rgeo-geojson"
 gem "rgeo-shapefile"
-gem 'carrierwave'
+gem 'carrierwave', :git => 'https://github.com/jnicklas/carrierwave.git'
 gem "minitar"
 gem 'rmagick'
 gem 'authlogic', :git => 'git://github.com/odorcicd/authlogic.git', :branch => 'rails3'

@@ -1,17 +1,17 @@
 class Location < ActiveRecord::Base
   include Audited
   include Geolocatable
-  has_many :photos, :autosave => true
+  has_many :photos, :autosave => true, :dependent => :destroy
   acts_as_commentable
   acts_as_audited
-  has_one :logo, :autosave => true
+  has_one :logo, :autosave => true, :dependent => :destroy
   validates_presence_of :name
   belongs_to :user
   belongs_to :city
   belongs_to :road
   has_many :categories, :through => :tags
-  has_many :tags, :autosave => true
-  has_many :labels, :autosave => true
+  has_many :tags, :autosave => true, :dependent => :destroy
+  has_many :labels, :autosave => true, :dependent => :destroy
   has_many :model_changes, :through => :audits
 
   scope :not_geolocated, lambda {
@@ -84,6 +84,21 @@ class Location < ActiveRecord::Base
     attrs[:username] = respond_to?(:username) ? username : user.login
     attrs[:icon] = tags.first.category.icon if !tags.empty? && tags.first.category.icon
     attrs
+  end
+
+  def to_short_json
+    {
+      name: name,
+      id: id,
+      city: city ? city.name : "",
+      longitude: longitude,
+      latitude: latitude,
+      created_at: created_at.strftime("%d-%m-%Y"),
+      updated_at: updated_at.strftime("%d-%m-%Y"),
+      tags: tags.map {|x| x.category.french}.join(", "),
+      added_by: respond_to?(:username) ? username : user.login,
+      status: status.to_s.humanize.upcase
+    }
   end
 
 end

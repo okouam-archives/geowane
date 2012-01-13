@@ -15,12 +15,11 @@ Gowane::Application.routes.draw do
 
   match "/api/locations", :to => LocationResource, :anchor => false
 
-  # Server
+  match'/locations/collection' => 'locations#collection_delete', :via => :delete
+  match'/locations/collection/edit' => 'locations#collection_edit', :via => [:get]
+  match'/locations/collection' => 'locations#collection_update', :via => :post
 
-  match'/locations' => 'locations#collection_delete', :via => :delete
-  match'/locations/edit' => 'locations#collection_edit', :via => [:get, :post]
-  match'/locations' => 'locations#collection_update', :via => :put
-  match '/landmarks' => 'landmarks#show', :as => "show_landmarks", :via => :get
+  match 'locations/landmarks' => 'landmarks#show', :as => "show_landmarks", :via => :get
 
   resources :locations do
     resources :tags

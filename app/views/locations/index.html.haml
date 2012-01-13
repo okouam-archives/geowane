@@ -11,24 +11,23 @@
           %div{:style=>"background-color: #F1F1F1; font-size: 9px; width: 100%; color: #434343; border-left: 1px solid #ccc; position: relative; left: -1px; border-right: 1px solid #ccc; border-bottom: 1px solid #bbb; opacity: 0.8"}
             %span.coordinates{:style=>"margin-left: 7px; width: 178px; display: inline-block"}
             %span.drawing
-              %a#drawing-tool{:href=>"#"}
+              %a#drawing-tool{:href=>"#", style: "margin-right: 10px"}
                 Draw Search Area
             %span.drawing
               %a#eraser-tool{:href=>"#"}
                 Clear Search Area
             %span{:style=>"float: right; margin-right: 17px"}
-              %a#map-glossary{:href=>"#", :style=>"color: #434343"} Show Location Glossary +
+              %a#map-glossary{:href=>"#", :style=>""} Show Location Glossary +
           #mappanel
           %div#map-key{:style=>"height: 297px; display: none; width: 200px; z-index: 999999; position: absolute; right: 10px; top: 29px;  background: rgba(40, 40, 40, 0.8); color: white"}
             %ul
       .clear
       .toolbar{:style=>"margin-bottom: 10px; float: right"}
-        %button.gray-button
+        %button.gray-button.collection-edit
           %div Edit
-        %button.gray-button
-          %div Export
-        %button.gray-button
-          %div Delete
+        - if current_user.has_role?("administrator")
+          %button.gray-button.delete
+            %div Delete
       .clear
       = form_for :locations, :url => new_export_path do
         .portlet
@@ -61,6 +60,8 @@
 
     var results = new GeoCMS.Views.LocationSearchResults({el: "table.main", locations: collection});
     results.render();
+
+    new GeoCMS.Views.LocationCreator({el: "#search-bar"});
 
     new GeoCMS.Views.LocationSearch({el: "#search-bar", locations: collection});
   });

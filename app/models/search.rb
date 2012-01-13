@@ -1,5 +1,7 @@
 class Search
 
+  QUERY_SQL =
+
   def initialize(query, sort_order = nil)
     @criteria = SearchCriteria.new(query)
     @sort_order = sort_order || "pois.name"
@@ -28,20 +30,7 @@ class Search
     query = @criteria.create_query
     total_entries = query.count()
     locations = Location.paginate_by_sql sql, {:page => page, :per_page => per_page, :total_entries => total_entries}
-    locations = locations.map do |location|
-      {
-        name: location.name,
-        id: location.id,
-        city: location.city_name,
-        longitude: location.longitude,
-        latitude: location.latitude,
-        created_at: location.created_at.strftime("%d-%m-%Y"),
-        updated_at: location.updated_at.strftime("%d-%m-%Y"),
-        tags: location.tag_list,
-        added_by: location.username,
-        status: location.status.to_s.humanize.upcase
-      }
-    end
+    locations = locations.map {|location| location.to_short_json}
     {locations: locations, total_entries: total_entries}
   end
 

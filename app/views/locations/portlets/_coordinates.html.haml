@@ -9,7 +9,9 @@
     %label Status
     = select_tag "status", options_for_select(workflow_actions(current_user)), :style=>"width: 240px"
     %label Category
-    = select_tag "category", options_for_select([""] + Category.dropdown_items), :style=>"width: 240px"
+    %ul.categories
+      %li
+        = select_tag "category", options_for_select([""] + Category.dropdown_items), :style=>"width: 240px"
   #geo-details
 .clear
 .warning
@@ -21,3 +23,4 @@
 :css
   #faceboxmap {float: left; width: 300px; border: 1px solid black; height: 500px; margin-right: 15px; margin-left: -5px}
   #geo-details {float: left; width: 200px}
+  .picked {margin-bottom: 5px}

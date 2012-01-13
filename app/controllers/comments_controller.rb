@@ -11,7 +11,6 @@ class CommentsController < ApplicationController
         ON users.id = comments.user_id
       WHERE commentable_id = #{params[:location_id]}
         AND commentable_type = 'Location'
-
     }
     render :json => ActiveRecord::Base.connection.execute(sql)
   end
@@ -19,8 +18,7 @@ class CommentsController < ApplicationController
   def create
     sql = %{
       INSERT INTO comments (comment, user_id, commentable_type, commentable_id)
-      VALUES ('#{params[:comment]}', #{current_user.id}, 'Location', #{params[:location_id]}
-        AND commentable_type = 'Location'
+      VALUES ('#{params[:comment]}', #{current_user.id}, 'Location', #{params[:location_id]})
 
     }
     ActiveRecord::Base.connection.execute(sql)

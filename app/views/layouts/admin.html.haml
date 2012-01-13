@@ -4,7 +4,7 @@
   %head
     %title= "GeoCMS - #{h yield(:title)}"
     = csrf_meta_tag
-    = stylesheet_link_tag "/assets/application", :debug => Rails.env.development?
+    = stylesheet_link_tag "application", :debug => Rails.env.development?
     %script{:type=>"text/javascript"}
       window.current_user = {id: #{current_user.id}, login: "#{current_user.login}"};
     %script{:type=>"text/javascript"}
@@ -18,7 +18,7 @@
       ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
-    = javascript_include_tag "/assets/application", :debug => Rails.env.development?
+    = javascript_include_tag "application", :debug => Rails.env.development?
     = yield :javascripts
   %body{class: "#{controller.controller_name} #{controller.action_name}"}
     #hld

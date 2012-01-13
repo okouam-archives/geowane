@@ -1,0 +1,43 @@
+.block_head
+  %h2{:style=>"color: #434343; font-size: 13px"}
+    New Location
+.block_content
+  #location-creator.editor-content{style: "margin-top: 10px"}
+    .tab-contents{style: "float: right"}
+      %label Name
+      %input#name{:type=>"text", :style =>"width: 230px"}
+      %label City
+      = select_tag "city", options_for_select([""] + City.dropdown_items), :style=>"width: 240px"
+      %label Category
+      = select_tag "category", options_for_select([""] + Category.dropdown_items), :style=>"width: 240px"
+      %label
+        Long Name
+      %input#long_name{:type=>"text", :style=>"width: 230px"}
+      %label
+        Email
+      %input#email{:type=>"text", :style=>"width: 230px"}
+      %label
+        Telephone
+      %input#telephone{:type=>"text", :style=>"width: 230px"}
+      %label
+        Fax
+      %input#fax{:type=>"text", :style=>"width: 230px"}
+      %label
+        Website
+      %input#website{:type=>"text", :style=>"width: 230px"}
+      %label
+        Postal Address
+      %input#postal_address{:type=>"text", :style=>"width: 230px"}
+      %label
+        Geographical Address
+      %input#geographical_address{:type=>"text", :style=>"width: 230px"}
+      %label
+        Acronym
+      %input#acronym{:type=>"text", :style=>"width: 230px"}
+    #faceboxmap{style: "height: 570px; width: 308px; float: left; border: 1px solid black; margin-left: 10px"}
+    .clear
+    .message
+    .actions
+      %button.blue-button
+        %div
+          Accept

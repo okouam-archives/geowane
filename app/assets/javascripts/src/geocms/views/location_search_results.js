@@ -2,7 +2,7 @@ GeoCMS.Views.LocationSearchResults = Backbone.View.extend({
 
   LOCATION_ROW_TEMPLATE:
   "<% for (var i = 0; i < models.length; i++) { %> \
-   <tr> \
+   <tr data-id='<%= models[i].attributes.id %>'> \
     <td class='selector'> \
       <input type='checkbox' name='locations[]' value='<%= models[i].attributes.id %>' /> \
     </td> \
@@ -38,10 +38,46 @@ GeoCMS.Views.LocationSearchResults = Backbone.View.extend({
     });
     this.map = new GeoCMS.Views.LocationMap({el: $("manage_map"), locations: collection});
     collection.trigger("reset", collection);
+    $(document).bind('listing-updated', this.updateListing.bind(this));
+    $(".toolbar .delete").click(this.deleteLocations.bind(this));
+    $(".toolbar .collection-edit").click(this.editLocations.bind(this));
+  },
+
+  deleteLocations: function() {
+    if (confirm("Are you sure you want to delete these locations?")) {
+      $checkboxes = $("table.main td :checkbox").filter(":checked");
+      var locations = [];
+      $checkboxes.each(function(i, item) {
+        locations.push($(item).val());
+      });
+      $.ajax({
+        type: "DELETE",
+        url: "/locations/collection",
+        data: {locations: locations},
+        success: function() {
+          this.locations.criteria.set({page: 1});
+          this.locations.criteria.change();
+        }.bind(this)
+      });
+    }
+  },
+
+  updateListing: function(evt, id, name, status, city, longitude, lagitude, tags) {
+    $row = $("table.main tr[data-id='" + id + "']");
+    if ($row) {
+      $cells = $row.find("td");
+      $cells.eq(1).find("a").text(name);
+      $cells.eq(2).text(city);
+      $cells.eq(3).text(tags);
+      $cells.eq(7).text(status);
+    }
+  },
+
+  editLocations: function() {
+
   },
 
   render: function() {
-    var self = this;
     $(this.el).find("tbody").html(_.template(this.LOCATION_ROW_TEMPLATE, this.locations));
   },
 
@@ -55,11 +91,7 @@ GeoCMS.Views.LocationSearchResults = Backbone.View.extend({
   showEditor: function(location) {
     var collection = this.locations;
     $(document).bind('afterReveal.facebox', function() {
-      if (!window.App.Lightbox) {
-        window.App.Lightbox = new GeoCMS.Views.Lightbox.Editor({el: "#facebox", current: location, collection: collection});
-      } else {
-        window.App.Lightbox.associate(location, collection);
-      }
+      window.App.Lightbox = new GeoCMS.Views.Lightbox.Editor({el: "#facebox", current: location, collection: collection});
       location.change();
       $(document).unbind('afterReveal.facebox');
     });

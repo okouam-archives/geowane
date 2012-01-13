@@ -1,8 +1,5 @@
 = content_for :title, "Categories"
 
-- content_for :javascripts do
-  = javascript_include_tag "/assets/mvc/categories/index/init", :debug => Rails.env.development?
-
 - content_for :search do
   = render :partial => "action_bar"
 
@@ -51,5 +48,5 @@
 
 :javascript
   $(function() {
-    new CategoryEditor({el: "table.main"});
+    new GeoCMS.Views.CategoryEditor({el: "table.main"});
   });

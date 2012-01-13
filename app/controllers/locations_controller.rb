@@ -31,13 +31,7 @@ class LocationsController < ApplicationController
   end
 
   def new
-    @location = Location.new
-    @location.name = "Change Me"
-    @location.longitude = -4
-    @location.latitude = 5
-    @location.user = current_user
-    @location.save!
-    redirect_to edit_location_path(@location)
+    render :layout => false
   end
 
   def next
@@ -51,7 +45,7 @@ class LocationsController < ApplicationController
   def collection_delete
     locations = LocationCollection.new(params[:locations])
     locations.destroy_all(current_user)
-    redirect_to locations_path({:s => params[:s]})
+    head :ok
   end
 
   def collection_edit
@@ -100,20 +94,32 @@ class LocationsController < ApplicationController
     render :layout => false
   end
 
-  show do
-    wants.json do
-      @items = Location.find(params[:id].split(","))
-      render :json => @items.to_a.to_geojson
+  def show
+    location = Location.find(params[:id])
+    render :json =>  location.to_short_json
+  end
+
+  def update
+    location = Location.find(params[:id])
+    location.tags.clear
+    location.save!
+    if tags = params[:location][:tags]
+      tags.each do |tag|
+        location.tags.build(category_id: tag)
+      end
+      location.save!
+    end
+    params[:location].delete(:tags)
+    if location.update_attributes(params[:location])
+      head :ok
+    else
+      head :bad_request
     end
   end
 
-  update do
-    wants.html do
-      redirect_to locations_path(:page => session[:search_page], :per_page => session[:search_page_size])
-    end
-    wants.json do
-      render :json => object.to_geojson
-    end
+  def create
+    Location.create!(params[:location])
+    head :ok
   end
 
   def assign_form_data

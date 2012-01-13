@@ -19,7 +19,15 @@ GeoCMS.Views.LocationMap = Backbone.View.extend({
       $("#map-key").toggle();
       return false;
     });
+    $(document).bind('listing-updated', this.updateListing.bind(this));
     this.locations.bind("reset", this.render, this);
+  },
+
+  updateListing: function(evt, id, name, status, city, longitude, latitude) {
+    var updated = _.find(this.layer.features, function(feature) {
+      return feature.attributes.id == id;
+    });
+    updated.move(new OpenLayers.LonLat(longitude, latitude));
   },
 
   render: function(collection) {

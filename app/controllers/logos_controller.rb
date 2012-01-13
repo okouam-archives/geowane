@@ -1,7 +1,12 @@
 class LogosController < ApplicationController
 
   def show
-    id = params[:location_id]
+    location = Location.find(params[:location_id])
+    if location.logo && location.logo.image && location.logo.image.url
+      render :json => {url: location.logo.image.url, id: location.logo.id}
+    else
+      render :json => {}
+    end
   end
 
   def create
@@ -16,7 +21,9 @@ class LogosController < ApplicationController
   end
 
   def delete
-    id = params[:id]
+    location = Location.find(params[:location_id])
+    location.logo.destroy
+    head :ok
   end
 
 end

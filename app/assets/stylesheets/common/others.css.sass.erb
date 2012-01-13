@@ -6,6 +6,10 @@ a:hover
   text-decoration: underline
   color: #C00
 
+.picked a
+  position: relative
+  top: 3px
+
 #content
   background: url(<%= asset_path "bg_content.gif" %>) left top repeat-x #FFFFFF
   width: 938px !important
@@ -240,4 +244,7 @@ tr.inline-category-picker
 tr.inline-comment-picker
   td
     +inline-picker
+
+.qq-upload-list
+  display: none
 

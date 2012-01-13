@@ -1,3 +1,4 @@
+
 GeoCMS.Views.LocationPager = Backbone.View.extend({
 
   initialize: function(options) {

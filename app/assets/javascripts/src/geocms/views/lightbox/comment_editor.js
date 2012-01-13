@@ -24,9 +24,12 @@ GeoCMS.Views.Lightbox.CommentEditor = Backbone.View.extend({
 
   associate: function(location) {
     if (this.location) this.location.comments.unbind("reset");
+    if (this.location) this.location.comments.unbind("add");
     this.location = location;
     this.location.comments.unbind("reset");
+    this.location.comments.unbind("add");
     this.location.comments.bind("reset", this.render, this);
+    this.location.comments.bind("add", this.render, this);
   },
 
   render: function() {

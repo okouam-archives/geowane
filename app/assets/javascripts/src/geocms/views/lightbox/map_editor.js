@@ -36,12 +36,9 @@ GeoCMS.Views.Lightbox.MapEditor = Backbone.View.extend({
       <li><label>Latitude</label><%= attributes.latitude %></li> \
     </ul>",
 
-  events: {
-    "click .actions button": "save"
-  },
-
   initialize: function(options) {
-    this.associate(options.location);
+    if (options.location) this.associate(options.location);
+    this.is_new_location = options.is_new_location;
   },
 
   associate: function(location) {
@@ -55,23 +52,20 @@ GeoCMS.Views.Lightbox.MapEditor = Backbone.View.extend({
     $("#faceboxmap").empty();
     this.carto = new Carto("faceboxmap");
     this.layer = this.prepareMap();
-    var point = new OpenLayers.Geometry.Point(this.location.geography.get("longitude"), this.location.geography.get("latitude"));
+    var point = new OpenLayers.Geometry.Point(this.location.get("longitude"), this.location.get("latitude"));
     var feature = new OpenLayers.Feature.Vector(point);
     feature.attributes["thumbnail"] = "/assets/icons/1.gif";
     this.layer.destroyFeatures();
     this.layer.addFeatures([feature]);
     original_geometry = this.layer.getDataExtent().getCenterLonLat();
     this.carto.map.setCenter(original_geometry, 6);
-    //carto.displayLandmarkFeatures(self.id, landmark_layer);
-    var template = _.template(this.TEMPLATE, this.location.geography);
-    var wrapper = $("#geo-details");
-    wrapper.empty();
-    wrapper.append(template);
-    $("#" + this.el.id).find(".warning").empty();
-  },
-
-  save: function() {
-    alert("helo");
+    if (!this.is_new_location) {
+      var template = _.template(this.TEMPLATE, this.location.geography);
+      var wrapper = $("#geo-details");
+      wrapper.empty();
+      wrapper.append(template);
+      $("#" + this.el.id).find(".warning").empty();
+    }
   },
 
   prepareMap: function() {
@@ -81,7 +75,10 @@ GeoCMS.Views.Lightbox.MapEditor = Backbone.View.extend({
     var layer = this.carto.createLayer("Features");
     var drag = new OpenLayers.Control.DragFeature(layer, {
       onStart: function() {
-        $("#" + this.el.id).find(".warning").html("The location has been modified. Click 'Accept' to keep changes.")
+        $("#" + this.el.id).find(".warning").html("The location has been modified. Click 'Accept' to keep changes.").show();
+      }.bind(this),
+      onComplete: function(evt) {
+       this.trigger("location-moved", {longitude: evt.geometry.x, latitude: evt.geometry.y});
       }.bind(this)
     });
     var controls = [drag];

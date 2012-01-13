@@ -1,9 +1,5 @@
 GeoCMS.Views.Lightbox.InfoEditor = Backbone.View.extend({
 
-  events: {
-    "click .actions .blue-button": "save"
-  },
-
   initialize: function(options) {
     options.location.info.bind("change", this.render, this);
     var country = "#{@location.administrative_unit(0).try(:name)}";
@@ -58,6 +54,8 @@ GeoCMS.Views.Lightbox.InfoEditor = Backbone.View.extend({
         }
       }
     });
+
+    $(document).on("click", "#facebox #info .actions .blue-button", this.save.bind(this));
   },
 
   associate: function(location) {
@@ -68,6 +66,7 @@ GeoCMS.Views.Lightbox.InfoEditor = Backbone.View.extend({
   },
 
   render: function(model) {
+
     $("#long_name").val(model.get("long_name"));
     $("#email").val(model.get("email"));
     $("#telephone").val(model.get("telephone"));
@@ -80,13 +79,28 @@ GeoCMS.Views.Lightbox.InfoEditor = Backbone.View.extend({
     $("#acronym").val(model.get("acronym"));
     $("#miscellaneous").val(model.get("miscellaneous"));
 
-    $("#" + this.el.id).find("input").bind('input', function() {
+    this.wrapper().find("input").bind('input', function() {
       $("#" + this.el.id).find(".warning").html("The location has been modified. Click 'Accept' to keep changes.").show();
     }.bind(this));
+  },
 
+  wrapper: function() {
+    return $("#" + this.el.id);
   },
 
   save: function() {
+    var tab = $("#" + this.el.id);
+    tab.find(".warning").hide();
+    var $inputs = tab.find('form input');
+    var values = {};
+    $inputs.each(function() {
+      values[this.name] = $(this).val();
+    });
+    $.ajax({
+      type: "PUT",
+      url: "/locations/" + this.location.id,
+      data: {location: values}
+    });
     return false;
   }
 
