@@ -9,4 +9,8 @@
     = form.input :home_country, :as => :string, :input_html => { :class => "text" }
     = form.input :mobile_number, :input_html => { :class => "text" }
     = form.input :is_active, :label => " Is Allowed To Login"
-    = form.commit_button :button_html => { :class => "submit long" }
+.warning
+.actions
+  %button.blue-button
+    %div
+      Accept

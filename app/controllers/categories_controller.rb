@@ -13,6 +13,12 @@ class CategoriesController < ApplicationController
     render :json => object.locations.to_geojson(:only => ["name"])
   end
 
+
+  def edit
+    @category = Category.find(params[:id])
+    render :layout => false
+  end
+
   create.wants.html do
     redirect_to categories_path
   end

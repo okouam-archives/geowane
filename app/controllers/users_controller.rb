@@ -18,6 +18,11 @@ class UsersController < ApplicationController
     @user = User.new
   end
 
+  def edit
+    @user = User.find(params[:id])
+    render :layout => false
+  end
+
   def create
     @user = User.new(params[:user])
     if @user.save

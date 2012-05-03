@@ -1,29 +1,39 @@
+.block_head
+  %h2{:style=>"color: #434343; font-size: 13px"}
+    %span.location_name
+      = @category.french
 .block_content
-  = semantic_form_for object, :html => { :enctype => "multipart/form-data"} do |form|
-    #portlets
-      #left.column
-        .portlet
-          .portlet-header
-            Properties
-          .portlet-content.properties
-            = form.input :french
-            = form.input :english
-            = form.input :code, :required => true
-            = form.input :is_hidden, :label => " Is Hidden"
-            = form.input :is_landmark, :label => " Is Landmark"
-      .column
-        .portlet
-          .portlet-header
-            Icon
-          .portlet-content
-            %p
-              Please use of the icons found at
-              = link_to "http://mapicons.nicolasmollet.com", "http://mapicons.nicolasmollet.com"
-              or use an existing icon. This icon will be used for displaying this category on the map.
-            = form.input :icon, :as => :file, :label => "Upload Icon"
-            %label{:style=>"margin-top: 13px"}
-              Current Icon
-            = image_tag(object.icon.url, :style => "height: 37px; width: 32px")
+  = form_for object do |form|
+    .editor-content
+      %ul#tabs.tabs
+        %li.active= link_to "Details", "#details"
+        %li= link_to "Icon", "#icon"
+        %br
+      #details.tab
+        .tab-contents
+          .editor
+            %label French
+            = form.text_field :french
+            %label English
+            = form.text_field :english
+            %label Code
+            = form.text_field :code, :required => true
+            .clear{style: "margin-top: 3px"}
+            %label{style: "width: 110px; display: inline; float: left"} Make Hidden
+            = form.check_box :is_hidden, :label => " Is Hidden", :style => "float: left; top: 7px; position: relative"
+            .clear{style: "margin-top: 3px"}
+            %label{style: "width: 110px; display: inline; float: left"} Make Landmark
+            = form.check_box :is_landmark, :label => " Is Landmark", :style => "float: left; top: 7px; position: relative"
+          .clear
+          .warning
+          .actions
+            %button.blue-button
+              %div
+                Accept
+      #icon.tab
+        .tab-contents
+          %label{:style=>"margin-top: 13px"}
+            Current Icon
+          = image_tag(object.icon.url, :style => "height: 37px; width: 32px")
         .clear
-        %div.form_commit
-          = form.commit_button
+      .clear

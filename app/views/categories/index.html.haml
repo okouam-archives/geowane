@@ -29,11 +29,11 @@
                   %tr
                     %td
                       %input{:type=>"checkbox"}
-                    %td
+                    %td.name
                       - if category.icon
                         = image_tag category.icon.url, :style=>"float: left; margin-right: 10px; height: 37px; width: 32px"
                       - if current_user.may_update_category? @categories.first
-                        = link_to category.french, edit_category_path(category, page: params[:page], per_page: params[:per_page])
+                        = link_to category.french, edit_category_path(category, page: params[:page], per_page: params[:per_page]), :"data-id" => category.id
                       - else
                         = category.french
                       %br
@@ -48,5 +48,6 @@
 
 :javascript
   $(function() {
-    new GeoCMS.Views.CategoryEditor({el: "table.main"});
+    new GeoCMS.Views.Categories.SearchResults({el: "table.main"});
+    new GeoCMS.Views.Categories.Creator({el: "#search-bar"});
   });

@@ -1,11 +1,3 @@
 = content_for :title, "Edit Category"
 
-- content_for :javascripts do
-  = javascript_include_tag "/assets/mvc/categories/edit/init", :debug => Rails.env.development?
-
-.block
-  .block_head
-    %h2
-      Edit Category
-      = link_to "Back", categories_path(page: params[:page], per_page: params[:per_page])
-  = render :partial => "form"
+= render :partial => "form"

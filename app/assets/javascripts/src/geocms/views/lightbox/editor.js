@@ -74,7 +74,6 @@ GeoCMS.Views.Lightbox.Editor = Backbone.View.extend({
     var category_displays = _.map($(this.el).find(".picked span"), function(el) {
       return $(el).text();
     }).join(", ");
-    console.debug(categories);
     if (this.coordinates) {
       var longitude = this.coordinates.longitude;
       var latitude =  this.coordinates.latitude;
@@ -98,7 +97,6 @@ GeoCMS.Views.Lightbox.Editor = Backbone.View.extend({
         }
       },
       success: function() {
-        console.debug(category_displays);
         $(document).trigger("listing-updated", [this.current.id, name, status_display, city_display, longitude, latitude, category_displays]);
         this.current.fetch();
       }.bind(this)

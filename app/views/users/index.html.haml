@@ -1,7 +1,20 @@
 = content_for :title, "View Categories"
 
 - content_for :search do
-  = render :partial => "shared/generic_search_bar", :locals => {:action => "/users", :title => "Users"}
+  #search-bar
+    .clear
+    .wrapper
+      %form.search{:method=>"get", :action=> "/users", :style=>"padding-top: 17px"}
+        %h1{:style=>"float: left; color: #434343; margin-left: 20px; width: 140px"}
+          Users
+        %input{:type=>"text", :id=>"s[name]", :name=>"s[name]"}
+        %button.search-button{:style=>"margin-left: 5px"}
+          %div
+            =image_tag "search_white.png"
+      %form.new{:method=>"get", :action => "/users/new"}
+        %button.red-button
+          %div
+            New user
 
 %div.block
   %div.block_content
@@ -23,10 +36,15 @@
                 %tr
                   %td
                     %input{:type=>"checkbox"}
-                  %td= link_to user.login, edit_user_path(user)
+                  %td.name= link_to user.login, edit_user_path(user), :"data-id" => user.id
                   %td= user.last_login_at ? time_ago_in_words(user.last_login_at) : "never"
                   %td{:style=>"text-align: center"}
                     %input{:type=>"checkbox", :checked => user.is_active, :disabled => "true"}
                   %td= user.role_name
             = render :partial => "shared/paging", :locals => {:collection => @users, :page_size => @per_page}
 
+:javascript
+  $(function() {
+    new GeoCMS.Views.Users.SearchResults({el: "table.main"});
+    new GeoCMS.Views.Users.Creator({el: "#search-bar"});
+  });

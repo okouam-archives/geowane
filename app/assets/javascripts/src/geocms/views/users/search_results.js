@@ -1,4 +1,4 @@
-GeoCMS.Views.Categories.SearchResults = Backbone.View.extend({
+GeoCMS.Views.Users.SearchResults = Backbone.View.extend({
 
   events: {
     "click tr .name a": "show"
@@ -6,25 +6,6 @@ GeoCMS.Views.Categories.SearchResults = Backbone.View.extend({
 
   initialize: function() {
     $(document).bind('listing-updated', this.updateListing.bind(this));
-    $(".toolbar .delete").click(this.deleteCategories.bind(this));
-  },
-
-  deleteCategories: function() {
-    if (confirm("Are you sure you want to delete these categories?")) {
-      $checkboxes = $("table.main td :checkbox").filter(":checked");
-      var categories = [];
-      $checkboxes.each(function(i, item) {
-        categories.push($(item).val());
-      });
-      $.ajax({
-        type: "DELETE",
-        url: "/categories/collection",
-        data: {categories: categories},
-        success: function() {
-          window.location = "/categories"
-        }
-      });
-    }
   },
 
   updateListing: function(evt, id, name, status, city, longitude, lagitude, tags) {
@@ -43,13 +24,12 @@ GeoCMS.Views.Categories.SearchResults = Backbone.View.extend({
     return false;
   },
 
-  showEditor: function(location) {
+  showEditor: function(user_id) {
     $(document).bind('afterReveal.facebox', function() {
-      window.App.Lightbox = new GeoCMS.Views.Categories.Lightbox.Editor({el: "#facebox", current: location, collection: collection});
-      location.change();
+      window.App.Lightbox = new GeoCMS.Views.Users.Lightbox.Editor({el: "#facebox", id: user_id});
       $(document).unbind('afterReveal.facebox');
     });
-    $.facebox({ajax: location.url() + "/edit"});
+    $.facebox({ajax: "/users/" + user_id + "/edit"});
   }
 
 });
