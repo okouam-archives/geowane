@@ -13,6 +13,7 @@ Gowane::Application.routes.draw do
   match "/locations/:location_id/comments" => "comments#show", :via => "get"
   match "/locations/:location_id/comments" => "comments#create", :via => "post"
 
+  match '/api/:action', :controller => 'api'
   match "/api/locations", :to => LocationResource, :anchor => false
 
   match'/locations/collection' => 'locations#collection_delete', :via => :delete

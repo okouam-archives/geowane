@@ -37,6 +37,10 @@ class Location < ActiveRecord::Base
     where("status != 'INVALID'")
   }
 
+  scope :field_checked, lambda {
+    where("status != 'FIELD_CHECKED'")
+  }
+
   scope :on_street, lambda {|name|
     joins("JOIN roads ON ST_DWithin(locations.feature::geography, roads.the_geom::geography, 100)")
       .where("roads.label ilike ?", "%#{name}%")

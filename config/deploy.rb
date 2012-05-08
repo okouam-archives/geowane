@@ -1,21 +1,21 @@
 require 'capistrano/ext/multistage'
 require File.dirname(__FILE__) + '/boot'
 
-set :application, "geocms"
-set :repository,  "git@github.com:0-One/GeoCMS.git"
+set :application, "geowane"
+set :repository,  "git@github.com:okouame/geowane.git"
 set :scm, :git
 set :branch, :master
-set :stages, ["staging", "production"]
+set :stages, %w(staging production demo)
 
 set :default_stage, "staging"
 set :deploy_via, :remote_cache
 set :user, "deployment"
 set :ssh_options, { :forward_agent => true }
-set :deploy_to, "/home/deployment/apps/geocms/staging"
+set :deploy_to, "/var/www/geowane.com/staging"
 set :rake, "/var/lib/gems/1.8/bin/rake"
-role :web, "galileo.codeifier.com"
-role :app, "galileo.codeifier.com"
-role :db,  "galileo.codeifier.com", :primary => true
+role :web, "geowane.com"
+role :app, "geowane.com"
+role :db,  "geowane.com", :primary => true
 
 default_run_options[:pty] = true
 

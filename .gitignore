@@ -7,5 +7,6 @@ tmp/**/*
 .idea/
 tmp/
 ?/
+config/database.yml
 public/assets/**/*
 public/system/

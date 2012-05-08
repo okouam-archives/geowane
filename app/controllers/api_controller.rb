@@ -11,15 +11,18 @@ class ApiController < ApplicationController
         .scoped
         .select("categories.id, categories.french, categories.icon, count(*) as count")
         .where("NOT categories.is_hidden")
+        .where("categories.french NOT ILIKE '%#'")
         .group("categories.id, categories.french, categories.icon")
         .order("categories.french ASC")
-        .valid
+        .field_checked
         .where("boundaries.name LIKE 'Côte d''Ivoire'")
         .joins(:administrative_unit_0, :categories)
     else
       query = Category
         .scoped
         .select("categories.id, categories.french, categories.icon, count(*) as count")
+        .where("NOT categories.is_hidden")
+        .where("categories.french NOT ILIKE '%#'")
         .group("categories.id, categories.french, categories.icon")
         .order("categories.french ASC")
     end
@@ -31,10 +34,10 @@ class ApiController < ApplicationController
       .includes(:tags, :administrative_unit_0, :photos)
       .where("locations.name ilike '%#{params[:q].force_encoding('UTF-8')}%'")
       .where("boundaries.name LIKE 'Côte d''Ivoire'")
-      .where("status != 'INVALID'")
+      .field_checked
       .limit(99)
 
-    if bounds = params[:bounds]
+    if (bounds = params[:bounds])
       box = bounds.force_encoding('UTF-8').split(',')
       query =  query.where("ST_Intersects(SetSRID('BOX(#{box[0]} #{box[1]},#{box[2]} #{box[3]})'::box2d::geometry, 4326), locations.feature)")
     end
@@ -48,7 +51,7 @@ class ApiController < ApplicationController
         .limit(99 - results.size)
         .select("id, label, the_geom, country_id, centroid")
 
-      if bounds = params[:bounds]
+      if (bounds = params[:bounds])
         box = bounds.force_encoding('UTF-8').split(',')
         query = query.where("ST_Intersects(SetSRID('BOX(#{box[0]} #{box[1]},#{box[2]} #{box[3]})'::box2d::geometry, 4326), roads.centroid)")
       end
@@ -84,8 +87,9 @@ class ApiController < ApplicationController
       .in_bbox(bbox.split(","))
       .joins(:tags => [:category])
       .where("categories.is_landmark")
-      .valid
+      .field_checked
       .where("NOT categories.is_hidden")
+      .where("categories.french NOT ILIKE '%#'")
     unless visible.empty?
       landmarks = landmarks.where("locations.id NOT IN  (?)", ([] << visible).flatten)
     end
@@ -105,7 +109,7 @@ class ApiController < ApplicationController
 
   def fetch_locations(bounds, classification, name)
     query = Location.scoped
-      .valid
+      .field_checked
       .includes(:administrative_unit_0, :city, :photos)
       .where("boundaries.name LIKE 'Côte d''Ivoire'")
       .limit(99)
