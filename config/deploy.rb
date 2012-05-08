@@ -2,7 +2,7 @@ require 'capistrano/ext/multistage'
 require File.dirname(__FILE__) + '/boot'
 
 set :application, "geowane"
-set :repository,  "git@github.com:okouame/geowane.git"
+set :repository,  "git@github.com:okouam/geowane.git"
 set :scm, :git
 set :branch, :master
 set :stages, %w(staging production demo)
