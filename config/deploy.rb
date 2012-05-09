@@ -6,22 +6,15 @@ set :repository,  "git@github.com:okouam/geowane.git"
 set :scm, :git
 set :branch, :master
 set :stages, %w(staging production demo)
-
 set :default_stage, "staging"
 set :deploy_via, :remote_cache
-set :user, "deployment"
 set :ssh_options, { :forward_agent => true }
-set :deploy_to, "/var/www/geowane.com/staging"
-set :rake, "/var/lib/gems/1.8/bin/rake"
-role :web, "geowane.com"
-role :app, "geowane.com"
-role :db,  "geowane.com", :primary => true
 
 default_run_options[:pty] = true
 
 namespace :deploy do
-  task :start do ; end
-  task :stop do ; end
+  task :start do end
+  task :stop do end
   task :restart, :roles => :app, :except => { :no_release => true } do
     run "touch #{File.join(current_path,'tmp','restart.txt')}"
   end
@@ -40,7 +33,17 @@ namespace :bundler do
   end
 end
 
+namespace :configuration do
+  task :symlinks, :roles => :app do
+    run <<-CMD
+      ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml
+    CMD
+  end
+end
+
+after "deploy:update_code", "configuration:symlinks"
 after 'deploy:update_code', 'bundler:bundle_new_release'
+after "deploy", "deploy:cleanup"
 
 after 'bundler:bundle_new_release' do
   run "cd #{release_path}; RAILS_ENV=production rake assets:precompile"
