@@ -5,7 +5,7 @@ class CreateTagsTable < ActiveRecord::Migration
       t.references :category, :null => false, :foreign_key => true, :dependent => :delete
       t.timestamps
     end
-    add_index "tags", ["location_id", "category_id", "id"], :name => "idx_tags_locations"
-    add_index "tags", ["category_id", "location_id", "id"], :name => "idx_tags_categories"
+    add_index 'tags', %w(location_id category_id id), :name => 'idx_tags_locations'
+    add_index 'tags', %w(category_id location_id id), :name => 'idx_tags_categories'
   end
 end

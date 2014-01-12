@@ -1,0 +1,24 @@
+=== OVERVIEW ===
+
+Geowane is a POI Content Management System. Used extensively by companies and organizations around the world,
+it provides a POI collection workflow as well as a POI visualization tool using a variety of mapping
+technologies.
+
+=== INSTALLATION ===
+
+* Requires Postgreql 9.1 and Postgis to be installed
+
+apt-get install postgresql-9.1-postgis
+
+* Requires Imagemagick to be installed
+
+sudo apt-get install libmagickwand-dev libmagickcore-dev libmagickcore4-extra libgraphviz-dev libgvc5
+
+=== Setup ===
+
+Demo data needs to be installed by running this script.
+
+=== Credits ===
+
+* 0-One
+* Code Apprentice

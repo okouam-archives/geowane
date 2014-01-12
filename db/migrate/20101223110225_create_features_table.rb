@@ -11,6 +11,6 @@ class CreateFeaturesTable < ActiveRecord::Migration
       t.integer :type
     end
     add_column :features, :geom, :geometry, :limit => nil, :srid => 4326
-    add_index "features", ["geom"], :name => "idx_features_geom", :spatial => true
+    add_index 'features', %w(geom), :name => 'idx_features_geom', :spatial => true
   end
 end

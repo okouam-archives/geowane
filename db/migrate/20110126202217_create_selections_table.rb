@@ -9,7 +9,7 @@ class CreateSelectionsTable < ActiveRecord::Migration
       t.references :import, :null => false
       t.timestamps
     end
-    add_index :selections, ["original_id"], :name => "idx_selections_original_id"
-    add_index :selections, ["import_id"], :name => "idx_selections_import_id"
+    add_index :selections, %w(original_id), :name => 'idx_selections_original_id'
+    add_index :selections, %w(import_id), :name => 'idx_selections_import_id'
   end
 end

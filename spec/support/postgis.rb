@@ -14,7 +14,7 @@ class PostGIS
     points = points.map do |point|
       "#{point[0]} #{point[1]}"
     end
-    sql = "ST_GeomFromEWKT('SRID=4269;LINESTRING(#{points.join(",")})')"
+    "ST_GeomFromEWKT('SRID=4269;LINESTRING(#{points.join(',')})')"
   end
 
 end
